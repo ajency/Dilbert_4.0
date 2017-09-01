@@ -116,12 +116,6 @@ class Kernel implements KernelContract
         try {
             $this->bootstrap();
 
-            if (! $this->commandsLoaded) {
-                $this->commands();
-
-                $this->commandsLoaded = true;
-            }
-
             return $this->getArtisan()->run($input, $output);
         } catch (Exception $e) {
             $this->reportException($e);
@@ -249,12 +243,6 @@ class Kernel implements KernelContract
     {
         $this->bootstrap();
 
-        if (! $this->commandsLoaded) {
-            $this->commands();
-
-            $this->commandsLoaded = true;
-        }
-
         return $this->getArtisan()->call($command, $parameters, $outputBuffer);
     }
 
@@ -305,9 +293,12 @@ class Kernel implements KernelContract
             $this->app->bootstrapWith($this->bootstrappers());
         }
 
-        // If we are calling an arbitrary command from within the application, we'll load
-        // all of the available deferred providers which will make all of the commands
-        // available to an application. Otherwise the command will not be available.
+        if (! $this->commandsLoaded) {
+            $this->commands();
+
+            $this->commandsLoaded = true;
+        }
+
         $this->app->loadDeferredProviders();
     }
 
