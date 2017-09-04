@@ -91,13 +91,13 @@ class LoginController extends Controller
             $user->password = 'user';
             $user->avatar = $userDetails->getAvatar();
             $user->lang = 'en'; //default en
+            // $user->timeZone = "India"
             $user->acd = date('Y-m-d');
             $user->org_id = 0;
             $user->role = 'employee';
             $user->api_token = str_random(60);
             $user->gender = (isset($userDetails->gender)) ? $userDetails->gender: "-";
             // $user->dob = (isset($userDetails->birthday)) ? $userDetails->birthday : "-";
-            $user->dob = '2017-08-08';
             $user->is_active = false;
             $user->save();
             return response()->json(['msg' => 'user created'], 200);
