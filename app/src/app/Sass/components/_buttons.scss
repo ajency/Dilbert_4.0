@@ -1,0 +1,12 @@
+// ---------------------------
+// BUTTONS STYLES AND VARIANTS -----------
+// ---------------------------
+
+
+// Button with no-background hover removed
+
+.button-clear-md {
+    &:hover:not(.disable-hover) {
+        background-color: transparent;
+    }
+}

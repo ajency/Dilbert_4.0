@@ -1,0 +1,11 @@
+// ---------------------------
+// HEADER STYLES -----------
+// ---------------------------
+
+
+// Overwriting default header box shadow image
+.main-header {
+    &:after {
+        background-image: none;
+    }
+}

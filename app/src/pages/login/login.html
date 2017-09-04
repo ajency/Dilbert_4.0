@@ -1,33 +1,94 @@
-<ion-header>
-  <ion-navbar>
-    
-  </ion-navbar>
+<!--
+  Generated template for the LoginPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- Site header goes here -->
+
+<ion-header class="main-header shadow-1">
+    <div class="container">
+        <!-- Navbar Start-->
+        <ion-navbar class="dilbert-nav">
+             <button ion-button menuToggle m-h-0 class="ham">
+            <ion-icon name="menu"></ion-icon>
+         </button>
+            <div class="dilber-nav__left nav-cols">
+                 <button ion-button icon-only clear p-h-10>
+               <i class="custom-icon flower"></i>
+            </button>
+                <button ion-button icon-only clear p-h-10>
+               <i class="custom-icon summary"></i>
+            </button>
+                <ion-title start font-weight-4 class="brand-name">
+                    <p ion-text color="secondary" no-margin>Ajency.in</p>
+                </ion-title>
+            </div>
+            <div class="dilbert-nav__right nav-cols">
+                <!-- Notification -->
+                <button ion-button icon-only clear m-r-10 class="notify hvr-pulse-grow">
+               <ion-icon name="notifications-outline" color="dark"></ion-icon>
+            </button>
+                <!-- User profile -->
+                <button ion-button clear icon-only p-v-20 (click)="openPopover($event)" class="user-profile">
+              <ion-item p-l-0>
+                <ion-avatar item-start m-h-0>
+                  <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png" />
+                </ion-avatar>
+                <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
+              </ion-item>
+            </button>
+                <!-- User profile ends -->
+            </div>
+        </ion-navbar>
+        <!-- Navbar ends -->
+    </div>
 </ion-header>
 
-<ion-content padding align = "center" class = "content">
-
- <ion-card class = "card" >
-  <ion-img width="64" height= "64" src="assets/images/dilbert.jpg" ></ion-img>
-  <ion-card-content >
-    <ion-card-title >
-          DILBERT
-
-    </ion-card-title>
-
-        <h3>Track Time. Record Work </h3>
-        <hr>
-
-        <div> 
-            <span> <h2> Have an existing account? </h2></span> <br />
-            <span> Sign in and continue where you left off</span>
-        </div>
-
-        <div> 
-            <button ion-button block  (click) = "signIn()" [disabled]="disabled" (click)="disabled=true"  > Sign In with Google </button>
-
-        </div>
+<!-- Site header ends -->
 
 
-  </ion-card-content>
-</ion-card>
+<!-- Body starts -->
+
+<ion-content padding>
+    <div class="container" p-h-20>
+		
+
+		<div class="login-card" text-center>
+			<ion-card>
+			  <img src="./../../assets/img/dilbert.jpg" width="80">
+			  <ion-card-content>
+			    <ion-card-title>
+			      <h2 ion-text text-uppercase class="login-card__title" m-b-8>Dilbert</h2>
+			      <p ion-text color="text-lighter" font-weight-4>Track Time. Record Work</p>
+			     </ion-card-title>
+			     <hr>
+			    <h5 class="login-card__title2" m-t-15>Have an existing account?</h5>
+			    <p ion-text color="text-lighter" font-weight-4 m-t-5>Sign in and continue where you left off</p>
+			    <button ion-button color="danger-dark" m-t-15 class="sign-in" (click) = "signIn()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> Sign in with Google</button>
+			  </ion-card-content>
+			</ion-card>
+
+			<div ion-text p-t-20 m-b-0 class="sign-text">Haven't connected to Dilbert yet?</div>
+			<button ion-button color="primary" clear class="sign-up">Sign up!</button>
+		</div>
+       
+
+    </div>
 </ion-content>
+
+<!-- Body Ends -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+page-my-summary {
+
+}
+
+@media screen and (max-width: 600px){
+	.summaryView{
+		.back-button{
+			margin: 0;
+	    	padding: 0;
+		}
+		.toolbar-content-md{
+			display: flex;
+    		align-items: center;
+    		justify-content: space-between;
+    		padding-right: 1em;
+    		.titles{
+    			font-size: 1.25em;
+    			margin: 12px 0;
+    		}
+    		.month{
+    			font-size: 0.8em;
+    			padding-top: 0.2em;
+    		}
+		}
+	}
+	ion-app.app-root .summary__content{
+		padding: 0;
+		border-bottom: 3px solid #f6f5f8;
+    	padding-bottom: 1.5em;
+		.contentTitle{
+			display: none;
+		}
+		.day-detail{
+			justify-content: space-between;
+			&__day{
+				display: none;
+			}
+		}
+		p{
+			margin-bottom: 9px;
+    		font-size: 1.25em;
+    		margin-top: 14px;
+		}
+		.totalTitle{
+			margin-bottom: 5px;
+    		font-size: 1.65em;
+		}
+	}
+}
+

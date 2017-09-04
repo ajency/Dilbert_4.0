@@ -1,0 +1,20 @@
+// ---------------------------
+// FORM ELEMENTS -----------
+// ---------------------------
+
+
+// Select box
+.item-select {
+    width: 150px;
+    .select,
+    .label {
+        width: 100%;
+        max-width: 100%;
+        font-size: 0.9em;
+    }
+}
+
+// Input text
+.text-input {
+    font-size: 0.85em;
+}

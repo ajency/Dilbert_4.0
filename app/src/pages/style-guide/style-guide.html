@@ -1,0 +1,180 @@
+<!--
+  Generated template for the StyleGuidePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar>
+        <ion-title>Style Guide</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="style-guide" m-t-20 p-h-50>
+        <h2 font-weight-3 ion-text color="primary" text-center>Style Guide -- Version - 1.0</h2>
+        <hr>
+        <!-- Heading -->
+        <div m-v-30>
+            <h2 ion-text color="text">Headings</h2>
+            <hr>
+            <h1>Heading H1</h1>
+            <h2>Heading H2</h2>
+            <h3>Heading H3</h3>
+            <h4>Heading H4</h4>
+            <h5>Heading H5</h5>
+            <h6>Heading H6</h6>
+<!--             <div>
+                &lt;h1&gt;Heading H1&lt;h1&gt;
+                &lt;h2&gt;Heading H2&lt;h2&gt;
+                &lt;h3&gt;Heading H3&lt;h3&gt;
+                &lt;h4&gt;Heading H4&lt;h4&gt;
+                &lt;h5&gt;Heading H5&lt;h5&gt;
+                &lt;h6&gt;Heading H6&lt;h6&gt;
+            </div> -->
+        </div>
+        <hr>
+        <!-- Colors -->
+        <div class="color-code" m-v-30>
+            <h2 ion-text color="text">Colors</h2>
+            <hr>
+            <div class="code-container">
+                <div class="primary" text-center>
+                    <p class="color"></p>
+                    <p>Primary</p>
+                </div>
+                <div class="secondary" text-center>
+                    <p class="color"></p>
+                    <p>Secondary</p>
+                </div>
+                <div class="text" text-center>
+                    <p class="color"></p>
+                    <p>Text</p>
+                </div>
+                <div class="text-lighter" text-center>
+                    <p class="color"></p>
+                    <p>Text Lighter</p>
+                </div>
+                <div class="text-darker" text-center>
+                    <p class="color"></p>
+                    <p>Text Darker</p>
+                </div>
+                <div class="success" text-center>
+                    <p class="color"></p>
+                    <p>Success</p>
+                </div>
+                <div class="danger" text-center>
+                    <p class="color"></p>
+                    <p>Danger</p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <!-- Typography -->
+        <div m-v-30>
+            <h2 ion-text color="text">Typography</h2>
+            <hr>
+            <h5>Page Title</h5>
+            <p>Element Title</p>
+            <span ion-title color="text">Labels</span>
+            <span class="dis-block xx-small" m-t-15>xx Smaller label</span>
+            <br>
+            <span class="dis-block xxx-small">xxx smaller label</span>
+        </div>
+        <hr>
+        <!-- Weights -->
+        <div m-v-30>
+            <h2 ion-text color="text">Font Weights</h2>
+            <hr>
+            <p font-weight-6>Font-weight-6(Bolder)</p>
+            <p font-weight-5>Font-weight-5(Bold)</p>
+            <p font-weight-4>Font-weight-4(Medium)</p>
+            <p font-weight-3>Font-weight-3(Regular)</p>
+            <p font-weight-1>Font-weight-1(Lighter)</p>
+        </div>
+        <!-- Icons -->
+        <div m-v-30>
+            <h2 ion-text color="text">Icons</h2>
+            <hr>
+            <ion-icon name="calendar" class="icon-size full" m-v-10></ion-icon> - Full
+            <br>
+            <ion-icon name="calendar" class="icon-size mini"></ion-icon> - Mini
+            <br>
+            <i class="custom-icon summary"></i> - Custom Icons
+        </div>
+        <hr>
+        <!-- Utility -->
+        <div m-v-30>
+            <h2 ion-text color="text">Utility Classes</h2>
+            <hr>
+            <p m-t-15 m-b-15>m-t/b/-(number) - denotes margin-top/bottom(eg: m-t-5,m-b-10)</p>
+            <p m-t-15 m-b-15>m-h-number - denotes margin horizontal(eg: m-h-10)</p>
+            <p m-t-15 m-b-15>m-v-number - denotes margin vertical(eg: m-v-10)</p>
+            <p m-t-15 m-b-15>p-t/b/-(number) - denotes padding-top/bottom(eg: p-t-5,p-b-10)</p>
+            <p m-t-15 m-b-15>p-h-number - denotes padding horizontal(eg: p-h-10)</p>
+            <p m-t-15 m-b-15>p-v-number - denotes padding vertical(eg: p-v-10)</p>
+            <p m-t-15 m-b-15>.dis-block(display:block)</p>
+            <p m-t-15 m-b-15>.dis-inline(display:inline-block)</p>
+            <p>.visible(visibility:hidden)</p>
+        </div>
+        <!-- Shadow -->
+        <div m-v-30>
+            <h2 ion-text color="text">Shadow</h2>
+            <hr>
+            <div class="code-container shadow">
+                <div class="boxes box-1">Default box-shadow</div>
+                <div class="boxes box-2">Right sided Shadow</div>
+                <div class="boxes box-3">Smaller radius/blur shadow</div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2 ion-text color="text">Week Element</h2>
+        <hr>
+        <div class="summary-sidebar element-one">
+            <div class="full-card">
+             <ul class="week-list list-control overflow-active">
+                <button ion-item class="week-container" m-v-15>
+                    <li class="week-list__row flex-row">
+                        <div class="week-list__day">
+                            <p class="day-title" m-t-0 m-b-8 font-weight-5>Fri</p>
+                            <span ion-text color="text">May 12</span>
+                        </div>
+                        <div class="week-list__session">
+                            <!-- <span class="dis-block" m-b-11>09:35 am</span> -->
+                            <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>09:35 am</span>
+                            <span ion-text color="success">Online</span>
+                        </div>
+                        <div class="week-list__time flex-row">
+                            <ion-icon name="alert" color="danger" class="visible icon-size mini"></ion-icon>
+                            <h6 class="total-time" p-h-12 ion-text color="text-darker">3:02<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>
+                            <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
+                        </div>
+                    </li>
+                </button>
+                <button ion-item class="week-container active" m-v-15>
+                    <li class="week-list__row flex-row">
+                        <div class="week-list__day">
+                            <p class="day-title" m-t-0 m-b-8 font-weight-5>Thu</p>
+                            <span ion-text color="text">May 11</span>
+                        </div>
+                        <div class="week-list__session">
+                            <span class="session-start dis-block" m-t-0 m-b-8 font-weight-4>09:28 am</span>
+                            <!-- <span class="dis-block" m-b-11>09:28 am</span> -->
+                            <span ion-text>6:28 pm</span>
+                        </div>
+                        <div class="week-list__time flex-row">
+                            <i data-tooltip="Please update your details"><ion-icon name="alert" color="danger" class="hvr-buzz-out test-icon icon-size mini"></ion-icon></i>
+                            <h6 class="total-time" p-h-12 ion-text color="text-darker">9:00<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>
+                            <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
+                        </div>
+                    </li>
+                </button>
+                </ul>
+            </div>
+        </div>
+        
+        <hr>
+
+    </div>
+</ion-content>

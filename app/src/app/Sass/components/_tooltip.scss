@@ -1,0 +1,70 @@
+// ---------------------------
+// CUSTOM TOOLTIP -----------
+// ---------------------------
+
+
+/* Add this attribute with the message to the element that needs a tooltip. For example,
+*
+* <i data-tooltip="Hey i'm a Tooltip..Whoohoo!!!"></i>
+*
+*/
+
+
+[data-tooltip] {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    /* Triangle hack to make tooltip look like a speech bubble */
+    &:after {
+        margin-left: -5px;
+        width: 0;
+        border-top: 5px solid #000;
+        border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        content: " ";
+        font-size: 0;
+    }
+    /* Position tooltip above the element */
+    &:before {
+        margin-bottom: 5px;
+        margin-left: -80px;
+        padding: 7px;
+        width: 150px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        background-color: #000;
+        background-color: hsla(0, 0%, 20%, 0.9);
+        color: #fff;
+        content: attr(data-tooltip);
+        text-align: center;
+        font-size: 0.85em;
+    }
+    /* Hide the tooltip content by default */
+    &:after,
+    &:before {
+        position: absolute;
+        bottom: 120%;
+        left: 50%;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+        font-weight: 300;
+        line-height: 1.4;
+        transform: translate(0%, 100%);
+        transition: all 0.5s ease;
+    }
+    /* Show tooltip content on hover */
+    &:hover {
+        &:after,
+        &:before {
+            visibility: visible;
+            opacity: 1;
+            box-shadow: $shadow-1;
+            text-shadow: 1px 1px 1px #000;
+            font-style: normal;
+            transform: translate(-0%, -0%);
+        }
+    }
+}
