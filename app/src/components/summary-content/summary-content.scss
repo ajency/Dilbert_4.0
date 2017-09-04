@@ -1,0 +1,185 @@
+summary-content {
+    // ---------------------------
+    // SUMMARY CONTENT -----------
+    // ---------------------------
+    .day-detail {
+        border-bottom: 2px solid #f6f5f8;
+        padding-bottom: 32px;
+        margin-top: 2.5em;
+        .detail-cols {
+            flex: 1;
+            // text-align: center;
+        }
+    }
+    @media screen and (min-width: 600px) and (max-width: 768px) {
+        .day-detail {
+            .detail-cols {
+                margin-right: 1em;
+            }
+        }
+    }
+    // ---------------------------
+    // DETAIL VIEW -----------
+    // ---------------------------
+    .detail-view{
+        &__container{
+            position: relative;
+            &:before{
+                content:'';
+                position: absolute;
+                top: 15px;
+                left: 0;
+                height: calc(100% - 20px);
+                width: 1px;
+                background-color: #ddd;
+            }
+            &.violated-row{
+                &:before{
+                    top: 25px;
+                    height: calc(100% - 30px); 
+                }
+            }
+        }
+        &__cols{
+            position: relative;
+            margin-bottom: 4em;
+            display: flex;
+            align-items: center;
+            &:before{
+                content: '';
+                display: inline-block;
+                font-size: 1.1em;
+                position: absolute;
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+                left: -25px;
+                // top: 8px;
+            }
+            &.violated{
+                align-items: flex-start;
+                justify-content: space-between;
+                &:before{
+                    content: "\f276";
+                    font-family: "Ionicons";
+                    color: color($colors, danger);
+                    left: -26px;
+                    top: 18px;
+                }
+                .violated__comment{
+                    // margin-left: 1.5em;
+                    border-radius: 50%;
+                    border: 1px solid #dcdcdc;
+                    width: 35px;
+                    height: 35px;
+                    line-height: 35px;
+                    font-size: 0.8em;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .comment-notifier{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background-color: #fa5777;
+                    border-radius: 50%;
+                    height: 15px;
+                    width: 15px;
+                    color: #fff;
+                    line-height: 15px;
+                    text-align: center;
+                    font-size: 0.75em;
+                }
+            }
+            &.completed{
+                &:before{
+                    background-color: color($colors,primary);
+                }
+            }
+            &.idle,&.offline,&.online{
+                font-size: 0.88em;
+                &:before{
+                    background-color: color($colors,idle);
+                }
+            }
+            &.online{
+                &:before{
+                    background-color: color($colors,success);
+                }
+            }
+            &.total{
+               align-items: flex-start;
+               .message{
+                    position: absolute;
+                    bottom: -16px;
+               }
+               &:before{
+                    bottom: 0;
+               } 
+            }
+        }
+        .comment-box{
+            border: 1px solid #ddd;
+            padding: 0 0.5em 0.5em 0.5em;
+            margin: 1em 0;
+        }
+        .commentor{
+            margin-top: 0.5em;
+            &__profile{
+                font-size: 1.4em;
+                padding: 0 0.5em 0 0;
+                display: flex;
+                align-self: flex-start;
+            }
+            &__name{
+                flex: 1;
+            }
+            .close-box{
+                font-size: 0.6em;
+                height: auto;
+                margin: 0;
+            }
+            &:nth-child(even){
+                margin-top: 0.5em;
+                margin-left: -0.5em;
+                margin-right: -0.5em;
+                margin: 0.5em -0.5em 0 -0.5em;
+                padding: 0.5em;
+                background-color: color($colors,light);
+                border-bottom: 1px solid #ddd;
+                .close-box{
+                    display: none;
+                }
+                & + .reply{
+                    margin-top: 0;
+                }
+            }
+        }
+        .reply{
+            margin: -0.5em;
+            margin-top: 0.5em;
+            padding: 0.5em;
+            background-color: color($colors,light);
+            &-text{
+                background-color: #fff;
+                height: 30px;
+            }
+            input{
+                margin: 8px;
+            }
+        }
+        .resolve-toggle{
+            padding: 8px;
+            margin: 0 auto;
+        }
+    }
+    @media screen and (min-width: 1280px) and (max-width: 1400px) {
+        .violated-data{
+            flex: 0.85;
+        }     
+    }
+}
+
+
+

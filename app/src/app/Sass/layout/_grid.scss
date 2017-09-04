@@ -1,0 +1,31 @@
+// ---------------------------
+// GRID STYLES -----------
+// ---------------------------
+
+
+// ---------------------------
+// CONTAINER DECLARATION -----------
+// ---------------------------
+
+.container {
+    margin: 0 auto;
+    // No extra padding in mobile
+    @media (max-width: $screen-xs-min) {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    // @media (min-width: $screen-sm-min) {
+    //   width: $container-sm;
+    // }
+    // @media (min-width: $screen-md-min) {
+    //   width: $container-md;
+    // }
+    // @media (min-width: $screen-lg-min) {
+    //   width: $container-lg;
+    // }
+    // @media (min-width: $screen-lg-max) {
+    //   width: $container-lg-max;
+    // }
+    padding-left: 30px;
+    padding-right: 30px;
+}

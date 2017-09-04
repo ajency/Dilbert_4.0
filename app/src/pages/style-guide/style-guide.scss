@@ -1,0 +1,89 @@
+page-style-guide {
+	.style-guide{
+	    width: 70%; 
+	    margin:0 auto;
+	    .color-code{
+	        .color{
+	            height: 100px;
+	            width: 100px;
+	        }
+	        .primary .color{
+	            background-color: color($colors,'primary');
+	        }
+	        .secondary .color{
+	            background-color: color($colors,'secondary');
+	        }
+	        .text .color{
+	            background-color: color($colors,'text');
+	        }
+	        .success .color{
+	            background-color: color($colors,'success');
+	        }
+	        .danger .color{
+	            background-color: color($colors,'danger');
+	        }
+	        .text-lighter .color{
+	            background-color: color($colors,'text-lighter');
+	        }
+	        .text-darker .color{
+	            background-color: color($colors,'text-darker');
+	        }
+	    }
+	    .code-container{
+	        display: flex;
+	        justify-content: space-between;
+	        &.shadow{
+	        	justify-content: flex-start;
+	        	& > div{
+	        		margin-right: 1.5em;
+	        	}
+	        }
+	    }
+	    .boxes{
+	        padding: 20px;
+	        height: 150px;
+	        margin-top: 20px;
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	    }
+	    .box-1{
+	        box-shadow: $shadow-1;
+	    }
+	    .box-2{
+	        box-shadow: $shadow-2;
+	    }
+	    .box-3{
+	        box-shadow: $shadow-3;
+	    }
+	    .element-one{
+	    	width: 30%;
+	    	margin: 0 auto;
+	    	.list-control{
+	    		height: auto;
+	    	}
+	    }
+	}
+}
+
+@media screen and (max-width: 600px) {
+	ion-app.app-root .style-guide{
+		padding: 0;
+		width: 100%;
+		h2{
+			font-size: 1.8em;
+		}
+		.code-container{
+			flex-wrap:wrap;
+			& > div{
+				margin-right: 1em;
+			}
+			&.shadow{
+				justify-content: center;
+			}
+		}
+		.element-one{
+			width: 100%;
+		}
+	}
+}

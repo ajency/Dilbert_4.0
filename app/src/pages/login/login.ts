@@ -1,40 +1,31 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
+/**
+ * Generated class for the LoginPage page.
+ *
+ * See http://ionicframework.com/docs/components/#navigation for more info
+ * on Ionic pages and navigation.
+ */
+ declare const gapi : any;
 
-
-declare const gapi : any;
-
-@IonicPage({
-	 name : 'LoginPage',
-  segment : 'login' ,
-  
-})
+@IonicPage()
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html'
+  templateUrl: 'login.html',
 })
 export class LoginPage {
 
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http) {
+  }
 
-	public auth2: any;
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad LoginPage');
+    this.handleClientLoad();
+  }
 
-	constructor(public navCtrl: NavController) {
-
-	  }
-
-
-	ionViewDidLoad() {
-		console.log('ionViewDidLoad HomePage');
-
-          //Once the view loads call handle client function to authenticate the user
-		  this.handleClientLoad();
-
-	}
-
-
-
-	handleClientLoad() {
+  handleClientLoad() {
 
       //Function to autheticate the user using google auth2
 		let that = this;
@@ -81,12 +72,33 @@ export class LoginPage {
        //   Sign in the user upon button click.
 
       	        gapi.auth2.getAuthInstance().signIn().then( () => {
-    	        	console.log("signed in");
-    	        	console.log(gapi.auth2.getAuthInstance().currentUser.get());
+    	        	console.log(this,"signed in");
+    	        	console.log(gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token);
+    	        	
     	        	// this.navigateToSearch();
 
               });
 
-        }
+      	     }
 
+
+      	     postRequest() {
+				    var headers = new Headers();
+				    headers.append("Accept", 'application/json');
+				    headers.append('Content-Type', 'application/json' );
+				    let options = new RequestOptions({ headers: headers });
+
+				    let postParams = {
+				      title: 'foo',
+				      body: 'bar',
+				      userId: 1
+				    }
+				    
+				    this.http.post("http://jsonplaceholder.typicode.com/posts", postParams, options)
+				      .subscribe(data => {
+				        console.log(data['_body']);
+				       }, error => {
+				        console.log(error);// Error getting the data
+				      });
+				  }
 }
