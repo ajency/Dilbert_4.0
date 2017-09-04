@@ -4,7 +4,9 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { LoginPage } from './../pages/login/login';
+// import { LoginPage } from './../pages/login/login';
+import { Location, PlatformLocation } from '@angular/common';
+
 
 interface Window {
   addEventListener: any;
@@ -21,17 +23,42 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = 'LoginPage';
+  flag : boolean;
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private appservice: AppService,) {
+  constructor(public platform: Platform, 
+              public statusBar: StatusBar, 
+              public splashScreen: SplashScreen,
+              private appservice: AppService,
+              private location: Location) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: LoginPage }
-    ];
+  //   this.pages = [
+  //     { title: 'Home', component: LoginPage }
+  //   ];
   }
+
+
+
+   ngOnInit(){
+    console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
+
+    let path = this.location.path(true)
+    let pathparts = path.split('/');
+    console.log(pathparts);
+    pathparts.map((val) => {
+      if(val === 'test'){
+        this.flag = true;
+        console.log(val);
+      }
+    });
+    if(this.flag){
+    this.rootPage = 'StartHomePage';
+
+    }
+}
 
   initializeApp() {
     this.platform.ready().then(() => {

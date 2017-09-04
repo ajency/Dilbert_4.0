@@ -17,12 +17,19 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 })
 export class LoginPage {
 
+	message: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
     this.handleClientLoad();
+  }
+
+  navigateToSummary(){
+  	 this.navCtrl.push('StartHomePage');
+    console.log('Navigating to another module');
   }
 
   handleClientLoad() {
@@ -59,6 +66,7 @@ export class LoginPage {
 	        if (isSignedIn) {
 
 		          console.log(this,"Already signed in");
+		          // this.postRequest();
 
           // If the user is already signed in navigate the user to search page
 	          // this.navigateToSearch();
@@ -75,7 +83,8 @@ export class LoginPage {
     	        	console.log(this,"signed in");
     	        	console.log(gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token);
     	        	
-    	        	// this.navigateToSearch();
+    	        	 // this.navigateToSummary();
+    	        	 this.postRequest();
 
               });
 
@@ -86,19 +95,30 @@ export class LoginPage {
 				    var headers = new Headers();
 				    headers.append("Accept", 'application/json');
 				    headers.append('Content-Type', 'application/json' );
+				    // headers.append('Access-Control-Allow-Origin: *');
 				    let options = new RequestOptions({ headers: headers });
 
+				    // let token = gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token;
+				    let url = 'http://localhost:8000/api/login?';
+				    // url += `/login?token=${token}`;
 				    let postParams = {
-				      title: 'foo',
-				      body: 'bar',
-				      userId: 1
-				    }
-				    
-				    this.http.post("http://jsonplaceholder.typicode.com/posts", postParams, options)
+							      token : gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token
+							    }
+
+				    console.log(url);
+				    this.http.post(url,postParams,options)
 				      .subscribe(data => {
-				        console.log(data['_body']);
+				        // console.log(JSON.parse(data['_body']));
+				        this.message = JSON.parse(data['_body']).message;
+				        console.log(this.message);
+				        if(this.message =="success"){
+
+				      	this.navigateToSummary();
+				      	}
 				       }, error => {
 				        console.log(error);// Error getting the data
 				      });
+				      console.log(this.message);
+				      
 				  }
 }
