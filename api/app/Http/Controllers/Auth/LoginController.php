@@ -60,7 +60,7 @@ class LoginController extends Controller
                 $user = $arraySocial[0];
                 $status = $arraySocial[1];
                 if($status == "exists") {
-                    return response()->json(['status' => 'success', 'message' => 'Go to dashboard']);
+                    return response()->json(['status' => 'success', 'code' => 'dash', 'message' => 'Go to dashboard']);
                 }
                 else if($status == "present") {   //join organisation
                     $company = $orgDetails->name;
@@ -68,7 +68,7 @@ class LoginController extends Controller
                     $userEmail = $user->email;
                     $timeZones = array($orgDetails->default_tz);// default time zone
                     $timeZones = array_merge($timeZones, unserialize($orgDetails->alt_tz));//merge default & alt
-                    return response()->json(['status' => 'success','message' => 'Join organisation', 'data' => compact('company','domain','useremail','timeZones')]);
+                    return response()->json(['status' => 'success', 'code' => 'join', 'message' => 'Join organisation', 'data' => compact('company','domain','useremail','timeZones')]);
                 }
             }
             else {  // add organisation
@@ -77,7 +77,7 @@ class LoginController extends Controller
                 $userEmail = $user->email;
                 // $status = "new";
                 $ip = $_SERVER['REMOTE_ADDR'];
-                return response()->json(['status' => 'success','message' => 'Add new organisation', 'data' => compact('userEmail','ip')]);
+                return response()->json(['status' => 'success', 'code' => 'new', 'message' => 'Add new organisation', 'data' => compact('userEmail','ip')]);
             }
         }
         else {  //if the domain doesnt exist
