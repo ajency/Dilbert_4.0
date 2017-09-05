@@ -17,6 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//initial login validation
 Route::post('/login','Auth\LoginController@authenticateUser');
 // Route::post('/addUSer','LoginController@addUSer');
 // Route::post('/addOrg','LoginController@addOrg');
+
+//dashboard api
+Route::get('/periodData','LockedDataController@periodData');
+Route::get('/userData','LogsController@userData');

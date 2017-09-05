@@ -60,7 +60,7 @@ class LoginController extends Controller
                 $user = $arraySocial[0];
                 $status = $arraySocial[1];
                 if($status == "exists") {
-                    return response()->json(['status' => 'success', 'code' => 'dash', 'message' => 'Go to dashboard']);
+                    return response()->json(['status' => 'success', 'code' => 'dash', 'message' => 'Go to dashboard'], 'data' => ['user_id' => $user->id, 'x-api-key' => $user->api_token]);
                 }
                 else if($status == "present") {   //join organisation
                     $company = $orgDetails->name;
@@ -88,6 +88,7 @@ class LoginController extends Controller
     public function createOrGetUser(ProviderUser $userDetails) {
         $user = User::whereEmail($userDetails->getEmail())->first();
         $org = Organisation::where('domain',$userDetails->user["domain"])->get();
+        // status of the organisation
         $status = "exists";
         if (!$user) {
             $user = new User;
