@@ -52,31 +52,36 @@ class LoginController extends Controller
         $token = $request['token'];
         $userDetails = Socialite::driver('google')->userFromToken($token);
         //check if the organisation exists
-        $org = Organisation::where('domain',$userDetails->user['domain']);
         if(isset($userDetails->user['domain'])) {   // if domain is present
+            $org = Organisation::where('domain',$userDetails->user['domain']);
             if($org->exists()) {
                 $arraySocial = $this->createOrGetUser($userDetails);
                 $orgDetails = $org->first();
                 $user = $arraySocial[0];
                 $status = $arraySocial[1];
                 if($status == "exists") {
-                    return response()->json(['message' => 'success']);
+                    return response()->json(['status' => 'success', 'message' => 'Go to dashboard']);
                 }
                 else if($status == "present") {   //join organisation
-                    // $company = $orgDetails[0]->name;
-                    // $domain = $orgDetails[0]->domain;
-                    // $userEmail = $user->email;
-                    // $timeZones = array($org[0]->default_tz);// default time zone
-                    // $timeZones = array_merge($timeZones, unserialize($org[0]->alt_tz));//merge default & alt
-                    return response()->json(['message' => 'Inside join organisation']);
+                    $company = $orgDetails->name;
+                    $domain = $orgDetails->domain;
+                    $userEmail = $user->email;
+                    $timeZones = array($orgDetails->default_tz);// default time zone
+                    $timeZones = array_merge($timeZones, unserialize($orgDetails->alt_tz));//merge default & alt
+                    return response()->json(['status' => 'success','message' => 'Join organisation', 'data' => compact('company','domain','useremail','timeZones')]);
                 }
             }
             else {  // add organisation
-                return response()->json(['message' => 'Inside add organisation']);
+                $arraySocial = $this->createOrGetUser($userDetails);
+                $user = $arraySocial[0];
+                $userEmail = $user->email;
+                // $status = "new";
+                $ip = $_SERVER['REMOTE_ADDR'];
+                return response()->json(['status' => 'success','message' => 'Add new organisation', 'data' => compact('userEmail','ip')]);
             }
         }
         else {  //if the domain doesnt exist
-            return response()->json(['status' => 'error', 'message' => 'Domain doesnt exist']);
+            return response()->json(['status' => 'failure','message' => 'Domain does not exist']);
         }
     }
 
@@ -100,7 +105,7 @@ class LoginController extends Controller
             // $user->dob = (isset($userDetails->birthday)) ? $userDetails->birthday : "-";
             $user->is_active = false;
             $user->save();
-            return response()->json(['msg' => 'user created'], 200);
+            $status = 'present';
         }
         else if($user->org_id == 0) {   // safe-point, just incase user account is created but not linked with any organization, then redirect him/her to Join Organization page
             $status = "present";
