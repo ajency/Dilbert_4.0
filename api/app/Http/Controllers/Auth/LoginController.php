@@ -60,7 +60,7 @@ class LoginController extends Controller
                 $user = $arraySocial[0];
                 $status = $arraySocial[1];
                 if($status == "exists") {
-                    return response()->json(['status' => 'success', 'code' => 'dash', 'message' => 'Go to dashboard'], 'data' => ['user_id' => $user->id, 'x-api-key' => $user->api_token]);
+                    return response()->json(['status' => 'success', 'code' => 'dash', 'message' => 'Go to dashboard', 'data' => ['user_id' => $user->id, 'x-api-key' => $user->api_token]]);
                 }
                 else if($status == "present") {   //join organisation
                     $company = $orgDetails->name;

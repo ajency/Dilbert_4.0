@@ -28,56 +28,102 @@ class LockedDataController extends Controller
                     //user has permissions to view this data
                     //get the organisation details
                     $orgDetails = Organisation::where('id',$user->org_id)->first();
-                    //end date will be the current date passed
-                    //start date will be the start of the week or month
-                    $endDate = new \DateTime($request->date);
-                    if($orgDetails->period_unit == 'week') {
-                        $year = explode('-',$request->date);
-                        $sdWeekNo = clone $endDate;
+                    if(!empty($request->period_unit))
+                        $periodUnit = $request->period_unit;
+                    else
+                        $periodUnit = $orgDetails->period_unit;
+                    //startDate and endDate will be the first and the last day of the org_period
+                    $date = explode('-',$request->date);
+                    if($periodUnit == 'week') {
+                        $sdWeekNo = new \DateTime($request->date);
                         $sdWeekNo = $sdWeekNo->format('W');
                         $startDate = new \DateTime();
-                        $startDate = $startDate->setISODate($year[0],$sdWeekNo)->setTime(0,0);
-
+                        $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
+                        $endDate = clone $startDate;
+                        $endDate->modify('+6 days');
                         // return response()->json(['period' => 'week','start_date' => $startDate->format('Y-m-d'), 'end_date' => $endDate->format('Y-m-d')]); //test
                     }
-                    else if ($orgDetails->period_unit == 'month'){
-
-                        return response()->json(['period' => 'month']); //test
+                    else if ($periodUnit == 'month'){
+                        $startDate = new \DateTime($date[0].'-'.$date[1].'-01');
+                        $endDate = new \DateTime($date[0]."-".$date[1]."-".cal_days_in_month(CAL_GREGORIAN,$date[1],$date[0]));
+                        // return response()->json(['period' => [$startDate->format('Y-m-d'),$endDate->format('Y-m-d')]]); //test
                     }
                     else
                         //just in case the ordanisation's period_unit is not set
                         return response()->json(['status' => 'failure', 'message' => 'Organisation period unit not set.']);
 
                     //get all the user details from the locked_data table
-                    $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate, $endDate])->orderBy('work_date', 'DESC')->get();
                     // return response()->json(['count' => count($lockedData)]);
                     $data = [];
+                    $data['user_id'] = $request->user_id;
+                    //get latest data (current data)
+                    $currentData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => date('Y-m-d')])->first();
+                    $cDayData = [];
+                    $cDayData['work_date'] = date('Y-m-d');
+                    if(count($currentData) && $currentData->start_time != null) { // handles leaves (leaves plus sundays)
+                        $startTime = new \DateTime($currentData->start_time);
+                        $cDayData['start_time'] = $startTime->format('H:i');
+                        if($currentData->end_time != null) {
+                            $endTime = new \DateTime($currentData->end_time);
+                            $cDayData['end_time'] = $endTime->format('H:i');
+                            $cDayData['status'] = 'Offline';
+                        }
+                        else {
+                            //the day isnt over yet
+                            $endTime = new \DateTime();
+                            //set as the current time
+                            $cDayData['end_time'] = $endTime->modify('+5 hour +30 minutes')->format('H:i');
+                            $cDayData['status'] = 'Online';
+                        }
+                        $cDayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
+                        $cDayData['leave_status'] = 'Present';
+                        //violation status - for now dummy
+                        $cDayData['violation_status'] = 1;
+                    }
+                    else {
+                        // it's a leave
+                        $cDayData['status'] = 'Offline';
+                        $cDayData['leave_status'] = 'Leave';
+                    }
+                    $data['current'] = $cDayData;
+                    // user's data for the particular period
+                    $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate, $endDate])->orderBy('work_date', 'DESC')->get();
+                    $periodData = [];
                     foreach ($lockedData as $ld) {
-                        //handle total_time = null
-                            $dayData = [];
-                            $dayData['date'] = $ld->work_date;
-                            $day = new \DateTime($ld->work_date);
-                            $dayData['day'] = $day->format('D');
-                            $startTime = new \DateTime($ld->start_time);
-                            $dayData['start_time'] = $startTime->modify('-5 hour -30 minutes')->format('H:i');
+                        // handle total_time = null
+                        $dayData = [];
+                        $dayData['work_date'] = $ld->work_date;
+                        $day = new \DateTime($ld->work_date);
+                        $startTime = new \DateTime($ld->start_time);
+                        if($ld->start_time != null)  // handles leaves
+                            $dayData['start_time'] = $startTime->format('H:i');
+                        else {
+                            // it's a leave
+                            $dayData['status'] = 'Offline';
+                            $dayData['leave_status'] = 'Leave';
+                            array_push($periodData,$dayData);
+                            continue;
+                        }
                         if($ld->end_time != null) {
                             $endTime = new \DateTime($ld->end_time);
-                            $dayData['end_time'] = $endTime->modify('-5 hour -30 minutes')->format('H:i');
-
-                            // $dayData['total_time'] = $ld->total_time;
+                            $dayData['end_time'] = $endTime->format('H:i');
+                            $dayData['status'] = 'Offline';
                         }
                         else {
                             //the day isnt over yet
                             $endTime = new \DateTime();
                             //set as the current time
                             $dayData['end_time'] = $endTime->modify('+5 hour +30 minutes')->format('H:i');
-                            // $dayData['total_time'] = $this->getTimeDifference($ld->start_time,$endTime->format('Y-m-d H:i:s'));
-
+                            $dayData['status'] = 'Online';
                         }
                         $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
-                        array_push($data,$dayData);
+                        $dayData['leave_status'] = 'Present';
+                        //violation status - for now dummy
+                        $dayData['violation_status'] = 1;
+                        array_push($periodData,$dayData);
                     }
-                    return response()->json(['status' => 'success','data' => $data]);
+                    $data['periodData'] = $periodData;
+                    return response()->json(['status' => 'success', 'message' => "User's periodic data.", 'data' => $data]);
 
                 }
                 else {
