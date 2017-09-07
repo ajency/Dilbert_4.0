@@ -1,5 +1,4 @@
-import { AppService } from './app-service';
-import { SummarySidebarService } from './../components/summary-sidebar/summary-sidebar.service';
+// import { SummarySidebarService } from './../components/summary-sidebar/summary-sidebar.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
@@ -8,14 +7,31 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
+import { AppServiceProvider } from '../providers/app-service/app-service';
+
+
+import { CookieModule } from 'ngx-cookie';
+import { UserDataProvider } from '../providers/user-data/user-data';
+import { IonicStorageModule } from '@ionic/storage';
+// import { TestComponent } from '../components/test/test';
+// import { SummarySidebarComponent } from '../components/summary-sidebar/summary-sidebar';
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    // LoggedInHeaderComponent,
+    // TestComponent,
+    // SummarySidebarComponent
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    CookieModule.forRoot(),
+    IonicStorageModule.forRoot(),
+    IonicModule.forRoot(MyApp,{
+      mode: 'md',
+      preloadModules : false,
+      locationStrategy: window.location.hostname == 'localhost' ? 'hash' : 'path' 
+    }),
     HttpModule,
   ],
   bootstrap: [IonicApp],
@@ -25,9 +41,10 @@ import { MyApp } from './app.component';
   providers: [
     StatusBar,
     SplashScreen,
-    SummarySidebarService,
-    AppService,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    // SummarySidebarService,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    AppServiceProvider,
+    UserDataProvider
   ]
 })
 export class AppModule { }
