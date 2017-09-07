@@ -1,19 +1,23 @@
-import { PopoverContentPage } from './../popover/popover';
-import { SummaryContentComponent } from './../../components/summary-content/summary-content';
-import { SummarySidebarComponent } from './../../components/summary-sidebar/summary-sidebar';
+// import { PopoverContentPage } from './../popover/popover';
+// import { SummaryContentComponent } from './../../components/summary-content/summary-content';
+import { SummarySidebarComponentModule } from '../../components/summary-sidebar/summary-sidebar.module';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { StartHomePage } from './start-home';
+import { LoggedInHeaderComponentModule } from '../../components/logged-in-header/logged-in-header.module';
 
 @NgModule({
   declarations: [
     StartHomePage,
-    SummarySidebarComponent,
-    SummaryContentComponent,
-    PopoverContentPage,
+    // SummarySidebarComponent,
+    // SummaryContentComponent,
+    // PopoverContentPage,
   ],
   imports: [
-    IonicPageModule.forChild(StartHomePage),
+    SummarySidebarComponentModule,
+    LoggedInHeaderComponentModule,
+    IonicPageModule.forChild(StartHomePage)
+    
   ],
   exports: [
     StartHomePage
