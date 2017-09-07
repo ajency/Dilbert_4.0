@@ -5,6 +5,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 // import { LoginPage } from './../pages/login/login';
+import { OrganizationPage } from './../pages/organization/organization';
 import { Location, PlatformLocation } from '@angular/common';
 
 
@@ -22,7 +23,7 @@ declare var window: Window;
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = 'LoginPage';
+  rootPage: any = 'OrganizationPage';
   flag : boolean;
 
   pages: Array<{ title: string, component: any }>;

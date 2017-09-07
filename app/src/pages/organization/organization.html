@@ -1,0 +1,131 @@
+<!--
+  Generated template for the OrganizationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- Site header goes here -->
+
+<ion-header class="main-header shadow-1">
+    <div class="container">
+        <!-- Navbar Start-->
+        <ion-navbar class="dilbert-nav">
+             <button ion-button menuToggle m-h-0 class="ham">
+            <ion-icon name="menu"></ion-icon>
+         </button>
+            <div class="dilber-nav__left nav-cols">
+                 <button ion-button icon-only clear p-h-10>
+               <i class="custom-icon flower"></i>
+            </button>
+                <button ion-button icon-only clear p-h-10>
+               <i class="custom-icon summary"></i>
+            </button>
+                <ion-title start font-weight-4 class="brand-name">
+                    <p ion-text color="secondary" no-margin>Ajency.in</p>
+                </ion-title>
+            </div>
+            <div class="dilbert-nav__right nav-cols">
+                <!-- Notification -->
+                <button ion-button icon-only clear m-r-10 class="notify hvr-pulse-grow">
+               <ion-icon name="notifications-outline" color="dark"></ion-icon>
+            </button>
+                <!-- User profile -->
+                <button ion-button clear icon-only p-v-20 (click)="openPopover($event)" class="user-profile">
+              <ion-item p-l-0>
+                <ion-avatar item-start m-h-0>
+                  <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png" />
+                </ion-avatar>
+                <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
+              </ion-item>
+            </button>
+                <!-- User profile ends -->
+            </div>
+        </ion-navbar>
+        <!-- Navbar ends -->
+    </div>
+</ion-header>
+
+<!-- Site header ends -->
+
+
+<ion-content padding>
+
+ <div class="container organization" p-h-20>
+
+    <ion-grid class="grid" m-t-15 p-h-30>
+        <ion-row class="row dashboard__row">
+            <ion-col class="col" col-12 m-b-20>
+                <!-- Heading -->
+                <ion-row>
+				    <ion-col class="col" col-md-8>
+						<div class="organization__title">
+		                	<h6>Join <b>an Organisation</b></h6>
+		                	<span color="text" class="dis-block" ion-text no-margin font-weight-5 m-t-5>Here’s a match for you</span>
+		                </div>
+		                <div class="organization__match">
+		                	<p color="gray" ion-text>We found an organisation that matches your domain name. Would you like to join?</p>
+		                </div>
+		                <div class="domain-name flex-row direction-col">
+		                	<div class="entries flex-row space-between">
+		                		<p ion-text color="gray">Name</p>
+		                		<p ion-text font-weight-5>Ajency.in</p>
+		                	</div>
+		                	<div class="entries flex-row space-between">
+		                		<p ion-text color="gray">Domain</p>
+		                		<p ion-text font-weight-5>@ ajency.in</p>
+		                	</div>
+		                	<div class="entries flex-row space-between">
+		                		<p ion-text color="gray">Time Zone</p>
+		                		<ion-list>
+								  <ion-item>
+								    <ion-label>Toppings</ion-label>
+								    <ion-select interface="popover">
+								      <ion-option value="i" selected='true'>India (GMT+05:30)</ion-option>
+								      <ion-option value="u">United Kingdom(GMT)</ion-option>
+								      <ion-option value="us">United States of America (GMT-05:00)</ion-option>
+								    </ion-select>
+								  </ion-item>
+								</ion-list>
+		                	</div>
+		                </div>
+				    </ion-col>
+				    <ion-col class="col" col-md-4>
+				    	<div class="organization__info" text-center>
+				    		<img src="../../assets/img/company-icon.png">		
+				    		<h6 p-v-10>Organisation</h6>
+				    	</div>
+				      	<div class="organization__points">
+				      		<span ion-text class="dis-block" color="text-lighter" p-v-10>Create an organisation to manage your employees and projects in one place</span>
+				    		<span ion-text class="dis-block" color="text-lighter" p-v-10>Create an organisation to manage your employees and projects in one place</span>
+				    		<span ion-text class="dis-block" color="text-lighter" p-v-10>Create an organisation to manage your employees and projects in one place</span>
+				      	</div>
+				    </ion-col>
+				 </ion-row>
+                
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+ </div>
+
+
+</ion-content>
+
+
+<div class="site-loader">
+	<svg height="120" width="120">
+		<line class="pointer" x1="60" y1="60" x2="60" y2="50" />
+		<circle class="circle" cx="60" cy="60" r="15" />
+		<circle class="center" cx="60" cy="60" r="2.5" />
+	</svg>
+</div>
+
+
+
+
+
+
+
+
+
+

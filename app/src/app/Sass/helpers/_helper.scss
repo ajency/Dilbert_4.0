@@ -50,6 +50,10 @@
     }
 }
 
+.flex-row{
+    display: flex;
+    align-items: center;
+}
 
 .direction-col{
     flex-direction: column;
