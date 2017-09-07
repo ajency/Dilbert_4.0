@@ -6,43 +6,8 @@
 -->
 <!-- Site header goes here -->
 
-<ion-header class="main-header shadow-1">
-    <div class="container">
-        <!-- Navbar Start-->
-        <ion-navbar class="dilbert-nav">
-             <button ion-button menuToggle m-h-0 class="ham">
-            <ion-icon name="menu"></ion-icon>
-         </button>
-            <div class="dilber-nav__left nav-cols">
-                 <!-- <button ion-button icon-only clear p-h-10>
-               <i class="custom-icon flower"></i>
-            </button>
-                <button ion-button icon-only clear p-h-10>
-               <i class="custom-icon summary"></i>
-            </button> -->
-                <ion-title start font-weight-4 class="brand-name">
-                    <p ion-text color="secondary" no-margin>DILBERT</p>
-                </ion-title>
-            </div>
-          <!--   <div class="dilbert-nav__right nav-cols">
-               
-                <button ion-button icon-only clear m-r-10 class="notify hvr-pulse-grow">
-               <ion-icon name="notifications-outline" color="dark"></ion-icon>
-            </button>
-               
-                <button ion-button clear icon-only p-v-20 (click)="openPopover($event)" class="user-profile">
-              <ion-item p-l-0>
-                <ion-avatar item-start m-h-0>
-                  <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png" />
-                </ion-avatar>
-                <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
-              </ion-item>
-            </button>
-               
-            </div> -->
-        </ion-navbar>
-        <!-- Navbar ends -->
-    </div>
+<ion-header>
+    <logged-in-header> </logged-in-header>
 </ion-header>
 
 <!-- Site header ends -->
@@ -79,6 +44,17 @@
 
 <!-- Body Ends -->
 
+<!-- loader code -->
+
+<div class="site-loader hidden">
+  <svg height="120" width="120">
+    <line class="pointer" x1="60" y1="60" x2="60" y2="50" />
+    <circle class="circle" cx="60" cy="60" r="15" />
+    <circle class="center" cx="60" cy="60" r="2.5" />
+  </svg>
+</div>
+
+<!-- loader ends -->
 
 
 
