@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {  PopoverController } from 'ionic-angular';
+import {  PopoverController, Events } from 'ionic-angular';
+import { CookieService } from 'ngx-cookie';
 
 /**
  * Generated class for the LoggedInHeaderComponent component.
@@ -14,10 +15,27 @@ import {  PopoverController } from 'ionic-angular';
 export class LoggedInHeaderComponent {
 
   text: string;
+  header : any;
 
-  constructor(public popoverCtrl: PopoverController) {
+  constructor(public popoverCtrl: PopoverController,
+              private cookieservice: CookieService,
+              public events : Events) {
     console.log('Hello LoggedInHeaderComponent Component');
     this.text = 'Hello World';
+
+    if(this.cookieservice.get("keepLoggedIn")== 'yes'){
+      this.header = "loggedin";
+    }
+    else{
+          if(this.cookieservice.get("join")== 'yes' || this.cookieservice.get("create")== 'yes'){
+            this.header = "new";
+          }
+
+          else {
+            this.header = "notloggedin";
+          }
+       
+    }
   }
 
   openPopover(ev) {
@@ -27,6 +45,18 @@ export class LoggedInHeaderComponent {
       ev: ev
     });
   }
+
+  navigateToRegister(){
+     this.events.publish('app:navroot', 'register');
+    console.log('Navigating to another module');
+  }
+
+  navigateToLogin(){
+     this.events.publish('app:navroot', 'login');
+    console.log('Navigating to another module');
+  }
+
+
 
 
 }

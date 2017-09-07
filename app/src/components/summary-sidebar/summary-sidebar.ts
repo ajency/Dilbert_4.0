@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 
 /**
  * Generated class for the SummarySidebarComponent component.
@@ -14,7 +14,9 @@ export class SummarySidebarComponent {
 
   text: string;
 
-  constructor() {
+  constructor(public zone : NgZone) {
+    this.zone.run(() => {});
+  	
     console.log('Hello SummarySidebarComponent Component');
     this.text = 'Hello World';
   }

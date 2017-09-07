@@ -24,9 +24,10 @@ import { Storage } from '@ionic/storage';
 })
 export class LoginPage {
 
-	
+ showLoader : boolean = false;
   token : any;
   status : any;
+  code :any;
   constructor(public navCtrl: NavController,
 			   public navParams: NavParams, 
 			   public http: Http,
@@ -59,9 +60,11 @@ export class LoginPage {
     }
   }
 
+  
 
-  navigateToSummary(){
-  	 this.navCtrl.push('StartHomePage');
+
+  navigateToRegister(){
+  	 this.events.publish('app:navroot', 'register');
     console.log('Navigating to another module');
   }
 
@@ -126,6 +129,7 @@ export class LoginPage {
  //      	     }
 
   	signin(){
+  		this.showLoader = true;
  		this.appServiceProvider.signIn().then( (token) =>{
 
 		this.token = token;
@@ -133,7 +137,7 @@ export class LoginPage {
  		this.postRequest();
  		});
  		
-
+ 		this.zone.run(() => {});
 
 
  	}
@@ -159,6 +163,7 @@ export class LoginPage {
 		// console.log(JSON.parse(data['_body']));
 		this.status = JSON.parse(data['_body']).status;
 
+
 		console.log(JSON.parse(data['_body']));
 
 		
@@ -168,13 +173,30 @@ export class LoginPage {
 
 		if(this.status =="success"){
 
+			this.code= JSON.parse(data['_body']).code;
+			console.log(this.code);
+
 		// this.navigateToSummary();
-		this.cookieservice.put("keepLoggedIn","yes");
-		this.events.publish('app:navroot', 'dashboard');
+			if(this.code === "dash"){
+					this.cookieservice.put("keepLoggedIn","yes");
+					this.events.publish('app:navroot', 'dashboard');
+					}
+			else if( this.code === "join" ){
+				this.events.publish('app:navroot', 'join-organisation');
+				this.cookieservice.put("join","yes");
+			}
+			else{
+				this.events.publish('app:navroot', 'create-organisation');
+				this.cookieservice.put("create","yes");
+			}
+
+
 		}
 
 		else if(this.status =="failure"){
 			console.log(' failure popup ');
+			this.events.publish('app:navroot', 'login');
+
 			this.errorToast();
 
 		}
