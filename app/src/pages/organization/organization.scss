@@ -1,11 +1,31 @@
 page-organization {
 	.organization{
+		margin-top: 5em;
 		width: 1000px;
+		&__container{
+			border-right: 1px solid #ddd;
+    		padding-right: 1.5em;
+		}
+		&__info-container{
+			margin-top: 2em;
+		}
 	}
-	.domain-name{
-		width: 200px;
-	}
+
 	.entries{
 		width: 100%;
+		.row-title{
+			flex-basis: 20%;
+		}
+	}
+	.select-time{
+		position: relative;
+		.select{
+			max-width: 100%;
+			color: #9c9c9c;
+			padding-left: 0;
+		}
+	}
+	.no-organization{
+		text-transform: inherit;
 	}
 }
