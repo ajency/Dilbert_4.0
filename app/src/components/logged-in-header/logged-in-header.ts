@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {  PopoverController, Events } from 'ionic-angular';
 import { CookieService } from 'ngx-cookie';
+import { AppServiceProvider } from '../../providers/app-service/app-service';
 
 /**
  * Generated class for the LoggedInHeaderComponent component.
@@ -16,15 +17,18 @@ export class LoggedInHeaderComponent {
 
   text: string;
   header : any;
+  image : any;
 
   constructor(public popoverCtrl: PopoverController,
               private cookieservice: CookieService,
-              public events : Events) {
+              public events : Events,
+              public appservice : AppServiceProvider) {
     console.log('Hello LoggedInHeaderComponent Component');
     this.text = 'Hello World';
 
     if(this.cookieservice.get("keepLoggedIn")== 'yes'){
       this.header = "loggedin";
+      this.image = this.appservice.image;
     }
     else{
           if(this.cookieservice.get("join")== 'yes' || this.cookieservice.get("create")== 'yes'){
