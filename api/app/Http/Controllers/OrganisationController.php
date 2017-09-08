@@ -55,20 +55,14 @@ class OrganisationController extends Controller
         if($request->has(['organisation.name', 'organisation.domain', 'organisation.default_TZ', 'organisation.idle_time', 'organisation.default_language', 'organisation.ip', 'organisation.ip_type'])) {
             // if all the necesary parameters are provided
             $validation = $this->validate($request, [
-                // 'organisation.name' => 'required | min:4 | regex:<([A-z0-9])+>',
-                // 'organisation.domain' => 'required | regex:(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$',
+                'organisation.name' => array('required','min:4','regex:<([A-z0-9])+>'),
+                'organisation.domain' => array('required','regex:/(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/'),
                 'organisation.default_TZ' => 'required',
-                // 'organisation.idle_time' => 'required | min:1 | regex:/([0-9])+/',
+                'organisation.idle_time' => array('required','min:1','regex:/([0-9])+/'),
                 'organisation.default_language' => 'required',
-                // 'organisation.ip' => 'required | regex:\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',
-                'organisation.ip_type' => 'required | min:1'
+                'organisation.ip' => array('required','regex:/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/'),
+                'organisation.ip_type' => array('required','min:1')
             ]);
-            // if($validation->fails()) {
-            //     return response()->json($validator->messages());
-            // }
-            // // $errors = new MessageBag();
-            // $errors = $validator->errors();
-            // return $errors;
 
             $alt_TZ = array();
         	$ip = array();

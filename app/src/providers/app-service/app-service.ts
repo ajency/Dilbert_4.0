@@ -17,7 +17,7 @@ declare const gapi : any;
 @Injectable()
 export class AppServiceProvider {
 
-
+  image :any;
   status: any;
   token : any;
   constructor(public http: Http,
@@ -67,6 +67,10 @@ export class AppServiceProvider {
 		          if(this.cookieservice.get("keepLoggedIn")== 'yes')
 		          {
 		          	this.events.publish('app:navroot', 'dashboard');
+                 console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
+                 this.image = gapi.auth2.getAuthInstance().currentUser.get().w3.Paa;
+
+
 
 		          }
 		          else {
@@ -97,6 +101,8 @@ export class AppServiceProvider {
     	        	 // this.postRequest();
     	        	 // return gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token;
     	        	 resolve(gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token);
+                 console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
+                 this.image = gapi.auth2.getAuthInstance().currentUser.get().w3.Paa;
     	        	 // this.token = gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token;
 
               }, (error) => {

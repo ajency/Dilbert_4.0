@@ -25,10 +25,10 @@
                     <!-- Summary section -->
                     <div class="summary">
                         <!-- Summary sidebar <section></section>ion (From component-sidebar)-->
-                        <summary-sidebar *ngIf="sideBarData" class="summary__sidebar" p-h-20 ></summary-sidebar>
+                        <summary-sidebar *ngIf="sideBarData" [test]="sideBarData" class="summary__sidebar" p-h-20 ></summary-sidebar>
                         <!-- Summary sidebar ends -->
                         <!-- Summary content -->
-                        <!-- <summary-content *ngIf="currentDay" class="summary__content" p-h-20 [currentDay]="currentDay"></summary-content> -->
+                        <summary-content  class="summary__content" p-h-20 ></summary-content>
                         <!-- Summary content ends -->
                     </div>
                 </ion-col>

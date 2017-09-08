@@ -46,13 +46,13 @@
                 </button>
                 <!-- User profile -->
                 <button *ngIf = "header == 'loggedin' " ion-button clear icon-only p-v-20 (click)="openPopover($event)" class="user-profile">
-                  <ion-item p-l-0>
-                    <ion-avatar item-start m-h-0>
-                      <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png" />
-                    </ion-avatar>
-                    <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
-                  </ion-item>
-                </button>
+              <ion-item p-l-0>
+                <ion-avatar item-start m-h-0>
+                  <img src={{image}} />
+                </ion-avatar>
+                <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
+              </ion-item>
+            </button>
                 <!-- User profile ends -->
             </div>
         </ion-navbar>

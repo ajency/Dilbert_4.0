@@ -1,6 +1,8 @@
 // import { PopoverContentPage } from './../popover/popover';
 // import { SummaryContentComponent } from './../../components/summary-content/summary-content';
 import { SummarySidebarComponentModule } from '../../components/summary-sidebar/summary-sidebar.module';
+import { SummaryContentComponentModule } from '../../components/summary-content/summary-content.module';
+
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { StartHomePage } from './start-home';
@@ -15,6 +17,7 @@ import { LoggedInHeaderComponentModule } from '../../components/logged-in-header
   ],
   imports: [
     SummarySidebarComponentModule,
+    SummaryContentComponentModule,
     LoggedInHeaderComponentModule,
     IonicPageModule.forChild(StartHomePage)
     

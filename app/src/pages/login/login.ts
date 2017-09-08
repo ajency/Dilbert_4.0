@@ -24,10 +24,11 @@ import { Storage } from '@ionic/storage';
 })
 export class LoginPage {
 
- showLoader : boolean = false;
+ showLoader : boolean;
   token : any;
   status : any;
   code :any;
+  domainError : boolean = false;
   constructor(public navCtrl: NavController,
 			   public navParams: NavParams, 
 			   public http: Http,
@@ -37,6 +38,8 @@ export class LoginPage {
 			   public toastCtrl : ToastController,
 			   public zone : NgZone,
 			   public storage : Storage) {
+  	if(this.cookieservice.get("domainError")== 'yes'){
+      this.domainError =true;    }
   }
 
   ionViewDidLoad() {
@@ -44,6 +47,9 @@ export class LoginPage {
     this.storage.ready().then(() => {
       console.log("ionic storage is avilable");
       });
+
+     this.cookieservice.remove("domainError");
+
    
   }
 
@@ -196,8 +202,9 @@ export class LoginPage {
 		else if(this.status =="failure"){
 			console.log(' failure popup ');
 			this.events.publish('app:navroot', 'login');
-
-			this.errorToast();
+			this.domainError = true;
+			this.cookieservice.put("domainError","yes");
+			// this.errorToast();
 
 		}
 		}, error => {

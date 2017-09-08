@@ -13,12 +13,15 @@ import { AppServiceProvider } from '../providers/app-service/app-service';
 import { CookieModule } from 'ngx-cookie';
 import { UserDataProvider } from '../providers/user-data/user-data';
 import { IonicStorageModule } from '@ionic/storage';
+import { AuthguardProvider } from '../providers/authguard/authguard';
+// import { SummaryContentComponent } from '../components/summary-content/summary-content';
 // import { TestComponent } from '../components/test/test';
 // import { SummarySidebarComponent } from '../components/summary-sidebar/summary-sidebar';
 
 @NgModule({
   declarations: [
     MyApp,
+    // SummaryContentComponent,
     // LoggedInHeaderComponent,
     // TestComponent,
     // SummarySidebarComponent
@@ -44,7 +47,8 @@ import { IonicStorageModule } from '@ionic/storage';
     // SummarySidebarService,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AppServiceProvider,
-    UserDataProvider
+    UserDataProvider,
+    AuthguardProvider
   ]
 })
 export class AppModule { }

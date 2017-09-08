@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 // import { LoginPage } from './../pages/login/login';
 import { OrganizationPage } from './../pages/organization/organization';
 import { Location, PlatformLocation } from '@angular/common';
+import { CookieService } from 'ngx-cookie';
 
 
 interface Window {
@@ -38,14 +39,15 @@ export class MyApp {
               private appServiceProvider: AppServiceProvider,
               private location: Location,
               public events:Events,
-              platformlocation: PlatformLocation) {
+              platformlocation: PlatformLocation,
+              public cookieService : CookieService) {
     this.initializeApp();
     this.loc = platformlocation;
 
     this.events.subscribe('app:navroot',(data) => {
       this.updateNav(data)
     });
-
+    // this.cookieService.remove("domainError");
 
     // used for an example of ngFor and navigation
   //   this.pages = [
