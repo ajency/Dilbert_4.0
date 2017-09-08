@@ -40,14 +40,19 @@ export class UserDataProvider {
 
 
 
-  getUserData(id, date): Observable<any> {
+  getUserData(): Observable<any> {
   	console.log('inside getUserData of provider');
-    let fetchurl = `${apiURL}?user_id=${id}`;
-    if (date) {
-      fetchurl += `&date=${date}`;
+
+    let postParams = {
+    user_id : 69,
+    date_range : {
+      start : '2017-09-06',
+    
     }
-    console.log(fetchurl);
-    return this.http.get(fetchurl, { headers: this.headers })
+    
+    };
+
+    return this.http.post(apiURL, postParams, { headers: this.headers })
                     .map(this.extractData)
                     .catch(this.handleError);
   }

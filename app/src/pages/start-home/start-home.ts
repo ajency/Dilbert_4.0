@@ -94,7 +94,7 @@ export class StartHomePage {
    
   getData(date){
     console.log('inside getData function');
-    this.userDataProvider.getUserData(69, '2017-08-23').subscribe( (response) => {
+    this.userDataProvider.getUserData().subscribe( (response) => {
       console.log(response, 'response');
       //  let dateFormat = /(^\d{1,4}[\.|\\/|-]\d{1,2}[\.|\\/|-]\d{1,4})(\s*(?:0?[1-9]:[0-5]|1(?=[012])\d:[0-5])\d\s*[ap]m)?$/;
       this.sideBarData = response;

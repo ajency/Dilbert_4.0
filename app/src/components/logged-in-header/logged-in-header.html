@@ -8,20 +8,20 @@
                 </ion-icon>
             </button>
             <div class="dilber-nav__left nav-cols">
-                <button *ngif="header == 'loggedin' " class="mobile-hide" clear="" icon-only="" ion-button="" p-h-10="">
+                <button *ngIf="header == 'loggedin' " class="mobile-hide" clear="" icon-only="" ion-button="" p-h-10="">
                     <i class="custom-icon flower">
                     </i>
                 </button>
-                <button *ngif="header == 'loggedin' " class="mobile-hide" clear="" icon-only="" ion-button="" p-h-10="">
+                <button *ngIf="header == 'loggedin' " class="mobile-hide" clear="" icon-only="" ion-button="" p-h-10="">
                     <i class="custom-icon summary">
                     </i>
                 </button>
-                <div *ngif="header == 'loggedin' " class="brand-name mobile-hide" font-weight-4="" start="">
+                <div *ngIf="header == 'loggedin' " class="brand-name mobile-hide" font-weight-4="" start="">
                     <p color="secondary" ion-text="" no-margin="">
                         Ajency.in
                     </p>
                 </div>
-                <div *ngif="header == 'notloggedin' || header == 'new' " class="brand-name mobile-hide" font-weight-4="" start="">
+                <div *ngIf="header == 'notloggedin' || header == 'new' " class="brand-name mobile-hide" font-weight-4="" start="">
                     <p color="secondary" ion-text="" no-margin="">
                         DILBERT
                     </p>
@@ -42,21 +42,21 @@
             </div>
             <div class="dilbert-nav__right nav-cols">
                 <!-- Notification -->
-                <button (click)="navigateToLogin()" *ngif="header == 'notloggedin' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
+                <button (click)="navigateToLogin()" *ngIf="header == 'notloggedin' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
                     Login
                 </button>
-                <button (click)="navigateToRegister()" *ngif="header == 'notloggedin' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
+                <button (click)="navigateToRegister()" *ngIf="header == 'notloggedin' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
                     Register
                 </button>
-                <button *ngif="header == 'new' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
+                <button *ngIf="header == 'new' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
                     Contact Us
                 </button>
-                <button *ngif="header == 'loggedin' " class="notify hvr-pulse-grow mobile-hide" clear="" icon-only="" ion-button="" m-r-10="">
+                <button *ngIf="header == 'loggedin' " class="notify hvr-pulse-grow mobile-hide" clear="" icon-only="" ion-button="" m-r-10="">
                     <ion-icon color="dark" name="notifications-outline">
                     </ion-icon>
                 </button>
                 <!-- User profile -->
-                <button (click)="openPopover($event)" *ngif="header == 'loggedin' " class="user-profile" clear="" icon-only="" ion-button="" p-v-20="">
+                <button (click)="openPopover($event)" *ngIf="header == 'loggedin' " class="user-profile" clear="" icon-only="" ion-button="" p-v-20="">
                     <ion-item p-l-0="">
                         <ion-avatar item-start="" m-h-0="">
                             <img src="{{image}}"/>

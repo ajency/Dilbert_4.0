@@ -36,7 +36,7 @@ export class SummarySidebarComponent {
   ngOnInit(){
   	console.log(this.sideBarData);
   	this.zone.run(() => {});
-    let minutes = 0; 
+    // let minutes = 0; 
     // for(var i = 0; i < sideBarData.data.periodData.length; i++ )
     // {
     //   if(sideBarData.data.periodData.Leave_status == 'Present')
