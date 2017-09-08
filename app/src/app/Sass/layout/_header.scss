@@ -8,4 +8,20 @@
     &:after {
         background-image: none;
     }
+    @media screen and (max-width: $mobile){
+    	.toolbar-background-md{
+    		background: color($colors,'brand');
+    	}
+    	.brand-name{
+    		p{
+    			color: #fff;
+    			font-weight: 400;	
+    		}
+    	}
+    	.user-profile{
+    		ion-item{
+    			background-color: color($colors,'brand');
+    		}
+    	}
+    }
 }

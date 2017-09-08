@@ -50,9 +50,22 @@
     }
 }
 
+
+.flex-row{
+    display: flex;
+    align-items: center;
+}
+
 .hidden{
     display: none !important;
 }
+
+.mobile-hide{
+    @media screen and (max-width: $mobile) {
+        display: none !important;
+    }
+}
+
 
 .direction-col{
     flex-direction: column;

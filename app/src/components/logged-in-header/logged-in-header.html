@@ -7,51 +7,52 @@
             <ion-icon name="menu"></ion-icon>
          </button>
 
-
             <div class="dilber-nav__left nav-cols">
-                 <button *ngIf = "header == 'loggedin' " ion-button icon-only clear p-h-10>
+                 <button *ngIf = "header == 'loggedin' " ion-button icon-only clear p-h-10 class="mobile-hide">
                    <i class="custom-icon flower"></i>
                 </button>
-                <button *ngIf = "header == 'loggedin' " ion-button icon-only clear p-h-10>
+                <button *ngIf = "header == 'loggedin' " ion-button icon-only clear p-h-10 class="mobile-hide">
                    <i class="custom-icon summary"></i>
                 </button>
 
-                <div *ngIf = "header == 'loggedin' " start font-weight-4 class="brand-name">
+                <div *ngIf = "header == 'loggedin' " start font-weight-4 class="brand-name mobile-hide">
                     <p ion-text color="secondary" no-margin>Ajency.in</p>
                 </div>
 
-                 <div *ngIf = "header == 'notloggedin' || header == 'new' " start font-weight-4 class="brand-name">
+                 <div *ngIf = "header == 'notloggedin' || header == 'new' " start font-weight-4 class="brand-name mobile-hide">
                     <p ion-text color="secondary" no-margin>DILBERT</p>
                 </div>
-
-                <ion-select interface="popover" color="gray-link" class="select-lang">
-                  <ion-option value="eng" selected="true">English</ion-option>
-                  <ion-option value="french">French</ion-option>
-                  <ion-option value="italiano">Italiano</ion-option>
-                </ion-select>
+                
+                <div class="relative lang-container">
+                  <ion-select interface="popover" color="gray-link" class="select-lang mobile-hide">
+                    <ion-option value="eng" selected="true">English</ion-option>
+                    <ion-option value="french">French</ion-option>
+                    <ion-option value="italiano">Italiano</ion-option>
+                  </ion-select>
+                </div>
 
             </div>
 
 
             <div class="dilbert-nav__right nav-cols">
                 <!-- Notification -->
-                <button *ngIf = "header == 'notloggedin' " (click)="navigateToLogin()" ion-button color="gray-link" clear text-capitalize>Login</button>
-                <button *ngIf = "header == 'notloggedin' " (click)="navigateToRegister()" ion-button color="gray-link" clear text-capitalize>Register</button>
-                <button *ngIf = "header == 'new' " ion-button color="gray-link" clear text-capitalize>Contact Us</button>
+                <button *ngIf = "header == 'notloggedin' " (click)="navigateToLogin()" ion-button color="gray-link" clear text-capitalize class="mobile-hide">Login</button>
+                <button *ngIf = "header == 'notloggedin' " (click)="navigateToRegister()" ion-button color="gray-link" clear text-capitalize class="mobile-hide">Register</button>
+                <button *ngIf = "header == 'new' " ion-button color="gray-link" clear text-capitalize class="mobile-hide">Contact Us</button>
 
 
-                <button *ngIf = "header == 'loggedin' "  ion-button icon-only clear m-r-10 class="notify hvr-pulse-grow">
+                <button *ngIf = "header == 'loggedin' "  ion-button icon-only clear m-r-10 class="notify hvr-pulse-grow mobile-hide">
                    <ion-icon name="notifications-outline" color="dark"></ion-icon>
                 </button>
                 <!-- User profile -->
                 <button *ngIf = "header == 'loggedin' " ion-button clear icon-only p-v-20 (click)="openPopover($event)" class="user-profile">
-              <ion-item p-l-0>
-                <ion-avatar item-start m-h-0>
-                  <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png" />
-                </ion-avatar>
-                <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
-              </ion-item>
-            </button>
+                  <ion-item p-l-0>
+                    <ion-avatar item-start m-h-0>
+                      <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png" />
+                    </ion-avatar>
+                    <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
+                  </ion-item>
+                </button>
                 <!-- User profile ends -->
             </div>
         </ion-navbar>

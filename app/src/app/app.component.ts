@@ -5,6 +5,7 @@ import { Nav, Platform, NavController,Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 // import { LoginPage } from './../pages/login/login';
+import { OrganizationPage } from './../pages/organization/organization';
 import { Location, PlatformLocation } from '@angular/common';
 
 
@@ -22,7 +23,9 @@ declare var window: Window;
 export class MyApp {
   @ViewChild(Nav) nav: NavController;
 
+
   rootPage: any ;
+
   flag : boolean;
   loc : any;
 
