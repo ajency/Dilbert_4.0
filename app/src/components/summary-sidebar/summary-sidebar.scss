@@ -117,6 +117,15 @@ summary-sidebar {
                         padding: 0;
                     }
                 }
+                &.leave-row{
+                    background-color: #fff6f6;
+                    .leave__title{
+                        font-size: 1.3em;
+                    }
+                    .leave__dash{
+                        font-size: 1.5em;
+                    }
+                }
             }
             &__row {
                 justify-content: space-between;
