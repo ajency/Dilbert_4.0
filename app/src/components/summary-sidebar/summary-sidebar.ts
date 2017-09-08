@@ -16,6 +16,7 @@ export class SummarySidebarComponent {
   @Input('test') sideBarData : any ;
   text: string;
   today : any;
+  weekTotal :any;
 
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -36,17 +37,24 @@ export class SummarySidebarComponent {
   ngOnInit(){
   	console.log(this.sideBarData);
   	this.zone.run(() => {});
-    // let minutes = 0; 
-    // for(var i = 0; i < sideBarData.data.periodData.length; i++ )
-    // {
-    //   if(sideBarData.data.periodData.Leave_status == 'Present')
-    //   {
-    //     minutes = 
 
-    //   }
+    let minutes = 0
+    for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
+    {
+      console.log(this.sideBarData.data.periodData[i].leave_status);
+      if(this.sideBarData.data.periodData[i].leave_status == "Present")
+      {
+        let temp = this.sideBarData.data.periodData[i].total_time.split(":");
+        console.log(temp);
+        minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
 
-    // }
+      }
+      console.log(minutes);
+    }
 
+// console.log(this.sideBarData.data.periodData[0]);
+  this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+  console.log(this.weekTotal);
   }
 
 

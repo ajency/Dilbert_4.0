@@ -46,7 +46,7 @@ export class UserDataProvider {
     let postParams = {
     user_id : 69,
     date_range : {
-      start : '2017-09-06',
+      start : '2017-09-01',
     
     }
     

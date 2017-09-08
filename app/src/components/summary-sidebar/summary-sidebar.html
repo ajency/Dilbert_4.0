@@ -5,7 +5,7 @@
     <div class="week__current current-card">
         <div class="current-card__header flex-row">
             <p ion-text color="primary" no-margin>This Week</p>
-            <p ion-text no-margin color="text">43.43hr/45hr</p>
+            <p ion-text no-margin color="text">{{weekTotal}}hr/45hr</p>
             <div class="week-loader" style="width: 80%"></div>
         </div>
         <div class="timeline-container">
@@ -40,8 +40,8 @@
         <div class="full-card__body">
             <!-- Week list -->
             <ul class="week-list list-control overflow-active">
-                <button ion-item class="week-container leave-row" m-v-15  *ngFor="let date of sideBarData.data.periodData">
-                    <li class="week-list__row flex-row">
+                <button ion-item class="week-container" m-v-15  *ngFor="let date of sideBarData.data.periodData">
+                    <li class="week-list__row flex-row leave-row">
                         <div class="week-list__day">
                             <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.work_date,1)}}</p>
                             <span ion-text color="text-lighter">{{getDayDate(date.work_date,2)}}</span>
