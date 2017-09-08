@@ -16,7 +16,7 @@ class LockedDataController extends Controller
 {
     //
     public function periodData(Request $request) {
-        if(!empty($request->user_id) && !empty($request->date) && $request->header('X-API-KEY')!= null) {
+        if(!empty($request->user_id) && !empty($request->date_range) && $request->header('X-API-KEY')!= null) {
             if(User::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
                 //when some valid user accesses this api
                 //check if the user_id exists in the users table
@@ -28,34 +28,42 @@ class LockedDataController extends Controller
                     //user has permissions to view this data
                     //get the organisation details
                     $orgDetails = Organisation::where('id',$user->org_id)->first();
-                    if(!empty($request->period_unit))
-                        $periodUnit = $request->period_unit;
-                    else
-                        $periodUnit = $orgDetails->period_unit;
-                    //startDate and endDate will be the first and the last day of the org_period
-                    $date = explode('-',$request->date);
-                    if($periodUnit == 'week') {
-                        $sdWeekNo = new \DateTime($request->date);
-                        $sdWeekNo = $sdWeekNo->format('W');
-                        $startDate = new \DateTime();
-                        $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
-                        $endDate = clone $startDate;
-                        $endDate->modify('+6 days');
-                        // return response()->json(['period' => 'week','start_date' => $startDate->format('Y-m-d'), 'end_date' => $endDate->format('Y-m-d')]); //test
+                    // check if the start and end dates are given
+                    if($request->has('date_range.start') && $request->has('date_range.end')) {
+                        // if both start and end are given
+                        $startDate = new \DateTime($request->input('date_range.start'));
+                        $endDate = new \DateTime($request->input('date_range.end'));
                     }
-                    else if ($periodUnit == 'month'){
-                        $startDate = new \DateTime($date[0].'-'.$date[1].'-01');
-                        $endDate = new \DateTime($date[0]."-".$date[1]."-".cal_days_in_month(CAL_GREGORIAN,$date[1],$date[0]));
-                        // return response()->json(['period' => [$startDate->format('Y-m-d'),$endDate->format('Y-m-d')]]); //test
+                    else if($request->has('date_range.start')) {
+                        // if only start is given
+                        if(!empty($request->period_unit))
+                            $periodUnit = $request->period_unit;
+                        else
+                            $periodUnit = $orgDetails->period_unit;
+                        //startDate and endDate will be the first and the last day of the org_period
+                        $date = explode('-',$request->input('date_range.start'));
+                        if($periodUnit == 'week') {
+                            $sdWeekNo = new \DateTime($request->input('date_range.start'));
+                            $sdWeekNo = $sdWeekNo->format('W');
+                            $startDate = new \DateTime();
+                            $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
+                            $endDate = clone $startDate;
+                            $endDate->modify('+6 days');
+                        }
+                        else if ($periodUnit == 'month'){
+                            $startDate = new \DateTime($date[0].'-'.$date[1].'-01');
+                            $endDate = new \DateTime($date[0]."-".$date[1]."-".cal_days_in_month(CAL_GREGORIAN,$date[1],$date[0]));
+                        }
+                        else
+                            //just in case the ordanisation's period_unit is not set
+                            return response()->json(['status' => 'failure', 'message' => 'Organisation period unit not set.']);
                     }
-                    else
-                        //just in case the ordanisation's period_unit is not set
-                        return response()->json(['status' => 'failure', 'message' => 'Organisation period unit not set.']);
 
                     //get all the user details from the locked_data table
                     // return response()->json(['count' => count($lockedData)]);
                     $data = [];
                     $data['user_id'] = $request->user_id;
+
                     //get latest data (current data)
                     $currentData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => date('Y-m-d')])->first();
                     $cDayData = [];
@@ -86,8 +94,9 @@ class LockedDataController extends Controller
                         $cDayData['leave_status'] = 'Leave';
                     }
                     $data['current'] = $cDayData;
+
                     // user's data for the particular period
-                    $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate, $endDate])->orderBy('work_date', 'DESC')->get();
+                    $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->orderBy('work_date', 'DESC')->get();
                     $periodData = [];
                     foreach ($lockedData as $ld) {
                         // handle total_time = null

@@ -17,11 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//initial login validation
+// initial login validation
 Route::post('/login','Auth\LoginController@authenticateUser');
 // Route::post('/addUSer','LoginController@addUSer');
 // Route::post('/addOrg','LoginController@addOrg');
 
-//dashboard api
-Route::get('/periodData','LockedDataController@periodData');
-Route::get('/userData','LogsController@userData');
+// dashboard api
+Route::post('/periodData','LockedDataController@periodData');    // month or week data
+Route::post('/daySummary','LogsController@daySummary');    // detailed data for a particular day
+
+// organisation api
+Route::post('/join-organisation','OrganisationController@joinOrAddOrganisation');   // for first time login

@@ -60,7 +60,7 @@ class LoginController extends Controller
                 $user = $arraySocial[0];
                 $status = $arraySocial[1];
                 if($status == "exists") {
-                    return response()->json(['status' => 'success', 'code' => 'dash', 'message' => 'Go to dashboard', 'data' => ['user_id' => $user->id, 'x-api-key' => $user->api_token]]);
+                    return response()->json(['status' => 'success', 'code' => 'dash', 'message' => 'Go to dashboard', 'data' => ['userEmail' => $user->email, 'x-api-key' => $user->api_token]]);
                 }
                 else if($status == "present") {   //join organisation
                     $company = $orgDetails->name;
@@ -68,7 +68,7 @@ class LoginController extends Controller
                     $userEmail = $user->email;
                     $timeZones = array($orgDetails->default_tz);// default time zone
                     $timeZones = array_merge($timeZones, unserialize($orgDetails->alt_tz));//merge default & alt
-                    return response()->json(['status' => 'success', 'code' => 'join', 'message' => 'Join organisation', 'data' => compact('company','domain','useremail','timeZones')]);
+                    return response()->json(['status' => 'success', 'code' => 'join', 'message' => 'Join organisation', 'data' => compact('company','domain','userEmail','timeZones')]);
                 }
             }
             else {  // add organisation
@@ -76,8 +76,9 @@ class LoginController extends Controller
                 $user = $arraySocial[0];
                 $userEmail = $user->email;
                 // $status = "new";
+                $domain = $userDetails->user['domain'];
                 $ip = $_SERVER['REMOTE_ADDR'];
-                return response()->json(['status' => 'success', 'code' => 'new', 'message' => 'Add new organisation', 'data' => compact('userEmail','ip')]);
+                return response()->json(['status' => 'success', 'code' => 'new', 'message' => 'Add new organisation', 'data' => compact('userEmail','ip','domain')]);
             }
         }
         else {  //if the domain doesnt exist
