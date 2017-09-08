@@ -3,56 +3,68 @@
     <div class="container">
         <!-- Navbar Start-->
         <ion-navbar class="dilbert-nav">
-             <button ion-button menuToggle m-h-0 class="ham">
-            <ion-icon name="menu"></ion-icon>
-         </button>
-
+            <button class="ham" ion-button="" m-h-0="" menutoggle="">
+                <ion-icon name="menu">
+                </ion-icon>
+            </button>
             <div class="dilber-nav__left nav-cols">
-                 <button *ngIf = "header == 'loggedin' " ion-button icon-only clear p-h-10 class="mobile-hide">
-                   <i class="custom-icon flower"></i>
+                <button *ngif="header == 'loggedin' " class="mobile-hide" clear="" icon-only="" ion-button="" p-h-10="">
+                    <i class="custom-icon flower">
+                    </i>
                 </button>
-                <button *ngIf = "header == 'loggedin' " ion-button icon-only clear p-h-10 class="mobile-hide">
-                   <i class="custom-icon summary"></i>
+                <button *ngif="header == 'loggedin' " class="mobile-hide" clear="" icon-only="" ion-button="" p-h-10="">
+                    <i class="custom-icon summary">
+                    </i>
                 </button>
-
-                <div *ngIf = "header == 'loggedin' " start font-weight-4 class="brand-name mobile-hide">
-                    <p ion-text color="secondary" no-margin>Ajency.in</p>
+                <div *ngif="header == 'loggedin' " class="brand-name mobile-hide" font-weight-4="" start="">
+                    <p color="secondary" ion-text="" no-margin="">
+                        Ajency.in
+                    </p>
                 </div>
-
-                 <div *ngIf = "header == 'notloggedin' || header == 'new' " start font-weight-4 class="brand-name mobile-hide">
-                    <p ion-text color="secondary" no-margin>DILBERT</p>
+                <div *ngif="header == 'notloggedin' || header == 'new' " class="brand-name mobile-hide" font-weight-4="" start="">
+                    <p color="secondary" ion-text="" no-margin="">
+                        DILBERT
+                    </p>
                 </div>
-                
                 <div class="relative lang-container">
-                  <ion-select interface="popover" color="gray-link" class="select-lang mobile-hide">
-                    <ion-option value="eng" selected="true">English</ion-option>
-                    <ion-option value="french">French</ion-option>
-                    <ion-option value="italiano">Italiano</ion-option>
-                  </ion-select>
+                    <ion-select class="select-lang mobile-hide" color="gray-link" interface="popover">
+                        <ion-option selected="true" value="eng">
+                            English
+                        </ion-option>
+                        <ion-option value="french">
+                            French
+                        </ion-option>
+                        <ion-option value="italiano">
+                            Italiano
+                        </ion-option>
+                    </ion-select>
                 </div>
-
             </div>
-
-
             <div class="dilbert-nav__right nav-cols">
                 <!-- Notification -->
-                <button *ngIf = "header == 'notloggedin' " (click)="navigateToLogin()" ion-button color="gray-link" clear text-capitalize class="mobile-hide">Login</button>
-                <button *ngIf = "header == 'notloggedin' " (click)="navigateToRegister()" ion-button color="gray-link" clear text-capitalize class="mobile-hide">Register</button>
-                <button *ngIf = "header == 'new' " ion-button color="gray-link" clear text-capitalize class="mobile-hide">Contact Us</button>
-
-
-                <button *ngIf = "header == 'loggedin' "  ion-button icon-only clear m-r-10 class="notify hvr-pulse-grow mobile-hide">
-                   <ion-icon name="notifications-outline" color="dark"></ion-icon>
+                <button (click)="navigateToLogin()" *ngif="header == 'notloggedin' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
+                    Login
+                </button>
+                <button (click)="navigateToRegister()" *ngif="header == 'notloggedin' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
+                    Register
+                </button>
+                <button *ngif="header == 'new' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
+                    Contact Us
+                </button>
+                <button *ngif="header == 'loggedin' " class="notify hvr-pulse-grow mobile-hide" clear="" icon-only="" ion-button="" m-r-10="">
+                    <ion-icon color="dark" name="notifications-outline">
+                    </ion-icon>
                 </button>
                 <!-- User profile -->
-                <button *ngIf = "header == 'loggedin' " ion-button clear icon-only p-v-20 (click)="openPopover($event)" class="user-profile">
-              <ion-item p-l-0>
-                <ion-avatar item-start m-h-0>
-                  <img src={{image}} />
-                </ion-avatar>
-                <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
-              </ion-item>
-            </button>
+                <button (click)="openPopover($event)" *ngif="header == 'loggedin' " class="user-profile" clear="" icon-only="" ion-button="" p-v-20="">
+                    <ion-item p-l-0="">
+                        <ion-avatar item-start="" m-h-0="">
+                            <img src="{{image}}"/>
+                        </ion-avatar>
+                        <ion-icon name="arrow-dropdown" p-l-5="" p-r-0="">
+                        </ion-icon>
+                    </ion-item>
+                </button>
                 <!-- User profile ends -->
             </div>
         </ion-navbar>
