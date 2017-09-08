@@ -1,42 +1,7 @@
 <!-- Site header goes here -->
 
-<ion-header class="main-header shadow-1">
-    <div class="container">
-        <!-- Navbar Start-->
-        <ion-navbar class="dilbert-nav">
-             <button ion-button menuToggle m-h-0 class="ham">
-            <ion-icon name="menu"></ion-icon>
-         </button>
-            <div class="dilber-nav__left nav-cols">
-                 <button ion-button icon-only clear p-h-10>
-               <i class="custom-icon flower"></i>
-            </button>
-                <button ion-button icon-only clear p-h-10>
-               <i class="custom-icon summary"></i>
-            </button>
-                <ion-title start font-weight-4 class="brand-name">
-                    <p ion-text color="secondary" no-margin>Ajency.in</p>
-                </ion-title>
-            </div>
-            <div class="dilbert-nav__right nav-cols">
-                <!-- Notification -->
-                <button ion-button icon-only clear m-r-10 class="notify hvr-pulse-grow">
-               <ion-icon name="notifications-outline" color="dark"></ion-icon>
-            </button>
-                <!-- User profile -->
-                <button ion-button clear icon-only p-v-20 (click)="openPopover($event)" class="user-profile">
-              <ion-item p-l-0>
-                <ion-avatar item-start m-h-0>
-                  <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png" />
-                </ion-avatar>
-                <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
-              </ion-item>
-            </button>
-                <!-- User profile ends -->
-            </div>
-        </ion-navbar>
-        <!-- Navbar ends -->
-    </div>
+<ion-header>
+    <logged-in-header> </logged-in-header>
 </ion-header>
 
 <!-- Site header ends -->
@@ -59,11 +24,11 @@
                 <ion-col class="col dashboard__summary" col-12 col-md-12 col-lg-9 p-h-0 p-v-0>
                     <!-- Summary section -->
                     <div class="summary">
-                        <!-- Summary sidebar section (From component-sidebar)-->
-                        <summary-sidebar *ngIf="sideBarData" class="summary__sidebar" p-h-20 [sideBarData]="sideBarData"></summary-sidebar>
+                        <!-- Summary sidebar <section></section>ion (From component-sidebar)-->
+                        <summary-sidebar *ngIf="sideBarData" class="summary__sidebar" p-h-20 ></summary-sidebar>
                         <!-- Summary sidebar ends -->
                         <!-- Summary content -->
-                        <summary-content *ngIf="currentDay" class="summary__content" p-h-20 [currentDay]="currentDay"></summary-content>
+                        <!-- <summary-content *ngIf="currentDay" class="summary__content" p-h-20 [currentDay]="currentDay"></summary-content> -->
                         <!-- Summary content ends -->
                     </div>
                 </ion-col>

@@ -7,7 +7,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@IonicPage()
+@IonicPage({
+	// name: 'dashboard',
+ //  segment: 'dashboard',
+  // priority: 'off'
+})
 @Component({
   selector: 'page-my-summary',
   templateUrl: 'my-summary.html',

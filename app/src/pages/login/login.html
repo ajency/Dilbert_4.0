@@ -5,45 +5,13 @@
   Ionic pages and navigation.
 -->
 <!-- Site header goes here -->
-
-<ion-header class="main-header shadow-1">
-    <div class="container">
-        <!-- Navbar Start-->
-        <ion-navbar class="dilbert-nav">
-             <button ion-button menuToggle m-h-0 class="ham">
-            <ion-icon name="menu"></ion-icon>
-         </button>
-            <div class="dilber-nav__left nav-cols">
-                 <button ion-button icon-only clear p-h-10>
-               <i class="custom-icon flower"></i>
-            </button>
-                <button ion-button icon-only clear p-h-10>
-               <i class="custom-icon summary"></i>
-            </button>
-                <ion-title start font-weight-4 class="brand-name">
-                    <p ion-text color="secondary" no-margin>Ajency.in</p>
-                </ion-title>
-            </div>
-            <div class="dilbert-nav__right nav-cols">
-                <!-- Notification -->
-                <button ion-button icon-only clear m-r-10 class="notify hvr-pulse-grow">
-               <ion-icon name="notifications-outline" color="dark"></ion-icon>
-            </button>
-                <!-- User profile -->
-                <button ion-button clear icon-only p-v-20 (click)="openPopover($event)" class="user-profile">
-              <ion-item p-l-0>
-                <ion-avatar item-start m-h-0>
-                  <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-ts-woody.png" />
-                </ion-avatar>
-                <ion-icon name="arrow-dropdown" p-r-0 p-l-5></ion-icon>
-              </ion-item>
-            </button>
-                <!-- User profile ends -->
-            </div>
-        </ion-navbar>
-        <!-- Navbar ends -->
-    </div>
+<ion-header>
+    <logged-in-header> </logged-in-header>
 </ion-header>
+
+<!-- <ion-header>
+    <logged-in-header> </logged-in-header>
+</ion-header> -->
 
 <!-- Site header ends -->
 
@@ -63,15 +31,19 @@
 			      <p ion-text color="text-lighter" font-weight-4>Track Time. Record Work</p>
 			     </ion-card-title>
 			     <hr>
-			    <h5 class="login-card__title2" m-t-15>Have an existing account?</h5>
+			    <h5  class="login-card__title2" m-t-15>Have an existing account?</h5>
+
 			    <p ion-text color="text-lighter" font-weight-4 m-t-5>Sign in and continue where you left off</p>
-			    <button ion-button color="danger-dark" m-t-15 class="sign-in" (click) = "signIn()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> Sign in with Google</button>
+
+			    <button ion-button color="danger-dark" m-t-15 class="sign-in" (click) = "signin()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> Sign in with Google</button>
 			  </ion-card-content>
 			</ion-card>
 
 			<div ion-text p-t-20 m-b-0 class="sign-text">Haven't connected to Dilbert yet?</div>
-			<button ion-button color="primary" clear class="sign-up">Sign up!</button>
+			<button ion-button color="primary" clear class="sign-up" (click)="navigateToRegister()" >Sign up!</button>
 		</div>
+
+   
        
 
     </div>
@@ -79,6 +51,17 @@
 
 <!-- Body Ends -->
 
+<!-- loader code -->
+
+<div *ngIf = "showLoader == true " class="site-loader">
+  <svg height="120" width="120">
+    <line class="pointer" x1="60" y1="60" x2="60" y2="50" />
+    <circle class="circle" cx="60" cy="60" r="15" />
+    <circle class="center" cx="60" cy="60" r="2.5" />
+  </svg>
+</div>
+
+<!-- loader ends -->
 
 
 

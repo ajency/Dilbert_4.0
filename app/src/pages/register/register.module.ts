@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { LoginPage } from './login';
-import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { RegisterPage } from './register';
 import { LoggedInHeaderComponentModule } from '../../components/logged-in-header/logged-in-header.module';
 
 @NgModule({
   declarations: [
-    LoginPage,
+    RegisterPage,
   ],
   imports: [
-    IonicPageModule.forChild(LoginPage),
+    IonicPageModule.forChild(RegisterPage),
     LoggedInHeaderComponentModule
   ],
   exports: [
-    LoginPage
+    RegisterPage
   ]
 })
-export class LoginPageModule {}
+export class RegisterPageModule {}
