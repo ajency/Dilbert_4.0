@@ -16,12 +16,12 @@
                     <i class="custom-icon summary">
                     </i>
                 </button>
-                <div *ngIf="header == 'loggedin' " class="brand-name mobile-hide" font-weight-4="" start="">
+                <div *ngIf="header == 'loggedin' " class="brand-name" font-weight-4="" start="">
                     <p color="secondary" ion-text="" no-margin="">
                         Ajency.in
                     </p>
                 </div>
-                <div *ngIf="header == 'notloggedin' || header == 'new' " class="brand-name mobile-hide" font-weight-4="" start="">
+                <div *ngIf="header == 'notloggedin' || header == 'new' " class="brand-name" font-weight-4="" start="">
                     <p color="secondary" ion-text="" no-margin="" p-h-10>
                         DILBERT
                     </p>
@@ -42,10 +42,10 @@
             </div>
             <div class="dilbert-nav__right nav-cols">
                 <!-- Notification -->
-                <button (click)="navigateToLogin()" *ngIf="header == 'notloggedin' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
+                <button (click)="navigateToLogin()" *ngIf="header == 'notloggedin' " class="" clear="" color="gray-link" ion-button="" text-capitalize="">
                     Login
                 </button>
-                <button (click)="navigateToRegister()" *ngIf="header == 'notloggedin' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
+                <button (click)="navigateToRegister()" *ngIf="header == 'notloggedin' " class="" clear="" color="gray-link" ion-button="" text-capitalize="">
                     Register
                 </button>
                 <button *ngIf="header == 'new' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
