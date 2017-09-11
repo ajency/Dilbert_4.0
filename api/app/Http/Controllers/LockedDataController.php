@@ -74,14 +74,14 @@ class LockedDataController extends Controller
                         if($currentData->end_time != null) {
                             $endTime = new \DateTime($currentData->end_time);
                             $cDayData['end_time'] = $endTime->format('H:i');
-                            $cDayData['status'] = 'Offline';
+                            $cDayData['status'] = '';
                         }
                         else {
                             //the day isnt over yet
                             $endTime = new \DateTime();
                             //set as the current time
                             $cDayData['end_time'] = $endTime->modify('+5 hour +30 minutes')->format('H:i');
-                            $cDayData['status'] = 'Online';
+                            $cDayData['status'] = $this->getCurrentStatus($request->user_id,date('Y-m-d'));
                         }
                         $cDayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
                         $cDayData['leave_status'] = 'Present';
@@ -90,7 +90,7 @@ class LockedDataController extends Controller
                     }
                     else {
                         // it's a leave
-                        $cDayData['status'] = 'Offline';
+                        $cDayData['status'] = '';
                         $cDayData['leave_status'] = 'Leave';
                     }
                     $data['current'] = $cDayData;
@@ -108,7 +108,7 @@ class LockedDataController extends Controller
                             $dayData['start_time'] = $startTime->format('H:i');
                         else {
                             // it's a leave
-                            $dayData['status'] = 'Offline';
+                            $dayData['status'] = '';
                             $dayData['leave_status'] = 'Leave';
                             array_push($periodData,$dayData);
                             continue;
@@ -116,14 +116,14 @@ class LockedDataController extends Controller
                         if($ld->end_time != null) {
                             $endTime = new \DateTime($ld->end_time);
                             $dayData['end_time'] = $endTime->format('H:i');
-                            $dayData['status'] = 'Offline';
+                            $dayData['status'] = '';
                         }
                         else {
                             //the day isnt over yet
                             $endTime = new \DateTime();
                             //set as the current time
                             $dayData['end_time'] = $endTime->modify('+5 hour +30 minutes')->format('H:i');
-                            $dayData['status'] = 'Online';
+                            $dayData['status'] = $this->getCurrentStatus($request->user_id,date('Y-m-d'));
                         }
                         $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
                         $dayData['leave_status'] = 'Present';
@@ -146,5 +146,14 @@ class LockedDataController extends Controller
         else {
             return response()->json(['status' => 'failure', 'message' => 'Some parameters are missing.']);
         }
+    }
+
+    // put this in the model
+    public function getCurrentStatus($userId,$workDate) {
+        $usersLogs = Log::where(['user_id' => $userId, 'work_date' => $workDate])->orderBy('created_at','desc')->first();
+        if($usersLogs->to_state == 'New Session')
+            return 'Offline';
+        else
+            return $usersLogs->to_state;
     }
 }
