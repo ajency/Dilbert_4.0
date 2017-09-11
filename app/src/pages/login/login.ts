@@ -186,6 +186,12 @@ export class LoginPage {
 			if(this.code === "dash"){
 					this.cookieservice.put("keepLoggedIn","yes");
 					this.events.publish('app:navroot', 'dashboard');
+			        this.cookieservice.put("user_id", JSON.parse(data['_body']).data.user_id);
+			        this.cookieservice.put("x-api-key", (JSON.parse(data['_body']).data.x_api_key));
+			        // console.log(JSON.parse(data['_body']).data.x-api-key);
+			        this.appServiceProvider.userId = JSON.parse(data['_body']).data.user_id;
+			        this.appServiceProvider.x_api_key = JSON.parse(data['_body']).data.x_api_key;
+
 					}
 			else if( this.code === "join" ){
 				this.events.publish('app:navroot', 'join-organisation');

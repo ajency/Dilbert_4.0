@@ -20,6 +20,8 @@ export class AppServiceProvider {
   image :any;
   status: any;
   token : any;
+  userId :any;
+  x_api_key : any;
   constructor(public http: Http,
 			   public events: Events,
 			   private cookieservice: CookieService) {

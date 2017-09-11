@@ -7,6 +7,8 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/throw';
 import { Storage } from '@ionic/storage';
 
+import { CookieService } from 'ngx-cookie';
+import { AppServiceProvider } from '../../providers/app-service/app-service';
 
 
 /*
@@ -25,32 +27,38 @@ export class UserDataProvider {
 	userData : any;
 
   constructor(public http: Http,
-  			  public storage : Storage) {
+  			  public storage : Storage,
+          public cookieservice : CookieService,
+          public appServiceProvider : AppServiceProvider) {
     console.log('Hello UserDataProvider Provider');
+    
+    this.headers = new Headers();
+	this.headers.append('Content-Type', 'application/json');
+	this.headers.append('X-API-KEY', "wLFnEXuo9j52B5Ylf3JVAA1fAeDMfeVHUpJFTM569YhyyspVrqK4GLCAIeUn");
+  // this.headers.append('X-API-KEY', this.appServiceProvider.x_api_key);
+
+  }
+
+
+
+  getUserData(userId, date): Observable<any> {
+  	console.log('inside getUserData of provider');
+
     this.storage.get('userData').then((data) => {
   
         this.userData = data;
         console.log(this.userData);
         
     });
-    this.headers = new Headers();
-	this.headers.append('Content-Type', 'application/json');
-	this.headers.append('X-API-KEY', "wLFnEXuo9j52B5Ylf3JVAA1fAeDMfeVHUpJFTM569YhyyspVrqK4GLCAIeUn");
-  }
-
-
-
-  getUserData(): Observable<any> {
-  	console.log('inside getUserData of provider');
 
     let postParams = {
-    user_id : 69,
-    date_range : {
-      start : '2017-09-01',
-    
-    }
-    
+    user_id : userId,
+    date_range : date
+   
     };
+    console.log(postParams);
+    console.log(userId, date);
+
 
     return this.http.post(apiURL, postParams, { headers: this.headers })
                     .map(this.extractData)
