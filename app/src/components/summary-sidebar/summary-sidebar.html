@@ -6,7 +6,7 @@
         <div class="current-card__header flex-row">
             <p ion-text color="primary" no-margin>This Week</p>
             <p ion-text no-margin color="text">{{weekTotal}}hr/45hr</p>
-            <div class="week-loader" style="width: 80%"></div>
+            <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}"></div>
         </div>
         <div class="timeline-container">
             <div class="current-card__body flex-row" p-v-25>
@@ -41,27 +41,29 @@
             <!-- Week list -->
             <ul class="week-list list-control overflow-active">
                 <button ion-item class="week-container" m-v-15  *ngFor="let date of sideBarData.data.periodData">
-                    <li class="week-list__row flex-row leave-row">
-                        <div class="week-list__day">
-                            <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.work_date,1)}}</p>
-                            <span ion-text color="text-lighter">{{getDayDate(date.work_date,2)}}</span>
-                        </div>
-                        <div *ngIf = "date.leave_status == 'Present'" class="week-list__session">
-                            <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.start_time,3)}}</span>
-                            <span ion-text [ngClass]="{'text-md-success': date.status_flag == 'online'}">{{getDayDate(date.end_time,3)}}</span>
-                        </div>
-                        <div *ngIf = "date.leave_status == 'Present'" class="week-list__time flex-row">
-                            <ion-icon name="alert" color="danger" class="icon-size mini"></ion-icon>
-                            <h6 class="total-time" p-h-12 ion-text color="text-darker">{{getDayDate(date.total_time,5)}}<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>
-                            <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
-                        </div>
-                        <div *ngIf = "date.leave_status == 'Leave'" class="leave__title">
-                            <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>Leave</p>
-                        </div>
-                         <div *ngIf = "date.leave_status == 'Leave'" class="leave__dash">
-                            <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-6>- -</p>
-                        </div>
-                    </li>
+                    <div class="btn-container" [ngClass]="{'leave-row': date.leave_status == 'Leave'}" >
+                        <li class="week-list__row flex-row">
+                            <div class="week-list__day">
+                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.work_date,1)}}</p>
+                                <span ion-text color="text-lighter">{{getDayDate(date.work_date,2)}}</span>
+                            </div>
+                            <div *ngIf = "date.leave_status == 'Present'" class="week-list__session">
+                                <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.start_time,3)}}</span>
+                                <span ion-text [ngClass]="{'text-md-success': date.status_flag == 'online'}">{{getDayDate(date.end_time,3)}}</span>
+                            </div>
+                            <div *ngIf = "date.leave_status == 'Present'" class="week-list__time flex-row">
+                                <ion-icon name="alert" color="danger" class="icon-size mini"></ion-icon>
+                                <h6 class="total-time" p-h-12 ion-text color="text-darker">{{getDayDate(date.total_time,5)}}<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>
+                                <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
+                            </div>
+                            <div *ngIf = "date.leave_status == 'Leave'" class="leave__title">
+                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>Leave</p>
+                            </div>
+                             <div *ngIf = "date.leave_status == 'Leave'" class="leave__dash">
+                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-6>- -</p>
+                            </div>
+                        </li>
+                    </div>
                 </button>
 
             </ul>

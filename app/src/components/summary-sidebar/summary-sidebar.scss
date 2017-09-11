@@ -51,7 +51,7 @@ summary-sidebar {
         overflow-y: hidden;
         overflow-x: hidden;
         margin: 0 -20px;
-        padding: 0 20px;
+        // padding: 0 20px;
         /* Let's get this party started */
         &::-webkit-scrollbar {
             width: 3px;
@@ -106,9 +106,10 @@ summary-sidebar {
                 min-height: inherit;
                 font-size: inherit;
                 color: inherit;
-                width: calc(100% + 40px);
-                margin-left: -20px;
-                padding: 0px 20px;
+                // width: calc(100% + 40px);
+                // margin-left: -20px;
+                // padding: 0px 20px;
+                padding-left: 0;
                 .item-inner {
                     padding: 0;
                     border: 0;
@@ -117,7 +118,10 @@ summary-sidebar {
                         padding: 0;
                     }
                 }
-                &.leave-row{
+                .btn-container{
+                    padding: 0px 20px;
+                }
+                .leave-row{
                     background-color: #fff6f6;
                     .leave__title{
                         font-size: 1.3em;

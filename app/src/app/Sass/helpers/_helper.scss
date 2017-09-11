@@ -80,6 +80,18 @@
 }
 
 
+.alert-error{
+    width: auto;
+    padding: 0.8em;
+    background-color: color($colors,'error');
+    .card-header{
+        font-size: 1em;
+        padding: 0.3em;
+        color: #fff;
+    }
+}
+
+
 // ---------------------------
 // MARGIN & PADDING LOOP -----------
 // ---------------------------

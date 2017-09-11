@@ -8,6 +8,7 @@ import * as moment from 'moment';
 
 import { CookieService } from 'ngx-cookie';
 import { UserDataProvider } from '../../providers/user-data/user-data';
+import { AppServiceProvider } from '../../providers/app-service/app-service';
 
 /**
  * Generated class for the StartHomePage page.
@@ -37,9 +38,13 @@ export class StartHomePage {
               // public sideBarService: SummarySidebarService,
               private cookieservice: CookieService,
               public zone : NgZone,
-              public userDataProvider : UserDataProvider) {
+              public userDataProvider : UserDataProvider,
+              public appServiceProvider : AppServiceProvider) {
     // this.userId = this.userDataProvider.userData.user_id;
+     
     this.getUserDate();
+   
+
   }
 
  // openPopover(myEvent) {
@@ -94,7 +99,15 @@ export class StartHomePage {
    
   getData(date){
     console.log('inside getData function');
-    this.userDataProvider.getUserData().subscribe( (response) => {
+    
+    let date_range = {
+      // start : date;
+      start : '2017-09-01',
+    };
+    this.userId = this.appServiceProvider.userId;
+    console.log(this.appServiceProvider.userId);
+    console.log(date_range, this.userId);
+    this.userDataProvider.getUserData(69, date_range).subscribe( (response) => {
       console.log(response, 'response');
       //  let dateFormat = /(^\d{1,4}[\.|\\/|-]\d{1,2}[\.|\\/|-]\d{1,4})(\s*(?:0?[1-9]:[0-5]|1(?=[012])\d:[0-5])\d\s*[ap]m)?$/;
       this.sideBarData = response;

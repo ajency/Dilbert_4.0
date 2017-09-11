@@ -17,6 +17,7 @@ export class SummarySidebarComponent {
   text: string;
   today : any;
   weekTotal :any;
+  loader_percentage : 80;
 
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -50,6 +51,7 @@ export class SummarySidebarComponent {
 
       }
       console.log(minutes);
+      // this.loader_percentage = 
     }
 
 // console.log(this.sideBarData.data.periodData[0]);
