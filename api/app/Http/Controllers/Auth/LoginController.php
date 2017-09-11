@@ -67,7 +67,7 @@ class LoginController extends Controller
                     $domain = $orgDetails->domain;
                     $userEmail = $user->email;
                     $user_id = $user->id;
-                    $xak = 'x_api_key' => $user->api_token;
+                    $xak = $user->api_token;
                     $timeZones = array($orgDetails->default_tz);// default time zone
                     $timeZones = array_merge($timeZones, unserialize($orgDetails->alt_tz));//merge default & alt
                     return response()->json(['status' => 'success', 'code' => 'join', 'message' => 'Join organisation', 'data' => compact('user_id', 'company', 'domain', 'userEmail', 'timeZones', 'xak')]);
@@ -78,7 +78,7 @@ class LoginController extends Controller
                 $user = $arraySocial[0];
                 $userEmail = $user->email;
                 $user_id = $user->id;
-                $xak = 'x_api_key' => $user->api_token;
+                $xak = $user->api_token;
                 // $status = "new";
                 $domain = $userDetails->user['domain'];
                 $ip = $_SERVER['REMOTE_ADDR'];
