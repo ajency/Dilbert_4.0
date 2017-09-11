@@ -25,3 +25,25 @@
     	}
     }
 }
+
+
+// Main header before shadow
+
+@media screen and (max-width: $mobile){
+    .main-header{
+        box-shadow: none;
+    }
+    .header{
+        &:after{
+            bottom: -110px;
+            height: 110px;
+            background-image: none;
+            background-color: color($colors,'brand');
+            background-position: bottom;
+            z-index: -1;
+        }
+    }
+    .scroll-content{
+        z-index: 99
+    } 
+}

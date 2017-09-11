@@ -167,7 +167,7 @@ export class LoginPage {
 		this.http.post(url,postParams,options)
 		.subscribe(data => {
 		// console.log(JSON.parse(data['_body']));
-		// this.status = JSON.parse(data['_body']).status;
+		this.status = JSON.parse(data['_body']).status;
 
 
 		console.log(JSON.parse(data['_body']));
@@ -177,6 +177,7 @@ export class LoginPage {
         console.log("storage set function");
       });
 
+		console.log(this.status);
 		if(this.status =="success"){
 
 			this.code= JSON.parse(data['_body']).code;
