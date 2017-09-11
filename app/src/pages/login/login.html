@@ -24,6 +24,11 @@
 
 		<div class="login-card" text-center>
 			<ion-card>
+        <ion-card *ngIf = "domainError" class="alert-error">
+          <ion-card-header>
+            Domain does not exist
+          </ion-card-header>
+        </ion-card>
 			  <img src="./../../assets/img/dilbert.jpg" width="80">
 			  <ion-card-content>
 			    <ion-card-title>
@@ -36,8 +41,7 @@
 			    <p ion-text color="text-lighter" font-weight-4 m-t-5>Sign in and continue where you left off</p>
 
 			    <button ion-button color="danger-dark" m-t-15 class="sign-in" (click) = "signin()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> Sign in with Google</button>
-
-			    <h5  *ngIf = "domainError" class="login-card__title2" m-t-15>Domain does not exist</h5>
+          
 			  </ion-card-content>
 			</ion-card>
 
