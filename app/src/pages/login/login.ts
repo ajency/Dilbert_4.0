@@ -167,7 +167,7 @@ export class LoginPage {
 		this.http.post(url,postParams,options)
 		.subscribe(data => {
 		// console.log(JSON.parse(data['_body']));
-		this.status = JSON.parse(data['_body']).status;
+		// this.status = JSON.parse(data['_body']).status;
 
 
 		console.log(JSON.parse(data['_body']));
