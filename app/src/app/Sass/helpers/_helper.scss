@@ -60,6 +60,12 @@
     display: none !important;
 }
 
+.desk-hide{
+    @media screen and (min-width: 769px){
+        display: none !important;
+    }
+}
+
 .mobile-hide{
     @media screen and (max-width: $mobile) {
         display: none !important;
