@@ -11,11 +11,14 @@ use App\Organisation;
 use App\Role;
 use App\Permission;
 
+use Symfony\Component\Console\Output\ConsoleOutput;
+
 
 class LockedDataController extends Controller
 {
     //
     public function periodData(Request $request) {
+        $output = new ConsoleOutput();
         if(!empty($request->user_id) && !empty($request->date_range) && $request->header('X-API-KEY')!= null) {
             if(User::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
                 //when some valid user accesses this api
@@ -82,16 +85,21 @@ class LockedDataController extends Controller
                             //set as the current time
                             $cDayData['end_time'] = $endTime->modify('+5 hour +30 minutes')->format('H:i');
                             $cDayData['status'] = $this->getCurrentStatus($request->user_id,date('Y-m-d'));
+                            $output->writeln($this->getCurrentStatus($request->user_id,date('Y-m-d')));
                         }
                         $cDayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
                         $cDayData['leave_status'] = 'Present';
                         //violation status - for now dummy
-                        $cDayData['violation_status'] = 1;
+                        $cDayData['violation_count'] = 0;
                     }
                     else {
                         // it's a leave
                         $cDayData['status'] = '';
                         $cDayData['leave_status'] = 'Leave';
+                        $cDayData['start_time'] = '';
+                        $cDayData['end_time'] = '';
+                        $cDayData['total_time'] = 0;
+                        $cDayData['violation_count'] = 0;
                     }
                     $data['current'] = $cDayData;
 
@@ -110,6 +118,10 @@ class LockedDataController extends Controller
                             // it's a leave
                             $dayData['status'] = '';
                             $dayData['leave_status'] = 'Leave';
+                            $dayData['start_time'] = '';
+                            $dayData['end_time'] = '';
+                            $dayData['total_time'] = 0;
+                            $dayData['violation_count'] = 0;
                             array_push($periodData,$dayData);
                             continue;
                         }
@@ -128,7 +140,7 @@ class LockedDataController extends Controller
                         $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
                         $dayData['leave_status'] = 'Present';
                         //violation status - for now dummy
-                        $dayData['violation_status'] = 1;
+                        $dayData['violation_count'] = 0;
                         array_push($periodData,$dayData);
                     }
                     $data['periodData'] = $periodData;
