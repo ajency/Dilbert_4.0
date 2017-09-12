@@ -177,6 +177,7 @@ export class LoginPage {
         console.log("storage set function");
       });
 
+		console.log(this.status);
 		if(this.status =="success"){
 
 			this.code= JSON.parse(data['_body']).code;

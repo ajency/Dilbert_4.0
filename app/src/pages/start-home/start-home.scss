@@ -43,6 +43,7 @@ page-start-home {}
     }
 }
 
+
 @media screen and (min-width: 1280px) and (max-width: 1400px) {
     .summary__sidebar{
         flex: 0.8;
@@ -84,6 +85,16 @@ page-start-home {}
         padding: 0;
     }
 }
+
+
+@media screen and (max-width: $mobile){
+    .dashboard__summary{
+        .summary{
+            padding: 0 1.5em;
+        }    
+    }
+}
+
 
 // Common flexbox call
 .flex-row {
@@ -131,3 +142,7 @@ page-start-home {}
         font-size: 1.6em;
     }
 }
+
+
+
+

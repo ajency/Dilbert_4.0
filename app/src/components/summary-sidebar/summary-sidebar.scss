@@ -110,6 +110,10 @@ summary-sidebar {
                 // margin-left: -20px;
                 // padding: 0px 20px;
                 padding-left: 0;
+                margin-top: 15px;
+                &:first-child{
+                    margin-top: 0;
+                }
                 .item-inner {
                     padding: 0;
                     border: 0;
@@ -124,10 +128,13 @@ summary-sidebar {
                 .leave-row{
                     background-color: #fff6f6;
                     .leave__title{
-                        font-size: 1.3em;
+                        font-size: 1.1em;
+                        // margin-right: 2.5em;
                     }
                     .leave__dash{
-                        font-size: 1.5em;
+                        font-size: 1.2em;
+                        min-width: 106px;
+                        text-align: center;
                     }
                 }
             }
@@ -135,6 +142,9 @@ summary-sidebar {
                 justify-content: space-between;
                 margin: 0 -20px;
                 padding: 10px 20px;
+            }
+            &__day{
+                min-width: 45px;
             }
             // &__time {
             //     .icon {
@@ -158,55 +168,55 @@ summary-sidebar {
             }
         }
     }
-@media screen and (max-width: 600px) {
-    ion-app.app-root{
-        .current-card{
-            &__body{
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 0;
-                .time{
-                    padding: 0 0 0.3em 0;
-                    font-size: 2.2em;
+    @media screen and (max-width: 600px) {
+        ion-app.app-root{
+            .current-card{
+                &__body{
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 0;
+                    .time{
+                        padding: 0 0 0.3em 0;
+                        font-size: 2.2em;
+                    }
+                    .day{
+                        display: flex;
+                        align-items: center;
+                        &-title{
+                            margin: 0;
+                            padding-right: 0.5em;
+                        }
+                    }
                 }
-                .day{
-                    display: flex;
-                    align-items: center;
-                    &-title{
-                        margin: 0;
-                        padding-right: 0.5em;
+                &__footer{
+                    flex-direction: column;
+                    border: 0;
+                    margin: 0;
+                    .timing{
+                        &.in{
+                            border: 0;
+                            padding-bottom: 0;
+                            padding-top: 1em;
+                        }
+                        &.out{
+                            padding-top: 0.5em;
+                        }
                     }
                 }
             }
-            &__footer{
-                flex-direction: column;
-                border: 0;
-                margin: 0;
-                .timing{
-                    &.in{
-                        border: 0;
-                        padding-bottom: 0;
-                        padding-top: 1em;
-                    }
-                    &.out{
-                        padding-top: 0.5em;
-                    }
+            .full-card{
+                &__header{
+                    display: none;
                 }
-            }
-        }
-        .full-card{
-            &__header{
-                display: none;
-            }
-            &__body{
-                .week-list{
-                    margin: 0 -16px;
-                    height: auto;
+                &__body{
+                    .week-list{
+                        margin: 0 -16px;
+                        height: auto;
+                    }
                 }
             }
         }
     }
-}
 
 
 
