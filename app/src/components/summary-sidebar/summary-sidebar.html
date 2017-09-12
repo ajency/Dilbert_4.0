@@ -11,7 +11,7 @@
         <div class="timeline-container">
             <div class="current-card__body flex-row" p-v-25>
                 <h2 *ngIf = "sideBarData.data.current.total_time" class="time" m-t-0 p-r-40>{{getDayDate(sideBarData.data.current.total_time, 5)}}<span class="xxx-small">hr</span></h2>
-                <h2 *ngIf = "sideBarData.data.current.total_time == undefined" class="time" m-t-0 p-r-40>n/a<span class="xxx-small"></span></h2>
+                <h2 *ngIf = "sideBarData.data.current.total_time == 0" class="time" m-t-0 p-r-40>Leave<span class="xxx-small"></span></h2>
 
                 <div class="day">
                     <p ion-text color="primary" no-margin m-b-5 class="day-title">Today</p>
@@ -27,7 +27,7 @@
                     <i class="custom-icon indoor"></i> <span>n/a</span>
                 </div>
 
-                <div class="timing out" p-h-12 p-v-12>
+                <div class="timing out" p-h-12 p-v-12 *ngIf = "sideBarData.data.current.leave_status == 'Present'">
                     <i class="custom-icon outdoor"></i> <span ion-text color="success">{{sideBarData.data.current.status}}</span>
                 </div>
             </div>

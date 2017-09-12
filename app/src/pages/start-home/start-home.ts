@@ -109,6 +109,7 @@ export class StartHomePage {
     this.userDataProvider.getUserData(this.userId, date_range).subscribe( (response) => {
       console.log(response, 'response');
       this.sideBarData = response;
+       this.zone.run(() => {});
     });
   
 
