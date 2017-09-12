@@ -12,11 +12,9 @@ import { Component } from '@angular/core';
 })
 export class SummaryContentComponent {
 
-  text: string;
 
   constructor() {
-    console.log('Hello SummaryContentComponent Component');
-    this.text = 'Hello World';
+    console.log('SummaryContentComponent Component');
   }
 
 }

@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { CookieService } from 'ngx-cookie';
 import { UserDataProvider } from '../../providers/user-data/user-data';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the StartHomePage page.
@@ -35,16 +36,20 @@ export class StartHomePage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public popoverCtrl: PopoverController, 
-              // public sideBarService: SummarySidebarService,
               private cookieservice: CookieService,
               public zone : NgZone,
               public userDataProvider : UserDataProvider,
-              public appServiceProvider : AppServiceProvider) {
-    // this.userId = this.userDataProvider.userData.user_id;
+              public appServiceProvider : AppServiceProvider,
+              public storage : Storage) {
      
-    this.getUserDate();
-   
+  }
 
+  ngOnInit(){
+    this.storage.get('userData').then((data) => {
+
+      this.userId = data.user_id;
+      this.getUserDate();
+    });
   }
 
  // openPopover(myEvent) {
@@ -65,17 +70,15 @@ export class StartHomePage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad dashboard');
     this.zone.run(() => {});
+    console.log('ionViewDidLoad dashboard')
   }
 
 
   ionViewDidEnter(){
-    console.log('ionViewDidEnter dashboard');
   }
 
   ionViewCanEnter(){
-    console.log('dashboard ionViewCanEnter');
     if(this.cookieservice.get("keepLoggedIn")== 'yes')
       return true;
     else
@@ -98,18 +101,13 @@ export class StartHomePage {
 
    
   getData(date){
-    console.log('inside getData function');
     
     let date_range = {
       // start : date;
-      start : '2017-09-01',
+      start : '2017-09-04',
     };
-    this.userId = this.appServiceProvider.userId;
-    console.log(this.appServiceProvider.userId);
-    console.log(date_range, this.userId);
-    this.userDataProvider.getUserData(69, date_range).subscribe( (response) => {
+    this.userDataProvider.getUserData(this.userId, date_range).subscribe( (response) => {
       console.log(response, 'response');
-      //  let dateFormat = /(^\d{1,4}[\.|\\/|-]\d{1,2}[\.|\\/|-]\d{1,4})(\s*(?:0?[1-9]:[0-5]|1(?=[012])\d:[0-5])\d\s*[ap]m)?$/;
       this.sideBarData = response;
     });
   
@@ -119,7 +117,6 @@ export class StartHomePage {
   getUserDate() {
           this.currentDate = this.formatDate(new Date());
 
-          console.log(this.currentDate);
           this.getData(this.currentDate);
          
     }

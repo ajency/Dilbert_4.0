@@ -10,16 +10,23 @@
         </div>
         <div class="timeline-container">
             <div class="current-card__body flex-row" p-v-25>
-                <h2 class="time" m-t-0 p-r-40>{{getDayDate(sideBarData.data.current.total_time, 5)}}<span class="xxx-small">hr</span></h2>
+                <h2 *ngIf = "sideBarData.data.current.total_time" class="time" m-t-0 p-r-40>{{getDayDate(sideBarData.data.current.total_time, 5)}}<span class="xxx-small">hr</span></h2>
+                <h2 *ngIf = "sideBarData.data.current.total_time == undefined" class="time" m-t-0 p-r-40>n/a<span class="xxx-small"></span></h2>
+
                 <div class="day">
                     <p ion-text color="primary" no-margin m-b-5 class="day-title">Today</p>
                     <span ion-text color="text-darker">{{today.day}}  {{today.date}}, {{today.month}}</span>
                 </div>
             </div>
             <div class="current-card__footer flex-row">
-                <div class="timing in" p-h-12 p-v-12>
+                <div *ngIf = "sideBarData.data.current.start_time" class="timing in" p-h-12 p-v-12>
                     <i class="custom-icon indoor"></i> <span>{{getDayDate(sideBarData.data.current.start_time,3)}}</span>
                 </div>
+
+                <div *ngIf = "sideBarData.data.current.start_time == undefined" class="timing in" p-h-12 p-v-12>
+                    <i class="custom-icon indoor"></i> <span>n/a</span>
+                </div>
+
                 <div class="timing out" p-h-12 p-v-12>
                     <i class="custom-icon outdoor"></i> <span ion-text color="success">{{sideBarData.data.current.status}}</span>
                 </div>
@@ -33,9 +40,13 @@
        <div class="week__full full-card">
         <div class="full-card__header flex-row">
             <p no-margin>This Week</p>
-            <button ion-button clear>
+            <!-- <button ion-button clear>
                 <ion-icon name="calendar" color="text" class="icon-size full"></ion-icon>
-            </button>
+            </button> -->
+
+             <my-date-picker [options]="myDatePickerOptions" (dateChanged)="requestData($event)" [(ngModel)]="model" required placeholder = "Jump to date" >
+                    
+                </my-date-picker>
         </div>
         <div class="full-card__body">
             <!-- Week list -->
@@ -52,7 +63,7 @@
                                 <span ion-text [ngClass]="{'text-md-success': date.status_flag == 'online'}">{{getDayDate(date.end_time,3)}}</span>
                             </div>
                             <div *ngIf = "date.leave_status == 'Present'" class="week-list__time flex-row">
-                                <ion-icon name="alert" color="danger" class="icon-size mini"></ion-icon>
+                                <ion-icon name="alert" color="danger" class="icon-size mini" *ngIf = "date.violation_status != '0'"></ion-icon>
                                 <h6 class="total-time" p-h-12 ion-text color="text-darker">{{getDayDate(date.total_time,5)}}<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>
                                 <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
                             </div>

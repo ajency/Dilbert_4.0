@@ -25,12 +25,13 @@ export class UserDataProvider {
 
 	headers : any;
 	userData : any;
+  public userId :any;
+  public x_api_key : any;
 
   constructor(public http: Http,
   			  public storage : Storage,
           public cookieservice : CookieService,
           public appServiceProvider : AppServiceProvider) {
-    console.log('Hello UserDataProvider Provider');
     
     this.headers = new Headers();
 	this.headers.append('Content-Type', 'application/json');
@@ -42,22 +43,19 @@ export class UserDataProvider {
 
 
   getUserData(userId, date): Observable<any> {
-  	console.log('inside getUserData of provider');
 
     this.storage.get('userData').then((data) => {
   
         this.userData = data;
-        console.log(this.userData);
         
     });
 
     let postParams = {
     user_id : userId,
     date_range : date
-   
     };
-    console.log(postParams);
-    console.log(userId, date);
+    // console.log(postParams);
+    // console.log(userId, date);
 
 
     return this.http.post(apiURL, postParams, { headers: this.headers })

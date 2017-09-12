@@ -1,6 +1,11 @@
 import { Component, NgZone, Input } from '@angular/core';
 import * as moment from 'moment';
 
+
+import {IMyDpOptions} from 'mydatepicker';
+import { UserDataProvider } from '../../providers/user-data/user-data';
+import { AppServiceProvider } from '../../providers/app-service/app-service';
+
 /**
  * Generated class for the SummarySidebarComponent component.
  *
@@ -13,19 +18,33 @@ import * as moment from 'moment';
 })
 export class SummarySidebarComponent {
 
+
+  private myDatePickerOptions: IMyDpOptions = {
+        // other options...
+        dateFormat: 'yyyy-mm-dd',
+        disableUntil: {year: 2017, month: 1, day: 1},
+        disableSince: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:  new Date().getDate() } 
+        // disableUntil: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:new Date().getDate }
+    };
+
+  private model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth()+1, day: new Date().getDate() } };
+
+
   @Input('test') sideBarData : any ;
   text: string;
   today : any;
   weekTotal :any;
-  loader_percentage : 80;
+  loader_percentage : any;
 
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  constructor(public zone : NgZone) {
+  constructor(public zone : NgZone,
+              public userDataProvider : UserDataProvider,
+              public appServiceProvider : AppServiceProvider
+              ) {
     
-    console.log('Hello SummarySidebarComponent Component');
     this.text = 'Hello World';
     let dummy = new Date();
     this.today = {
@@ -36,27 +55,9 @@ export class SummarySidebarComponent {
   }
 
   ngOnInit(){
-  	console.log(this.sideBarData);
   	this.zone.run(() => {});
-
-    let minutes = 0
-    for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
-    {
-      console.log(this.sideBarData.data.periodData[i].leave_status);
-      if(this.sideBarData.data.periodData[i].leave_status == "Present")
-      {
-        let temp = this.sideBarData.data.periodData[i].total_time.split(":");
-        console.log(temp);
-        minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
-
-      }
-      console.log(minutes);
-      // this.loader_percentage = 
-    }
-
-// console.log(this.sideBarData.data.periodData[0]);
-  this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
-  console.log(this.weekTotal);
+    this.calculateWeekTotal();
+ 
   }
 
 
@@ -85,5 +86,48 @@ export class SummarySidebarComponent {
     }
     return text;
   }
+
+   requestData(ev){
+
+
+    if(ev.date.year != 0 && ev.date.month != 0){
+    
+      let date_range = {
+      // start : date;
+      start : ev.formatted
+      };
+
+      this.userDataProvider.getUserData(69, date_range).subscribe( (response) => {
+      console.log(response, 'response');
+      //  let dateFormat = /(^\d{1,4}[\.|\\/|-]\d{1,2}[\.|\\/|-]\d{1,4})(\s*(?:0?[1-9]:[0-5]|1(?=[012])\d:[0-5])\d\s*[ap]m)?$/;
+      this.sideBarData = response;
+      this.calculateWeekTotal()
+    });
+
+
+
+      }
+    }
+
+    calculateWeekTotal(){
+      let minutes = 0
+    for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
+    {
+      if(this.sideBarData.data.periodData[i].leave_status == "Present")
+      {
+        let temp = this.sideBarData.data.periodData[i].total_time.split(":");
+        minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
+
+      }
+      this.loader_percentage =  minutes/2700*100;
+      if(this.loader_percentage>100){
+        this.loader_percentage = 100;
+      }
+    }
+
+  this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+    }
+
+
 
 }

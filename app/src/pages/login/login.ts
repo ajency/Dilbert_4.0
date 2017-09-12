@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Events, ToastController } from 'io
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { CookieService } from 'ngx-cookie';
+import { UserDataProvider } from '../../providers/user-data/user-data';
 
 import { Storage } from '@ionic/storage';
 /**
@@ -24,7 +25,8 @@ import { Storage } from '@ionic/storage';
 })
 export class LoginPage {
 
- showLoader : boolean;
+  loginData : any;
+  showLoader : boolean;
   token : any;
   status : any;
   code :any;
@@ -37,15 +39,14 @@ export class LoginPage {
 			   private cookieservice: CookieService,
 			   public toastCtrl : ToastController,
 			   public zone : NgZone,
-			   public storage : Storage) {
+			   public storage : Storage,
+              public userDataProvider : UserDataProvider) {
   	if(this.cookieservice.get("domainError")== 'yes'){
       this.domainError =true;    }
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
     this.storage.ready().then(() => {
-      console.log("ionic storage is avilable");
       });
 
      this.cookieservice.remove("domainError");
@@ -54,14 +55,11 @@ export class LoginPage {
   }
 
   ionViewCanEnter(){
-    console.log('ionViewCanEnter LoginPage');
     if(this.cookieservice.get("keepLoggedIn") !== 'yes'){
-      console.log('yes');
       return true;
       
     }
     else{
-	    console.log('no');
     	return false;
     }
   }
@@ -71,75 +69,14 @@ export class LoginPage {
 
   navigateToRegister(){
   	 this.events.publish('app:navroot', 'register');
-    console.log('Navigating to another module');
   }
 
- //  handleClientLoad() {
-
- //      //Function to autheticate the user using google auth2
-	// 	let that = this;
-	// 	gapi.load('client:auth2',()=> {
- //    	console.log(this);
-	// 	gapi.client.init({
-	// 		// client_id: '676621258132-6q9s2j1hc8343jj3nn75k0is4s1nb893.apps.googleusercontent.com',
-	//         client_id: '460485328187-u3um84ihtuq08aiu23er9d58e43269do.apps.googleusercontent.com',
-
-	// 		cookiepolicy: 'single_host_origin',
-	// 		scope: 'profile'
-	//         }).then( () => {
-
-
- //          // gapi.auth2.getAuthInstance().isSignedIn.listen(that.updateSigninStatus);
-
-	//           console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
-	//           console.log(that);
- //          // this.test(true);
-	//           that.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-	//           console.log(gapi.auth2.getAuthInstance().currentUser.get());
- //          // authorizeButton.onclick = handleAuthClick;
- //          // signoutButton.onclick = handleSignoutClick;
- //        });
- //        });
-
- //  }
-	// updateSigninStatus(isSignedIn) {
-	//           console.log(this);
- //        // this.zone.run(() => {});
-	//         if (isSignedIn) {
-
-	// 	          console.log(this,"Already signed in");
-	// 	          // this.postRequest();
-
- //          // If the user is already signed in navigate the user to search page
-	//           // this.navigateToSearch();
-
- //        } 
- //      }
-
-
- //   signIn(){
-
- //       //   Sign in the user upon button click.
-
- //      	        gapi.auth2.getAuthInstance().signIn().then( () => {
- //    	        	console.log(this,"signed in");
- //    	        	console.log(gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token);
-    	        	
- //    	        	 // this.navigateToSummary();
- //    	        	 this.postRequest();
-
- //              }, (error) => {
- //              	console.log('Network Error');
- //              });
-
- //      	     }
 
   	signin(){
   		this.showLoader = true;
  		this.appServiceProvider.signIn().then( (token) =>{
 
 		this.token = token;
- 		console.log(this.token);
  		this.postRequest();
  		});
  		
@@ -153,46 +90,31 @@ export class LoginPage {
 		var headers = new Headers();
 		headers.append("Accept", 'application/json');
 		headers.append('Content-Type', 'application/json' );
-		// headers.append('Access-Control-Allow-Origin: *');
 		let options = new RequestOptions({ headers: headers });
 
-		// let token = gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token;
 		let url = 'http://localhost:8000/api/login';
-		// url += `/login?token=${token}`;
 		let postParams = {
 		token : this.token
 		}
 
-		console.log(url);
 		this.http.post(url,postParams,options)
 		.subscribe(data => {
-		// console.log(JSON.parse(data['_body']));
 		this.status = JSON.parse(data['_body']).status;
-
-
-		console.log(JSON.parse(data['_body']));
-
+		this.loginData = JSON.parse(data['_body']).data;
 		
-		this.storage.set('userData', JSON.parse(data['_body']).data).then( () => {
-        console.log("storage set function");
+		this.storage.set('userData', this.loginData).then( () => {
       });
 
 		console.log(this.status);
 		if(this.status =="success"){
 
 			this.code= JSON.parse(data['_body']).code;
-			console.log(this.code);
 
 		// this.navigateToSummary();
 			if(this.code === "dash"){
 					this.cookieservice.put("keepLoggedIn","yes");
 					this.events.publish('app:navroot', 'dashboard');
-			        this.cookieservice.put("user_id", JSON.parse(data['_body']).data.user_id);
-			        this.cookieservice.put("x-api-key", (JSON.parse(data['_body']).data.x_api_key));
-			        // console.log(JSON.parse(data['_body']).data.x-api-key);
-			        this.appServiceProvider.userId = JSON.parse(data['_body']).data.user_id;
-			        this.appServiceProvider.x_api_key = JSON.parse(data['_body']).data.x_api_key;
-
+			       
 					}
 			else if( this.code === "join" ){
 				this.events.publish('app:navroot', 'join-organisation');
@@ -207,7 +129,6 @@ export class LoginPage {
 		}
 
 		else if(this.status =="failure"){
-			console.log(' failure popup ');
 			this.events.publish('app:navroot', 'login');
 			this.domainError = true;
 			this.cookieservice.put("domainError","yes");
@@ -237,35 +158,5 @@ export class LoginPage {
 	    this.zone.run(() => {});
 	}
       	     
-   //   postRequest() {
-	  //   var headers = new Headers();
-	  //   headers.append("Accept", 'application/json');
-	  //   headers.append('Content-Type', 'application/json' );
-	  //   // headers.append('Access-Control-Allow-Origin: *');
-	  //   let options = new RequestOptions({ headers: headers });
-
-	  //   // let token = gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token;
-	  //   let url = 'http://localhost:8000/api/login';
-	  //   // url += `/login?token=${token}`;
-	  //   let postParams = {
-			// 	      token : this.appServiceProvider.gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token
-			// 	    }
-
-	  //   console.log(url);
-	  //   this.http.post(url,postParams,options)
-	  //     .subscribe(data => {
-	  //       // console.log(JSON.parse(data['_body']));
-	  //       this.message = JSON.parse(data['_body']).message;
-	  //       console.log(this.message);
-	  //       if(this.message =="success"){
-
-	  //     	// this.navigateToSummary();
-	  //     	this.events.publish('app:navroot', 'dashboard')
-	  //     	}
-	  //      }, error => {
-	  //       console.log(error.status);// Error getting the data
-	  //     });
-	  //     console.log(this.message);
-	      
-	  // }
+   
 }

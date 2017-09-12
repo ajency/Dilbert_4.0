@@ -1,10 +1,8 @@
-// import { StartHomePage } from './../pages/start-home/start-home';
 import { AppServiceProvider } from '../providers/app-service/app-service';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, NavController,Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-// import { LoginPage } from './../pages/login/login';
 import { OrganizationPage } from './../pages/organization/organization';
 import { Location, PlatformLocation } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
@@ -45,48 +43,35 @@ export class MyApp {
     this.loc = platformlocation;
 
     this.events.subscribe('app:navroot',(data) => {
-      this.updateNav(data)
+    this.updateNav(data)
     });
-    // this.cookieService.remove("domainError");
 
-    // used for an example of ngFor and navigation
-  //   this.pages = [
-  //     { title: 'Home', component: LoginPage }
-  //   ];
   }
 
 
 
    ngOnInit(){
 
-    this.appServiceProvider.handleClientLoad();
-    console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
+        this.appServiceProvider.handleClientLoad();
+        console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
 
-    let path = this.location.path(true)
-    let pathparts = path.split('/');
-    console.log(pathparts);
-    pathparts.map((val) => {
-      if(val === 'test'){
-        this.flag = true;
-        console.log(val);
-      }
-    });
-    if(this.flag){
-    this.rootPage = 'StartHomePage';
-
+        let path = this.location.path(true)
+        let pathparts = path.split('/');
+        pathparts.map((val) => {
+          if(val === 'login'){
+            this.flag = true;
+          }
+        });
+    
     }
-}
 
 
 
 
   
   private updateNav(data) : any{
-    console.log('events working fine');
-    console.log(data);
     this.nav.setRoot(data);
-    // var stateObj = [];
-    // this.loc.pushState(stateObj, "dashboard", "/dashboard");
+    
   }
 
 

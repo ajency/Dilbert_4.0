@@ -1,5 +1,19 @@
 summary-sidebar {
-    
+    .mydp{
+    border : none;
+    .btnclear{
+        display : none;
+    } 
+    .selection{
+            color: rgba(85, 85, 85, 0);
+        background: rgba(255, 255, 255, 0);
+    }
+
+    .btnpicker, .selectiongroup{
+        background: rgba(255, 255, 255, 0);
+    }
+}
+
 }
 
 // ---------------------------
@@ -217,6 +231,5 @@ summary-sidebar {
             }
         }
     }
-
 
 

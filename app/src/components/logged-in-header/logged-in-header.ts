@@ -15,7 +15,6 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
 })
 export class LoggedInHeaderComponent {
 
-  text: string;
   header : any;
   image : any;
 
@@ -23,12 +22,19 @@ export class LoggedInHeaderComponent {
               private cookieservice: CookieService,
               public events : Events,
               public appservice : AppServiceProvider) {
-    console.log('Hello LoggedInHeaderComponent Component');
-    this.text = 'Hello World';
 
-    if(this.cookieservice.get("keepLoggedIn")== 'yes'){
-      this.header = "loggedin";
-      this.image = this.appservice.image;
+   
+  }
+
+  ngOnInit(){
+     if(this.cookieservice.get("keepLoggedIn")== 'yes'){
+       this.header = "loggedin";
+       if(this.appservice.image){
+       this.image = this.appservice.image;
+        }
+       else{
+        this.image = this.cookieservice.get("profileImage");
+       }
     }
     else{
           if(this.cookieservice.get("join")== 'yes' || this.cookieservice.get("create")== 'yes'){
@@ -40,6 +46,7 @@ export class LoggedInHeaderComponent {
           }
        
     }
+
   }
 
   openPopover(ev) {
