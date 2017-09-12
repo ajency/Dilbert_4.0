@@ -22,6 +22,21 @@ page-start-home {}
     }
 }
 
+@media screen and (min-width: 920px) and (max-width: 1400px) {
+    .dashboard__summary{
+        flex: 0 0 75%;
+        width: 75%;
+        max-width: 75%;
+    }
+    .dashboard__leaves{
+        flex: 0 0 25%;
+        width: 25%;
+        max-width: 25%;
+    }
+}
+
+
+
 // main title heading
 .main-title {
     font-size: 1.25em;
