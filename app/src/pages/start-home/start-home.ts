@@ -32,6 +32,7 @@ export class StartHomePage {
   sideBarData: any;
   currentDate : any;
   userId : any;
+  key : any;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -48,6 +49,7 @@ export class StartHomePage {
     this.storage.get('userData').then((data) => {
 
       this.userId = data.user_id;
+      this.key = data.x_api_key;
       this.getUserDate();
     });
   }
@@ -104,9 +106,9 @@ export class StartHomePage {
     
     let date_range = {
       // start : date;
-      start : '2017-09-1',
+      start : '2017-09-12',
     };
-    this.userDataProvider.getUserData(this.userId, date_range).subscribe( (response) => {
+    this.userDataProvider.getUserData(this.userId, date_range, this.key).subscribe( (response) => {
       console.log(response, 'response');
       this.sideBarData = response;
        this.zone.run(() => {});

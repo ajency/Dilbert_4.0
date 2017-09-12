@@ -1,10 +1,10 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "Dilbert",
+  "short_name": "Dilbert",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
-    "src": "assets/imgs/logo.png",
+    "src": "assets/icon/favicon.ico",
     "sizes": "512x512",
     "type": "image/png"
   }],

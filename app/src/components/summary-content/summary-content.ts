@@ -1,4 +1,6 @@
+import { Events } from 'ionic-angular';
 import { Component, Input } from '@angular/core';
+import * as moment from 'moment';
 
 /**
  * Generated class for the SummaryContentComponent component.
@@ -18,8 +20,19 @@ export class SummaryContentComponent {
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
-  constructor() {
+  constructor( public events : Events) {
     console.log('SummaryContentComponent Component');
+       this.events.subscribe('update:content',(date) => {
+	   this.currentData = date;
+	   let d = new Date();
+	   let temp = date.work_date.split("-");
+	   d.setFullYear(temp[0], temp[1]-1, temp[2]);
+	   this.today = {
+	   	day : this.days[d.getDay()],
+	   	date : d.getDate(),
+	   	month : this.monthNames[d.getMonth()]
+	   }
+    });
   }
 
   ngOnInit(){
@@ -29,6 +42,32 @@ export class SummaryContentComponent {
       date : dummy.getDate(),
       month : this.monthNames[dummy.getMonth()]
     };
+  }
+
+  getDayDate(date: string, option: number): string {
+    var text: string;
+    switch (option) {
+      case 1:
+        text = moment(date, "YYYY-MM-DD").format("ddd");
+        break;
+      case 2:
+        text = moment(date, "YYYY-MM-DD").format("MMM D");
+        break;
+      case 3:
+        text = moment(date, "kk:mm:ss").format("hh:mm a");
+        break;
+      case 4:
+        if (date.length > 0) {
+          text = moment(date, "kk:mm:ss").format("hh:mm a");
+        } else {
+          text = 'Online'
+        }
+        break;
+      case 5:
+        text = moment(date, "kk:mm:ss").format("hh:mm");
+        break;
+    }
+    return text;
   }
 
 

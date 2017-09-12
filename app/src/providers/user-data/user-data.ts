@@ -24,6 +24,7 @@ const apiURL = 'http://localhost:8000/api/periodData';
 export class UserDataProvider {
 
 	headers : any;
+  key : any;
 	userData : any;
   public userId :any;
   public x_api_key : any;
@@ -32,24 +33,19 @@ export class UserDataProvider {
   			  public storage : Storage,
           public cookieservice : CookieService,
           public appServiceProvider : AppServiceProvider) {
-    
-    this.headers = new Headers();
-	this.headers.append('Content-Type', 'application/json');
-	this.headers.append('X-API-KEY', "wLFnEXuo9j52B5Ylf3JVAA1fAeDMfeVHUpJFTM569YhyyspVrqK4GLCAIeUn");
-  // this.headers.append('X-API-KEY', this.appServiceProvider.x_api_key);
-
+   
+   
   }
 
 
 
-  getUserData(userId, date): Observable<any> {
 
-    this.storage.get('userData').then((data) => {
-  
-        this.userData = data;
-        
-    });
+  getUserData(userId, date,  key): Observable<any> {
 
+    this.headers = new Headers();
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('X-API-KEY', key);
+    
     let postParams = {
     user_id : userId,
     date_range : date

@@ -4,7 +4,7 @@
     <!-- Days details -->
     <div class="day-detail flex-row" >
         <div class="day-detail__current detail-cols desk-hide">
-            <h5 m-t-0 m-b-8 class="currentime">{{currentData.total_time}} hr</h5>
+            <h5 m-t-0 m-b-8 class="currentime">{{getDayDate(currentData.total_time,5)}} hr</h5>
             <span ion-text color="text-lighter" no-margin m-b-5 class="day-title">{{today.day}} {{today.date}}, {{today.month}} </span>
         </div>
         <div class="day-detail__day detail-cols mobile-hide">
@@ -20,7 +20,7 @@
             <span ion-text color="text-lighter">End time</span>
         </div>
         <div class="day-detail__total-time detail-cols mobile-hide">
-            <h5 m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{currentData.total_time}}<span class="xx-small">hrs</span></h5>
+            <h5 m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{getDayDate(currentData.total_time,5)}} <span class="xx-small">hr</span></h5>
             <span ion-text color="text-lighter">Total time</span>
         </div>
     </div>

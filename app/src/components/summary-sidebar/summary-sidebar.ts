@@ -1,5 +1,7 @@
 import { Component, NgZone, Input } from '@angular/core';
 import * as moment from 'moment';
+import { Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 
 import {IMyDpOptions} from 'mydatepicker';
@@ -18,7 +20,7 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
 })
 export class SummarySidebarComponent {
 
-
+  userId : any;
   private myDatePickerOptions: IMyDpOptions = {
         // other options...
         dateFormat: 'yyyy-mm-dd',
@@ -41,8 +43,9 @@ export class SummarySidebarComponent {
 
   constructor(public zone : NgZone,
               public userDataProvider : UserDataProvider,
-              public appServiceProvider : AppServiceProvider
-              ) {
+              public events: Events,
+              public appServiceProvider : AppServiceProvider,
+              public storage : Storage) {
     
 
     let dummy = new Date();
@@ -51,6 +54,8 @@ export class SummarySidebarComponent {
       date : dummy.getDate(),
       month : this.monthNames[dummy.getMonth()]
     };
+
+      
   }
 
   ngOnInit(){
@@ -95,14 +100,17 @@ export class SummarySidebarComponent {
       // start : date;
       start : ev.formatted
       };
-
-      this.userDataProvider.getUserData(69, date_range).subscribe( (response) => {
+      this.storage.get('userData').then((data) => {
+        
+      this.userDataProvider.getUserData(data.user_id, date_range, data.x_api_key).subscribe( (response) => {
       console.log(response, 'response');
-      //  let dateFormat = /(^\d{1,4}[\.|\\/|-]\d{1,2}[\.|\\/|-]\d{1,4})(\s*(?:0?[1-9]:[0-5]|1(?=[012])\d:[0-5])\d\s*[ap]m)?$/;
       this.sideBarData = response;
       this.calculateWeekTotal()
     });
 
+    });
+
+   
 
 
       }
@@ -125,6 +133,11 @@ export class SummarySidebarComponent {
     }
 
   this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+    }
+
+    updateSummaryContent(date : any){
+      this.events.publish('update:content', date);
+
     }
 
 
