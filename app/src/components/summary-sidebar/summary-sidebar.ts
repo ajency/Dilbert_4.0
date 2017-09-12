@@ -31,7 +31,6 @@ export class SummarySidebarComponent {
 
 
   @Input('test') sideBarData : any ;
-  text: string;
   today : any;
   weekTotal :any;
   loader_percentage : any;
@@ -45,7 +44,7 @@ export class SummarySidebarComponent {
               public appServiceProvider : AppServiceProvider
               ) {
     
-    this.text = 'Hello World';
+
     let dummy = new Date();
     this.today = {
       day : this.days[dummy.getDay()],

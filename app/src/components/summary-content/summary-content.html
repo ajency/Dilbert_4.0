@@ -4,23 +4,23 @@
     <!-- Days details -->
     <div class="day-detail flex-row" >
         <div class="day-detail__current detail-cols desk-hide">
-            <h5 m-t-0 m-b-8 class="currentime">03:45 hr</h5>
-            <span ion-text color="text-lighter" no-margin m-b-5 class="day-title">Today Friday 12, May</span>
+            <h5 m-t-0 m-b-8 class="currentime">{{currentData.total_time}} hr</h5>
+            <span ion-text color="text-lighter" no-margin m-b-5 class="day-title">{{today.day}} {{today.date}}, {{today.month}} </span>
         </div>
         <div class="day-detail__day detail-cols mobile-hide">
-            <h5 m-t-0 m-b-8>Monday</h5>
+            <h5 m-t-0 m-b-8>{{today.day}}</h5>
             <span ion-text color="text-lighter">Day</span>
         </div>
         <div class="day-detail__start-time detail-cols">
-            <p m-t-0 font-weight-5 m-b-10>09:24:00</p>
+            <p m-t-0 font-weight-5 m-b-10>{{currentData.start_time}}</p>
             <span ion-text color="text-lighter">Start time</span>
         </div>
         <div class="day-detail__end-time detail-cols">
-            <p m-t-0 font-weight-5 m-b-10>18:40:00</p>
+            <p m-t-0 font-weight-5 m-b-10>{{currentData.end_time}}</p>
             <span ion-text color="text-lighter">End time</span>
         </div>
         <div class="day-detail__total-time detail-cols mobile-hide">
-            <h5 m-t-0 m-b-8 ion-text color="primary" font-weight-5>09:05<span class="xx-small">hrs</span></h5>
+            <h5 m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{currentData.total_time}}<span class="xx-small">hrs</span></h5>
             <span ion-text color="text-lighter">Total time</span>
         </div>
     </div>

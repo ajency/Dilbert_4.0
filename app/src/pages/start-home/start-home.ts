@@ -104,7 +104,7 @@ export class StartHomePage {
     
     let date_range = {
       // start : date;
-      start : '2017-09-04',
+      start : '2017-09-1',
     };
     this.userDataProvider.getUserData(this.userId, date_range).subscribe( (response) => {
       console.log(response, 'response');
