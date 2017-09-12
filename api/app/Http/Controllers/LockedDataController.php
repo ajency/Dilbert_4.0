@@ -162,10 +162,15 @@ class LockedDataController extends Controller
 
     // put this in the model
     public function getCurrentStatus($userId,$workDate) {
-        $usersLogs = Log::where(['user_id' => $userId, 'work_date' => $workDate])->orderBy('created_at','desc')->first();
-        if($usersLogs->to_state == 'New Session')
-            return 'Offline';
+        $usersLogs = Log::where(['user_id' => $userId, 'work_date' => $workDate])->orderBy('created_at','desc');
+        if($usersLogs->exists()) {
+            $usersLogs = $usersLogs->first();
+            if($usersLogs->to_state == 'New Session')
+                return 'Offline';
+            else
+                return $usersLogs->to_state;
+        }
         else
-            return $usersLogs->to_state;
+            return '';
     }
 }
