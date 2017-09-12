@@ -1,27 +1,30 @@
-<p font-weight-5 m-v-20>
-    The Summary :</p>
-<!-- Days details -->
-<div class="day-detail flex-row" >
-    <div class="day-detail__day detail-cols">
-
-        <h5 m-t-0 m-b-8>Monday</h5>
-        <span ion-text color="text-lighter">Day</span>
-    </div>
-    <div class="day-detail__start-time detail-cols">
-        <p m-t-0 font-weight-5 m-b-10>09:24:00</p>
-        <span ion-text color="text-lighter">Start time</span>
-    </div>
-    <div class="day-detail__end-time detail-cols">
-        <p m-t-0 font-weight-5 m-b-10>18:40:00</p>
-        <span ion-text color="text-lighter">End time</span>
-
-    </div>
-    <div class="day-detail__total-time detail-cols">
-        <h5 m-t-0 m-b-8 ion-text color="primary" font-weight-5>09:05<span class="xx-small">hrs</span></h5>
-        <span ion-text color="text-lighter">Total time</span>
+<div>
+    <p font-weight-5 m-v-20 class="contentitle">
+        Today's Summary :</p>
+    <!-- Days details -->
+    <div class="day-detail flex-row" >
+        <div class="day-detail__current detail-cols desk-hide">
+            <h5 m-t-0 m-b-8 class="currentime">03:45 hr</h5>
+            <span ion-text color="text-lighter" no-margin m-b-5 class="day-title">Today Friday 12, May</span>
+        </div>
+        <div class="day-detail__day detail-cols mobile-hide">
+            <h5 m-t-0 m-b-8>Monday</h5>
+            <span ion-text color="text-lighter">Day</span>
+        </div>
+        <div class="day-detail__start-time detail-cols">
+            <p m-t-0 font-weight-5 m-b-10>09:24:00</p>
+            <span ion-text color="text-lighter">Start time</span>
+        </div>
+        <div class="day-detail__end-time detail-cols">
+            <p m-t-0 font-weight-5 m-b-10>18:40:00</p>
+            <span ion-text color="text-lighter">End time</span>
+        </div>
+        <div class="day-detail__total-time detail-cols mobile-hide">
+            <h5 m-t-0 m-b-8 ion-text color="primary" font-weight-5>09:05<span class="xx-small">hrs</span></h5>
+            <span ion-text color="text-lighter">Total time</span>
+        </div>
     </div>
 </div>
-
 <!-- Detail view -->
 
 <div class="detail-view" p-t-35>
@@ -29,9 +32,9 @@
         <li class="detail-view__cols violated">
             <!-- violation and chat box -->
             <div class="violated-data">
-                <h6 ion-text font-weight-3 color="dark">You started your day at <h6 ion-text font-weight-4 color="danger" class="dis-inline">11:50 am</h6></h6>
+                <h6 ion-text font-weight-3 color="dark">You started your day at <h6 ion-text font-weight-4 color="danger" class="dis-inline started-time">11:50 am</h6></h6>
                 <p class="x-small message" m-v-0 ion-text color="text-lighter">We start our day between 9:30am to 11:00 am. Any reason for being late?</p>
-                <div class="comment-box">
+                <div class="comment-box mobile-hide">
                     <div class="commentor flex-row">
                         <div class="commentor__profile">
                              <ion-icon name="contact" color="text"></ion-icon>
@@ -67,21 +70,21 @@
                 </div>
             </div>
             <!-- chat trigger -->
-            <div class="relative">
+            <div class="relative mobile-hide">
                 <button class="violated__comment" ion-button icon-only clear color="dark">
                     <ion-icon name="chatboxes"></ion-icon>
                 </button>
                 <span class="comment-notifier" ion-text color="danger">2</span>
             </div>
             <!-- resolved toggle -->
-            <div>
+            <div class="mobile-hide">
                 <p class="x-small" m-v-0 ion-text color="text">Not Resolved</p>
                 <ion-toggle checked="false" class="resolve-toggle"></ion-toggle>
             </div>
 
         </li>
         <li class="detail-view__cols completed">
-            <h6 ion-text font-weight-3 color="dark">You started your day at <h6 ion-text font-weight-4 color="primary" class="dis-inline">09:35 am</h6></h6>
+            <h6 ion-text font-weight-3 color="dark">You started your day at <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">09:35 am</h6></h6>
         </li>
         <li class="detail-view__cols idle">
             <h6 ion-text font-weight-3 color="dark">Idle at 1:30pm to 2:05pm</h6>
@@ -93,7 +96,7 @@
             <h6 ion-text font-weight-3 color="dark">Online</h6>
         </li>
         <li class="detail-view__cols completed total direction-col">
-            <h6 ion-text font-weight-3 color="dark">You ended your day at <h6 ion-text font-weight-4 color="primary" class="dis-inline">06:35 am</h6></h6>
+            <h6 ion-text font-weight-3 color="dark">You ended your day at <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">06:35 am</h6></h6>
             <p class="x-small message" m-v-0 ion-text color="text-lighter"><ion-icon name="time"></ion-icon> You completed 8 hours today</p>
         </li>
     </ul>
