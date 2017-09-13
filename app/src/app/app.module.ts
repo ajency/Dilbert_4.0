@@ -14,6 +14,9 @@ import { CookieModule } from 'ngx-cookie';
 import { UserDataProvider } from '../providers/user-data/user-data';
 import { IonicStorageModule } from '@ionic/storage';
 import { AuthguardProvider } from '../providers/authguard/authguard';
+
+import { EnvironmentsModule } from '../config/env.module';
+
 // import { SummaryContentComponent } from '../components/summary-content/summary-content';
 // import { TestComponent } from '../components/test/test';
 // import { SummarySidebarComponent } from '../components/summary-sidebar/summary-sidebar';
@@ -28,6 +31,7 @@ import { AuthguardProvider } from '../providers/authguard/authguard';
   ],
   imports: [
     BrowserModule,
+    EnvironmentsModule,
     CookieModule.forRoot(),
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp,{

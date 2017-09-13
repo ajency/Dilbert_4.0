@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, Inject } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
@@ -6,6 +6,8 @@ import { CookieService } from 'ngx-cookie';
 import { UserDataProvider } from '../../providers/user-data/user-data';
 
 import { Storage } from '@ionic/storage';
+import { EnvVariables } from '../../config/env.token';
+
 /**
  * Generated class for the LoginPage page.
  *
@@ -40,7 +42,8 @@ export class LoginPage {
 			   public toastCtrl : ToastController,
 			   public zone : NgZone,
 			   public storage : Storage,
-              public userDataProvider : UserDataProvider) {
+              public userDataProvider : UserDataProvider,
+              @Inject(EnvVariables) private environment) {
   	if(this.cookieservice.get("domainError")== 'yes'){
       this.domainError =true;    }
   }
@@ -92,7 +95,7 @@ export class LoginPage {
 		headers.append('Content-Type', 'application/json' );
 		let options = new RequestOptions({ headers: headers });
 
-		let url = 'http://localhost:8000/api/login';
+		let url = `${this.environment.dilbertApi}/login`;
 		let postParams = {
 		token : this.token
 		}

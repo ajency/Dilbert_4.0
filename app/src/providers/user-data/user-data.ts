@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -9,6 +9,8 @@ import { Storage } from '@ionic/storage';
 
 import { CookieService } from 'ngx-cookie';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { EnvVariables } from '../../config/env.token';
+
 
 
 /*
@@ -18,7 +20,7 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
   for more info on providers and Angular 2 DI.
 */
 
-const apiURL = 'http://localhost:8000/api/periodData';
+// const apiURL = 'http://localhost:8000/api/periodData';
 
 @Injectable()
 export class UserDataProvider {
@@ -28,11 +30,14 @@ export class UserDataProvider {
 	userData : any;
   public userId :any;
   public x_api_key : any;
+  apiURL : any;
 
   constructor(public http: Http,
   			  public storage : Storage,
           public cookieservice : CookieService,
-          public appServiceProvider : AppServiceProvider) {
+          public appServiceProvider : AppServiceProvider,
+           @Inject(EnvVariables) private environment) {
+    this.apiURL = this.environment.dilbertApi;
    
    
   }
@@ -42,6 +47,7 @@ export class UserDataProvider {
 
   getUserData(userId, date,  key): Observable<any> {
 
+
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('X-API-KEY', key);
@@ -50,11 +56,13 @@ export class UserDataProvider {
     user_id : userId,
     date_range : date
     };
+
+    let url = `${this.apiURL}/periodData`;
     // console.log(postParams);
     // console.log(userId, date);
 
 
-    return this.http.post(apiURL, postParams, { headers: this.headers })
+    return this.http.post(url, postParams, { headers: this.headers })
                     .map(this.extractData)
                     .catch(this.handleError);
   }
