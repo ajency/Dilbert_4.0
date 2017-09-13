@@ -3,7 +3,6 @@ var packageJson = require('./package.json');
 module.exports = {
   cacheId: packageJson.name,
   staticFileGlobs: [
-    'index.html',
     'manifest.json',
     'build/**.js',
     'build/**.css'

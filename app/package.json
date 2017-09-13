@@ -48,6 +48,9 @@
         "sw-precache": "^5.2.0",
         "typescript": "2.3.3"
     },
+    "config": {
+        "ionic_webpack": "./webpack.conf.js"
+    },
     "description": "An Ionic project",
     "cordova": {
         "plugins": {
