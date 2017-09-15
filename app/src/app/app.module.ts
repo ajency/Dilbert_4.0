@@ -16,6 +16,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AuthguardProvider } from '../providers/authguard/authguard';
 
 import { EnvironmentsModule } from '../config/env.module';
+import { ConnectivityServiceProvider } from '../providers/connectivity-service/connectivity-service';
 
 // import { SummaryContentComponent } from '../components/summary-content/summary-content';
 // import { TestComponent } from '../components/test/test';
@@ -52,7 +53,8 @@ import { EnvironmentsModule } from '../config/env.module';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AppServiceProvider,
     UserDataProvider,
-    AuthguardProvider
+    AuthguardProvider,
+    ConnectivityServiceProvider
   ]
 })
 export class AppModule { }

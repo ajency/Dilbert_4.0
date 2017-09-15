@@ -33,6 +33,7 @@ export class LoginPage {
   status : any;
   code :any;
   domainError : boolean = false;
+  logInProcess : boolean = false;
   constructor(public navCtrl: NavController,
 			   public navParams: NavParams, 
 			   public http: Http,
@@ -53,6 +54,7 @@ export class LoginPage {
       });
 
      this.cookieservice.remove("domainError");
+     
 
    
   }

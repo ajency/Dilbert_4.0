@@ -153,3 +153,9 @@ $i: 0;
     }
     $i: $i + 1;
 }
+
+.app-is-offline{
+    overflow-y: visible;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);  
+}

@@ -9,12 +9,18 @@ import { CookieService } from 'ngx-cookie';
 
 
 interface Window {
+  location: any
   addEventListener: any;
   onlineToast: any;
   offlineToast: any;
+  onfocus: any;
+  onblur: any;
+  unescape: any;
 }
 
-declare var window: Window;
+declare var self : any;
+declare var window : Window;
+declare var document : any;
 
 @Component({
   templateUrl: 'app.html'
@@ -45,6 +51,7 @@ export class MyApp {
     this.events.subscribe('app:navroot',(data) => {
     this.updateNav(data)
     });
+    this.appServiceProvider.handleClientLoad();
 
   }
 
@@ -52,7 +59,7 @@ export class MyApp {
 
    ngOnInit(){
 
-        this.appServiceProvider.handleClientLoad();
+
         console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
 
         let path = this.location.path(true)
@@ -76,52 +83,73 @@ export class MyApp {
 
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      //this.checkNetwork();
-    });
+    // this.platform.ready().then(() => {
+    //   // Okay, so the platform is ready and our plugins are available.
+    //   // Here you can do any higher level native things you might need.
+    //   this.statusBar.styleDefault();
+    //   this.splashScreen.hide();
+    //   //this.checkNetwork();
+    // });
+
+    this.checkNetwork();
   }
 
-  // checkNetwork() {
-  //   this.platform.ready().then(() => {
-  //     window['isUpdateAvailable']
-  //       .then(isAvailable => {
-  //         if (isAvailable) {
-  //           this.appservice.presentToast(`New Update available! Reload the webapp to see the latest juicy changes.`, 'warn');
-  //         }
-  //       });
 
-  //     var self = this;
-  //     window.addEventListener('online', function (e) {
-  //       self.updateOnlineStatus(self.appservice);
-  //     });
-  //     window.addEventListener('offline', function (e) {
-  //       self.updateOnlineStatus(self.appservice);
-  //     });
-  //   });
-  // }
+  checkNetwork() {
+      let self = this;
+      let networktimeout = null;
+      window.addEventListener('online',  function(e) {
+        if(self.appServiceProvider.getAppFocus() === false) return;
+
+        clearTimeout(networktimeout);
+        networktimeout = setTimeout(() => {
+          // self.updateOnlineStatus(self.appservice);
+          self.appServiceProvider.updateOnlineStatus(true);
+        },3000);
+      });
 
 
-  // updateOnlineStatus(service) {
-  //   let body = document.getElementsByTagName('body')[0];
-  //   if (navigator.onLine) {
-  //     window.onlineToast = service.presentToast('You are online!', 'success');
-  //     if (window.offlineToast != null) {
-  //       window.offlineToast.dismiss();
-  //     }
-  //     body.classList.remove("app-is-offline");
-  //   } else {
-  //     window.offlineToast = service.presentToast('You are offline!', 'warn');
-  //     body.classList.add("app-is-offline");
-  //   }
-  // }
+      window.addEventListener('offline', function(e) {
+        if(self.appServiceProvider.getAppFocus() === false) return;
 
-  // openPage(page) {
-  //   // Reset the content nav to have just this page
-  //   // we wouldn't want the back button to show in this scenario
-  //   this.nav.setRoot(page.component);
-  // }
+        clearTimeout(networktimeout);
+        networktimeout = setTimeout(() => {
+          // self.updateOnlineStatus(self.appservice);
+          self.appServiceProvider.updateOnlineStatus(true);
+        },3000);
+      });
+
+      // Set the name of the hidden property and the change event for visibility
+      var hidden, visibilityChange; 
+      if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
+        hidden = "hidden";
+        visibilityChange = "visibilitychange";
+      } else if (typeof document.msHidden !== "undefined") {
+        hidden = "msHidden";
+        visibilityChange = "msvisibilitychange";
+      } else if (typeof document.webkitHidden !== "undefined") {
+        hidden = "webkitHidden";
+        visibilityChange = "webkitvisibilitychange";
+      }
+
+      if (typeof document.addEventListener === "undefined" || typeof document[hidden] === "undefined") {
+        console.warn("addeventlistener required for page visibility api to work!");
+      } else {
+        // Handle page visibility change   
+        document.addEventListener(visibilityChange, () => {
+          if(document[hidden]){
+              console.warn("### window hidden ###");
+              this.appServiceProvider.setAppFocus(false);
+          }
+          else{
+              console.warn("@@@ window visible @@@");
+              this.appServiceProvider.setAppFocus(true);
+              this.appServiceProvider.updateOnlineStatus(true);
+          }
+        }, false);
+      }   
+
+  }
+
+  
 }
