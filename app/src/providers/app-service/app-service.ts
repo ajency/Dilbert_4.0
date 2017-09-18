@@ -6,6 +6,16 @@ import { ToastController, Events, LoadingController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie';
 
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
 declare const gapi : any;
 
@@ -32,6 +42,7 @@ export class AppServiceProvider {
   flag : boolean = false;
   private appFocused: boolean = true;
   private isOnline: boolean = true;
+  handleError : any;
   
 
   constructor(public http: Http,
@@ -44,6 +55,46 @@ export class AppServiceProvider {
               ) {
     
     console.log('AppServiceProvider Provider');
+
+       this.handleError = (error: any): Promise<any> => {
+                      console.warn('error in request fetch',error)
+
+                      // let errMsg: string;
+                      // if (error instanceof Response) {
+                      //   const body: any = error.json() || '';
+                      //   const err = body.error || JSON.stringify(body);
+                      //   errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+                      // } else {
+                      //   errMsg = error.message ? error.message : error.toString();
+                      // }
+                      // console.error(errMsg);
+                      // return Promise.reject(errMsg);
+                      console.log(error.status);
+                      if(error.status === 0 && !navigator.onLine){
+                        if(window.offlineToast){
+                          window.offlineToast.dismiss({backdrop: true});
+                          window.offlineToast = null;
+                        }
+                        // else{
+                        setTimeout(() => {
+                          window.offlineToast = this.presentToast("Request couldn't be made as you are offline!",'error',0,true,'bottom','Refresh');
+
+                          window.offlineToast.onDidDismiss((data) => {
+                            if(data && data.backdrop){
+                              // window.location.reload(true);
+                            }
+                            else{
+                              window.location.reload(true);
+                            }
+                          });
+                        },500);
+                        // }
+                      }
+
+                      let prerror = this.parseRejectedError(error);
+                      return Promise.reject(prerror);
+                    }
+
   }
 
 
@@ -74,29 +125,30 @@ export class AppServiceProvider {
 
 		          console.log("Already signed in");
               this.image = gapi.auth2.getAuthInstance().currentUser.get().w3.Paa;
-              console.log(this.image);
+              // console.log(this.image);
 
-		          if(this.cookieservice.get("keepLoggedIn")== 'yes')
-		          {
-                  let path = this.location.path(true)
-                  let pathparts = path.split('/');
-                  pathparts.map((val) => {
-                    if(val === 'dashboard'){
-                      this.flag = true;
-                    }
-                  });
-                  if(!this.flag){
+		          // if(this.cookieservice.get("keepLoggedIn")== 'yes')
+		          // {
+            //       let path = this.location.path(true)
+            //       let pathparts = path.split('/');
+            //       pathparts.map((val) => {
+            //         if(val === 'dashboard'){
+            //           this.flag = true;
+            //         }
+            //       });
+            //       if(!this.flag){
 
-  		          	this.events.publish('app:navroot', 'dashboard');
-                }
-                 // console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
+  		        //   	this.events.publish('app:navroot', 'dashboard');
+            //     }
+            //      // console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
 
 
 
-		          }
-		          else {
-		          	this.events.publish('app:navroot', 'login');
-		          }
+		          // }
+		          // else {
+		          // 	this.events.publish('app:navroot', 'login');
+		          // }
+              this.events.publish('user:signedIn', 'navigateTo');
 
 
         } 
@@ -128,6 +180,86 @@ export class AppServiceProvider {
 
 
 	     }
+
+
+  public request(url: string,type: string, body: object, optionalHeaders: object = {},overrideheaders: boolean = false, returntype: string = 'promise', disableurlupdate: string = ''): any{
+    let locationpath = this.location.path(true);
+
+    let headers = new Headers({'Content-Type': 'application/json','Accept': 'application/json, text/plain, */*'});
+
+    let opHeaderKeys = Object.keys(optionalHeaders);
+    if(opHeaderKeys.length){
+      if(overrideheaders){
+        headers = new Headers(optionalHeaders);
+      }
+      else{
+        for(let key of opHeaderKeys){
+          headers.append(key,optionalHeaders[key]);
+        }
+      }
+
+    }
+
+    // let objToSearchParams = (obj) => {
+    //     let params: URLSearchParams = new URLSearchParams();
+    //     for (var key in obj) {
+    //         if (obj.hasOwnProperty(key))
+    //             params.set(key, obj[key]);
+    //     }
+    //     return params;
+    // }
+
+    let httpEvent, serializedquery = '';
+    if(type == 'get'){
+      //TBD construct query params
+
+      // if(Object.keys(body).length){
+      //   serializedquery =  `?${$.param(body)}`;
+      //   url = url + serializedquery;
+        // let params: URLSearchParams = objToSearchParams(body);
+
+        // console.log("url search params =>", params)
+        // httpEvent = this.http.get(url,{headers: headers, search: params})
+      // }
+      httpEvent = this.http.get(url,{headers: headers});
+    }
+    else if(type == 'post'){
+      httpEvent = this.http.post(url,body,{headers: headers})
+    }
+
+    // setTimeout(() => {
+    //    this.updateQueryParams(serializedquery,locationpath,disableurlupdate);
+    // },250);
+
+    if(returntype == 'promise'){
+      return httpEvent
+        .toPromise()
+        .then((response) => {
+          // this.updateQueryParams(serializedquery,locationpath, disableurlupdate);
+          return response.json()
+        })
+        .catch(this.handleError);
+    }
+    else{
+      return httpEvent
+        .map((response) => {
+          // this.updateQueryParams(serializedquery,locationpath, disableurlupdate);
+          return response.json()
+        })
+        .catch(this.handleError);
+    }
+
+
+  }
+
+  public parseRejectedError(error: any): any{
+      try{
+        return JSON.parse(error._body);
+      }
+      catch(e){
+        return error;
+      }
+  }
 
 
  public setAppFocus(focused: boolean): void{

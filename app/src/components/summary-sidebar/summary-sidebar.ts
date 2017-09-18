@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import {IMyDpOptions} from 'mydatepicker';
 import { UserDataProvider } from '../../providers/user-data/user-data';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 
 /**
  * Generated class for the SummarySidebarComponent component.
@@ -20,6 +21,7 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
 })
 export class SummarySidebarComponent {
 
+  apiURL :any;
   userId : any;
   private myDatePickerOptions: IMyDpOptions = {
         // other options...
@@ -45,9 +47,11 @@ export class SummarySidebarComponent {
               public userDataProvider : UserDataProvider,
               public events: Events,
               public appServiceProvider : AppServiceProvider,
-              public storage : Storage) {
+              public storage : Storage,
+              public appGlobalsProvider : AppGlobalsProvider) {
     
-
+    this.apiURL = this.appGlobalsProvider.getApiUrl(); 
+    console.log(this.apiURL);
     let dummy = new Date();
     this.today = {
       day : this.days[dummy.getDay()],
@@ -102,11 +106,32 @@ export class SummarySidebarComponent {
       };
       this.storage.get('userData').then((data) => {
         
-      this.userDataProvider.getUserData(data.user_id, date_range, data.x_api_key).subscribe( (response) => {
-      console.log(response, 'response');
+    //   this.userDataProvider.getUserData(data.user_id, date_range, data.x_api_key).subscribe( (response) => {
+    //   console.log(response, 'response');
+    //   this.sideBarData = response;
+    //   this.calculateWeekTotal()
+    // });
+    let url =  `${this.apiURL}/period-data`;
+    let body = {
+    user_id : data.user_id,
+    filters : {
+      date_range : date_range,
+      // period_unit = 'week'
+    }
+  };
+ 
+    let optionalHeaders = {
+      'X-API-KEY' : data.x_api_key
+    };
+
+      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '').subscribe( (response) => {
+      console.log(response);
       this.sideBarData = response;
-      this.calculateWeekTotal()
+      this.calculateWeekTotal();
+
+
     });
+
 
     });
 

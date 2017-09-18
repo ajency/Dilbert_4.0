@@ -38,9 +38,6 @@
                         <ion-option value="french">
                             French
                         </ion-option>
-                        <ion-option value="italiano">
-                            Italiano
-                        </ion-option>
                     </ion-select>
                 </div>
             </div>
@@ -55,10 +52,10 @@
                 <button *ngIf="header == 'new' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
                     Contact Us
                 </button>
-                <button *ngIf="header == 'loggedin' " class="notify hvr-pulse-grow mobile-hide" clear="" icon-only="" ion-button="" m-r-10="">
+               <!--  <button *ngIf="header == 'loggedin' " class="notify hvr-pulse-grow mobile-hide" clear="" icon-only="" ion-button="" m-r-10="">
                     <ion-icon color="dark" name="notifications-outline">
                     </ion-icon>
-                </button>
+                </button> -->
                 <!-- User profile -->
                 <button (click)="openPopover($event)" *ngIf="header == 'loggedin' " class="user-profile" clear="" icon-only="" ion-button="" p-v-20="">
                     <ion-item p-l-0="">

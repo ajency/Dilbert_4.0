@@ -17,6 +17,8 @@ import { AuthguardProvider } from '../providers/authguard/authguard';
 
 import { EnvironmentsModule } from '../config/env.module';
 import { ConnectivityServiceProvider } from '../providers/connectivity-service/connectivity-service';
+import { TitleCasePipe } from '../pipes/title-case/title-case';
+import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
 
 // import { SummaryContentComponent } from '../components/summary-content/summary-content';
 // import { TestComponent } from '../components/test/test';
@@ -25,6 +27,8 @@ import { ConnectivityServiceProvider } from '../providers/connectivity-service/c
 @NgModule({
   declarations: [
     MyApp,
+    TitleCasePipe,
+    // SignInCardComponent,
     // SummaryContentComponent,
     // LoggedInHeaderComponent,
     // TestComponent,
@@ -49,12 +53,14 @@ import { ConnectivityServiceProvider } from '../providers/connectivity-service/c
   providers: [
     StatusBar,
     SplashScreen,
+    TitleCasePipe,
     // SummarySidebarService,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AppServiceProvider,
     UserDataProvider,
     AuthguardProvider,
-    ConnectivityServiceProvider
+    ConnectivityServiceProvider,
+    AppGlobalsProvider
   ]
 })
 export class AppModule { }

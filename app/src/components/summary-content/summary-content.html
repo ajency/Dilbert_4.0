@@ -12,15 +12,15 @@
             <span ion-text color="text-lighter">Day</span>
         </div>
         <div class="day-detail__start-time detail-cols">
-            <p m-t-0 font-weight-5 m-b-10>{{currentData.start_time}}</p>
+            <p *ngIf = "currentData.end_time" m-t-0 font-weight-5 m-b-10>{{currentData.start_time}}</p>
             <span ion-text color="text-lighter">Start time</span>
         </div>
         <div class="day-detail__end-time detail-cols">
-            <p m-t-0 font-weight-5 m-b-10>{{currentData.end_time}}</p>
+            <p *ngIf = "currentData.end_time" m-t-0 font-weight-5 m-b-10>{{currentData.end_time}}</p>
             <span ion-text color="text-lighter">End time</span>
         </div>
         <div class="day-detail__total-time detail-cols mobile-hide">
-            <h5 *ngIf = "currentData.total_time != 0 " m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{getDayDate(currentData.total_time,5)}} <span class="xx-small">hr</span></h5>
+            <h5 *ngIf = "currentData.total_time != 0 && currentData.total_time != null " m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{getDayDate(currentData.total_time,5)}} <span class="xx-small">hr</span></h5>
             <h5 *ngIf = "currentData.total_time == 0 " m-t-0 m-b-8 ion-text color="primary" font-weight-5> 00:00 <span class="xx-small">hr</span></h5>
 
             <span ion-text color="text-lighter">Total time</span>
@@ -31,9 +31,9 @@
 
 <div class="detail-view" p-t-35>
     <ul class="detail-view__container violated-row" p-h-20 m-h-10>
-        <li class="detail-view__cols violated">
+        <!-- <li class="detail-view__cols violated"> -->
             <!-- violation and chat box -->
-            <div class="violated-data">
+           <!--  <div class="violated-data">
                 <h6 ion-text font-weight-3 color="dark">You started your day at <h6 ion-text font-weight-4 color="danger" class="dis-inline started-time">11:50 am</h6></h6>
                 <p class="x-small message" m-v-0 ion-text color="text-lighter">We start our day between 9:30am to 11:00 am. Any reason for being late?</p>
                 <div class="comment-box mobile-hide">
@@ -70,21 +70,23 @@
                         <ion-input type="text" placeholder="Reply..." value="" class="reply-text"></ion-input>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- chat trigger -->
-            <div class="relative mobile-hide">
+
+            <!-- <div class="relative mobile-hide">
                 <button class="violated__comment" ion-button icon-only clear color="dark">
                     <ion-icon name="chatboxes"></ion-icon>
                 </button>
                 <span class="comment-notifier" ion-text color="danger">2</span>
-            </div>
+            </div> -->
             <!-- resolved toggle -->
-            <div class="mobile-hide">
+            
+            <!-- <div class="mobile-hide">
                 <p class="x-small" m-v-0 ion-text color="text">Not Resolved</p>
                 <ion-toggle checked="false" class="resolve-toggle"></ion-toggle>
             </div>
-
-        </li>
+ -->
+       <!--  </li> -->
         <li class="detail-view__cols completed">
             <h6 ion-text font-weight-3 color="dark">You started your day at <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">09:35 am</h6></h6>
         </li>

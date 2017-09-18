@@ -9,6 +9,8 @@ import * as moment from 'moment';
 import { CookieService } from 'ngx-cookie';
 import { UserDataProvider } from '../../providers/user-data/user-data';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+
 import { Storage } from '@ionic/storage';
 
 /**
@@ -30,9 +32,11 @@ import { Storage } from '@ionic/storage';
 export class StartHomePage {
  // @ViewChild(SummaryContentComponent) sideContentObj: SummaryContentComponent;
   sideBarData: any;
+  summaryContentData : any;
   currentDate : any;
   userId : any;
   key : any;
+  apiURL : any;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -41,7 +45,9 @@ export class StartHomePage {
               public zone : NgZone,
               public userDataProvider : UserDataProvider,
               public appServiceProvider : AppServiceProvider,
-              public storage : Storage) {
+              public storage : Storage,
+              public appGlobalsProvider : AppGlobalsProvider) {
+    this.apiURL = this.appGlobalsProvider.getApiUrl();
      
   }
 
@@ -108,13 +114,60 @@ export class StartHomePage {
       // start : date;
       start : '2017-09-12',
     };
-    this.userDataProvider.getUserData(this.userId, date_range, this.key).subscribe( (response) => {
-      console.log(response, 'response');
-      this.sideBarData = response;
-       this.zone.run(() => {});
-    });
-  
+    // this.userDataProvider.getUserData(this.userId, date_range, this.key).subscribe( (response) => {
+    //   console.log(response, 'response');
+    //   this.sideBarData = response;
+    //    this.zone.run(() => {});
+    // });
 
+
+    // let current_date = '';
+    // this.userDataProvider.getDaySummary(this.userId, current_date, this.key).subscribe( (response) => {
+    //   console.log(response, 'response');
+    //   this.summaryContentData = response;
+    //    this.zone.run(() => {});
+    // });
+
+
+    let url =  `${this.apiURL}/period-data`;
+    let body = {
+    user_id : this.userId,
+    filters : {
+      date_range : date_range,
+      // period_unit = 'week'
+    }
+  };
+ 
+    let optionalHeaders = {
+      'X-API-KEY' : this.key
+    };
+
+    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '').subscribe( (response) => {
+      console.log(response);
+      this.sideBarData = response;
+      this.zone.run(() => {});
+
+
+    });
+
+
+    url = `${this.apiURL}/day-summary`;
+
+    let body2 = {
+      user_id : this.userId,
+      date : '2017-09-11',
+      // cos_offset : ''
+    }
+
+    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '').subscribe( (response) => {
+      console.log(response);
+      this.summaryContentData = response;
+      this.zone.run(() => {});
+
+
+    });
+
+  
   }
 
   getUserDate() {
