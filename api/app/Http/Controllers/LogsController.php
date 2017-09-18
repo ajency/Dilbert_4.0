@@ -49,23 +49,51 @@ class LogsController extends Controller
                         $end = $log->cos;
                         if((new Log)->timeDifferenceInMins($start,$end) >= $cosOffset) {
                             array_push($logs,['state' => $state, 'start_time' => $start, 'end_time' => $end, 'state_time' => (new Log)->timeDifferenceInMins($start,$end)]);
+                            $state = 'active';
+                            $start = $log->cos;
+                            $end = null;
+                            continue;
                         }
-                        $state = 'active';
-                        $start = $log->cos;
-                        $end = null;
-                        continue;
+                        else {
+                            // edit the end time of the previous record
+                            $lastRecord = array_pop($logs);
+                            if($lastRecord == null) {
+                                // if this the first entry to the logs array
+                                $end = null;
+                            }
+                            else {
+                                // ignore the current record and use the previous one
+                                $state = $lastRecord['state'];
+                                $start = $lastRecord['start_time'];
+                                $end = null;
+                            }
+                        }
                     }
                     // detects the end of the state and also curbs multiple
                     // offline entries from being reported
-                    if($log->from_state == $state || $log->to_state == 'offline' && $state != 'offline') {
+                    if(($log->from_state == $state || $log->to_state == 'offline') && $state != 'offline') {
                         $end = $log->cos;
                         // check if this change of state is to be passed
                         if((new Log)->timeDifferenceInMins($start,$end) >= $cosOffset) {
                             array_push($logs,['state' => $state, 'start_time' => $start, 'end_time' => $end, 'state_time' => (new Log)->timeDifferenceInMins($start,$end)]);
+                            $state = $log->to_state;
+                            $start = $log->cos;
+                            $end = null;
                         }
-                        $state = $log->to_state;
-                        $start = $log->cos;
-                        $end = null;
+                        else {
+                            // edit the end time of the previous record
+                            $lastRecord = array_pop($logs);
+                            if($lastRecord == null) {
+                                // if this the first entry to the logs array
+                                $end = null;
+                            }
+                            else {
+                                // ignore the current record and use the previous one
+                                $state = $lastRecord['state'];
+                                $start = $lastRecord['start_time'];
+                                $end = null;
+                            }
+                        }
                     }
                     else
                         continue;
