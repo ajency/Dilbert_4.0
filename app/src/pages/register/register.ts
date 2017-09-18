@@ -22,140 +22,129 @@ import { Storage } from '@ionic/storage';
 })
 export class RegisterPage {
 
-  showLoader : boolean = false;
-  token : any;
-  status : any;
-  code :any;
-  constructor(public navCtrl: NavController,
-			   public navParams: NavParams, 
-			   public http: Http,
-			   public events: Events,
-			   private appServiceProvider: AppServiceProvider,
-			   private cookieservice: CookieService,
-			   public toastCtrl : ToastController,
-			   public zone : NgZone,
-			   public storage : Storage) {
+ //  showLoader : boolean = false;
+ //  token : any;
+ //  status : any;
+ //  code :any;
+  constructor(public cookieservice : CookieService ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterPage');
-    this.storage.ready().then(() => {
-      console.log("ionic storage is avilable");
-      });
-  }
+ //  ionViewDidLoad() {
+ //    console.log('ionViewDidLoad RegisterPage');
+ //    this.storage.ready().then(() => {
+ //      console.log("ionic storage is avilable");
+ //      });
+ //  }
 
   ionViewCanEnter(){
-    console.log('ionViewCanEnter RegisterPage');
     if(this.cookieservice.get("keepLoggedIn") !== 'yes'){
-      console.log('yes');
       return true;
       
     }
     else{
-	    console.log('no');
     	return false;
     }
   }
 
-  navigateToLogin(){
-  	 this.events.publish('app:navroot', 'login');
-    console.log('Navigating to another module');
-  }
+ //  navigateToLogin(){
+ //  	 this.events.publish('app:navroot', 'login');
+ //    console.log('Navigating to another module');
+ //  }
 
-  signin(){
+ //  signin(){
   		
-  		this.showLoader =true;
- 		this.appServiceProvider.signIn().then( (token) =>{
+ //  		this.showLoader =true;
+ // 		this.appServiceProvider.signIn().then( (token) =>{
 
-		this.token = token;
- 		console.log(this.token);
- 		this.postRequest();
- 		});
+	// 	this.token = token;
+ // 		console.log(this.token);
+ // 		this.postRequest();
+ // 		});
  		
- 		this.zone.run(() => {});
+ // 		this.zone.run(() => {});
 
 
- 	}
+ // 	}
 
 
- 	postRequest() {
-		var headers = new Headers();
-		headers.append("Accept", 'application/json');
-		headers.append('Content-Type', 'application/json' );
-		// headers.append('Access-Control-Allow-Origin: *');
-		let options = new RequestOptions({ headers: headers });
+ // 	postRequest() {
+	// 	var headers = new Headers();
+	// 	headers.append("Accept", 'application/json');
+	// 	headers.append('Content-Type', 'application/json' );
+	// 	// headers.append('Access-Control-Allow-Origin: *');
+	// 	let options = new RequestOptions({ headers: headers });
 
-		// let token = gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token;
-		let url = 'http://localhost:8000/api/login';
-		// url += `/login?token=${token}`;
-		let postParams = {
-		token : this.token
-		}
+	// 	// let token = gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token;
+	// 	let url = 'http://localhost:8000/api/login';
+	// 	// url += `/login?token=${token}`;
+	// 	let postParams = {
+	// 	token : this.token
+	// 	}
 
-		console.log(url);
-		this.http.post(url,postParams,options)
-		.subscribe(data => {
-		// console.log(JSON.parse(data['_body']));
-		this.status = JSON.parse(data['_body']).status;
+	// 	console.log(url);
+	// 	this.http.post(url,postParams,options)
+	// 	.subscribe(data => {
+	// 	// console.log(JSON.parse(data['_body']));
+	// 	this.status = JSON.parse(data['_body']).status;
 
 
-		console.log(JSON.parse(data['_body']));
+	// 	console.log(JSON.parse(data['_body']));
 
 		
-		this.storage.set('userData', JSON.parse(data['_body']).data).then( () => {
-        console.log("storage set function");
-      });
+	// 	this.storage.set('userData', JSON.parse(data['_body']).data).then( () => {
+ //        console.log("storage set function");
+ //      });
 
-		if(this.status =="success"){
+	// 	if(this.status =="success"){
 
-			this.code= JSON.parse(data['_body']).code;
-			console.log(this.code);
+	// 		this.code= JSON.parse(data['_body']).code;
+	// 		console.log(this.code);
 
-		// this.navigateToSummary();
-			if(this.code === "dash"){
-					this.cookieservice.put("keepLoggedIn","yes");
-					this.events.publish('app:navroot', 'dashboard');
-					}
-			else if( this.code === "join" ){
-				this.events.publish('app:navroot', 'join-organisation');
-			}
-			else{
-				this.events.publish('app:navroot', 'create-organisation');
+	// 	// this.navigateToSummary();
+	// 		if(this.code === "dash"){
+	// 				this.cookieservice.put("keepLoggedIn","yes");
+	// 				this.events.publish('app:navroot', 'dashboard');
+	// 				}
+	// 		else if( this.code === "join" ){
+	// 			this.events.publish('app:navroot', 'join-organisation');
+	// 		}
+	// 		else{
+	// 			this.events.publish('app:navroot', 'create-organisation');
 
-			}
+	// 		}
 
 
-		}
+	// 	}
 
-		else if(this.status =="failure"){
-			console.log(' failure popup ');
-			this.events.publish('app:navroot', 'register');
+	// 	else if(this.status =="failure"){
+	// 		console.log(' failure popup ');
+	// 		this.events.publish('app:navroot', 'register');
 
 			
-			this.errorToast();
+	// 		this.errorToast();
 
-		}
-		}, error => {
-		console.log(error.status);// Error getting the data
-		});
+	// 	}
+	// 	}, error => {
+	// 	console.log(error.status);// Error getting the data
+	// 	});
 
-		this.zone.run(() => {});
-		// console.log(this.status);
+	// 	this.zone.run(() => {});
+	// 	// console.log(this.status);
 
-	}
+	// }
 
 
-	errorToast() {
-      console.log('errorToast function');
+	// errorToast() {
+ //      console.log('errorToast function');
 
-	    let toast = this.toastCtrl.create({
-	      message: 'Domain does not exist',
-	      showCloseButton: true,
-	      closeButtonText: "OK",
-	      position: 'bottom'
-	    });
-	    toast.present();
-	    this.zone.run(() => {});
-	}
+	//     let toast = this.toastCtrl.create({
+	//       message: 'Domain does not exist',
+	//       showCloseButton: true,
+	//       closeButtonText: "OK",
+	//       position: 'bottom'
+	//     });
+	//     toast.present();
+	//     this.zone.run(() => {});
+	// }
 
 }

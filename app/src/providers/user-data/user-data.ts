@@ -56,13 +56,39 @@ export class UserDataProvider {
     
     let postParams = {
     user_id : userId,
-    date_range : date
+    filters : {
+      date_range : date,
+      // period_unit = 'week'
+    }
+    // sort_by : '',
+    // sort_order : ''
+
     };
 
-    let url = `${this.apiURL}/periodData`;
+    let url = `${this.apiURL}/period-data`;
     // console.log(postParams);
     // console.log(userId, date);
 
+
+    return this.http.post(url, postParams, { headers: this.headers })
+                    .map(this.extractData)
+                    .catch(this.handleError);
+  }
+
+  getDaySummary(userId,date,key){
+
+    this.headers = new Headers();
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('X-API-KEY', key);
+    let url = `${this.apiURL}/day-summary`;
+    // console.log(postParams);
+    // console.log(userId, date);
+    let postParams = {
+      user_id : userId,
+      date : '2017-09-12',
+      // cos_offset : ''
+
+    }
 
     return this.http.post(url, postParams, { headers: this.headers })
                     .map(this.extractData)

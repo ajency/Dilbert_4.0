@@ -19,8 +19,8 @@
 <!-- Body starts -->
 <ion-content padding>
 
-
- <div class="container" p-h-20>
+  <sign-in-card [page] = "'register'" > </sign-in-card>
+<!--  <div class="container" p-h-20>
 
  <div  class="login-card" text-center>
       <ion-card>
@@ -45,7 +45,7 @@
 
 
 
-  </div>
+  </div> -->
 </ion-content>
 
 
@@ -54,12 +54,12 @@
 
 <!-- loader code -->
 
-<div *ngIf = "showLoader == true " class="site-loader">
+<!-- <div *ngIf = "showLoader == true " class="site-loader">
   <svg height="120" width="120">
     <line class="pointer" x1="60" y1="60" x2="60" y2="50" />
     <circle class="circle" cx="60" cy="60" r="15" />
     <circle class="center" cx="60" cy="60" r="2.5" />
   </svg>
-</div>
+</div> -->
 
 <!-- loader ends -->

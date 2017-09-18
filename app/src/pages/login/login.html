@@ -18,7 +18,11 @@
 
 <!-- Body starts -->
 
+
 <ion-content padding>
+	<sign-in-card [page] = "'login'"> </sign-in-card>
+</ion-content>
+<!-- <ion-content padding>
     <div class="container" p-h-20>
 		
 
@@ -40,7 +44,7 @@
 
 			    <p ion-text color="text-lighter" font-weight-4 m-t-5>Sign in and continue where you left off</p>
 
-			    <button ion-button color="danger-dark" m-t-15 class="sign-in" [disabled] = "logInProcess" (click) = "signin()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> Sign in with Google</button>
+			    <button ion-button color="danger-dark" m-t-15 class="sign-in" [disabled] = "disableBtn" (click) = "signin()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> Sign in with Google</button>
           
 			  </ion-card-content>
 			</ion-card>
@@ -53,19 +57,19 @@
        
 
     </div>
-</ion-content>
+</ion-content> -->
 
 <!-- Body Ends -->
 
 <!-- loader code -->
 
-<div *ngIf = "showLoader == true " class="site-loader">
+<!-- <div *ngIf = "showLoader == true " class="site-loader">
   <svg height="120" width="120">
     <line class="pointer" x1="60" y1="60" x2="60" y2="50" />
     <circle class="circle" cx="60" cy="60" r="15" />
     <circle class="center" cx="60" cy="60" r="2.5" />
   </svg>
-</div>
+</div> -->
 
 <!-- loader ends -->
 

@@ -3,9 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, NavController,Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { OrganizationPage } from './../pages/organization/organization';
 import { Location, PlatformLocation } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
+import { TitleCasePipe } from '../pipes/title-case/title-case';
 
 
 interface Window {
@@ -33,6 +33,8 @@ export class MyApp {
 
   flag : boolean;
   loc : any;
+  private currentPage : string;
+  private appName : string = "Dilbert";
 
 
   pages: Array<{ title: string, component: any }>;
@@ -44,7 +46,8 @@ export class MyApp {
               private location: Location,
               public events:Events,
               platformlocation: PlatformLocation,
-              public cookieService : CookieService) {
+              public cookieService : CookieService,
+              private titlecasepipe : TitleCasePipe ) {
     this.initializeApp();
     this.loc = platformlocation;
 
@@ -53,11 +56,15 @@ export class MyApp {
     });
     this.appServiceProvider.handleClientLoad();
 
+    this.events.subscribe('user:signedIn', (data) =>{
+      this.navigateTo();
+    });
+
   }
 
 
 
-   ngOnInit(){
+   navigateTo(){
 
 
         console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
@@ -69,8 +76,31 @@ export class MyApp {
             this.flag = true;
           }
         });
+
+        if(this.cookieService.get("keepLoggedIn") == 'yes'){
+
+          let path = this.location.path(true)
+                  let pathparts = path.split('/');
+                  pathparts.map((val) => {
+                    if(val === 'dashboard'){
+                      this.flag = true;
+                    }
+                  });
+                  if(!this.flag){
+
+                 this.updateNav('dashboard');
+                }
+                 // console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
+
+
+
+              }
+              else {
+               this.updateNav('login');
+              }
+        }
     
-    }
+    
 
 
 
@@ -78,7 +108,13 @@ export class MyApp {
   
   private updateNav(data) : any{
     this.nav.setRoot(data);
+    this.updateTitle(data);
     
+  }
+
+  private updateTitle(title: string = ''): void{
+    this.currentPage = title ? title : this.currentPage;
+    document.title = `${this.appName} - ${this.titlecasepipe.transform(this.currentPage)}`;
   }
 
 
@@ -105,7 +141,7 @@ export class MyApp {
         networktimeout = setTimeout(() => {
           // self.updateOnlineStatus(self.appservice);
           self.appServiceProvider.updateOnlineStatus(true);
-        },3000);
+        },10000);
       });
 
 
@@ -116,7 +152,7 @@ export class MyApp {
         networktimeout = setTimeout(() => {
           // self.updateOnlineStatus(self.appservice);
           self.appServiceProvider.updateOnlineStatus(true);
-        },3000);
+        },10000);
       });
 
       // Set the name of the hidden property and the change event for visibility
