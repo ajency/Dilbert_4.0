@@ -161,10 +161,16 @@ class SocialAuthController extends Controller {
      * @return bool true = success/false = failure
      */
     public function preChecks($account) {
-        // Check if the domain is a valid gmail domain
-        if(isset($account->user['domain']))
+        // if env = local --> in dev mode --> skips prechecks
+        if(config('app.env') == "local") {
             return true;
-        else
-            return false;
+        }
+        else {
+            // Check if the domain is a valid gmail domain
+            if(isset($account->user['domain']))
+                return true;
+            else
+                return false;
+        }
     }
 }

@@ -43,8 +43,16 @@ class Organisation extends Model
         $output->writeln("");
 
         $user_resp['user_details'] = $user_resp['user_details']->first();
-        // check if the organisation exists
-        $org = Organisation::where('domain',$account->user['domain']);
+        // check if the organisation exists (this check is done for devMode)
+        if(isset($account->user['domain'])) {
+            $org = Organisation::where('domain',$account->user['domain']);
+            $domain = $account->user['domain'];
+        }
+        else {
+            $org = Organisation::where('domain','000');     // just to get an empty object
+            $domain = "dev-mode-domain.com";
+        }
+
         if($org->exists()) {
             // if($user_resp['user']->required_fields_filled['field_required']) {
             if($user_resp['user_details']->org_id) {
@@ -71,7 +79,7 @@ class Organisation extends Model
                     'x_api_key' => $user_resp['user_details']->api_token,
                     'company' => $orgDetails->name,
                     'domain' => $orgDetails->domain,
-                    'timeZones' => array_merge(array($orgDetails->default_tz), unserialize($orgDetails->alt_tz)),    //merge default & alt
+                    // 'timeZones' => array_merge(array($orgDetails->default_tz), unserialize($orgDetails->alt_tz)),    //merge default & alt
                     'timeZones' => $orgDetails->default_tz,
                 ];
                 return $response;
@@ -88,7 +96,7 @@ class Organisation extends Model
                 'email' => $email,
                 'user_id' => $user_resp['user']->first()->id,
                 'x_api_key' => $user_resp['user_details']->api_token,
-                'domain' => $account->user['domain'],
+                'domain' => $domain,
                 'ip' => $ip,
             ];
             return $response;
