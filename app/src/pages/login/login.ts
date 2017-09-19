@@ -1,12 +1,6 @@
-import { Component, NgZone, Inject } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ToastController } from 'ionic-angular';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { Component} from '@angular/core';
+import { IonicPage } from 'ionic-angular';
 import { CookieService } from 'ngx-cookie';
-import { UserDataProvider } from '../../providers/user-data/user-data';
-
-import { Storage } from '@ionic/storage';
-import { EnvVariables } from '../../config/env.token';
 
 /**
  * Generated class for the LoginPage page.

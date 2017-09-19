@@ -23,9 +23,9 @@
                     <i class="custom-icon indoor"></i> <span>{{getDayDate(sideBarData.data.current.start_time,3)}}</span>
                 </div>
 
-                <div *ngIf = "sideBarData.data.current.start_time == undefined" class="timing in" p-h-12 p-v-12>
+             <!--    <div *ngIf = "sideBarData.data.current.start_time == undefined" class="timing in" p-h-12 p-v-12>
                     <i class="custom-icon indoor"></i> <span>n/a</span>
-                </div>
+                </div> -->
 
                 <div class="timing out" p-h-12 p-v-12 *ngIf = "sideBarData.data.current.leave_status == 'Present'">
                     <i class="custom-icon outdoor"></i> <span ion-text color="success">{{sideBarData.data.current.status}}</span>

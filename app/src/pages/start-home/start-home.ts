@@ -2,9 +2,9 @@
 // import { SideBarData, Dates } from './../../components/summary-sidebar/summary-sidbar.data';
 // import { SummaryContentComponent } from '../../components/summary-content/summary-content';
 // import { SummarySidebarService } from './../../components/summary-sidebar/summary-sidebar.service';
-import { Component, ViewChild, NgZone } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
-import * as moment from 'moment';
+
 
 import { CookieService } from 'ngx-cookie';
 import { UserDataProvider } from '../../providers/user-data/user-data';
@@ -79,7 +79,7 @@ export class StartHomePage {
 
   ionViewDidLoad() {
     this.zone.run(() => {});
-    console.log('ionViewDidLoad dashboard')
+    // console.log('ionViewDidLoad dashboard')
   }
 
 
@@ -110,9 +110,8 @@ export class StartHomePage {
    
   getData(date){
     
-    let date_range = {
-      // start : date;
-      start : '2017-09-12',
+    let date_range={
+      start:'2017-09-04',
     };
     // this.userDataProvider.getUserData(this.userId, date_range, this.key).subscribe( (response) => {
     //   console.log(response, 'response');
@@ -129,34 +128,19 @@ export class StartHomePage {
     // });
 
 
-    let url =  `${this.apiURL}/period-data`;
-    let body = {
-    user_id : this.userId,
-    filters : {
-      date_range : date_range,
-      // period_unit = 'week'
-    }
-  };
- 
+  
     let optionalHeaders = {
       'X-API-KEY' : this.key
     };
 
-    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '').subscribe( (response) => {
-      console.log(response);
-      this.sideBarData = response;
-      this.zone.run(() => {});
 
 
-    });
-
-
-    url = `${this.apiURL}/day-summary`;
+    let url = `${this.apiURL}/day-summary`;
 
     let body2 = {
       user_id : this.userId,
-      date : '2017-09-11',
-      // cos_offset : ''
+      date : '2017-09-04',
+      cos_offset : '15'
     }
 
     this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '').subscribe( (response) => {
@@ -166,6 +150,26 @@ export class StartHomePage {
 
 
     });
+
+
+    url =  `${this.apiURL}/period-data`;
+    let body = {
+      user_id:this.userId,
+      filters:{
+        date_range:date_range,
+        period_unit:'week'
+      }
+    };
+ 
+
+    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '').subscribe( (response) => {
+      console.log(response);
+      this.sideBarData = response;
+      this.zone.run(() => {});
+
+
+    });
+
 
   
   }

@@ -1,10 +1,10 @@
-import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ToastController } from 'ionic-angular';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { Component} from '@angular/core';
+import { IonicPage } from 'ionic-angular';
+// import { Http, Headers, RequestOptions } from '@angular/http';
+// import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { CookieService } from 'ngx-cookie';
 
-import { Storage } from '@ionic/storage';
+// import { Storage } from '@ionic/storage';
 /**
  * Generated class for the RegisterPage page.
  *

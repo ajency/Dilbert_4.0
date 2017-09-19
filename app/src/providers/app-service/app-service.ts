@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Location, PlatformLocation } from '@angular/common';
 import { ToastController, Events, LoadingController } from 'ionic-angular';
+
+
+import * as $ from 'jquery';
 
 import 'rxjs/add/operator/map';
 import { CookieService } from 'ngx-cookie';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/toPromise';
@@ -18,7 +19,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 declare const gapi : any;
-
+declare var jquery:any;
+declare var $ :any;
 
 interface Window {
   addEventListener: any;
@@ -111,7 +113,7 @@ export class AppServiceProvider {
 
 	          console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
 	          that.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-	          console.log(gapi.auth2.getAuthInstance().currentUser.get());
+	          // console.log(gapi.auth2.getAuthInstance().currentUser.get());
 
 
         });
@@ -153,10 +155,21 @@ export class AppServiceProvider {
 
         } 
         else{
-        	this.events.publish('app:navroot', 'login');
+          let path = this.location.path(true)
+          let pathparts = path.split('/');
+          pathparts.map((val) => {
+            if(val === 'register'){
+              this.flag = true;
+            }
+          });
+          if(this.flag){
+        	this.events.publish('app:navroot', 'register');
+        }
+        else{
+          this.events.publish('app:navroot', 'login');
         }
       }
-
+  }
 
    signIn(): any{
 
@@ -210,6 +223,10 @@ export class AppServiceProvider {
     // }
 
     let httpEvent, serializedquery = '';
+    if(Object.keys(body).length){
+        serializedquery =  `?${$.param(body)}`;
+      }
+      console.log(serializedquery);
     if(type == 'get'){
       //TBD construct query params
 
@@ -235,7 +252,7 @@ export class AppServiceProvider {
       return httpEvent
         .toPromise()
         .then((response) => {
-          // this.updateQueryParams(serializedquery,locationpath, disableurlupdate);
+           this.updateQueryParams(serializedquery,locationpath, disableurlupdate);
           return response.json()
         })
         .catch(this.handleError);
@@ -243,13 +260,25 @@ export class AppServiceProvider {
     else{
       return httpEvent
         .map((response) => {
-          // this.updateQueryParams(serializedquery,locationpath, disableurlupdate);
+           this.updateQueryParams(serializedquery,locationpath, disableurlupdate);
           return response.json()
         })
         .catch(this.handleError);
     }
 
 
+  }
+
+
+  private updateQueryParams(query,locationpath, disableupdate){
+    // if(locationpath !== this.location.path(true)) return;
+    if(disableupdate) return;
+
+    let serializedquery = typeof query === 'string' ? query : typeof query === 'object' ? $.param(query) : '';
+
+    if(serializedquery){
+      this.events.publish('app:updatehistory',{page: serializedquery, state: {query: serializedquery}, replace: true});
+    }
   }
 
   public parseRejectedError(error: any): any{
@@ -330,7 +359,7 @@ export class AppServiceProvider {
 
           let content = document.getElementsByTagName('ion-content')[0];
           let container = content.querySelector('div.container');
-          let filtercontainer, filterinputs, filterbuttons, tabularcontainer, tabinputs, tabbuttons, containerinputs, containerbuttons;
+          let containerbuttons;
 
           containerbuttons = container.getElementsByTagName('BUTTON');
 

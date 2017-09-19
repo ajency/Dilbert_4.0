@@ -23,6 +23,7 @@ export class SummarySidebarComponent {
 
   apiURL :any;
   userId : any;
+  summaryContentData : any;
   private myDatePickerOptions: IMyDpOptions = {
         // other options...
         dateFormat: 'yyyy-mm-dd',
@@ -51,7 +52,7 @@ export class SummarySidebarComponent {
               public appGlobalsProvider : AppGlobalsProvider) {
     
     this.apiURL = this.appGlobalsProvider.getApiUrl(); 
-    console.log(this.apiURL);
+    // console.log(this.apiURL);
     let dummy = new Date();
     this.today = {
       day : this.days[dummy.getDay()],
@@ -116,7 +117,7 @@ export class SummarySidebarComponent {
     user_id : data.user_id,
     filters : {
       date_range : date_range,
-      // period_unit = 'week'
+      // period_unit : 'week'
     }
   };
  
@@ -160,8 +161,45 @@ export class SummarySidebarComponent {
   this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
     }
 
+
+
     updateSummaryContent(date : any){
-      this.events.publish('update:content', date);
+
+     let url = `${this.apiURL}/day-summary`;
+
+     
+
+
+      this.storage.get('userData').then((data) => {
+      
+      let body2 = {
+        user_id : data.user_id,
+        date : date.work_date,
+        cos_offset : '15'
+      }
+
+      let optionalHeaders = {
+      'X-API-KEY' : data.x_api_key
+      };
+
+    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '').subscribe( (response) => {
+      console.log(response);
+      this.summaryContentData = response;
+      this.zone.run(() => {});
+
+      let data = {
+        date : date,
+        summaryContentData : this.summaryContentData
+      }
+
+      console.log(data);
+
+      this.events.publish('update:content', data);
+
+    });
+  });
+    
+
 
     }
 

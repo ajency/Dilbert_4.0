@@ -22,11 +22,12 @@ export class JoinOrganisationPage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public cookieservice : CookieService) {
-      this.cookieservice.remove("join");
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad JoinOrganisationPage');
+      this.cookieservice.remove("join");
+    
   }
 
 }

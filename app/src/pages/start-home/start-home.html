@@ -28,7 +28,7 @@
                         <summary-sidebar *ngIf="sideBarData" [test]="sideBarData" class="summary__sidebar" p-h-20 ></summary-sidebar>
                         <!-- Summary sidebar ends -->
                         <!-- Summary content -->
-                        <summary-content *ngIf="summaryContentData" [test]="sideBarData.data.current" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
+                        <summary-content *ngIf="sideBarData" [test]="sideBarData.data.current" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
                         <!-- Summary content ends -->
                     </div>
                 </ion-col>
