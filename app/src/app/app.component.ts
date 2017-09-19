@@ -1,4 +1,5 @@
 import { AppServiceProvider } from '../providers/app-service/app-service';
+import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, NavController,Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -45,9 +46,10 @@ export class MyApp {
               private appServiceProvider: AppServiceProvider,
               private location: Location,
               public events:Events,
-              platformlocation: PlatformLocation,
+              private platformlocation: PlatformLocation,
               public cookieService : CookieService,
-              private titlecasepipe : TitleCasePipe ) {
+              private titlecasepipe : TitleCasePipe,
+              private appglobals : AppGlobalsProvider ) {
     this.initializeApp();
     this.loc = platformlocation;
 
@@ -60,6 +62,57 @@ export class MyApp {
       this.navigateTo();
     });
 
+
+    this.events.subscribe('app:updatehistory',(data) => {
+
+      // this.showVerificationModal();
+
+      // if(this.appglobals.getEnv().ionicEnvName === 'dev') return;
+      // console.log("pushstate data =>" , data)
+      if(data.state){
+        // console.log(data.frompath);
+        let currentlocation = data.frompath ? data.frompath : this.location.path(true);
+        console.log(this.location.path(true));
+        if(currentlocation.indexOf('?') !== -1){
+          let locationparts = currentlocation.split('?');
+          currentlocation = locationparts[0];
+          console.log('inside if');
+        }
+        console.log(currentlocation);
+
+        let page = data.state['query'] ? currentlocation + data.state['query'] : currentlocation + data.page;
+        console.log(page);
+        // let page = window.location.pathname + data.page;
+        if(data.replace){
+          // console.log("pressed replacing url history => ", page)
+          this.platformlocation.replaceState(data.state,"",page);
+          this.appglobals.updateCurrentHistory(page);
+        }
+        else{
+          console.log("pressed pushing url history => ", page)
+          this.platformlocation.pushState(data.state,"",page);
+          this.appglobals.pushToHistory(page);
+        }
+      }
+      else{ // just update the history stack
+        this.appglobals.pushToHistory(data);
+        // this.platformlocation.pushState({page: data},"",data);
+      }
+      // console.log("app:updatehistory",this.appglobals.getHistory());
+    });
+
+     platformlocation.onPopState((event: any) => {
+      // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
+      // let history = this.appglobals.getHistory();
+      this.events.publish('app:popstate',event.state);
+
+      // this.updateNav({page: 'competitors', setroot: true});
+      // if(event.state && event.state.id === 'prices'){
+      //   this.events.publish('app:updatehistory',{page: "test-state", state: {test: "123"}})
+      // }
+    });
+
+
   }
 
 
@@ -69,8 +122,10 @@ export class MyApp {
 
         console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
 
-        let path = this.location.path(true)
+        let path = this.location.path(true);
+
         let pathparts = path.split('/');
+        
         pathparts.map((val) => {
           if(val === 'login'){
             this.flag = true;
@@ -90,14 +145,25 @@ export class MyApp {
 
                  this.updateNav('dashboard');
                 }
+                else{
+                  this.updateTitle('dashboard');
                  // console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
+                }
 
 
 
-              }
-              else {
-               this.updateNav('login');
-              }
+          }
+        else{
+            this.updateNav('login');
+          }
+
+
+
+
+
+
+
+
         }
     
     
@@ -174,11 +240,11 @@ export class MyApp {
         // Handle page visibility change   
         document.addEventListener(visibilityChange, () => {
           if(document[hidden]){
-              console.warn("### window hidden ###");
+              // console.warn("### window hidden ###");
               this.appServiceProvider.setAppFocus(false);
           }
           else{
-              console.warn("@@@ window visible @@@");
+              // console.warn("@@@ window visible @@@");
               this.appServiceProvider.setAppFocus(true);
               this.appServiceProvider.updateOnlineStatus(true);
           }

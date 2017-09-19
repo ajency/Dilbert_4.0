@@ -24,11 +24,14 @@ export class SummaryContentComponent {
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
   constructor( public events : Events) {
-    console.log('SummaryContentComponent Component');
-       this.events.subscribe('update:content',(date) => {
-	   this.currentData = date;
+    // console.log('SummaryContentComponent Component');
+       this.events.subscribe('update:content',(data) => {
+	   this.currentData = data.date;
+     this.day_data = data.summaryContentData.data.day_data;
+     this.logs = data.summaryContentData.data.logs;
+
 	   let d = new Date();
-	   let temp = date.work_date.split("-");
+	   let temp = data.date.work_date.split("-");
 	   d.setFullYear(temp[0], temp[1]-1, temp[2]);
 	   this.today = {
 	   	day : this.days[d.getDay()],
@@ -46,9 +49,9 @@ export class SummaryContentComponent {
       month : this.monthNames[dummy.getMonth()]
     };
 
-    console.log(this.summaryContentData);
-    this.day_data = this.summaryContentData.day_data;
-    this.logs = this.summaryContentData.logs;
+    // console.log(this.summaryContentData);
+    this.day_data = this.summaryContentData.data.day_data;
+    this.logs = this.summaryContentData.data.logs;
   }
 
   getDayDate(date: string, option: number): string {

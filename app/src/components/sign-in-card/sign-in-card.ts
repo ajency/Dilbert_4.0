@@ -1,7 +1,7 @@
-import { Location, PlatformLocation } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, NgZone, Inject, Input } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ToastController } from 'ionic-angular';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { NavController, NavParams, Events, ToastController } from 'ionic-angular';
+import { Http, Headers} from '@angular/http';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { CookieService } from 'ngx-cookie';
 import { UserDataProvider } from '../../providers/user-data/user-data';
@@ -32,6 +32,7 @@ export class SignInCardComponent {
   logInProcess : boolean = false;
   disableBtn : boolean = false;
   loginResponse : any;
+  next_url : any;
   constructor(public navCtrl: NavController,
 			   public navParams: NavParams, 
 			   public http: Http,
@@ -50,6 +51,7 @@ export class SignInCardComponent {
     if(this.cookieservice.get("domainError")== 'yes'){
       this.domainError =true;    
     }
+    this.cookieservice.remove("domainError");
 
 	
 
@@ -123,44 +125,44 @@ export class SignInCardComponent {
 		var headers = new Headers();
 		headers.append("Accept", 'application/json');
 		headers.append('Content-Type', 'application/json' );
-		let options = new RequestOptions({ headers: headers });
+		// let options = new RequestOptions({ headers: headers });
 
-		let url = `${this.environment.dilbertApi}/login?token=${this.token}`;
+		let url = `${this.environment.dilbertApi}/login/google?token=${this.token}`;
 		// let postParams = {
 		// token : this.token
 		// }
 
 		this.appServiceProvider.request(url,'get',{},{},false,'observable', '' ).subscribe(data =>{
 			this.loginResponse = data;
-			console.log(this.loginResponse);
-			this.code = this.loginResponse.code;
+			// console.log(this.loginResponse);
 			this.status = this.loginResponse.status;
+			this.next_url = this.loginResponse.next_url;
 			this.storage.set('userData', this.loginResponse.data).then( () => {
 		      });
 
-				if(this.status =="success"){
+		if(this.status == "200"){
 
 			// this.code= JSON.parse(data['_body']).code;
 
 		// this.navigateToSummary();
-			if(this.code === "dash"){
+			if(this.next_url === "/dashboard"){
 					this.cookieservice.put("keepLoggedIn","yes");
 					this.events.publish('app:navroot', 'dashboard');
 			       
 					}
-			else if( this.code === "join" ){
-				this.events.publish('app:navroot', 'join-organisation');
+			else if( this.next_url === "/join_organisation" ){
 				this.cookieservice.put("join","yes");
+				this.events.publish('app:navroot', 'join-organisation');
 			}
 			else{
-				this.events.publish('app:navroot', 'create-organisation');
 				this.cookieservice.put("create","yes");
+				this.events.publish('app:navroot', 'create-organisation');
 			}
 
 
 		}
 
-		else if(this.status =="failure"){
+		else if(this.status =="400"){
 			this.events.publish('app:navroot', 'login');
 			this.domainError = true;
 			this.cookieservice.put("domainError","yes");

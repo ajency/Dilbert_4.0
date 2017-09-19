@@ -38,7 +38,7 @@ export class UserDataProvider {
           public appServiceProvider : AppServiceProvider,
            @Inject(EnvVariables) private environment) {
     this.apiURL = this.environment.dilbertApi;
-    console.log('environment',this.environment);
+    // console.log('environment',this.environment);
 
    
    

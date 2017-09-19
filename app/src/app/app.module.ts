@@ -16,7 +16,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AuthguardProvider } from '../providers/authguard/authguard';
 
 import { EnvironmentsModule } from '../config/env.module';
-import { ConnectivityServiceProvider } from '../providers/connectivity-service/connectivity-service';
 import { TitleCasePipe } from '../pipes/title-case/title-case';
 import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
 
@@ -59,7 +58,6 @@ import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
     AppServiceProvider,
     UserDataProvider,
     AuthguardProvider,
-    ConnectivityServiceProvider,
     AppGlobalsProvider
   ]
 })

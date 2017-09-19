@@ -11,6 +11,9 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AppGlobalsProvider {
 
+
+  private historyStack: Array<any> = [];
+	
   constructor( @Inject(EnvVariables) private environment) {
     console.log('Hello AppGlobalsProvider Provider');
   }
@@ -18,5 +21,28 @@ export class AppGlobalsProvider {
   getApiUrl(){
   	return this.environment.dilbertApi;
   }
+
+   public updateCurrentHistory(page){
+    if(this.historyStack.length){
+      this.historyStack[this.historyStack.length - 1] = page;
+    }
+    else{
+      this.historyStack.push(page);
+    }
+  }
+
+
+  public pushToHistory(page){
+    this.historyStack.push(page);
+  }
+
+    public getHistory(): Array<any>{
+     let history = this.historyStack.map((page) => {
+       return page;
+     })
+
+     return history;
+  }
+
 
 }

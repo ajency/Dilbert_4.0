@@ -22,11 +22,12 @@ export class CreateOrganisationPage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public cookieservice : CookieService) {
-      this.cookieservice.remove("create");
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CreateOrganisationPage');
+      this.cookieservice.remove("create");
+    
   }
 
 }
