@@ -49,13 +49,13 @@ return [
     ),
     array(
         "table" => "user_details", "model" => "UserDetail", "status" => "create", "columns" => [
-            array("column" => "avatar", "type" => "string", "size" => 150, "nullable" => false,  "default" => ""),
-            array("column" => "lang", "type" => "string", "size" => 10, "nullable" => false,  "default" => ""),
+            array("column" => "avatar", "type" => "string", "size" => 150, "nullable" => true),
+            array("column" => "lang", "type" => "string", "size" => 10, "nullable" => true),
 			array("column" => "timeZone", "type" => "string", "size" => 50, "nullable" => true),
 			array("column" => "joining_date", "type" => "date", "nullable" => true),
-			array("column" => "org_id", "type" => "integer", "nullable" => false,  "default" => 0),
+			array("column" => "org_id", "type" => "integer", "nullable" => true),
 			array("column" => "socket_id", "type" => "string", "size" => 100, "nullable" => true),
-			array("column" => "api_token", "type" => "string", "size" => 100, "nullable" => false,  "default" => ""),
+			array("column" => "api_token", "type" => "string", "size" => 100, "nullable" => true),
 			array("column" => "gender", "type" => "string", "size" => 10, "nullable" => true),
 			array("column" => "dob", "type" => "date", "nullable" => true),
 			array("column" => "app_version", "type" => "string", "size" => 10, "nullable" => true),

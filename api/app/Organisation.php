@@ -39,7 +39,8 @@ class Organisation extends Model
         $output->writeln("");
 
         $output->writeln("getnexturl - required_fields_filled");
-        $output->writeln(json_encode($user_resp["required_fields_filled"]));
+        // $output->writeln(json_encode($user_resp["required_fields_filled"]));
+        $output->writeln($user_resp["required_fields_filled"]["filled_required"]);
         $output->writeln("");
 
         $user_resp['user_details'] = $user_resp['user_details']->first();
@@ -54,8 +55,16 @@ class Organisation extends Model
         }
 
         if($org->exists()) {
-            // if($user_resp['user']->required_fields_filled['field_required']) {
-            if($user_resp['user_details']->org_id) {
+            if($user_resp['required_fields_filled']['filled_required'] == true)
+                $dashFlag = true;
+            else {
+                if(!in_array('org_id',$user_resp['required_fields_filled']['fields_to_be_filled']))
+                    $dashFlag = true;
+                else
+                    $dashFlag = false;
+            }
+            if($dashFlag) {
+            // if($user_resp['user_details']->org_id) {
                 // go to dashboard
                 $response['next_url'] = "/dashboard";
                 $response['status'] = 200;

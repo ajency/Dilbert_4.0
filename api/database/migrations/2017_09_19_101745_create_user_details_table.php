@@ -15,13 +15,13 @@ class CreateUserDetailsTable extends Migration
     {
         Schema::create('user_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('avatar', 150)->default('');
-            $table->string('lang', 10)->default('');
+            $table->string('avatar', 150)->nullable();
+            $table->string('lang', 10)->nullable();
             $table->string('timeZone', 50)->nullable();
             $table->date('joining_date')->nullable();
-            $table->integer('org_id')->default(0);
+            $table->integer('org_id')->nullable();
             $table->string('socket_id', 100)->nullable();
-            $table->string('api_token', 100)->default('');
+            $table->string('api_token', 100)->nullable();
             $table->string('gender', 10)->nullable();
             $table->date('dob')->nullable();
             $table->string('app_version', 10)->nullable();
