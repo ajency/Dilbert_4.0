@@ -116,6 +116,7 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'A' => 
         array (
             'App\\' => 4,
+            'Ajency\\User\\' => 12,
         ),
     );
 
@@ -302,6 +303,10 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
+        'Ajency\\User\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/ajency/user/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -344,14 +349,22 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
     );
 
     public static $classMap = array (
+        'Ajency\\User\\Ajency\\socialaccount\\SocialAccountService' => __DIR__ . '/../..' . '/packages/ajency/user/src/Ajency/socialaccount/SocialAccountService.php',
+        'Ajency\\User\\Ajency\\userauth\\UserAuth' => __DIR__ . '/../..' . '/packages/ajency/user/src/Ajency/userauth/UserAuth.php',
+        'Ajency\\User\\Commands\\CustomMigrationsCommand' => __DIR__ . '/../..' . '/packages/ajency/user/src/Commands/CustomMigrationsCommand.php',
+        'Ajency\\User\\LaravelAjUserServiceProvider' => __DIR__ . '/../..' . '/packages/ajency/user/src/LaravelAjUserServiceProvider.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\Ajency\\User\\SocialAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Ajency/User/SocialAuthController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\LockedDataController' => __DIR__ . '/../..' . '/app/Http/Controllers/LockedDataController.php',
+        'App\\Http\\Controllers\\LogsController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogsController.php',
+        'App\\Http\\Controllers\\OrganisationController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrganisationController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
@@ -369,6 +382,8 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Role' => __DIR__ . '/../..' . '/app/Role.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
+        'App\\UserCommunication' => __DIR__ . '/../..' . '/app/UserCommunication.php',
+        'App\\UserDetail' => __DIR__ . '/../..' . '/app/UserDetail.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',

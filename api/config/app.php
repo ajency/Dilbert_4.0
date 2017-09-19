@@ -178,6 +178,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        'Ajency\User\LaravelAjUserServiceProvider'
+
     ],
 
     /*
@@ -228,6 +230,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+
+        'AjUser' => 'Ajency\User\LaravelAjUserServiceProvider'
 
     ],
 

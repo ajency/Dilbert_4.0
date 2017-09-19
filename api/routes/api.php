@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // initial login validation
-Route::post('/login','Auth\LoginController@authenticateUser');
+Route::get('/login/{provider}','Ajency\User\SocialAuthController@apiSocialAuth');
 // Route::post('/addUSer','LoginController@addUSer');
 // Route::post('/addOrg','LoginController@addOrg');
 

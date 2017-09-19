@@ -19,7 +19,7 @@ class CreateLockedDatasTable extends Migration
             $table->date('work_date');// day the user was working
             $table->timestamp('start_time')->nullable();// from what time user started working
             $table->timestamp('end_time')->nullable();// till what time user was working
-            $table->string('total_time');
+            $table->string('total_time')->nullable();
             $table->string('status')->nullable();// absent, present, leave
             $table->timestamps();
         });
