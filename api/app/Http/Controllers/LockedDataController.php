@@ -25,7 +25,7 @@ class LockedDataController extends Controller
                 // when some valid user accesses this api
                 // check if the user_id exists in the users table
                 if(User::where('id',$request->user_id)->count() != 0)
-                    $user = User::where('id',$request->user_id)->first();
+                    $user = UserDetail::where('user_id',$request->user_id)->first();
                 else
                     return response()->json(['status' => 400, 'message' => 'User does not exist.']);
                 // if($user->can('edit-personal')) {        // role check removed for now
