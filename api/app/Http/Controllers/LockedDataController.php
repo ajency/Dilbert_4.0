@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\User;
+use App\UserDetail;
 use App\Locked_Data;
 use App\Log;
 use App\Organisation;
@@ -20,7 +21,7 @@ class LockedDataController extends Controller
     public function periodData(Request $request) {
         $output = new ConsoleOutput();
         if(!empty($request->user_id) && !empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null) {
-            if(User::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
+            if(UserDetail::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
                 // when some valid user accesses this api
                 // check if the user_id exists in the users table
                 if(User::where('id',$request->user_id)->count() != 0)

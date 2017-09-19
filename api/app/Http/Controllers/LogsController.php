@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 use App\User;
+use App\UserDetail;
 use App\Log;
 use App\Locked_Data;
 
@@ -18,7 +19,7 @@ class LogsController extends Controller
      */
     public function daySummary(Request $request) {
         if(!empty($request->user_id) && !empty($request->date)) {
-            if(User::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
+            if(UserDetail::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
                 // check if a change of state offset is given
                 if(isset($request->cos_offset))
                     $cosOffset = $request->cos_offset;
