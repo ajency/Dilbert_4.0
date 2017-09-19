@@ -18,7 +18,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 class LockedDataController extends Controller
 {
     //
-    public function periodData(Request $request) {
+    public function periodData(Request $request,$locale) {
+        // set the preferred locale
+        App::setLocale($locale);
         $output = new ConsoleOutput();
         if(!empty($request->user_id) && !empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null) {
             if(UserDetail::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
@@ -27,7 +29,7 @@ class LockedDataController extends Controller
                 if(User::where('id',$request->user_id)->count() != 0)
                     $user = UserDetail::where('user_id',$request->user_id)->first();
                 else
-                    return response()->json(['status' => 400, 'message' => 'User does not exist.']);
+                    return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
                 // if($user->can('edit-personal')) {        // role check removed for now
                     // user has permissions to view this data
                     // get the organisation details
@@ -60,7 +62,7 @@ class LockedDataController extends Controller
                         }
                         else
                             //just in case the organisation's period_unit is not set
-                            return response()->json(['status' => 400, 'message' => 'Organisation period unit not set.']);
+                            return response()->json(['status' => 400, 'message' => __('api_messages.org_period_unit')]);
                     }
 
                     //get all the user details from the locked_data table
@@ -87,18 +89,18 @@ class LockedDataController extends Controller
                     $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->orderBy($sortCol, $sortOrder)->get();
                     $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData);
                     $data['periodData'] = $periodData;
-                    return response()->json(['status' => 200, 'message' => "User's periodic data.", 'data' => $data]);
+                    return response()->json(['status' => 200, 'message' => __('api_messages.user_periodic_data'), 'data' => $data]);
                 // }
                 // else {
-                //     return response()->json(['status' => 400, 'message' => 'You do not have the necessary permissions.']);
+                //     return response()->json(['status' => 400, 'message' => __('api_messages.permissions')]);
                 // }
             }
             else {
-                return response()->json(['status' => 400, 'message' => 'You are not authorised.']);
+                return response()->json(['status' => 400, 'message' => __('api_messages.authorisation')]);
             }
         }
         else {
-            return response()->json(['status' => 400, 'message' => 'Some parameters are missing.']);
+            return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
         }
     }
 }

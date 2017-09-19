@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajency\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App;
 use App\Http\Requests;
 use Socialite;
 use App\User;
@@ -72,8 +73,11 @@ class SocialAuthController extends Controller {
 
 
 
-    public function apiSocialAuth(Request $request, $provider) {
+    public function apiSocialAuth(Request $request, $provider, $locale) {
         // try {
+            // set the preferred locale
+            App::setLocale($locale);
+
             $output = new ConsoleOutput();
             // response template
             $response = array("next_url" => "", "status" => 400, "message" => "", "data" => []);
@@ -130,7 +134,7 @@ class SocialAuthController extends Controller {
                     else {
                         $response['next_url'] = "/login";
                         $response['status'] = 400;
-                        $response['message'] = "Domain does not exist on gmail.";
+                        $response['message'] = __('api_messages.missing_domain');
                         return response()->json($response);
                     }
 
@@ -147,7 +151,7 @@ class SocialAuthController extends Controller {
                     return response()->json(array("next_url" => "", "status" => 403, "message" => $valid_response["message"])); // Unauthorized
                 }
         } else { //status == "error"
-            return response()->json(array("next_url" => "", "status" => 400, "message" => "")); // Bad Request
+            return response()->json(array("next_url" => "", "status" => 400, "message" => __('api_messages.bad_request'))); // Bad Request
         }
 
         // } catch (Exception $e) {

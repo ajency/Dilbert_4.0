@@ -17,7 +17,9 @@ class LogsController extends Controller
      * @param  Request $request request parameters
      * @return json object containing that day's summary
      */
-    public function daySummary(Request $request) {
+    public function daySummary(Request $request,$locale) {
+        // set the preferred locale
+        App::setLocale($locale);
         if(!empty($request->user_id) && !empty($request->date)) {
             if(UserDetail::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
                 // check if a change of state offset is given
@@ -101,12 +103,12 @@ class LogsController extends Controller
                 }
                 array_push($logs,['state' => $state, 'start_time' => $start, 'end_time' => $end, 'state_time' => null]);
                 $data['logs'] = $logs;
-                return response()->json(['status' => 200, 'message' => 'User day summary returned.', 'data' => $data]);
+                return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
             }
             else
-                return response()->json(['status' => 400, 'message' => 'You are not authorised.']);
+                return response()->json(['status' => 400, 'message' => __('api_messages.authorisation')]);
         }
         else
-            return response()->json(['status' => 400, 'message' => 'Some parameters are missing']);
+            return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
     }
 }

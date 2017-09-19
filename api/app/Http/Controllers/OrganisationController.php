@@ -10,7 +10,7 @@ use App\Organisation;
 
 class OrganisationController extends Controller
 {
-    public function joinOrAddOrganisation(Request $request) {
+    public function joinOrAddOrganisation(Request $request,$locale) {
         if(isset($request->username) && isset($request->organisation) && $request->header('X-API-KEY')!= null) {    // parameter check
             if(User::where('api_token',$request->header('X-API-KEY'))->count() != 0) {  // authorised user check
                 if($request->has('organisation.id')) {

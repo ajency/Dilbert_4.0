@@ -68,7 +68,8 @@ class Organisation extends Model
                 // go to dashboard
                 $response['next_url'] = "/dashboard";
                 $response['status'] = 200;
-                $response['message'] = "Go to dashboard.";
+                // $response['message'] = "Go to dashboard.";
+                $response['message'] = __('api_messages.goto_dashboard');
                 $response['data'] = [
                     'user_id' => $user_resp['user']->first()->id,
                     'userEmail' => $email,
@@ -81,7 +82,7 @@ class Organisation extends Model
                 // join an organisation
                 $response['next_url'] = "/join_organisation";
                 $response['status'] = 200;
-                $response['message'] = "Join an organisation.";
+                $response['message'] = __('api_messages.join_organisation');
                 $response['data'] = [
                     'email' => $email,
                     'user_id' => $user_resp['user']->id,
@@ -98,7 +99,7 @@ class Organisation extends Model
             // create a new organisation
             $response['next_url'] = "new_organisation";
             $response['status'] = 200;
-            $response['message'] = "Create a new organisation.";
+            $response['message'] = __('api_messages.new_organisation');
             $output->writeln("count user_resp: ".count($user_resp));
             $output->writeln($user_resp['user']->id);
             $response['data'] = [
