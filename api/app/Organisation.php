@@ -89,8 +89,8 @@ class Organisation extends Model
                     'x_api_key' => $user_resp['user_details']->api_token,
                     'company' => $orgDetails->name,
                     'domain' => $orgDetails->domain,
-                    // 'timeZones' => array_merge(array($orgDetails->default_tz), unserialize($orgDetails->alt_tz)),    //merge default & alt
-                    'timeZones' => $orgDetails->default_tz,
+                    'timeZones' => array_merge(array($orgDetails->default_tz), unserialize($orgDetails->alt_tz)),    //merge default & alt
+                    // 'timeZones' => $orgDetails->default_tz,
                 ];
                 return $response;
             }
