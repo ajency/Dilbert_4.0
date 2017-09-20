@@ -58,7 +58,7 @@ class Organisation extends Model
             if($user_resp['required_fields_filled']['filled_required'] == true)
                 $dashFlag = true;
             else {
-                if(!in_array('org_id',$user_resp['required_fields_filled']['fields_to_be_filled']))
+                if(!in_array('user_details-> org_id',$user_resp['required_fields_filled']['fields_to_be_filled']))
                     $dashFlag = true;
                 else
                     $dashFlag = false;
