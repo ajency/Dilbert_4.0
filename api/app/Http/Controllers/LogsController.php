@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+use App;
 use App\User;
 use App\UserDetail;
 use App\Log;
@@ -17,8 +18,12 @@ class LogsController extends Controller
      * @param  Request $request request parameters
      * @return json object containing that day's summary
      */
-    public function daySummary(Request $request,$locale) {
+    public function daySummary(Request $request,$locale = "default") {
         // set the preferred locale
+        if($locale == "default") {
+            $userDets = UserDetail::where('user_id',$request->input('user_id'))->first();
+            $locale = $userDets['lang'];
+        }
         App::setLocale($locale);
         if(!empty($request->user_id) && !empty($request->date)) {
             if(UserDetail::where('api_token',$request->header('X-API-KEY'))->count() != 0) {

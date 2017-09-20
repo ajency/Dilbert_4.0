@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App;
 use App\User;
 use App\UserDetail;
 use App\Locked_Data;
@@ -18,10 +19,14 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 class LockedDataController extends Controller
 {
     //
-    public function periodData(Request $request,$locale) {
-        // set the preferred locale
-        App::setLocale($locale);
+    public function periodData(Request $request,$locale = "default") {
         $output = new ConsoleOutput();
+        // set the preferred locale
+        if($locale == "default") {
+            $userDets = UserDetail::where('user_id',$request->input('user_id'))->first();
+            $locale = $userDets['lang'];
+        }
+        App::setLocale($locale);
         if(!empty($request->user_id) && !empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null) {
             if(UserDetail::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
                 // when some valid user accesses this api

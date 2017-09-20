@@ -73,7 +73,7 @@ class SocialAuthController extends Controller {
 
 
 
-    public function apiSocialAuth(Request $request, $provider, $locale) {
+    public function apiSocialAuth(Request $request, $provider, $locale = "en") {
         // try {
             // set the preferred locale
             App::setLocale($locale);

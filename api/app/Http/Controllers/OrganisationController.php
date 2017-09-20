@@ -10,7 +10,14 @@ use App\Organisation;
 
 class OrganisationController extends Controller
 {
-    public function joinOrAddOrganisation(Request $request,$locale) {
+    public function joinOrAddOrganisation(Request $request,$locale = "default") {
+        // set the preferred locale
+        if($locale == "default") {
+            $userDets = UserDetail::where('user_id',$request->input('user_id'))->first();
+            $locale = $userDets['lang'];
+        }
+        App::setLocale($locale);
+
         if(isset($request->username) && isset($request->organisation) && $request->header('X-API-KEY')!= null) {    // parameter check
             if(User::where('api_token',$request->header('X-API-KEY'))->count() != 0) {  // authorised user check
                 if($request->has('organisation.id')) {
