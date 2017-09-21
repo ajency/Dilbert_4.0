@@ -9,6 +9,7 @@ return array(
     'Ajency\\User\\Ajency\\socialaccount\\SocialAccountService' => $baseDir . '/packages/ajency/user/src/Ajency/socialaccount/SocialAccountService.php',
     'Ajency\\User\\Ajency\\userauth\\UserAuth' => $baseDir . '/packages/ajency/user/src/Ajency/userauth/UserAuth.php',
     'Ajency\\User\\Commands\\CustomMigrationsCommand' => $baseDir . '/packages/ajency/user/src/Commands/CustomMigrationsCommand.php',
+    'Ajency\\User\\Commands\\GenerateRolesPermissionsCommand' => $baseDir . '/packages/ajency/user/src/Commands/GenerateRolesPermissionsCommand.php',
     'Ajency\\User\\LaravelAjUserServiceProvider' => $baseDir . '/packages/ajency/user/src/LaravelAjUserServiceProvider.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',

@@ -352,6 +352,7 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'Ajency\\User\\Ajency\\socialaccount\\SocialAccountService' => __DIR__ . '/../..' . '/packages/ajency/user/src/Ajency/socialaccount/SocialAccountService.php',
         'Ajency\\User\\Ajency\\userauth\\UserAuth' => __DIR__ . '/../..' . '/packages/ajency/user/src/Ajency/userauth/UserAuth.php',
         'Ajency\\User\\Commands\\CustomMigrationsCommand' => __DIR__ . '/../..' . '/packages/ajency/user/src/Commands/CustomMigrationsCommand.php',
+        'Ajency\\User\\Commands\\GenerateRolesPermissionsCommand' => __DIR__ . '/../..' . '/packages/ajency/user/src/Commands/GenerateRolesPermissionsCommand.php',
         'Ajency\\User\\LaravelAjUserServiceProvider' => __DIR__ . '/../..' . '/packages/ajency/user/src/LaravelAjUserServiceProvider.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
