@@ -21,27 +21,11 @@ class Organisation extends Model
      */
     public function getNextUrl($account,$user_resp,$response,$ip) {
         $output = new ConsoleOutput;
-        $output->writeln("");
-        $output->writeln("getNextUrl");
-        $output->writeln("");
 
         // $user_resp['user'] = $user_resp['user']->first();
         $email = $user_resp['user_comm']->first()->value;
 
-        $output->writeln("Email");
-        $output->writeln($email);
-        $output->writeln("");
-
         // $user_resp['user_details'] = $user_resp['user_details']->first();
-
-        $output->writeln("getnexturl - user_details");
-        $output->writeln(json_encode($user_resp["user_details"]));
-        $output->writeln("");
-
-        $output->writeln("getnexturl - required_fields_filled");
-        // $output->writeln(json_encode($user_resp["required_fields_filled"]));
-        $output->writeln($user_resp["required_fields_filled"]["filled_required"]);
-        $output->writeln("");
 
         $user_resp['user_details'] = $user_resp['user_details']->first();
         // check if the organisation exists (this check is done for devMode)
