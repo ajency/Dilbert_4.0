@@ -38,8 +38,6 @@ class LockedDataController extends Controller
                         $user = UserDetail::where('user_id',$request->user_id)->first();
                     else
                         return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
-                    // if($user->can('edit-personal')) {        // role check removed for now
-                        // user has permissions to view this data
                         // get the organisation details
                         $orgDetails = Organisation::where('id',$user->org_id)->first();
                         // check if the start and end dates are given
@@ -98,17 +96,13 @@ class LockedDataController extends Controller
                         $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData);
                         $data['periodData'] = $periodData;
                         return response()->json(['status' => 200, 'message' => __('api_messages.user_periodic_data'), 'data' => $data]);
-                    // }
-                    // else {
-                    //     return response()->json(['status' => 400, 'message' => __('api_messages.permissions')]);
-                    // }
                 }
                 else {
-                    return response()->json(["message" => "you dont have the right permissions."]);
+                    return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
                 }
             }
             else {
-                return response()->json(['status' => 400, 'message' => __('api_messages.authorisation')]);
+                return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
             }
         }
         else {

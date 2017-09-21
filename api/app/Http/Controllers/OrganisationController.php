@@ -33,24 +33,24 @@ class OrganisationController extends Controller
                     if(count($orgDetails) > 0) {
                         // the organisation id provided is valid
                         $orgData = $this->joinOrganisation($request->header('from'),$request->input('organisation.id'));
-                        return response()->json(['status' => 'success', 'message' => 'Organisation joined successfully.', 'data' => $orgData]);
+                        return response()->json(['status' => 'success', 'message' => __('api_messages.org_join_success'), 'data' => $orgData]);
                     }
                     else
-                        return response()->json(['status' => 'failure', 'message' => 'Bad Organisation Id provided.']);
+                        return response()->json(['status' => 'failure', 'message' => __('api_messages.bad_org_id')]);
                 }
                 else {
                     // Add organisation
                     // add a new organisation and link the user to that organisation
                     $orgId = $this->addNewOrganisation($request);
                     $orgData = $this->joinOrganisation($request->header('from'),$orgId);
-                    return response()->json(['status' => 'success', 'message' => 'Organisation created and joined successfully.', 'data' => $orgData]);
+                    return response()->json(['status' => 'success', 'message' => __('api_messages.org_create_n_join_success'), 'data' => $orgData]);
                 }
             }
             else
-                return response()->json(['status' => 'failure', 'message' => 'You are not authorised.']);
+                return response()->json(['status' => 'failure', 'message' => __('api_messages.authorisation')]);
         }
         else
-            return response()->json(['status' => 'failure', 'message' => 'Some parameter are missing.']);
+            return response()->json(['status' => 'failure', 'message' => __('api_messages.params_missing')]);
     }
 
     public function joinOrganisation($userId,$orgId) {
@@ -112,11 +112,9 @@ class OrganisationController extends Controller
 
             $orgId = Organisation::where('name',$request->input('organisation.name'))->first();
             return $orgId->id;
-
         }
         else {
-            return request()->json(['status' => 'success', 'message' => 'Not all organisation parameters are provided.']);
+            return request()->json(['status' => 'success', 'message' => __('api_messages.org_params')]);
         }
-        return response()->json(['message' => 'inside add new organisation']);
     }
 }
