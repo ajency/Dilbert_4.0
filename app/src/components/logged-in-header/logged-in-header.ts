@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {  PopoverController, Events } from 'ionic-angular';
 import { CookieService } from 'ngx-cookie';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
-import { TranslateService } from '@ngx-translate/core';
+// import { TranslateService } from '@ngx-translate/core';
 
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 
@@ -25,7 +25,7 @@ export class LoggedInHeaderComponent {
   };
 
   constructor(
-              private translate: TranslateService,
+              // private translate: TranslateService,
               public popoverCtrl: PopoverController,
               private cookieservice: CookieService,
               public events : Events,

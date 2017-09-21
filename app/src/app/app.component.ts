@@ -10,7 +10,7 @@ import { TitleCasePipe } from '../pipes/title-case/title-case';
 import { TranslateService } from '@ngx-translate/core';
 
 // import {TranslateService, TranslatePipe, TranslateLoader, TranslateStaticLoader} from 'ng2-translate';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+// import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 
 
 import { Inject } from '@angular/core';
@@ -62,10 +62,10 @@ export class MyApp {
     this.initializeApp();
     
     // this language will be used as a fallback when a translation isn't found in the current language
-     translate.setDefaultLang('fr');
+     translate.setDefaultLang('en');
 
     // the lang to use, if the lang isn't available, it will use the current loader to get them
-     translate.use('fr');
+     // translate.use('fr');
 
     this.loc = platformlocation;
 
@@ -85,8 +85,7 @@ export class MyApp {
 
 
 
-
-    this.events.subscribe('app:updatehistory',(data) => {
+ this.events.subscribe('app:updatehistory',(data) => {
 
     // this.showVerificationModal();
 
@@ -110,10 +109,6 @@ export class MyApp {
       // console.log(currentlocation);
       // console.log(data.appendurl);
 
-    this.translate.setDefaultLang('en');
-    
-    // this.translate.use('fr');/
-
 
       if(data.appendurl){
       
@@ -128,11 +123,6 @@ export class MyApp {
       let parts = this.appglobals.getHistory()[length-1].split('?');
       currentlocation =  parts[0] + '?' + parts[1];
       }
-
-  
-  }
-
-
 
       }
 
@@ -234,6 +224,8 @@ navigateTo(){
   
 
   }
+
+
 
 
 

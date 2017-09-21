@@ -22,9 +22,9 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
-import { TranslateModule} from '@ngx-translate/core';
+// import { TranslateModule} from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpModule, Http } from '@angular/http';
+// import { HttpModule, Http } from '@angular/http';
 // import {TranslateModule, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate';
 // import { SummaryContentComponent } from '../components/summary-content/summary-content';
 // import { TestComponent } from '../components/test/test';
