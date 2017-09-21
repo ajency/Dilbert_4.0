@@ -4,6 +4,7 @@ import { LoginPage } from './login';
 // import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { LoggedInHeaderComponentModule } from '../../components/logged-in-header/logged-in-header.module';
 import { SignInCardComponentModule } from '../../components/sign-in-card/sign-in-card.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { SignInCardComponentModule } from '../../components/sign-in-card/sign-in
   ],
   imports: [
     IonicPageModule.forChild(LoginPage),
+    TranslateModule.forChild(),
     LoggedInHeaderComponentModule,
     SignInCardComponentModule
   ],

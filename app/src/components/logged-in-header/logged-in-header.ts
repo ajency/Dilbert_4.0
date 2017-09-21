@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {  PopoverController, Events } from 'ionic-angular';
 import { CookieService } from 'ngx-cookie';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Generated class for the LoggedInHeaderComponent component.
@@ -18,7 +19,9 @@ export class LoggedInHeaderComponent {
   header : any;
   image : any;
 
-  constructor(public popoverCtrl: PopoverController,
+  constructor(
+              private translate: TranslateService,
+              public popoverCtrl: PopoverController,
               private cookieservice: CookieService,
               public events : Events,
               public appservice : AppServiceProvider) {
@@ -47,6 +50,13 @@ export class LoggedInHeaderComponent {
        
     }
 
+  }
+
+  private lang;
+  private setLocale(lang: string){
+    console.log(this.lang)
+    // this.translate.use(this.lang);
+    this.events.publish("app:localize",this.lang);
   }
 
   openPopover(ev) {
