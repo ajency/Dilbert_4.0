@@ -118,19 +118,47 @@ export class SummarySidebarComponent {
       date_range : date_range,
       period_unit : 'week'
     }
+    
     let body = {
     user_id : data.user_id,
     filters : filters
-  };
+    };
  
     let optionalHeaders = {
       'X-API-KEY' : data.x_api_key
     };
 
       this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '' , filters,  false).subscribe( (response) => {
-      console.log(response);
+      // console.log(response);
       this.sideBarData = response;
       this.calculateWeekTotal();
+
+
+      url = `${this.apiURL}/day-summary`;
+
+      let body2 = {
+      user_id : data.user_id,
+      date : ev.formatted,
+      cos_offset : '15'
+    }
+
+    let filter2 = {
+      date : ev.formatted,
+      cos_offset : '15'
+    }
+
+      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
+      // console.log(response);
+      this.summaryContentData = response;
+
+      let data = {
+        date : ev.formatted,
+        summaryContentData : this.summaryContentData
+      }
+
+       this.events.publish('update:content', data);
+
+    });
 
 
     });
@@ -141,26 +169,26 @@ export class SummarySidebarComponent {
    
 
 
-      }
     }
+  }
 
     calculateWeekTotal(){
       let minutes = 0
-    for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
-    {
-      if(this.sideBarData.data.periodData[i].leave_status == "Present")
+      for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
       {
-        let temp = this.sideBarData.data.periodData[i].total_time.split(":");
-        minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
+        if(this.sideBarData.data.periodData[i].leave_status == "Present")
+        {
+          let temp = this.sideBarData.data.periodData[i].total_time.split(":");
+          minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
 
+        }
+        this.loader_percentage =  minutes/2700*100;
+        if(this.loader_percentage>100){
+          this.loader_percentage = 100;
+        }
       }
-      this.loader_percentage =  minutes/2700*100;
-      if(this.loader_percentage>100){
-        this.loader_percentage = 100;
-      }
-    }
 
-  this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+      this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
     }
 
 
@@ -190,7 +218,7 @@ export class SummarySidebarComponent {
       };
 
     this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '' , filters, true).subscribe( (response) => {
-      console.log(response);
+      // console.log(response);
       this.summaryContentData = response;
       this.zone.run(() => {});
 
@@ -199,7 +227,7 @@ export class SummarySidebarComponent {
         summaryContentData : this.summaryContentData
       }
 
-      console.log(data);
+      // console.log(data);
 
       this.events.publish('update:content', data);
 

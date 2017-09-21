@@ -52,7 +52,7 @@ import { HttpModule, Http } from '@angular/http';
     IonicModule.forRoot(MyApp,{
       mode: 'md',
       preloadModules : false,
-      locationStrategy: window.location.hostname == 'localhost' ? 'hash' : 'path' 
+      locationStrategy: window.location.hostname == 'localhost' ? 'path' : 'path' 
     }),
    
   ],

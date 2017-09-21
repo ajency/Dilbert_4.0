@@ -10,6 +10,10 @@ import { TitleCasePipe } from '../pipes/title-case/title-case';
 
 // import {TranslateService, TranslatePipe, TranslateLoader, TranslateStaticLoader} from 'ng2-translate';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+
+
+import { Inject } from '@angular/core';
+
 interface Window {
   location: any
   addEventListener: any;
@@ -37,6 +41,7 @@ export class MyApp {
   loc : any;
   private currentPage : string;
   private appName : string = "Dilbert";
+  url : any;
 
 
   pages: Array<{ title: string, component: any }>;
@@ -52,7 +57,7 @@ export class MyApp {
     private titlecasepipe : TitleCasePipe,
     private appglobals : AppGlobalsProvider,
     public translate: TranslateService,
-     ) {
+    ) {
     this.initializeApp();
     
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -64,7 +69,7 @@ export class MyApp {
     this.loc = platformlocation;
 
     this.events.subscribe('app:navroot',(data) => {
-      this.updateNav(data)
+      this.updateNav(data, '' , '');
     });
     this.appServiceProvider.handleClientLoad();
 
@@ -82,8 +87,8 @@ export class MyApp {
     if(data.state){
       // console.log(data.frompath);
       let currentlocation = data.frompath ? data.frompath : this.location.path(true);
-      console.log(this.location.path(true));
-      console.log(this.location.path());
+      // console.log(this.location.path(true));
+      // console.log(this.location.path());
 
       // if(currentlocation == "")
       // {
@@ -92,20 +97,20 @@ export class MyApp {
       if(currentlocation.indexOf('?') !== -1){
         let locationparts = currentlocation.split('?');
         currentlocation = locationparts[0];
-        console.log('inside if');
+        // console.log('inside if');
       }
-      console.log(currentlocation);
-      console.log(data.appendurl);
+      // console.log(currentlocation);
+      // console.log(data.appendurl);
 
 
       if(data.appendurl){
       
-      console.log(this.appglobals.getHistory());
+      // console.log(this.appglobals.getHistory());
 
 
       
       let length = this.appglobals.getHistory().length;
-      console.log(length);
+      // console.log(length);
 
       if(length!= 0){
       let parts = this.appglobals.getHistory()[length-1].split('?');
@@ -121,7 +126,7 @@ export class MyApp {
      
 
       let page = data.state['query'] ? currentlocation + data.state['query'] : currentlocation + data.page;
-      console.log(page);
+      // console.log(page);
       // let page = window.location.pathname + data.page;
       if(data.replace){
         // console.log("pressed replacing url history => ", page)
@@ -155,44 +160,62 @@ export class MyApp {
 
   }
 
+  ngOnInit(){
+    console.log(this.location.path(true));
+    this.url =this.location.path(true);
+  }
+
 
 navigateTo(){
     console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
 
-    let path = this.location.path(true);
+    // let path = this.location.path(true);
 
-    let pathparts = path.split('/');
+    let pathparts = this.url.split('/');
 
-    pathparts.map((val) => {
-      if(val === 'login'){
-        this.flag = true;
-      }
-    });
 
-    if(this.cookieService.get("keepLoggedIn") == 'yes'){
 
-      let path = this.location.path(true)
-      let pathparts = path.split('/');
+    if(this.cookieService.get("keepLoggedIn") !== 'yes'){
+
+      this.updateNav('login', '', '');
+      
+    }
+
+    else{
+
+      let obj1,obj2;
+
       pathparts.map((val) => {
-        if(val === 'dashboard'){
+      if(val.includes('dashboard')){
           this.flag = true;
+          let pathparts2 = val.split('?');
+          console.log(pathparts2);
+           // console.log(decodeURI(pathparts2[1]));
+           // console.log(JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}'));
+          obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+          obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+
         }
       });
-      if(!this.flag){
+    
 
-       this.updateNav('dashboard');
-     }
-     else{
-      this.updateTitle('dashboard');
-               // console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
-             }
+        if(!this.flag){
+
+           this.updateNav('dashboard','','');
+           // let params = path.split('?');
 
 
+         }
+        
+        else{
 
-           }
-           else{
-            this.updateNav('login');
+          this.updateNav('dashboard', obj1, obj2)
+          // this.updateTitle('dashboard');
           }
+
+    }
+  
+
   }
 
 
@@ -201,9 +224,19 @@ navigateTo(){
 
 
 
-private updateNav(data) : any{
+private updateNav(data, obj1 : any , obj2: any) : any{
+
+  if(data !== 'dashboard'){
   this.nav.setRoot(data);
   this.updateTitle(data);
+  }
+
+  else{
+    console.log(obj1,obj2);
+    this.nav.setRoot(data, {param1 : obj1,
+                            param2 : obj2
+      })
+  }
 
  }
 

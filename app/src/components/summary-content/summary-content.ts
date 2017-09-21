@@ -30,9 +30,17 @@ export class SummaryContentComponent {
      this.day_data = data.summaryContentData.data.day_data;
      this.logs = data.summaryContentData.data.logs;
 
-	   let d = new Date();
-	   let temp = data.date.work_date.split("-");
-	   d.setFullYear(temp[0], temp[1]-1, temp[2]);
+     let d = new Date();
+     let temp;
+     if(data.date.work_date){	   
+	   temp = data.date.work_date.split("-");
+     }
+     else{
+      temp = data.date.split("-");
+    }
+
+     d.setFullYear(temp[0], temp[1]-1, temp[2]);
+
 	   this.today = {
 	   	day : this.days[d.getDay()],
 	   	date : d.getDate(),
@@ -51,6 +59,7 @@ export class SummaryContentComponent {
 
     // console.log(this.summaryContentData);
     this.day_data = this.summaryContentData.data.day_data;
+    console.log(this.day_data);
     this.logs = this.summaryContentData.data.logs;
   }
 

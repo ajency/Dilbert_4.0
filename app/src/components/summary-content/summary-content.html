@@ -30,7 +30,7 @@
     <!-- Detail view -->
 
     <div class="detail-view" p-t-35>
-        <ul class="detail-view__container violated-row" p-h-20 m-h-10>
+        <ul *ngIf = "day_data.length != 0" class="detail-view__container violated-row" p-h-20 m-h-10>
             <!-- <li class="detail-view__cols violated"> -->
             <!-- violation and chat box -->
            <!--  <div class="violated-data">
@@ -112,4 +112,6 @@
             <p class="x-small message" m-v-0 ion-text color="text-lighter"><ion-icon name="time"></ion-icon> You completed {{day_data[0].total_time}} hours today</p>
         </li>
     </ul>
+
+    <div *ngIf = "day_data.length == 0" align="center"> No logs found</div>
 </div>

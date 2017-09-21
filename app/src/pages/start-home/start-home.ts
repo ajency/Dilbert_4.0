@@ -34,10 +34,13 @@ import { Storage } from '@ionic/storage';
  sideBarData: any;
  summaryContentData : any;
  currentDate : any;
+ summaryDate : any;
  userId : any;
  key : any;
  apiURL : any;
  failed : boolean = false;
+ public param1 : any;
+ public param2 : any;
 
  constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -49,6 +52,11 @@ import { Storage } from '@ionic/storage';
   public storage : Storage,
   public appGlobalsProvider : AppGlobalsProvider) {
   this.apiURL = this.appGlobalsProvider.getApiUrl();
+
+  this.param1 = navParams.get("param1");
+  this.param2 = navParams.get("param2");
+
+  console.log(this.param1, this.param2);
   
 }
 
@@ -57,7 +65,39 @@ ngOnInit(){
 
     this.userId = data.user_id;
     this.key = data.x_api_key;
+
+    if(this.param1 == '' && this.param2 == ''){
     this.getUserDate();
+    }
+
+    else {
+
+      if(this.param1 && this.param2){
+        this.currentDate = this.param1.date_rangestart;
+        console.log(this.currentDate);
+
+        if(this.startAndEndOfWeek(this.currentDate, this.param2.date)){
+        this.summaryDate = this.param2.date;
+        console.log(this.summaryDate);
+        this.getData();
+        }
+
+        else{
+
+          this.summaryDate = this.currentDate;
+           this.getData();
+        }
+
+      }
+
+      else if(this.param1){
+        this.currentDate = this.param1.date_rangestart;
+        this.summaryDate = this.param1.date_rangestart;
+        this.getData();
+
+       }
+
+    }
   });
 }
 
@@ -109,33 +149,16 @@ ionViewDidLoad() {
 
 
   
-  getData(date){
+  getData(){
     
     let date_range={
-      start:'2017-09-04',
+      start:this.currentDate,
     };
-    // this.userDataProvider.getUserData(this.userId, date_range, this.key).subscribe( (response) => {
-    //   console.log(response, 'response');
-    //   this.sideBarData = response;
-    //    this.zone.run(() => {});
-    // });
 
-
-    // let current_date = '';
-    // this.userDataProvider.getDaySummary(this.userId, current_date, this.key).subscribe( (response) => {
-    //   console.log(response, 'response');
-    //   this.summaryContentData = response;
-    //    this.zone.run(() => {});
-    // });
-
-
-    
+ 
     let optionalHeaders = {
       'X-API-KEY' : this.key
     };
-
-
-
 
 
     let url =  `${this.apiURL}/period-data`;
@@ -154,7 +177,7 @@ ionViewDidLoad() {
 
 
     this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','', filters, false).subscribe( (response) => {
-      console.log(response);
+      // console.log(response);
       this.sideBarData = response;
       this.failed = true;
       this.zone.run(() => {});
@@ -164,18 +187,18 @@ ionViewDidLoad() {
 
     let body2 = {
       user_id : this.userId,
-      date : '2017-09-04',
+      date : this.summaryDate,
       cos_offset : '15'
     }
 
     let filter2 = {
-      date : '2017-09-04',
+      date : this.summaryDate,
       cos_offset : '15'
     }
 
 
       this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
-      console.log(response);
+      // console.log(response);
       this.summaryContentData = response;
       this.zone.run(() => {});
     });
@@ -190,9 +213,11 @@ ionViewDidLoad() {
   }
 
   getUserDate() {
-    this.currentDate = this.formatDate(new Date());
-
-    this.getData(this.currentDate);
+    // this.currentDate = this.formatDate(new Date());
+    this.currentDate = '2017-09-04';
+    this.summaryDate = '2017-09-04';
+    // this.getData(this.currentDate);
+    this.getData();
     
   }
 
@@ -200,6 +225,40 @@ ionViewDidLoad() {
     let temp = new Date(date);
     return temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-' + temp.getDate();
   }
+
+
+  startAndEndOfWeek(date1, date2) : any {
+
+  // If no date object supplied, use current date
+  // Copy date so don't modify supplied date
+  console.log(date1,date2);
+  var now = new Date(date1);
+
+  // set time to some convenient value
+  now.setHours(0,0,0,0);
+
+  // Get the previous Monday
+  var monday = new Date(now);
+  monday.setDate(monday.getDate() - monday.getDay() + 1);
+
+  // Get next Sunday
+  var sunday = new Date(now);
+  sunday.setDate(sunday.getDate() - sunday.getDay() + 7);
+
+  // Return array of date objects
+  var dayDate = new Date(date2);
+
+  console.log(monday, dayDate, sunday);
+
+  if(monday <= dayDate && dayDate <= sunday){
+    return true;
+  }
+
+  else{
+    return false;
+  }
+}
+
 
 
 }

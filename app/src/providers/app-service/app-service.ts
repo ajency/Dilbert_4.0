@@ -226,7 +226,7 @@ export class AppServiceProvider {
     if(Object.keys(updateurl).length){
       serializedquery =  `?${$.param(updateurl)}`;
     }
-    console.log(serializedquery);
+    // console.log(serializedquery);
     if(type == 'get'){
       //TBD construct query params
 

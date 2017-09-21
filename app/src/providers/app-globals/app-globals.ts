@@ -14,8 +14,33 @@ export class AppGlobalsProvider {
 
   private historyStack: Array<any> = [];
 	
+
+private activeTabsList: any = {
+    
+    dashboard:{
+      component: 'StartHomePage',
+      deeplink: 'dashboard',
+      placeholder: 'Dashboard',
+      active: true
+    },
+    createorganisation:{
+      component: 'CreateOrganisationPage',
+      deeplink: 'create-organisation',
+      placeholder: 'CreateOrganisation',
+      active: true
+    },
+    joinorganisation:{
+      component: 'JoinOrganisationPage',
+      deeplink: 'join-organisation',
+      placeholder: 'JoinOrganisation',
+      active: false
+    }
+  };
+
+
   constructor( @Inject(EnvVariables) private environment) {
     console.log('Hello AppGlobalsProvider Provider');
+    console.log(this.environment);
   }
 
   getApiUrl(){
