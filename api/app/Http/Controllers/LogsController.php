@@ -109,7 +109,8 @@ class LogsController extends Controller
                         else
                             continue;
                     }
-                    array_push($logs,['state' => $state, 'start_time' => $start, 'end_time' => $end, 'state_time' => null]);
+                    if($state != null)
+                        array_push($logs,['state' => $state, 'start_time' => $start, 'end_time' => $end, 'state_time' => null]);
                     $data['logs'] = $logs;
                     return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
                 }
