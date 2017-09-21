@@ -57,6 +57,7 @@ class SocialAuthController extends Controller {
                 if($valid_response["user"]) { // If $valid_response["user"] == None, then Create/Update the User, User Details & User Communications
                     $user_resp = $userauthObj->getUserData($valid_response["user"]);
                 } else {
+                    // assign the role of member to the new user
                     $user_resp = $userauthObj->updateOrCreateUser($social_data["user"], [], $social_data["user_comm"]);
                 }
 
@@ -85,19 +86,11 @@ class SocialAuthController extends Controller {
             $service = new SocialAccountService;
             $token = $request->token;//"ya29.Glu3BER1pDE1i7Y77B7IiDo_He-Z-zcsZqs193WTR57qTGO4Lw3a2XnGjJO_PLjGGs4H-Qvjexh_KdEuNCWL1SjRfyQoiXe0oJfbBJg3BC6LL22FE1Onwjfm7GC9";
 
-            $output->writeln("apiSocialAuth");
 
             $account = Socialite::driver($provider)->userFromToken($token);
             $social_data = $service->getSocialData($account, $provider);
 
-            $output->writeln("");
-            $output->writeln("SocialAuthController - Social Data");
-            $output->writeln(json_encode($social_data));
-            $output->writeln("");
-
             $valid_response = $userauthObj->validateUserLogin($social_data["user"], $provider);
-
-            $output->writeln("SocialAuthController - valid data: ".json_encode($valid_response));
 
             if($valid_response["status"] == "success" || $valid_response["message"] == "no_account") {
                 if ($valid_response["authentic_user"]) { // If the user is Authentic, then
@@ -110,23 +103,13 @@ class SocialAuthController extends Controller {
                             'api_token' => str_random(60),
                         ];
 
-                        $output->writeln("");
-                        $output->writeln("SocialAuthController - user_details before passing");
-                        $output->writeln(json_encode($userDetails));
-                        $output->writeln("");
-
                         if(!$valid_response["user"]) { // If $valid_response["user"] == None, then Create/Update the User, User Details & User Communications
+                            $social_data["user"]["roles"] = "member";
+                            $output->writeln("social_data".json_encode($social_data));
                             $user_resp = $userauthObj->updateOrCreateUser($social_data["user"], $userDetails, $social_data["user_comm"]);
                         } else {
                             $user_resp = $userauthObj->getUserData($valid_response["user"]);
                         }
-
-                        $output->writeln("");
-                        $output->writeln("SocialAuthController - user_resp");
-                        $output->writeln(json_encode($user_resp));
-                        $output->writeln("");
-
-                        $output->writeln(count($user_resp['user_details']));
 
                         return response()->json((new Organisation)->getNextUrl($account,$user_resp,$response,$_SERVER['REMOTE_ADDR']));
 

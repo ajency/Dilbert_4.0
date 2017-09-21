@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Location, PlatformLocation } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
 import { TitleCasePipe } from '../pipes/title-case/title-case';
+import { TranslateService } from '@ngx-translate/core';
 
 // import {TranslateService, TranslatePipe, TranslateLoader, TranslateStaticLoader} from 'ng2-translate';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
@@ -46,18 +47,18 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, 
-    public statusBar: StatusBar, 
-    public splashScreen: SplashScreen,
-    private appServiceProvider: AppServiceProvider,
-    private location: Location,
-    public events:Events,
-    private platformlocation: PlatformLocation,
-    public cookieService : CookieService,
-    private titlecasepipe : TitleCasePipe,
-    private appglobals : AppGlobalsProvider,
-    public translate: TranslateService,
-    ) {
+  constructor(
+              public translate: TranslateService,
+              public platform: Platform, 
+              public statusBar: StatusBar, 
+              public splashScreen: SplashScreen,
+              private appServiceProvider: AppServiceProvider,
+              private location: Location,
+              public events:Events,
+              private platformlocation: PlatformLocation,
+              public cookieService : CookieService,
+              private titlecasepipe : TitleCasePipe,
+              private appglobals : AppGlobalsProvider ) {
     this.initializeApp();
     
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -68,6 +69,11 @@ export class MyApp {
 
     this.loc = platformlocation;
 
+      this.events.subscribe("app:localize",(lang) => {
+      console.log("lang: ", lang);
+      this.translate.use(lang);
+    });
+
     this.events.subscribe('app:navroot',(data) => {
       this.updateNav(data, '' , '');
     });
@@ -76,6 +82,8 @@ export class MyApp {
     this.events.subscribe('user:signedIn', (data) =>{
       this.navigateTo();
     });
+
+
 
 
     this.events.subscribe('app:updatehistory',(data) => {
@@ -102,6 +110,10 @@ export class MyApp {
       // console.log(currentlocation);
       // console.log(data.appendurl);
 
+    this.translate.setDefaultLang('en');
+    
+    // this.translate.use('fr');/
+
 
       if(data.appendurl){
       
@@ -116,6 +128,11 @@ export class MyApp {
       let parts = this.appglobals.getHistory()[length-1].split('?');
       currentlocation =  parts[0] + '?' + parts[1];
       }
+
+  
+  }
+
+
 
       }
 

@@ -2,18 +2,25 @@
 return [
     // SocialAuthController
     "bad_request" => "Mauvaise Demande.",
+    "missing_domain" => "Le domaine n'existe pas sur gmail.",
 
     // Organisation Model
-    "missing_domain" => "Le domaine n'existe pas sur gmail.",
     "goto_dashboard" => "Aller au tableau de bord.",
     "join_organisation" => "Rejoignez une organisation.",
     "new_organisation" => "Créez une nouvelle organisation.",
+
+    // OrganisationController
+    "org_join_success" => "L'organisation s'est jointe avec succès.",
+    "bad_org_id" => "ID de mauvaise organisation fourni.",
+    "org_create_n_join_success" => "Organisation créée et jointe avec succès.",
+    "org_params" => "Tous les paramètres de l'organisation ne sont pas fournis.",
 
     // LockedDataController
     "user_dne" => "L'utilisateur n'existe pas.",
     "org_period_unit" => "L'unité de période d'organisation n'est pas définie.",
     "user_periodic_data" => "Données périodiques de l'utilisateur.",
     "permissions" => "Vous n'avez pas les autorisations nécessaires.",
+    "authentication" => "Vous n'êtes pas authentifié.",
     "authorisation" => "Vous n'êtes pas autorisé.",
     "params_missing" => "Certains paramètres sont manquants.",
 

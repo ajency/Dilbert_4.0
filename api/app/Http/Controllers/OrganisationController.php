@@ -5,8 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
+use App;
 use App\User;
 use App\Organisation;
+use App\UserDetail;
+
+use Ajency\User\Ajency\userauth\UserAuth;
+
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class OrganisationController extends Controller
 {
@@ -19,39 +25,44 @@ class OrganisationController extends Controller
         App::setLocale($locale);
 
         if(isset($request->username) && isset($request->organisation) && $request->header('X-API-KEY')!= null) {    // parameter check
-            if(User::where('api_token',$request->header('X-API-KEY'))->count() != 0) {  // authorised user check
+            if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {  // authorised user check
                 if($request->has('organisation.id')) {
                     // join organisation
                     // if organisation id is present link the user with that organisation
                     $orgDetails = Organisation::where('id',$request->input('organisation.id'))->get();
                     if(count($orgDetails) > 0) {
                         // the organisation id provided is valid
-                        $orgData = $this->joinOrganisation($request->username,$request->input('organisation.id'));
-                        return response()->json(['status' => 'success', 'message' => 'Organisation joined successfully.', 'data' => $orgData]);
+                        $orgData = $this->joinOrganisation($request->header('from'),$request->input('organisation.id'));
+                        return response()->json(['status' => 'success', 'message' => __('api_messages.org_join_success'), 'data' => $orgData]);
                     }
                     else
-                        return response()->json(['status' => 'failure', 'message' => 'Bad Organisation Id provided.']);
+                        return response()->json(['status' => 'failure', 'message' => __('api_messages.bad_org_id')]);
                 }
                 else {
                     // Add organisation
                     // add a new organisation and link the user to that organisation
                     $orgId = $this->addNewOrganisation($request);
-                    $orgData = $this->joinOrganisation($request->username,$orgId);
-                    return response()->json(['status' => 'success', 'message' => 'Organisation created and joined successfully.', 'data' => $orgData]);
+                    $orgData = $this->joinOrganisation($request->header('from'),$orgId);
+                    return response()->json(['status' => 'success', 'message' => __('api_messages.org_create_n_join_success'), 'data' => $orgData]);
                 }
             }
             else
-                return response()->json(['status' => 'failure', 'message' => 'You are not authorised.']);
+                return response()->json(['status' => 'failure', 'message' => __('api_messages.authorisation')]);
         }
         else
-            return response()->json(['status' => 'failure', 'message' => 'Some parameter are missing.']);
+            return response()->json(['status' => 'failure', 'message' => __('api_messages.params_missing')]);
     }
 
-    public function joinOrganisation($userName,$orgId) {
+    public function joinOrganisation($userId,$orgId) {
+        $output = new ConsoleOutput;
         //get the organisation details
         $orgDetails = Organisation::where('id',$orgId)->first();
         // update the org_id in user table and set timezone as default and is_active attribute as 1
-        $user = User::where('email',$userName)->update(['org_id' => $orgDetails->id, 'timeZone' => $orgDetails->default_tz, 'is_active' => true]);
+        // $user = User::where('email',$userName)->update(['org_id' => $orgDetails->id, 'timeZone' => $orgDetails->default_tz, 'is_active' => true]);
+        $userObj = User::where('id',$userId)->first();
+        $output->writeln("user_obj".$userId.json_encode($userObj));
+        $updateResponse = (new UserAuth)->updateOrCreateUserDetails($userObj, ['org_id' => $orgDetails->id]);
+        $output->writeln("+++++++++++++++++++++".json_encode($updateResponse));
         // return the organisation data
         $orgData  = ['id' => $orgDetails->id, 'name' => $orgDetails->name];
         return $orgData;
@@ -101,11 +112,9 @@ class OrganisationController extends Controller
 
             $orgId = Organisation::where('name',$request->input('organisation.name'))->first();
             return $orgId->id;
-
         }
         else {
-            return request()->json(['status' => 'success', 'message' => 'Not all organisation parameters are provided.']);
+            return request()->json(['status' => 'success', 'message' => __('api_messages.org_params')]);
         }
-        return response()->json(['message' => 'inside add new organisation']);
     }
 }
