@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Location, PlatformLocation } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
 import { TitleCasePipe } from '../pipes/title-case/title-case';
+import { TranslateService } from '@ngx-translate/core';
 
 
 interface Window {
@@ -40,7 +41,9 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, 
+  constructor(
+              public translate: TranslateService,
+              public platform: Platform, 
               public statusBar: StatusBar, 
               public splashScreen: SplashScreen,
               private appServiceProvider: AppServiceProvider,
@@ -112,10 +115,15 @@ export class MyApp {
       // }
     });
 
+    this.translate.setDefaultLang('en');
+    
+    // this.translate.use('fr');/
 
+    this.events.subscribe("app:localize",(lang) => {
+      console.log("lang: ", lang);
+      this.translate.use(lang);
+    });
   }
-
-
 
    navigateTo(){
 

@@ -21,6 +21,7 @@ import { CookieService } from 'ngx-cookie';
 })
 export class LoginPage {
 
+	private param: any = 'test user';
  //  loginData : any;
  //  // showLoader : boolean;
  //  token : any;
@@ -41,6 +42,8 @@ export class LoginPage {
 
    
  //  }
+	
+
 
   ionViewCanEnter( ){
     if(this.cookieservice.get("keepLoggedIn") !== 'yes'){

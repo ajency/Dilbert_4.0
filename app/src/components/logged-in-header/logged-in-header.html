@@ -31,15 +31,16 @@
                   </div>
                 </div>
                 <div class="relative lang-container">
-                    <ion-select class="select-lang mobile-hide" color="gray-link" interface="popover">
-                        <ion-option selected="true" value="eng">
+                    <ion-select [(ngModel)]="lang" (ionChange)="setLocale()" class="select-lang mobile-hide" color="gray-link" interface="popover">
+                        <ion-option selected="true" value="en">
                             English
                         </ion-option>
-                        <ion-option value="french">
+                        <ion-option value="fr">
                             French
                         </ion-option>
                     </ion-select>
                 </div>
+                  <div>{{ 'HELLO' | translate }}</div>  
             </div>
             <div class="dilbert-nav__right nav-cols">
                 <!-- Notification -->
