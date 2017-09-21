@@ -113,19 +113,21 @@ export class SummarySidebarComponent {
     //   this.calculateWeekTotal()
     // });
     let url =  `${this.apiURL}/period-data`;
+
+    let filters = {
+      date_range : date_range,
+      period_unit : 'week'
+    }
     let body = {
     user_id : data.user_id,
-    filters : {
-      date_range : date_range,
-      // period_unit : 'week'
-    }
+    filters : filters
   };
  
     let optionalHeaders = {
       'X-API-KEY' : data.x_api_key
     };
 
-      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '').subscribe( (response) => {
+      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '' , filters,  false).subscribe( (response) => {
       console.log(response);
       this.sideBarData = response;
       this.calculateWeekTotal();
@@ -178,11 +180,16 @@ export class SummarySidebarComponent {
         cos_offset : '15'
       }
 
+      let filters = {
+        date : date.work_date,
+        cos_offset : '15'
+      }
+
       let optionalHeaders = {
       'X-API-KEY' : data.x_api_key
       };
 
-    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '').subscribe( (response) => {
+    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '' , filters, true).subscribe( (response) => {
       console.log(response);
       this.summaryContentData = response;
       this.zone.run(() => {});

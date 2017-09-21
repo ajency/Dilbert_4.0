@@ -28,8 +28,9 @@
                         <summary-sidebar *ngIf="sideBarData" [test]="sideBarData" class="summary__sidebar" p-h-20 ></summary-sidebar>
                         <!-- Summary sidebar ends -->
                         <!-- Summary content -->
-                        <summary-content *ngIf="sideBarData" [test]="sideBarData.data.current" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
+                        <summary-content *ngIf="sideBarData && summaryContentData" [test]="sideBarData.data.current" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
                         <!-- Summary content ends -->
+                        <div *ngIf = "sideBarData == null && failed"> Couldn't load results at the moment! </div>
                     </div>
                 </ion-col>
                 <ion-col class="col dashboard__leaves mobile-hide" col-12 col-md-12 col-lg-4 p-h-0 p-v-0>

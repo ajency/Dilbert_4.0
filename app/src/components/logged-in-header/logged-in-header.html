@@ -26,7 +26,7 @@
                   </div>
                   <div *ngIf="header == 'notloggedin' || header == 'new' " class="brand-name" font-weight-4="" start="">
                       <p color="secondary" ion-text="" no-margin="" p-h-10>
-                          DILBERT
+                          {{ 'DILBERT' | translate}}
                       </p>
                   </div>
                 </div>
@@ -44,7 +44,8 @@
             <div class="dilbert-nav__right nav-cols">
                 <!-- Notification -->
                 <button (click)="navigateToLogin()" *ngIf="header == 'notloggedin' " class="" clear="" color="gray-link" ion-button="" text-capitalize="">
-                    Login
+                {{ 'login' | translate}}
+                    
                 </button>
                 <button (click)="navigateToRegister()" *ngIf="header == 'notloggedin' " class="" clear="" color="gray-link" ion-button="" text-capitalize="">
                     Register

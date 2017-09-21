@@ -19,46 +19,47 @@ import { Storage } from '@ionic/storage';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@IonicPage({
+ @IonicPage({
   name: 'dashboard',
   segment: 'dashboard',
   priority: 'off'
 })
-@Component({
+ @Component({
   selector: 'page-start-home',
   templateUrl: 'start-home.html',
   // providers: [SummarySidebarService]
 })
-export class StartHomePage {
+ export class StartHomePage {
  // @ViewChild(SummaryContentComponent) sideContentObj: SummaryContentComponent;
-  sideBarData: any;
-  summaryContentData : any;
-  currentDate : any;
-  userId : any;
-  key : any;
-  apiURL : any;
+ sideBarData: any;
+ summaryContentData : any;
+ currentDate : any;
+ userId : any;
+ key : any;
+ apiURL : any;
+ failed : boolean = false;
 
-  constructor(public navCtrl: NavController, 
-              public navParams: NavParams,
-              public popoverCtrl: PopoverController, 
-              private cookieservice: CookieService,
-              public zone : NgZone,
-              public userDataProvider : UserDataProvider,
-              public appServiceProvider : AppServiceProvider,
-              public storage : Storage,
-              public appGlobalsProvider : AppGlobalsProvider) {
-    this.apiURL = this.appGlobalsProvider.getApiUrl();
-     
-  }
+ constructor(public navCtrl: NavController, 
+  public navParams: NavParams,
+  public popoverCtrl: PopoverController, 
+  private cookieservice: CookieService,
+  public zone : NgZone,
+  public userDataProvider : UserDataProvider,
+  public appServiceProvider : AppServiceProvider,
+  public storage : Storage,
+  public appGlobalsProvider : AppGlobalsProvider) {
+  this.apiURL = this.appGlobalsProvider.getApiUrl();
+  
+}
 
-  ngOnInit(){
-    this.storage.get('userData').then((data) => {
+ngOnInit(){
+  this.storage.get('userData').then((data) => {
 
-      this.userId = data.user_id;
-      this.key = data.x_api_key;
-      this.getUserDate();
-    });
-  }
+    this.userId = data.user_id;
+    this.key = data.x_api_key;
+    this.getUserDate();
+  });
+}
 
  // openPopover(myEvent) {
  //    let popover = this.popoverCtrl.create(PopoverContentPage);
@@ -67,18 +68,18 @@ export class StartHomePage {
  //    });
  //  }
 
-  openStyle(){
+ openStyle(){
 
-    var navOption = {
-      animation: "ios-transition"
-      }
-    
-    this.navCtrl.push('StyleGuidePage',{},navOption);
+  var navOption = {
+    animation: "ios-transition"
   }
+  
+  this.navCtrl.push('StyleGuidePage',{},navOption);
+}
 
 
-  ionViewDidLoad() {
-    this.zone.run(() => {});
+ionViewDidLoad() {
+  this.zone.run(() => {});
     // console.log('ionViewDidLoad dashboard')
   }
 
@@ -107,7 +108,7 @@ export class StartHomePage {
   }
 
 
-   
+  
   getData(date){
     
     let date_range={
@@ -128,14 +129,38 @@ export class StartHomePage {
     // });
 
 
-  
+    
     let optionalHeaders = {
       'X-API-KEY' : this.key
     };
 
 
 
-    let url = `${this.apiURL}/day-summary`;
+
+
+    let url =  `${this.apiURL}/period-data`;
+
+    let filters = {
+        date_range:date_range,
+        period_unit:'week'
+      };
+
+    let body = {
+      user_id:this.userId,
+      filters : filters
+    };
+    
+
+
+
+    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','', filters, false).subscribe( (response) => {
+      console.log(response);
+      this.sideBarData = response;
+      this.failed = true;
+      this.zone.run(() => {});
+
+
+    url = `${this.apiURL}/day-summary`;
 
     let body2 = {
       user_id : this.userId,
@@ -143,43 +168,33 @@ export class StartHomePage {
       cos_offset : '15'
     }
 
-    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '').subscribe( (response) => {
+    let filter2 = {
+      date : '2017-09-04',
+      cos_offset : '15'
+    }
+
+
+      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
       console.log(response);
       this.summaryContentData = response;
       this.zone.run(() => {});
+    });
+
+
 
 
     });
 
 
-    url =  `${this.apiURL}/period-data`;
-    let body = {
-      user_id:this.userId,
-      filters:{
-        date_range:date_range,
-        period_unit:'week'
-      }
-    };
- 
-
-    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '').subscribe( (response) => {
-      console.log(response);
-      this.sideBarData = response;
-      this.zone.run(() => {});
-
-
-    });
-
-
-  
+    
   }
 
   getUserDate() {
-          this.currentDate = this.formatDate(new Date());
+    this.currentDate = this.formatDate(new Date());
 
-          this.getData(this.currentDate);
-         
-    }
+    this.getData(this.currentDate);
+    
+  }
 
   formatDate(date) {
     let temp = new Date(date);
