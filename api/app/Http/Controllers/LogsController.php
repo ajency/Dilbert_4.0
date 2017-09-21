@@ -26,7 +26,7 @@ class LogsController extends Controller
         }
         App::setLocale($locale);
         if(!empty($request->user_id) && !empty($request->date)) {
-            if(UserDetail::where('api_token',$request->header('X-API-KEY'))->count() != 0) {
+            if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
                 // check if a change of state offset is given
                 if(isset($request->cos_offset))
                     $cosOffset = $request->cos_offset;
