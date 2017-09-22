@@ -63,6 +63,7 @@ export class MyApp {
     
     // this language will be used as a fallback when a translation isn't found in the current language
      translate.setDefaultLang('en');
+     this.appglobals.lang = 'en';
 
     // the lang to use, if the lang isn't available, it will use the current loader to get them
      // translate.use('fr');
@@ -70,8 +71,8 @@ export class MyApp {
     this.loc = platformlocation;
 
       this.events.subscribe("app:localize",(lang) => {
-      console.log("lang: ", lang);
       this.translate.use(lang);
+      this.appglobals.lang = lang;
     });
 
     this.events.subscribe('app:navroot',(data) => {
@@ -138,7 +139,7 @@ export class MyApp {
       if(data.replace){
         // console.log("pressed replacing url history => ", page)
         this.platformlocation.replaceState(data.state,"",page);
-        this.appglobals.updateCurrentHistory(page);
+        this.appglobals.pushToHistory(page);
       }
       else{
         console.log("pressed pushing url history => ", page)
@@ -153,16 +154,19 @@ export class MyApp {
     // console.log("app:updatehistory",this.appglobals.getHistory());
   });
 
-    platformlocation.onPopState((event: any) => {
-    // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
-    // let history = this.appglobals.getHistory();
-    this.events.publish('app:popstate',event.state);
+     platformlocation.onPopState((event: any) => {
+      // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
+      let history = this.appglobals.getHistory();
+      console.log(event);
+      console.log(history);
+      // this.events.publish('app:popstate',event.state);
 
-    // this.updateNav({page: 'competitors', setroot: true});
-    // if(event.state && event.state.id === 'prices'){
-    //   this.events.publish('app:updatehistory',{page: "test-state", state: {test: "123"}})
-    // }
-  });
+      // this.updateNav({page: 'competitors', setroot: true});
+      // if(event.state && event.state.id === 'prices'){
+      //   this.events.publish('app:updatehistory',{page: "test-state", state: {test: "123"}})
+      // }
+    });
+
 
 
   }
@@ -197,10 +201,23 @@ navigateTo(){
           this.flag = true;
           let pathparts2 = val.split('?');
           console.log(pathparts2);
+
+
+          if(pathparts2.length == 1){
+            return;
+          }
+
+          else if(pathparts2.length == 2){
            // console.log(decodeURI(pathparts2[1]));
            // console.log(JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}'));
           obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+
+        }
+        else if(pathparts2.length == 3){
+          obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
           obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+
+          }
 
         }
       });
@@ -215,10 +232,12 @@ navigateTo(){
          }
         
         else{
-
+        
+          if(obj1 != undefined && obj2 != undefined){
           this.updateNav('dashboard', obj1, obj2)
           // this.updateTitle('dashboard');
           }
+        }
 
     }
   
@@ -245,6 +264,7 @@ private updateNav(data, obj1 : any , obj2: any) : any{
     this.nav.setRoot(data, {param1 : obj1,
                             param2 : obj2
       })
+    this.updateTitle(data);
   }
 
  }
@@ -258,6 +278,8 @@ private updateTitle(title: string = ''): void{
 initializeApp() {
 
   this.checkNetwork();
+
+ 
 }
 
 

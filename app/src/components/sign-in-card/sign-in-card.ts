@@ -8,6 +8,7 @@ import { UserDataProvider } from '../../providers/user-data/user-data';
 
 import { Storage } from '@ionic/storage';
 import { EnvVariables } from '../../config/env.token';
+import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 
 
 /**
@@ -37,6 +38,7 @@ export class SignInCardComponent {
   constructor(public navCtrl: NavController,
 			   public navParams: NavParams, 
 			   public http: Http,
+			   public appglobals : AppGlobalsProvider,
 			   public events: Events,
 			   private appServiceProvider: AppServiceProvider,
 			   private cookieservice: CookieService,
@@ -128,7 +130,8 @@ export class SignInCardComponent {
 		headers.append('Content-Type', 'application/json' );
 		// let options = new RequestOptions({ headers: headers });
 
-		let url = `${this.environment.dilbertApi}/login/google?token=${this.token}`;
+		let url = `${this.environment.dilbertApi}/login/google/${this.appglobals.lang}?token=${this.token}`;
+		console.log(url);
 		// let postParams = {
 		// token : this.token
 		// }

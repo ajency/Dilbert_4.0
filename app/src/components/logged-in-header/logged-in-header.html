@@ -26,21 +26,21 @@
                   </div>
                   <div *ngIf="header == 'notloggedin' || header == 'new' " class="brand-name" font-weight-4="" start="">
                       <p color="secondary" ion-text="" no-margin="" p-h-10>
-                          {{ 'DILBERT' | translate}}
+                          DILBERT
                       </p>
                   </div>
                 </div>
                 <div class="relative lang-container">
                     <ion-select [(ngModel)]="lang" (ionChange)="setLocale()" class="select-lang mobile-hide" color="gray-link" interface="popover">
-                        <ion-option selected="true" value="en">
+                        <ion-option selected = "{{langSelect}}"  value="en">
                             English
                         </ion-option>
-                        <ion-option value="fr">
+                        <ion-option selected = "{{!langSelect}}" value="fr">
                             French
                         </ion-option>
                     </ion-select>
                 </div>
-                  <div>{{ 'HELLO' | translate }}</div>  
+                 
             </div>
             <div class="dilbert-nav__right nav-cols">
                 <!-- Notification -->
@@ -49,10 +49,10 @@
                     
                 </button>
                 <button (click)="navigateToRegister()" *ngIf="header == 'notloggedin' " class="" clear="" color="gray-link" ion-button="" text-capitalize="">
-                    Register
+                    {{ 'register' | translate }}
                 </button>
                 <button *ngIf="header == 'new' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
-                    Contact Us
+                    {{ 'contact us' | translate}}
                 </button>
                <!--  <button *ngIf="header == 'loggedin' " class="notify hvr-pulse-grow mobile-hide" clear="" icon-only="" ion-button="" m-r-10="">
                     <ion-icon color="dark" name="notifications-outline">

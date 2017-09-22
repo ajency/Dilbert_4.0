@@ -66,7 +66,7 @@ ngOnInit(){
     this.userId = data.user_id;
     this.key = data.x_api_key;
 
-    if(this.param1 == '' && this.param2 == ''){
+    if((this.param1 == '' && this.param2 == '') || (this.param1 == undefined && this.param2 == undefined) ){
     this.getUserDate();
     }
 
@@ -157,12 +157,13 @@ ionViewDidLoad() {
 
  
     let optionalHeaders = {
-      'X-API-KEY' : this.key
+      'X-API-KEY' : this.key,
+      'From' : this.userId
     };
 
 
-    let url =  `${this.apiURL}/period-data`;
-
+    let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
+    console.log(url);
     let filters = {
         date_range:date_range,
         period_unit:'week'
@@ -183,8 +184,8 @@ ionViewDidLoad() {
       this.zone.run(() => {});
 
 
-    url = `${this.apiURL}/day-summary`;
-
+    url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
+    console.log(url);
     let body2 = {
       user_id : this.userId,
       date : this.summaryDate,

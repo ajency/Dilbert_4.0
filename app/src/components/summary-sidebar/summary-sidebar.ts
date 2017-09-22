@@ -112,8 +112,8 @@ export class SummarySidebarComponent {
     //   this.sideBarData = response;
     //   this.calculateWeekTotal()
     // });
-    let url =  `${this.apiURL}/period-data`;
-
+    let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
+    console.log(url);
     let filters = {
       date_range : date_range,
       period_unit : 'week'
@@ -125,7 +125,8 @@ export class SummarySidebarComponent {
     };
  
     let optionalHeaders = {
-      'X-API-KEY' : data.x_api_key
+      'X-API-KEY' : data.x_api_key,
+      'From' : data.user_id,
     };
 
       this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '' , filters,  false).subscribe( (response) => {
@@ -134,8 +135,8 @@ export class SummarySidebarComponent {
       this.calculateWeekTotal();
 
 
-      url = `${this.apiURL}/day-summary`;
-
+      url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
+      console.log(url);
       let body2 = {
       user_id : data.user_id,
       date : ev.formatted,
@@ -195,7 +196,7 @@ export class SummarySidebarComponent {
 
     updateSummaryContent(date : any){
 
-     let url = `${this.apiURL}/day-summary`;
+     let url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
 
      
 
@@ -214,7 +215,8 @@ export class SummarySidebarComponent {
       }
 
       let optionalHeaders = {
-      'X-API-KEY' : data.x_api_key
+      'X-API-KEY' : data.x_api_key,
+      'From' : data.user_id
       };
 
     this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '' , filters, true).subscribe( (response) => {

@@ -1,3 +1,21 @@
 {
-	"login" : "xyz"
-	}
+
+	  "login" : "Login",
+	  "register" : "Register",
+	  "contact us" : "Contact Us",
+	  "by" : "By",
+
+
+	  "hero_title" : "Track Time. Record Work",
+	  "account_exist" : "Have an existing account?",
+	  "sign_in" : "Sign in",
+	  "sign_up" : "Sign up",
+	  "n_cont_whr_u_left_off" : "and continue where you left off",
+	  "with_google" : "with Google",
+	   "_change_ur_work_way" : ", change your way of work!",
+	  "already_hv_acc_in_dil" : "Already have an account on Dilbert?",
+	  "not_conn_2_dilbert" : "Haven't connected to Dilbert yet?",
+	  "conn_using_google_acc" : "Just connect your Google account"
+
+
+}

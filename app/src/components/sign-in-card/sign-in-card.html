@@ -4,37 +4,40 @@
 
 	<div class="login-card" text-center>
 		<ion-card>
+			
+			<img src="./../../assets/img/dilbert.jpg" width="80">
+			<ion-card-content>
+				<ion-card-title>
+					<h2 ion-text text-uppercase class="login-card__title" m-b-8>Dilbert</h2>
+					<p ion-text color="text-lighter" font-weight-4>{{ hero_title | translate }}</p>
+				</ion-card-title>
+				<hr>
+				<h5 *ngIf = "login" class="login-card__title2" m-t-15>{{ 'account_exist' | translate }}</h5>
+				<h5 *ngIf ="!login" class="login-card__title2" m-t-15>{{ 'sign_up' | translate }} {{ '_change_ur_work_way' | translate }}</h5>
+
+				<p *ngIf = "login" ion-text color="text-lighter" font-weight-4 m-t-5>{{ 'sign_in' | translate }} {{ 'n_cont_whr_u_left_off' | translate }}</p>
+				<p *ngIf = "!login" ion-text color="text-lighter" font-weight-4 m-t-5> {{'conn_using_google_acc' | translate}} </p>
+
+
+				<button *ngIf = "login" ion-button color="danger-dark" m-t-15 class="sign-in" [disabled] = "disableBtn" [ngClass]="{loading: disableBtn}" (click) = "signin()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> {{'sign_in' | translate}} {{'with_google' | translate }}</button>
+
+				<button *ngIf = "!login" ion-button color="danger-dark" m-t-15 class="sign-in" [disabled] = "disableBtn" [ngClass]="{loading: disableBtn}" (click) = "signin()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> {{ 'sign_up' | translate }} {{'with_google' | translate }}</button>
+				
+			</ion-card-content>
+
 			<ion-card *ngIf = "domainError" class="alert-error">
 				<ion-card-header>
 					Domain does not exist
 				</ion-card-header>
 			</ion-card>
-			<img src="./../../assets/img/dilbert.jpg" width="80">
-			<ion-card-content>
-				<ion-card-title>
-					<h2 ion-text text-uppercase class="login-card__title" m-b-8>Dilbert</h2>
-					<p ion-text color="text-lighter" font-weight-4>Track Time. Record Work</p>
-				</ion-card-title>
-				<hr>
-				<h5 *ngIf = "login" class="login-card__title2" m-t-15>Have an existing account?</h5>
-				<h5 *ngIf ="!login" class="login-card__title2" m-t-15>Sign up, change your way of work</h5>
-
-				<p *ngIf = "login" ion-text color="text-lighter" font-weight-4 m-t-5>Sign in and continue where you left off</p>
-				<p *ngIf = "!login" ion-text color="text-lighter" font-weight-4 m-t-5>Just connect your Google account</p>
-
-
-				<button *ngIf = "login" ion-button color="danger-dark" m-t-15 class="sign-in" [disabled] = "disableBtn" (click) = "signin()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> Sign in with Google</button>
-
-				<button *ngIf = "!login" ion-button color="danger-dark" m-t-15 class="sign-in" (click) = "signin()"> <ion-icon name="logo-googleplus" p-r-10></ion-icon> Sign up with Google</button>
-				
-			</ion-card-content>
+			
 		</ion-card>
 
-		<div *ngIf = "login" ion-text p-t-20 m-b-0 class="sign-text">Haven't connected to Dilbert yet?</div>
-		<button *ngIf = "login" ion-button color="primary" clear class="sign-up" (click)="navigateTo()" >Sign up!</button>
+		<div *ngIf = "login" ion-text p-t-20 m-b-0 class="sign-text">{{ 'not_conn_2_dilbert' | translate }}</div>
+		<button *ngIf = "login" ion-button color="primary" clear class="sign-up" (click)="navigateTo()" > {{ 'sign_up' | translate }}!</button>
 
-		<div *ngIf = "!login" ion-text p-t-20 m-b-0 class="sign-text">Already have an account on Dilbert?</div>
-		<button *ngIf = "!login" ion-button color="primary" clear class="sign-up" (click)="navigateTo()" >Sign in!</button>
+		<div *ngIf = "!login" ion-text p-t-20 m-b-0 class="sign-text">{{ 'already_hv_acc_in_dil' | translate }}</div>
+		<button *ngIf = "!login" ion-button color="primary" clear class="sign-up" (click)="navigateTo()" >{{'sign_in' | translate}}!</button>
 	</div>
 
 	

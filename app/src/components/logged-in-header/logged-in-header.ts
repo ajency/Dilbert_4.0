@@ -3,6 +3,7 @@ import {  PopoverController, Events } from 'ionic-angular';
 import { CookieService } from 'ngx-cookie';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 // import { TranslateService } from '@ngx-translate/core';
+import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 
@@ -19,6 +20,7 @@ import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 export class LoggedInHeaderComponent {
 
   header : any;
+  langSelect : boolean = true;
   image : any;
   param = {
     value : 'world'
@@ -31,8 +33,16 @@ export class LoggedInHeaderComponent {
               public events : Events,
               public appservice : AppServiceProvider,
               public translate: TranslateService,
+              public appglobals : AppGlobalsProvider
               ) {
 
+
+    if(this.appglobals.lang == "en"){
+      this.langSelect = true;
+    }
+    else{
+      this.langSelect = false;
+    }
      // this language will be used as a fallback when a translation isn't found in the current language
      // translate.setDefaultLang('fr');
 
@@ -70,6 +80,7 @@ export class LoggedInHeaderComponent {
     console.log(this.lang)
     // this.translate.use(this.lang);
     this.events.publish("app:localize",this.lang);
+
   }
 
   openPopover(ev) {

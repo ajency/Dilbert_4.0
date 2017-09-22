@@ -38,6 +38,7 @@ export function createTranslateLoader(http: Http) {
   declarations: [
     MyApp,
     TitleCasePipe,
+    // FooterComponent,
     // SignInCardComponent,
     // SummaryContentComponent,
     // LoggedInHeaderComponent,
@@ -61,7 +62,7 @@ export function createTranslateLoader(http: Http) {
     IonicModule.forRoot(MyApp,{
       mode: 'md',
       preloadModules : false,
-      locationStrategy: window.location.hostname == 'localhost' ? 'path' : 'path' 
+      locationStrategy: window.location.hostname == 'localhost' ? 'hash' : 'path' 
     }),
    
   ],

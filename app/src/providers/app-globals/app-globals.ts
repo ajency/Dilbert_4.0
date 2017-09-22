@@ -13,7 +13,15 @@ export class AppGlobalsProvider {
 
 
   private historyStack: Array<any> = [];
-	
+	lang : any;
+
+  private semVersion: any = {
+    major: 1,
+    minor: 1,
+    patch: 1
+  };
+
+  appVersion : string = '' ;
 
 private activeTabsList: any = {
     
@@ -41,6 +49,12 @@ private activeTabsList: any = {
   constructor( @Inject(EnvVariables) private environment) {
     console.log('Hello AppGlobalsProvider Provider');
     console.log(this.environment);
+
+     for(let vpfix in this.semVersion){
+      this.appVersion = this.appVersion + this.semVersion[vpfix] + '.';
+      }
+
+      this.appVersion = this.appVersion.substr(0, this.appVersion.length -1);
   }
 
   getApiUrl(){
@@ -67,6 +81,10 @@ private activeTabsList: any = {
      })
 
      return history;
+  }
+
+   public getAppVersion(){
+    return this.appVersion;
   }
 
 
