@@ -41,7 +41,7 @@ class LogsController extends Controller
                     $data['user'] = ['user_id' => $request->user_id, 'x_api_key' => $request->header('X-API-KEY')];
                     // get the days data from locked__datas -------------- call that new function
                     $daysData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
-                    $data['day_data'] = (new Locked_Data)->formattedLockedData($request->user_id,$daysData);  // formatted locked data
+                    $data['day_data'] = (new Locked_Data)->formattedLockedData($request->user_id,$daysData,$request->date,$request->date);  // formatted locked data
                     // get the user's day logs
                     $logs = [];
                     $userLogs = Log::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get(); // all logs
