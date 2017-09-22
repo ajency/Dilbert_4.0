@@ -28,3 +28,10 @@ Route::post('/day-summary/{locale?}','LogsController@daySummary');    // detaile
 
 // organisation api
 Route::post('/join-organisation/{locale?}','OrganisationController@joinOrAddOrganisation');   // for first time login
+
+// users api
+Route::post('/users/{locale?}','UserController@displayUsers');
+Route::post('/users/edit/{userCode}/{locale?}','UserController@editUserDetails');
+
+// role management
+Route::post('/role/{locale?}','RoleController@changeRolePermissions');
