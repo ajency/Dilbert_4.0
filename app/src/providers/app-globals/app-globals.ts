@@ -14,6 +14,8 @@ export class AppGlobalsProvider {
 
   private historyStack: Array<any> = [];
 	lang : any;
+  period_unit: string = 'week';
+  cos_offset : string = '10';
 
   private semVersion: any = {
     major: 1,

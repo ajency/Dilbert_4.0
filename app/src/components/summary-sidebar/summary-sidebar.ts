@@ -77,7 +77,7 @@ export class SummarySidebarComponent {
         text = moment(date, "YYYY-MM-DD").format("ddd");
         break;
       case 2:
-        text = moment(date, "YYYY-MM-DD").format("MMM D");
+        text = moment(date, "YYYY-MM-DD").format("MMM");
         break;
       case 3:
         text = moment(date, "kk:mm:ss").format("hh:mm a");
@@ -91,6 +91,9 @@ export class SummarySidebarComponent {
         break;
       case 5:
         text = moment(date, "kk:mm:ss").format("hh:mm");
+        break;
+      case 6:
+        text = moment(date, "YYYY-MM-DD").format("D");
         break;
     }
     return text;
@@ -116,7 +119,7 @@ export class SummarySidebarComponent {
     console.log(url);
     let filters = {
       date_range : date_range,
-      period_unit : 'week'
+      period_unit : this.appGlobalsProvider.period_unit
     }
     
     let body = {
@@ -140,12 +143,12 @@ export class SummarySidebarComponent {
       let body2 = {
       user_id : data.user_id,
       date : ev.formatted,
-      cos_offset : '15'
+      cos_offset : this.appGlobalsProvider.cos_offset
     }
 
     let filter2 = {
       date : ev.formatted,
-      cos_offset : '15'
+      cos_offset : this.appGlobalsProvider.cos_offset
     }
 
       this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
@@ -206,12 +209,12 @@ export class SummarySidebarComponent {
       let body2 = {
         user_id : data.user_id,
         date : date.work_date,
-        cos_offset : '15'
+        cos_offset : this.appGlobalsProvider.cos_offset
       }
 
       let filters = {
         date : date.work_date,
-        cos_offset : '15'
+        cos_offset : this.appGlobalsProvider.cos_offset
       }
 
       let optionalHeaders = {

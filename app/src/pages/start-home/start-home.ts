@@ -42,8 +42,8 @@ import { Storage } from '@ionic/storage';
  failed : boolean = false;
  public param1 : any;
  public param2 : any;
- period_unit : string = 'week';
- cos_offset : string = '15';
+ period_unit : string ;
+ cos_offset : string ;
 
  constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -71,6 +71,8 @@ ngOnInit(){
     this.key = data.x_api_key;
 
     if((this.param1 == '' && this.param2 == '') || (this.param1 == undefined && this.param2 == undefined) ){
+    this.period_unit = this.appGlobalsProvider.period_unit;
+    this.cos_offset = this.appGlobalsProvider.cos_offset;
     this.getUserDate();
     console.log('no params passed');
     }

@@ -51,7 +51,7 @@ export class SummaryContentComponent {
   }
 
   getDayDate(date: string, option: number): string {
-    var text: string;
+    var text: string = '';
     switch (option) {
       case 1:
         text = moment(date, "YYYY-MM-DD").format("ddd");
