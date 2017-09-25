@@ -25,7 +25,7 @@ class LogsController extends Controller
             $locale = $userDets['lang'];
         }
         App::setLocale($locale);
-        if(!empty($request->user_id) && !empty($request->date)) {
+        if(!empty($request->user_id) && !empty($request->date) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
                 // check for the user-permissions
                 $callingUser = User::where('id',$request->header('from'))->first();

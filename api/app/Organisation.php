@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -95,5 +96,29 @@ class Organisation extends Model
             ];
             return $response;
         }
+    }
+
+    /**
+     * return an array of all the users belonging to a particular organisation
+     * @param  $orgId Organisation ID
+     * @param  $filters filters that will be applied to the query (display_limit, page, sort_by, sort_order, status)
+     * @return  array
+     */
+    public function getOrgUsers($orgId,$filters) {
+        $orgUsers = DB::table('users')->join('user_details','users.id','=','user_details.user_id')->join('user_communications','users.id','=','user_communications.object_id')->where(['type' => 'email', 'org_id' => $orgId, 'status' => $filters['status']])->orderBy($filters['sortBy'],$filters['sortOrder'])->offset(((int)$filters['page'] - 1) * $filters['displayLimit'])->limit($filters['displayLimit'])->get();
+        // $orgUsers = UserDetail::with('getUserFromDetails')->where('org_id',$orgId)->orderBy("getUserFromDetails.".$filters['sortBy'],$filters['sortOrder'])->offset(((int)$filters['page'] - 1) * $filters['displayLimit'])->limit($filters['displayLimit'])->get();
+
+        // return name and role for now
+        $users = [];
+        foreach($orgUsers as $ou) {
+            $user['id'] = $ou->user_id;
+            // $user['name'] = $ou->getUserFromDetails()->first()->name;
+            $user['name'] = $ou->name;
+            $user['avatar'] = $ou->avatar;
+            $user['role'] = User::find($ou->user_id)->getRoleNames()->first();
+            $user['joining_date'] = $ou->joining_date;
+            array_push($users,$user);
+        }
+        return $users;
     }
 }
