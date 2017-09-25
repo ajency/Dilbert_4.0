@@ -78,18 +78,34 @@ class UserController extends Controller
      * @return response success / failure
      */
     public function editUserDetails(Request $request, $userCode, $locale = "default") {
+        $output = new ConsoleOutput;
         // set the preferred locale
         if($locale == "default") {
             $userDets = UserDetail::where('user_id',$request->input('user_id'))->first();
             $locale = $userDets['lang'];
         }
         App::setLocale($locale);
-        if(!empty($request->user_id) && !empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
+        if($request->header('X-API-KEY')!= null && $request->header('from')!= null) {
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
                 // when some valid user accesses this api check if the calling user has the right permissions
                 $callingUser = User::where('id',$request->header('from'))->first();
                 if($callingUser->can('edit-user')) {
+                    $user = User::find($userCode);
+                    $output->writeln("username ".$userCode);
+                    $userData = ["username" => $user->email];
+                    $userDetails = [];
+                    $userComm = [];
+                    if(isset($request->details))
+                        $userDetails = $request->details;
+                    if(isset($request->status)) {
+                        $userData = ["username" => $user->email, "status" => $request->status];
+                    }
+                    if(isset($request->delete)) {
+                        // deleting a record
 
+                    }
+                    $data = (new UserAuth)->updateOrCreateUser($userData,$userDetails,$userComm);
+                    return response()->json(["status" => 200, "message" => "User details edit successful.", "data" => $data]);
                 }
                 else {
                     return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
