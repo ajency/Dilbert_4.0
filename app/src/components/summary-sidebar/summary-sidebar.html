@@ -15,7 +15,7 @@
 
                 <div class="day">
                     <p ion-text color="primary" no-margin m-b-5 class="day-title">{{ "today" | translate }}</p>
-                    <span ion-text color="text-darker">{{today.day}}  {{today.date}}, {{today.month}}</span>
+                    <span ion-text color="text-darker" translate>{{ today.day | translate}}  {{today.date}}, {{today.month | translate}}</span>
                 </div>
             </div>
             <div class="current-card__footer flex-row">
@@ -55,7 +55,7 @@
                     <div class="btn-container" [ngClass]="{'leave-row': date.leave_status == 'Leave'}" >
                         <li class="week-list__row flex-row">
                             <div class="week-list__day">
-                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.work_date,1)}}</p>
+                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{ getDayDate(date.work_date,1) | translate}}</p>
                                 <span ion-text color="text-lighter">{{getDayDate(date.work_date,2)}}</span>
                             </div>
                             <div *ngIf = "date.leave_status == 'Present'" class="week-list__session">

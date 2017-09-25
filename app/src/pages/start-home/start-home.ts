@@ -10,6 +10,7 @@ import { CookieService } from 'ngx-cookie';
 import { UserDataProvider } from '../../providers/user-data/user-data';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+import { AuthguardProvider } from '../../providers/authguard/authguard';
 
 import { Storage } from '@ionic/storage';
 
@@ -50,6 +51,7 @@ import { Storage } from '@ionic/storage';
   private cookieservice: CookieService,
   public zone : NgZone,
   public userDataProvider : UserDataProvider,
+  public authguard : AuthguardProvider,
   public appServiceProvider : AppServiceProvider,
   public storage : Storage,
   public appGlobalsProvider : AppGlobalsProvider) {
@@ -133,27 +135,23 @@ ionViewDidLoad() {
   ionViewDidEnter(){
   }
 
-  ionViewCanEnter(){
-    if(this.cookieservice.get("keepLoggedIn")== 'yes'){
-      console.log('ionViewCanEnter dashboard');
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
 
-  ionViewWillEnter() {
-    // this.sideBarService.getSideBarData("").then((data) => {
-    //   this.sideBarData = data;
-    //   console.log('data recieved', data);
-    //   this.sideBarData.dates.forEach((date) => {
-    //     if (moment(date.date, "DD-MM-YYYY").diff(moment("19-06-2017", "DD-MM-YYYY"))==0) {
-    //       this.currentDay = date;
-    //       console.log('currentDay', this.currentDay);
-    //     }
-    //   });
-    // }).catch(error => console.log("error", error));
+
+  ionViewCanEnter(): Promise<boolean>{
+
+    return new Promise((resolve,reject) => {
+      this.authguard.verifyToken('dashboard')
+      .then(() => {
+        console.log('can enter dashboard')
+        // this.appglobals.setPageToNavigate({page: 'dashboard'});
+        // this.currentPage = 'dashboard';
+        resolve(true)
+      })
+      .catch(() => {
+        reject(true)
+      })
+    });
+
   }
 
 
