@@ -41,7 +41,17 @@
 	  "online" : "en ligne",
 	  "no logs found" : "Aucun journal trouvé",
 	  "no data found" : "Aucune donnée disponible",
-	  "leave" :  "Laisser"
+	  "leave" :  "Laisser",
+
+	  "Monday" : "Lundi" ,
+	  "Tuesday" : "Mardi",
+	  "Wednesday" : "Mercredi",
+	  "Thursday" :"Jeudi", 
+      "Friday" :"Vendredi", 
+	  "Saturday" :"Samedi" ,
+	  "Sunday" :"Dimanche"
+
+
 
 
 

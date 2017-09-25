@@ -233,9 +233,12 @@ navigateTo(){
         
         else{
         
-          if(obj1 != undefined && obj2 != undefined){
-          this.updateNav('dashboard', obj1, obj2)
+          if(obj1 != undefined && obj2 != undefined && obj1.date_rangestart && obj1.period_unit && obj2.date && obj2.cos_offset && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
+            this.updateNav('dashboard', obj1, obj2)
           // this.updateTitle('dashboard');
+          }
+          else{
+            this.updateNav('not-found', '', '');
           }
         }
 

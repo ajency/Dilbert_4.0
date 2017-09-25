@@ -70,9 +70,11 @@ ngOnInit(){
 
     if((this.param1 == '' && this.param2 == '') || (this.param1 == undefined && this.param2 == undefined) ){
     this.getUserDate();
+    console.log('no params passed');
     }
 
     else {
+      console.log('params passed');
 
       if(this.param1 && this.param2){
         this.currentDate = this.param1.date_rangestart;
@@ -132,10 +134,13 @@ ionViewDidLoad() {
   }
 
   ionViewCanEnter(){
-    if(this.cookieservice.get("keepLoggedIn")== 'yes')
+    if(this.cookieservice.get("keepLoggedIn")== 'yes'){
+      console.log('ionViewCanEnter dashboard');
       return true;
-    else
+    }
+    else{
       return false;
+    }
   }
 
   ionViewWillEnter() {

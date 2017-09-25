@@ -41,6 +41,15 @@
 	  "online" : "Online",
 	  "no logs found" : "No logs found",
 	  "no data found" : "No data found",
-	  "leave" : "Leave"
+	  "leave" : "Leave",
+
+
+	   "Monday" : "Monday" ,
+	  "Tuesday" : "Tuesday",
+	  "Wednesday" : "Wednesday",
+	  "Thursday" :"Thursday", 
+      "Friday" :"Friday", 
+	  "Saturday" :"Saturday",
+	  "Sunday" :"Sunday"
 
 }

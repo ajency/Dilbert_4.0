@@ -79,20 +79,17 @@ export class SummaryContentComponent {
 
   setToday(){
 
-      let d = new Date();
+     let d = new Date();
      let temp;
-        
+     if(this.day_data.length != 0 ){ 
      temp = this.day_data[0].work_date.split("-");
-     
-     
-
      d.setFullYear(temp[0], temp[1]-1, temp[2]);
-
      this.today = {
       day : this.days[d.getDay()],
       date : d.getDate(),
       month : this.monthNames[d.getMonth()]
      }
+   }
 
   }
 

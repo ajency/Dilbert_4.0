@@ -4,24 +4,24 @@
         <!-- Days details -->
         <div class="day-detail flex-row" >
             <div class="day-detail__current detail-cols desk-hide">
-                <h5 *ngIf = "day_data[0].total_time" m-t-0 m-b-8 class="currentime">{{getDayDate(day_data[0].total_time,5)}} hr</h5>
-                <span ion-text color="text-lighter" no-margin m-b-5 class="day-title">{{today.day}} {{today.date}}, {{today.month}} </span>
+                <h5 *ngIf = "day_data[0]" m-t-0 m-b-8 class="currentime">{{getDayDate(day_data[0].total_time,5)}} hr</h5>
+                <span ion-text color="text-lighter" no-margin m-b-5 class="day-title" *ngIf = "today">{{today.day}} {{today.date}}, {{today.month}} </span>
             </div>
             <div class="day-detail__day detail-cols mobile-hide">
-                <h5 m-t-0 m-b-8>{{today.day}}</h5>
+                <h5 m-t-0 m-b-8 *ngIf = "today" >{{today.day}}</h5>
                 <span ion-text color="text-lighter">{{ "day" | translate }}</span>
             </div>
             <div class="day-detail__start-time detail-cols">
-                <p *ngIf = "day_data[0].start_time" m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].start_time,3)}}</p>
+                <p *ngIf = "day_data[0]" m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].start_time,3)}}</p>
                 <span ion-text color="text-lighter">{{ "start_time" | translate }}</span>
             </div>
             <div class="day-detail__end-time detail-cols">
-                <p *ngIf = "day_data[0].end_time" m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].end_time,3)}}</p>
+                <p *ngIf = "day_data[0]" m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].end_time,3)}}</p>
                 <span ion-text color="text-lighter">{{ "end_time" | translate }}</span>
             </div>
             <div class="day-detail__total-time detail-cols mobile-hide">
-                <h5 *ngIf = "day_data[0].total_time != 0 && day_data[0].total_time != null " m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{getDayDate(day_data[0].total_time,5)}} <span class="xx-small">hr</span></h5>
-                <h5 *ngIf = "day_data[0].total_time == 0 " m-t-0 m-b-8 ion-text color="primary" font-weight-5> 00:00 <span class="xx-small">hr</span></h5>
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time != 0 && day_data[0].total_time != null " m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{getDayDate(day_data[0].total_time,5)}} <span class="xx-small">hr</span></h5>
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time == 0 " m-t-0 m-b-8 ion-text color="primary" font-weight-5> 00:00 <span class="xx-small">hr</span></h5>
 
                 <span ion-text color="text-lighter">{{ "total_time" | translate }}</span>
             </div>
