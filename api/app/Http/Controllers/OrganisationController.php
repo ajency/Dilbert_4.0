@@ -24,7 +24,7 @@ class OrganisationController extends Controller
         }
         App::setLocale($locale);
 
-        if(isset($request->username) && isset($request->organisation) && $request->header('X-API-KEY')!= null) {    // parameter check
+        if(isset($request->username) && isset($request->organisation) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {    // parameter check
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {  // authorised user check
                 if($request->has('organisation.id')) {
                     // join organisation

@@ -28,7 +28,7 @@ class LockedDataController extends Controller
             $locale = $userDets['lang'];
         }
         App::setLocale($locale);
-        if(!empty($request->user_id) && !empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null) {
+        if(!empty($request->user_id) && !empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
                 // when some valid user accesses this api check if the calling user has the right permissions
                 $callingUser = User::where('id',$request->header('from'))->first();
