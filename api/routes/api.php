@@ -34,4 +34,4 @@ Route::post('/users/{locale?}','UserController@displayUsers');
 Route::post('/users/edit/{userCode}/{locale?}','UserController@editUserDetails');
 
 // role management
-Route::post('/role/{locale?}','RoleController@changeRolePermissions');
+Route::post('/role/{locale?}','RoleController@changeOrAddRole');
