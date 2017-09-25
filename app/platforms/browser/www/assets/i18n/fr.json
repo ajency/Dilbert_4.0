@@ -17,5 +17,37 @@
 	  "_change_ur_work_way" : ", changer votre façon de travailler!",
 	  "already_hv_acc_in_dil" : "Vous avez déjà un compte sur Dilbert?",
 	  "not_conn_2_dilbert" : "Vous n'êtes pas encore connecté à Dilbert ?",
-	  "conn_using_google_acc" : "Il suffit de connecter votre compte Google"
+	  "conn_using_google_acc" : "Il suffit de connecter votre compte Google",
+
+
+
+	  "my_summary" : "Mon résumé",
+	  "this_week" : "Cette semaine",
+	  "today" : "Aujourd'hui",
+	  "today's_summary" : "Résumé d'aujourd'hui",
+	  "day" : "Journée",
+	  "start_time" : "Heure de début",
+	  "end_time" : "Heure de fin",
+	  "total_time" : "Temps total",
+	  "u started day at" : "Vous avez commencé votre journée à",
+	  "active_from" : "Actif à partir de",
+	  "idle_from" : "Inactif de",
+	  "offline_from" : "hors ligne de",
+	  "to" : "à",
+	  "u ended day at" : "Vous avez terminé votre journée à",
+	  "you_completed" : "Vous avez terminé",
+	  "hours_today"  : "Heures Aujourd'hui",
+	  "hr" : "heure",
+	  "online" : "en ligne",
+	  "no logs found" : "Aucun journal trouvé",
+	  "no data found" : "Aucune donnée disponible",
+	  "leave" :  "Laisser"
+
+
+
+
+
+
+
+
 }

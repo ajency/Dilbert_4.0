@@ -41,6 +41,8 @@ import { Storage } from '@ionic/storage';
  failed : boolean = false;
  public param1 : any;
  public param2 : any;
+ period_unit : string = 'week';
+ cos_offset : string = '15';
 
  constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -74,10 +76,12 @@ ngOnInit(){
 
       if(this.param1 && this.param2){
         this.currentDate = this.param1.date_rangestart;
+        this.period_unit = this.param1.period_unit;
         console.log(this.currentDate);
 
         if(this.startAndEndOfWeek(this.currentDate, this.param2.date)){
         this.summaryDate = this.param2.date;
+        this.cos_offset = this.param2.cos_offset;
         console.log(this.summaryDate);
         this.getData();
         }
@@ -166,7 +170,7 @@ ionViewDidLoad() {
     console.log(url);
     let filters = {
         date_range:date_range,
-        period_unit:'week'
+        period_unit: this.period_unit
       };
 
     let body = {
@@ -189,12 +193,12 @@ ionViewDidLoad() {
     let body2 = {
       user_id : this.userId,
       date : this.summaryDate,
-      cos_offset : '15'
+      cos_offset : this.cos_offset
     }
 
     let filter2 = {
       date : this.summaryDate,
-      cos_offset : '15'
+      cos_offset : this.cos_offset
     }
 
 

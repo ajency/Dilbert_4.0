@@ -18,7 +18,7 @@
                     <!-- Heading -->
                     <div class="section-title">
                         <i class="custom-icon summary" m-r-10></i>
-                        <h5 class="page-title">My Summary</h5>
+                        <h5 class="page-title">{{ "my_summary" | translate }}</h5>
                     </div>
                 </ion-col>
                 <ion-col class="col dashboard__summary" col-12 col-md-12 col-lg-8 p-h-0 p-v-0>
@@ -28,7 +28,7 @@
                         <summary-sidebar *ngIf="sideBarData" [test]="sideBarData" class="summary__sidebar" p-h-20 ></summary-sidebar>
                         <!-- Summary sidebar ends -->
                         <!-- Summary content -->
-                        <summary-content *ngIf="sideBarData && summaryContentData" [test]="sideBarData.data.current" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
+                        <summary-content *ngIf="sideBarData && summaryContentData" [test]="summaryContentData.day_data" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
                         <!-- Summary content ends -->
                         <div *ngIf = "sideBarData == null && failed"> Couldn't load results at the moment! </div>
                     </div>
