@@ -24,7 +24,8 @@ class Organisation extends Model
         $output = new ConsoleOutput;
 
         // $user_resp['user'] = $user_resp['user']->first();
-        $email = $user_resp['user_comm']->first()->value;
+        // $email = $user_resp['user_comm']->first()->value;
+        $email = $account->email;
 
         // $user_resp['user_details'] = $user_resp['user_details']->first();
 

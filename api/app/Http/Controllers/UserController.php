@@ -91,21 +91,34 @@ class UserController extends Controller
                 $callingUser = User::where('id',$request->header('from'))->first();
                 if($callingUser->can('edit-user')) {
                     $user = User::find($userCode);
-                    $output->writeln("username ".$userCode);
-                    $userData = ["username" => $user->email];
-                    $userDetails = [];
-                    $userComm = [];
-                    if(isset($request->details))
-                        $userDetails = $request->details;
-                    if(isset($request->status)) {
-                        $userData = ["username" => $user->email, "status" => $request->status];
+                    if($user != null) {
+                        if(isset($request->delete) && $request->delete == true) {
+                            // deleting a record
+                            User::find($userCode)->delete();
+                            return response()->json(["status" => 200, "message" => "User deleted."]);
+                        }
+                        $userData = ["username" => $user->email];
+                        $userDetails = [];
+                        $userComm = [];
+                        if(isset($request->details))
+                            $userDetails = $request->details;
+                        if(isset($request->status)) {
+                            $userData = ["username" => $user->email, "status" => $request->status];
+                        }
+                        $data = (new UserAuth)->updateOrCreateUser($userData,$userDetails,$userComm);
+                        return response()->json(["status" => 200, "message" => "User details edit successful.", "data" => $data]);
                     }
-                    if(isset($request->delete)) {
-                        // deleting a record
-
+                    else if(isset($request->delete) && $request->delete == false) {
+                        // the user was soft deleted and needs to retrieved
+                        $trashedUser = User::withTrashed()->where('id',$userCode);
+                        if($trashedUser != null) {
+                            $trashedUser->restore();
+                        }
+                        // need to handle updating details of deleted users?
+                        return response()->json(["status" => 200, "message" => "User un-deleted."]);
                     }
-                    $data = (new UserAuth)->updateOrCreateUser($userData,$userDetails,$userComm);
-                    return response()->json(["status" => 200, "message" => "User details edit successful.", "data" => $data]);
+                    else
+                        return response()->json(["status" => 400, "message" => __('api_messages.user_dne')]);
                 }
                 else {
                     return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
