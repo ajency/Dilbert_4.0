@@ -105,6 +105,20 @@ class UserController extends Controller
                         if(isset($request->status)) {
                             $userData = ["username" => $user->email, "status" => $request->status];
                         }
+                        if(isset($request->role)) {
+                            // check if that role exists
+                            if(Role::where('name',$request->role)->exists()) {
+                                // append it to the userdata so that it can be handled by the package
+                                $userData['roles'] = $request->role;
+                            }
+                            else {
+                                return response()->json(['status' => 400, "message" => "Role does not exist"]);
+                            }
+                        }
+                        if(isset($request->permissions)) {
+                            // [TODO] check if all permission are valid
+                            $userData['permissions'] = ["edit-user","super-user"];/*$request->permissions;*/
+                        }
                         $data = (new UserAuth)->updateOrCreateUser($userData,$userDetails,$userComm);
                         return response()->json(["status" => 200, "message" => "User details edit successful.", "data" => $data]);
                     }
