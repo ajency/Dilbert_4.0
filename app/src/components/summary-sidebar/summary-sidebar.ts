@@ -24,6 +24,7 @@ export class SummarySidebarComponent {
   apiURL :any;
   userId : any;
   summaryContentData : any;
+  btnActive : boolean = false;
   private myDatePickerOptions: IMyDpOptions = {
         // other options...
         dateFormat: 'yyyy-mm-dd',
@@ -180,16 +181,19 @@ export class SummarySidebarComponent {
       let minutes = 0
       for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
       {
+        this.sideBarData.data.periodData[i].btnActive = false;
         if(this.sideBarData.data.periodData[i].leave_status == "Present")
         {
           let temp = this.sideBarData.data.periodData[i].total_time.split(":");
           minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
 
         }
-        this.loader_percentage =  minutes/2700*100;
-        if(this.loader_percentage>100){
-          this.loader_percentage = 100;
-        }
+      
+      }
+
+      this.loader_percentage =  minutes/2700*100;
+      if(this.loader_percentage>100){
+        this.loader_percentage = 100;
       }
 
       this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
@@ -197,10 +201,27 @@ export class SummarySidebarComponent {
 
 
 
-    updateSummaryContent(date : any){
+    updateSummaryContent(date : any, key : any){
 
-     let url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
+    // this.sideBarData.data.periodData.btnActive = true;
+    // console.log(date,key);
+    
+    this.sideBarData.data.periodData[key].btnActive = true;
 
+    for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
+      {
+        if(i != key)
+        {
+
+        this.sideBarData.data.periodData[i].btnActive = false;
+
+        }
+      
+      }
+
+    this.zone.run(() => {});
+    let url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
+     
      
 
 
