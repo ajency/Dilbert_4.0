@@ -65,10 +65,10 @@ import { Storage } from '@ionic/storage';
 }
 
 ngOnInit(){
-  this.storage.get('userData').then((data) => {
+  
 
-    this.userId = data.user_id;
-    this.key = data.x_api_key;
+    this.userId = this.authguard.userData.user_id;
+    this.key = this.authguard.userData.x_api_key;
 
     if((this.param1 == '' && this.param2 == '') || (this.param1 == undefined && this.param2 == undefined) ){
     this.period_unit = this.appGlobalsProvider.period_unit;
@@ -83,12 +83,12 @@ ngOnInit(){
       if(this.param1 && this.param2){
         this.currentDate = this.param1.date_rangestart;
         this.period_unit = this.param1.period_unit;
+        this.cos_offset = this.param2.cos_offset;
+        console.log(this.cos_offset);
         console.log(this.currentDate);
 
         if(this.startAndEndOfWeek(this.currentDate, this.param2.date)){
         this.summaryDate = this.param2.date;
-        this.cos_offset = this.param2.cos_offset;
-        console.log(this.summaryDate);
         this.getData();
         }
 
@@ -100,15 +100,15 @@ ngOnInit(){
 
       }
 
-      else if(this.param1){
-        this.currentDate = this.param1.date_rangestart;
-        this.summaryDate = this.param1.date_rangestart;
-        this.getData();
+      // else if(this.param1){
+      //   this.currentDate = this.param1.date_rangestart;
+      //   this.summaryDate = this.param1.date_rangestart;
+      //   this.getData();
 
-       }
+      //  }
 
     }
-  });
+  
 }
 
  // openPopover(myEvent) {
@@ -203,7 +203,7 @@ ionViewDidLoad() {
 
     let filter2 = {
       date : this.summaryDate,
-      cos_offset : this.cos_offset
+      // cos_offset : this.cos_offset
     }
 
 
@@ -223,9 +223,9 @@ ionViewDidLoad() {
   }
 
   getUserDate() {
-    // this.currentDate = this.formatDate(new Date());
-    this.currentDate = '2017-09-04';
-    this.summaryDate = '2017-09-04';
+    this.currentDate = this.formatDate(new Date());
+    // this.currentDate = '2017-09-04';
+    this.summaryDate = this.currentDate;
     // this.getData(this.currentDate);
     this.getData();
     

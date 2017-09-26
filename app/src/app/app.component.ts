@@ -59,6 +59,7 @@ export class MyApp {
               public cookieService : CookieService,
               private titlecasepipe : TitleCasePipe,
               private appglobals : AppGlobalsProvider ) {
+    
     this.initializeApp();
     
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -69,8 +70,9 @@ export class MyApp {
      // translate.use('fr');
 
     this.loc = platformlocation;
+    this.appServiceProvider.handleClientLoad();
 
-      this.events.subscribe("app:localize",(lang) => {
+    this.events.subscribe("app:localize",(lang) => {
       this.translate.use(lang);
       this.appglobals.lang = lang;
     });
@@ -78,7 +80,8 @@ export class MyApp {
     this.events.subscribe('app:navroot',(data) => {
       this.updateNav(data, '' , '');
     });
-    this.appServiceProvider.handleClientLoad();
+
+
 
     this.events.subscribe('user:signedIn', (data) =>{
       this.navigateTo();
@@ -86,7 +89,7 @@ export class MyApp {
 
 
 
- this.events.subscribe('app:updatehistory',(data) => {
+    this.events.subscribe('app:updatehistory',(data) => {
 
     // this.showVerificationModal();
 
@@ -177,7 +180,7 @@ export class MyApp {
   }
 
 
-navigateTo(){
+  navigateTo(){
     console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
 
     // let path = this.location.path(true);
@@ -204,6 +207,7 @@ navigateTo(){
 
 
           if(pathparts2.length == 1){
+            this.flag = false;
             return;
           }
 

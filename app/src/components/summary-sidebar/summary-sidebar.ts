@@ -148,7 +148,7 @@ export class SummarySidebarComponent {
 
     let filter2 = {
       date : ev.formatted,
-      cos_offset : this.appGlobalsProvider.cos_offset
+      // cos_offset : this.appGlobalsProvider.cos_offset
     }
 
       this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
@@ -214,7 +214,7 @@ export class SummarySidebarComponent {
 
       let filters = {
         date : date.work_date,
-        cos_offset : this.appGlobalsProvider.cos_offset
+        // cos_offset : this.appGlobalsProvider.cos_offset
       }
 
       let optionalHeaders = {

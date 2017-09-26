@@ -24,7 +24,7 @@
 	  "my_summary" : "Mon résumé",
 	  "this_week" : "Cette semaine",
 	  "today" : "Aujourd'hui",
-	  "today's_summary" : "Résumé d'aujourd'hui",
+	  "the_summary" : "Le résumé",
 	  "day" : "Journée",
 	  "start_time" : "Heure de début",
 	  "end_time" : "Heure de fin",
@@ -72,7 +72,21 @@
 	  "September" : "Septembre",
 	  "October" : "Octobre",
 	  "November" : "Novembre",
-	  "December" : "Décembre"
+	  "December" : "Décembre",
+
+
+	  "Jan"	: "Jan",
+	  "Feb":"Fév",
+	  "Mar":"Mar",
+	  "Apr":"Avr",
+	  "May":"Mai",
+	  "Jun":"Jui",
+	  "Jul" : "Juil",
+	  "Aug" : "Aoû",
+	  "Sep" : "Sep",
+	  "Oct" : "Oct",
+	  "Nov" : "Nov",
+	  "Dec" : "Déc"
 
 
 

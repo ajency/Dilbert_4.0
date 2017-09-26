@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class AuthguardProvider {
   private retrievedUserData: boolean = false;
-  private userData : any;
+  public userData : any;
   constructor(
     private cookieservice: CookieService,
     private storage: Storage,
