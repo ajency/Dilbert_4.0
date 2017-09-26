@@ -78,8 +78,7 @@ class LockedDataController extends Controller
 
                         //get latest data (current data)
                         $currentData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => date('Y-m-d')])->get();
-                        $output->writeln(count($currentData));
-                        $cDayData = (new Locked_Data)->formattedLockedData($request->user_id,$currentData,date('Y-m-d'),date('Y-m-d'));
+                        $cDayData = (new Locked_Data)->formattedLockedData($request->user_id,$currentData,date('Y-m-d'),date('Y-m-d'),"asc");
                         $data['current'] = $cDayData;
 
                         // if sorting options are set
@@ -93,7 +92,7 @@ class LockedDataController extends Controller
                             $sortOrder = 'desc';
                         // user's data for the particular period
                         $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->orderBy($sortCol, $sortOrder)->get();
-                        $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'));
+                        $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),$sortOrder);
                         $data['periodData'] = $periodData;
                         return response()->json(['status' => 200, 'message' => __('api_messages.user_periodic_data'), 'data' => $data]);
                 }

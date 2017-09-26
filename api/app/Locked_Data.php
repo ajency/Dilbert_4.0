@@ -15,13 +15,21 @@ class Locked_Data extends Model
      * @param  [type] $lockedData Eloquent object
      * @return array containing the formatted data
      */
-    public function formattedLockedData($user_id,$lockedData,$start,$end) {
+    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder) {
         $data = [];
         $output = new ConsoleOutput;
-        $output->writeln("fld: ".count($lockedData));
-        $dateCounter = new \DateTime($start);
+        $start = new \DateTime($start);
         $end = new \DateTime($end);
-        // special case when acquired the formatted locked data of a non existent date
+        $dateModifyString = "+1 days";
+        // // if in ascending order interchange the start and end
+        if($sortOrder == "desc") {
+            $temp = $start;
+            $start = $end;
+            $end = $temp;
+            $dateModifyString = "-1 days";
+        }
+        $dateCounter = clone $start;
+        // special case when acquired the formatted locked data of a non existent date (single)
         if($dateCounter == $end && count($lockedData) == 0) {
             array_push($data,[
                 "work_date" => $dateCounter->format('Y-m-d'),
@@ -45,10 +53,9 @@ class Locked_Data extends Model
                     "total_time" => "",
                     "violation_count" => ""
                 ]);
-                $dateCounter->modify('+1 days');
+                $dateCounter->modify($dateModifyString);
             }
-            $dateCounter->modify('+1 days');
-            $output->writeln("inside for each");
+            $dateCounter->modify($dateModifyString);
             // handle total_time = null
             $dayData = [];
             $dayData['work_date'] = $ld->work_date;
