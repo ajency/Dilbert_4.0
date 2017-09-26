@@ -7,7 +7,13 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Location, PlatformLocation } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
 import { TitleCasePipe } from '../pipes/title-case/title-case';
+import { TranslateService } from '@ngx-translate/core';
 
+// import {TranslateService, TranslatePipe, TranslateLoader, TranslateStaticLoader} from 'ng2-translate';
+// import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+
+
+import { Inject } from '@angular/core';
 
 interface Window {
   location: any
@@ -36,11 +42,14 @@ export class MyApp {
   loc : any;
   private currentPage : string;
   private appName : string = "Dilbert";
+  url : any;
 
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, 
+  constructor(
+              public translate: TranslateService,
+              public platform: Platform, 
               public statusBar: StatusBar, 
               public splashScreen: SplashScreen,
               private appServiceProvider: AppServiceProvider,
@@ -51,10 +60,23 @@ export class MyApp {
               private titlecasepipe : TitleCasePipe,
               private appglobals : AppGlobalsProvider ) {
     this.initializeApp();
+    
+    // this language will be used as a fallback when a translation isn't found in the current language
+     translate.setDefaultLang('en');
+     this.appglobals.lang = 'en';
+
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+     // translate.use('fr');
+
     this.loc = platformlocation;
 
+      this.events.subscribe("app:localize",(lang) => {
+      this.translate.use(lang);
+      this.appglobals.lang = lang;
+    });
+
     this.events.subscribe('app:navroot',(data) => {
-    this.updateNav(data)
+      this.updateNav(data, '' , '');
     });
     this.appServiceProvider.handleClientLoad();
 
@@ -63,48 +85,81 @@ export class MyApp {
     });
 
 
-    this.events.subscribe('app:updatehistory',(data) => {
 
-      // this.showVerificationModal();
+ this.events.subscribe('app:updatehistory',(data) => {
 
-      // if(this.appglobals.getEnv().ionicEnvName === 'dev') return;
-      // console.log("pushstate data =>" , data)
-      if(data.state){
-        // console.log(data.frompath);
-        let currentlocation = data.frompath ? data.frompath : this.location.path(true);
-        console.log(this.location.path(true));
-        if(currentlocation.indexOf('?') !== -1){
-          let locationparts = currentlocation.split('?');
-          currentlocation = locationparts[0];
-          console.log('inside if');
-        }
-        console.log(currentlocation);
+    // this.showVerificationModal();
 
-        let page = data.state['query'] ? currentlocation + data.state['query'] : currentlocation + data.page;
-        console.log(page);
-        // let page = window.location.pathname + data.page;
-        if(data.replace){
-          // console.log("pressed replacing url history => ", page)
-          this.platformlocation.replaceState(data.state,"",page);
-          this.appglobals.updateCurrentHistory(page);
-        }
-        else{
-          console.log("pressed pushing url history => ", page)
-          this.platformlocation.pushState(data.state,"",page);
-          this.appglobals.pushToHistory(page);
-        }
+    // if(this.appglobals.getEnv().ionicEnvName === 'dev') return;
+    // console.log("pushstate data =>" , data)
+    if(data.state){
+      // console.log(data.frompath);
+      let currentlocation = data.frompath ? data.frompath : this.location.path(true);
+      // console.log(this.location.path(true));
+      // console.log(this.location.path());
+
+      // if(currentlocation == "")
+      // {
+      //   currentlocation = "dashboard";
+      // }
+      if(currentlocation.indexOf('?') !== -1){
+        let locationparts = currentlocation.split('?');
+        currentlocation = locationparts[0];
+        // console.log('inside if');
       }
-      else{ // just update the history stack
-        this.appglobals.pushToHistory(data);
-        // this.platformlocation.pushState({page: data},"",data);
+      // console.log(currentlocation);
+      // console.log(data.appendurl);
+
+
+      if(data.appendurl){
+      
+      // console.log(this.appglobals.getHistory());
+
+
+      
+      let length = this.appglobals.getHistory().length;
+      // console.log(length);
+
+      if(length!= 0){
+      let parts = this.appglobals.getHistory()[length-1].split('?');
+      currentlocation =  parts[0] + '?' + parts[1];
       }
-      // console.log("app:updatehistory",this.appglobals.getHistory());
-    });
+
+      }
+
+      else{
+        currentlocation = '/dashboard'
+      }
+
+     
+
+      let page = data.state['query'] ? currentlocation + data.state['query'] : currentlocation + data.page;
+      // console.log(page);
+      // let page = window.location.pathname + data.page;
+      if(data.replace){
+        // console.log("pressed replacing url history => ", page)
+        this.platformlocation.replaceState(data.state,"",page);
+        this.appglobals.pushToHistory(page);
+      }
+      else{
+        console.log("pressed pushing url history => ", page)
+        this.platformlocation.pushState(data.state,"",page);
+        this.appglobals.pushToHistory(page);
+      }
+    }
+    else{ // just update the history stack
+      this.appglobals.pushToHistory(data);
+      // this.platformlocation.pushState({page: data},"",data);
+    }
+    // console.log("app:updatehistory",this.appglobals.getHistory());
+  });
 
      platformlocation.onPopState((event: any) => {
       // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
-      // let history = this.appglobals.getHistory();
-      this.events.publish('app:popstate',event.state);
+      let history = this.appglobals.getHistory();
+      console.log(event);
+      console.log(history);
+      // this.events.publish('app:popstate',event.state);
 
       // this.updateNav({page: 'competitors', setroot: true});
       // if(event.state && event.state.id === 'prices'){
@@ -113,145 +168,179 @@ export class MyApp {
     });
 
 
+
+  }
+
+  ngOnInit(){
+    console.log(this.location.path(true));
+    this.url =this.location.path(true);
   }
 
 
+navigateTo(){
+    console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
 
-   navigateTo(){
+    // let path = this.location.path(true);
 
-
-        console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
-
-        let path = this.location.path(true);
-
-        let pathparts = path.split('/');
-        
-        pathparts.map((val) => {
-          if(val === 'login'){
-            this.flag = true;
-          }
-        });
-
-        if(this.cookieService.get("keepLoggedIn") == 'yes'){
-
-          let path = this.location.path(true)
-                  let pathparts = path.split('/');
-                  pathparts.map((val) => {
-                    if(val === 'dashboard'){
-                      this.flag = true;
-                    }
-                  });
-                  if(!this.flag){
-
-                 this.updateNav('dashboard');
-                }
-                else{
-                  this.updateTitle('dashboard');
-                 // console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
-                }
+    let pathparts = this.url.split('/');
 
 
 
-          }
-        else{
-            this.updateNav('login');
+    if(this.cookieService.get("keepLoggedIn") !== 'yes'){
+
+      this.updateNav('login', '', '');
+      
+    }
+
+    else{
+
+      let obj1,obj2;
+
+      pathparts.map((val) => {
+      if(val.includes('dashboard')){
+          this.flag = true;
+          let pathparts2 = val.split('?');
+          console.log(pathparts2);
+
+
+          if(pathparts2.length == 1){
+            return;
           }
 
-
-
-
-
-
-
+          else if(pathparts2.length == 2){
+           // console.log(decodeURI(pathparts2[1]));
+           // console.log(JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}'));
+          obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
 
         }
-    
-    
+        else if(pathparts2.length == 3){
+          obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+          obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
 
+          }
 
-
-
-  
-  private updateNav(data) : any{
-    this.nav.setRoot(data);
-    this.updateTitle(data);
-    
-  }
-
-  private updateTitle(title: string = ''): void{
-    this.currentPage = title ? title : this.currentPage;
-    document.title = `${this.appName} - ${this.titlecasepipe.transform(this.currentPage)}`;
-  }
-
-
-  initializeApp() {
-    // this.platform.ready().then(() => {
-    //   // Okay, so the platform is ready and our plugins are available.
-    //   // Here you can do any higher level native things you might need.
-    //   this.statusBar.styleDefault();
-    //   this.splashScreen.hide();
-    //   //this.checkNetwork();
-    // });
-
-    this.checkNetwork();
-  }
-
-
-  checkNetwork() {
-      let self = this;
-      let networktimeout = null;
-      window.addEventListener('online',  function(e) {
-        if(self.appServiceProvider.getAppFocus() === false) return;
-
-        clearTimeout(networktimeout);
-        networktimeout = setTimeout(() => {
-          // self.updateOnlineStatus(self.appservice);
-          self.appServiceProvider.updateOnlineStatus(true);
-        },10000);
+        }
       });
+    
+
+        if(!this.flag){
+
+           this.updateNav('dashboard','','');
+           // let params = path.split('?');
 
 
-      window.addEventListener('offline', function(e) {
-        if(self.appServiceProvider.getAppFocus() === false) return;
-
-        clearTimeout(networktimeout);
-        networktimeout = setTimeout(() => {
-          // self.updateOnlineStatus(self.appservice);
-          self.appServiceProvider.updateOnlineStatus(true);
-        },10000);
-      });
-
-      // Set the name of the hidden property and the change event for visibility
-      var hidden, visibilityChange; 
-      if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
-        hidden = "hidden";
-        visibilityChange = "visibilitychange";
-      } else if (typeof document.msHidden !== "undefined") {
-        hidden = "msHidden";
-        visibilityChange = "msvisibilitychange";
-      } else if (typeof document.webkitHidden !== "undefined") {
-        hidden = "webkitHidden";
-        visibilityChange = "webkitvisibilitychange";
-      }
-
-      if (typeof document.addEventListener === "undefined" || typeof document[hidden] === "undefined") {
-        console.warn("addeventlistener required for page visibility api to work!");
-      } else {
-        // Handle page visibility change   
-        document.addEventListener(visibilityChange, () => {
-          if(document[hidden]){
-              // console.warn("### window hidden ###");
-              this.appServiceProvider.setAppFocus(false);
+         }
+        
+        else{
+        
+          if(obj1 != undefined && obj2 != undefined && obj1.date_rangestart && obj1.period_unit && obj2.date && obj2.cos_offset && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
+            this.updateNav('dashboard', obj1, obj2)
+          // this.updateTitle('dashboard');
           }
           else{
-              // console.warn("@@@ window visible @@@");
-              this.appServiceProvider.setAppFocus(true);
-              this.appServiceProvider.updateOnlineStatus(true);
+            this.updateNav('not-found', '', '');
           }
-        }, false);
-      }   
+        }
+
+    }
+  
 
   }
 
-  
+
+
+
+
+
+
+
+
+private updateNav(data, obj1 : any , obj2: any) : any{
+
+  if(data !== 'dashboard'){
+  this.nav.setRoot(data);
+  this.updateTitle(data);
+  }
+
+  else{
+    console.log(obj1,obj2);
+    this.nav.setRoot(data, {param1 : obj1,
+                            param2 : obj2
+      })
+    this.updateTitle(data);
+  }
+
+ }
+
+private updateTitle(title: string = ''): void{
+  this.currentPage = title ? title : this.currentPage;
+  document.title = `${this.appName} - ${this.titlecasepipe.transform(this.currentPage)}`;
+}
+
+
+initializeApp() {
+
+  this.checkNetwork();
+
+ 
+}
+
+
+checkNetwork() {
+  let self = this;
+  let networktimeout = null;
+  window.addEventListener('online',  function(e) {
+    if(self.appServiceProvider.getAppFocus() === false) return;
+
+    clearTimeout(networktimeout);
+    networktimeout = setTimeout(() => {
+        // self.updateOnlineStatus(self.appservice);
+        self.appServiceProvider.updateOnlineStatus(true);
+      },10000);
+  });
+
+
+  window.addEventListener('offline', function(e) {
+    if(self.appServiceProvider.getAppFocus() === false) return;
+
+    clearTimeout(networktimeout);
+    networktimeout = setTimeout(() => {
+        // self.updateOnlineStatus(self.appservice);
+        self.appServiceProvider.updateOnlineStatus(true);
+      },10000);
+  });
+
+    // Set the name of the hidden property and the change event for visibility
+    var hidden, visibilityChange; 
+    if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
+      hidden = "hidden";
+      visibilityChange = "visibilitychange";
+    } else if (typeof document.msHidden !== "undefined") {
+      hidden = "msHidden";
+      visibilityChange = "msvisibilitychange";
+    } else if (typeof document.webkitHidden !== "undefined") {
+      hidden = "webkitHidden";
+      visibilityChange = "webkitvisibilitychange";
+    }
+
+    if (typeof document.addEventListener === "undefined" || typeof document[hidden] === "undefined") {
+      console.warn("addeventlistener required for page visibility api to work!");
+    } else {
+      // Handle page visibility change   
+      document.addEventListener(visibilityChange, () => {
+        if(document[hidden]){
+            // console.warn("### window hidden ###");
+            this.appServiceProvider.setAppFocus(false);
+          }
+          else{
+            // console.warn("@@@ window visible @@@");
+            this.appServiceProvider.setAppFocus(true);
+            this.appServiceProvider.updateOnlineStatus(true);
+          }
+        }, false);
+    }   
+
+  }
+
+
 }

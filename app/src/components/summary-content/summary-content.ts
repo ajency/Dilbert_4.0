@@ -26,36 +26,32 @@ export class SummaryContentComponent {
   constructor( public events : Events) {
     // console.log('SummaryContentComponent Component');
        this.events.subscribe('update:content',(data) => {
-	   this.currentData = data.date;
+	   // this.currentData = data.date;
      this.day_data = data.summaryContentData.data.day_data;
      this.logs = data.summaryContentData.data.logs;
 
-	   let d = new Date();
-	   let temp = data.date.work_date.split("-");
-	   d.setFullYear(temp[0], temp[1]-1, temp[2]);
-	   this.today = {
-	   	day : this.days[d.getDay()],
-	   	date : d.getDate(),
-	   	month : this.monthNames[d.getMonth()]
-	   }
+     this.setToday();
     });
   }
 
   ngOnInit(){
-  	let dummy = new Date();
-    this.today = {
-      day : this.days[dummy.getDay()],
-      date : dummy.getDate(),
-      month : this.monthNames[dummy.getMonth()]
-    };
+  	// let dummy = new Date();
+   //  this.today = {
+   //    day : this.days[dummy.getDay()],
+   //    date : dummy.getDate(),
+   //    month : this.monthNames[dummy.getMonth()]
+   //  };
 
     // console.log(this.summaryContentData);
+
     this.day_data = this.summaryContentData.data.day_data;
+    console.log(this.day_data);
+    this.setToday();
     this.logs = this.summaryContentData.data.logs;
   }
 
   getDayDate(date: string, option: number): string {
-    var text: string;
+    var text: string = '';
     switch (option) {
       case 1:
         text = moment(date, "YYYY-MM-DD").format("ddd");
@@ -78,6 +74,23 @@ export class SummaryContentComponent {
         break;
     }
     return text;
+  }
+
+
+  setToday(){
+
+     let d = new Date();
+     let temp;
+     if(this.day_data.length != 0 ){ 
+     temp = this.day_data[0].work_date.split("-");
+     d.setFullYear(temp[0], temp[1]-1, temp[2]);
+     this.today = {
+      day : this.days[d.getDay()],
+      date : d.getDate(),
+      month : this.monthNames[d.getMonth()]
+     }
+   }
+
   }
 
 

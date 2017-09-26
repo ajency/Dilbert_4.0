@@ -1,4 +1,4 @@
-page-login {
+
     @media screen and (min-width: 768px){
         .login-container{
             background-color: #f9f9f9;
@@ -62,4 +62,41 @@ page-login {
     hr{
         margin: 1.5em 0;
     }
+
+
+
+   .loading {
+    width: 200px;
+    opacity: 0.65; 
+        cursor: not-allowed;
+    &:after {
+        
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border-top: 2px solid #fff;
+        border-left: 2px solid transparent;
+        border-right: 2px solid #fff;
+        border-bottom: 2px solid transparent;
+        animation: rrr 0.5s linear infinite;
+        margin: 0;
+        padding: 0;
+        margin: 0 auto;
+    }
+    .button-inner {
+        display: none;
+    }
 }
+
+@keyframes rrr {
+    0% {
+        transform: rotateZ(0);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+

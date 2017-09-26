@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { SummaryContentComponent } from './summary-content';
+import { FooterComponent } from './footer';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
-    SummaryContentComponent,
+    FooterComponent,
   ],
   imports: [
-    IonicPageModule.forChild(SummaryContentComponent),
+    IonicPageModule.forChild(FooterComponent),
     TranslateModule.forChild()
   ],
   exports: [
-    SummaryContentComponent
+    FooterComponent
   ]
 })
-export class SummaryContentComponentModule {}
+export class FooterComponentModule {}

@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import {  PopoverController, Events } from 'ionic-angular';
 import { CookieService } from 'ngx-cookie';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
+// import { TranslateService } from '@ngx-translate/core';
+import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Generated class for the LoggedInHeaderComponent component.
@@ -16,12 +20,34 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
 export class LoggedInHeaderComponent {
 
   header : any;
+  langSelect : boolean = true;
   image : any;
+  param = {
+    value : 'world'
+  };
 
-  constructor(public popoverCtrl: PopoverController,
+  constructor(
+              // private translate: TranslateService,
+              public popoverCtrl: PopoverController,
               private cookieservice: CookieService,
               public events : Events,
-              public appservice : AppServiceProvider) {
+              public appservice : AppServiceProvider,
+              public translate: TranslateService,
+              public appglobals : AppGlobalsProvider
+              ) {
+
+
+    if(this.appglobals.lang == "en"){
+      this.langSelect = true;
+    }
+    else{
+      this.langSelect = false;
+    }
+     // this language will be used as a fallback when a translation isn't found in the current language
+     // translate.setDefaultLang('fr');
+
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+     // translate.use('fr');
 
    
   }
@@ -46,6 +72,14 @@ export class LoggedInHeaderComponent {
           }
        
     }
+
+  }
+
+  private lang;
+  private setLocale(lang: string){
+    console.log(this.lang)
+    // this.translate.use(this.lang);
+    this.events.publish("app:localize",this.lang);
 
   }
 

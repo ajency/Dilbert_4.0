@@ -13,9 +13,50 @@ export class AppGlobalsProvider {
 
 
   private historyStack: Array<any> = [];
-	
+	lang : any;
+  period_unit: string = 'week';
+  cos_offset : string = '10';
+
+  private semVersion: any = {
+    major: 1,
+    minor: 1,
+    patch: 1
+  };
+
+  appVersion : string = '' ;
+
+private activeTabsList: any = {
+    
+    dashboard:{
+      component: 'StartHomePage',
+      deeplink: 'dashboard',
+      placeholder: 'Dashboard',
+      active: true
+    },
+    createorganisation:{
+      component: 'CreateOrganisationPage',
+      deeplink: 'create-organisation',
+      placeholder: 'CreateOrganisation',
+      active: true
+    },
+    joinorganisation:{
+      component: 'JoinOrganisationPage',
+      deeplink: 'join-organisation',
+      placeholder: 'JoinOrganisation',
+      active: false
+    }
+  };
+
+
   constructor( @Inject(EnvVariables) private environment) {
     console.log('Hello AppGlobalsProvider Provider');
+    console.log(this.environment);
+
+     for(let vpfix in this.semVersion){
+      this.appVersion = this.appVersion + this.semVersion[vpfix] + '.';
+      }
+
+      this.appVersion = this.appVersion.substr(0, this.appVersion.length -1);
   }
 
   getApiUrl(){
@@ -42,6 +83,10 @@ export class AppGlobalsProvider {
      })
 
      return history;
+  }
+
+   public getAppVersion(){
+    return this.appVersion;
   }
 
 

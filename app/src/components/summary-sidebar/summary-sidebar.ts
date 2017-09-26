@@ -77,7 +77,7 @@ export class SummarySidebarComponent {
         text = moment(date, "YYYY-MM-DD").format("ddd");
         break;
       case 2:
-        text = moment(date, "YYYY-MM-DD").format("MMM D");
+        text = moment(date, "YYYY-MM-DD").format("MMM");
         break;
       case 3:
         text = moment(date, "kk:mm:ss").format("hh:mm a");
@@ -91,6 +91,9 @@ export class SummarySidebarComponent {
         break;
       case 5:
         text = moment(date, "kk:mm:ss").format("hh:mm");
+        break;
+      case 6:
+        text = moment(date, "YYYY-MM-DD").format("D");
         break;
     }
     return text;
@@ -112,23 +115,54 @@ export class SummarySidebarComponent {
     //   this.sideBarData = response;
     //   this.calculateWeekTotal()
     // });
-    let url =  `${this.apiURL}/period-data`;
+    let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
+    console.log(url);
+    let filters = {
+      date_range : date_range,
+      period_unit : this.appGlobalsProvider.period_unit
+    }
+    
     let body = {
     user_id : data.user_id,
-    filters : {
-      date_range : date_range,
-      // period_unit : 'week'
-    }
-  };
+    filters : filters
+    };
  
     let optionalHeaders = {
-      'X-API-KEY' : data.x_api_key
+      'X-API-KEY' : data.x_api_key,
+      'From' : data.user_id,
     };
 
-      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '').subscribe( (response) => {
-      console.log(response);
+      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '' , filters,  false).subscribe( (response) => {
+      // console.log(response);
       this.sideBarData = response;
       this.calculateWeekTotal();
+
+
+      url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
+      console.log(url);
+      let body2 = {
+      user_id : data.user_id,
+      date : ev.formatted,
+      cos_offset : this.appGlobalsProvider.cos_offset
+    }
+
+    let filter2 = {
+      date : ev.formatted,
+      cos_offset : this.appGlobalsProvider.cos_offset
+    }
+
+      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
+      // console.log(response);
+      this.summaryContentData = response;
+
+      let data = {
+        date : ev.formatted,
+        summaryContentData : this.summaryContentData
+      }
+
+       this.events.publish('update:content', data);
+
+    });
 
 
     });
@@ -139,33 +173,33 @@ export class SummarySidebarComponent {
    
 
 
-      }
     }
+  }
 
     calculateWeekTotal(){
       let minutes = 0
-    for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
-    {
-      if(this.sideBarData.data.periodData[i].leave_status == "Present")
+      for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
       {
-        let temp = this.sideBarData.data.periodData[i].total_time.split(":");
-        minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
+        if(this.sideBarData.data.periodData[i].leave_status == "Present")
+        {
+          let temp = this.sideBarData.data.periodData[i].total_time.split(":");
+          minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
 
+        }
+        this.loader_percentage =  minutes/2700*100;
+        if(this.loader_percentage>100){
+          this.loader_percentage = 100;
+        }
       }
-      this.loader_percentage =  minutes/2700*100;
-      if(this.loader_percentage>100){
-        this.loader_percentage = 100;
-      }
-    }
 
-  this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+      this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
     }
 
 
 
     updateSummaryContent(date : any){
 
-     let url = `${this.apiURL}/day-summary`;
+     let url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
 
      
 
@@ -175,15 +209,21 @@ export class SummarySidebarComponent {
       let body2 = {
         user_id : data.user_id,
         date : date.work_date,
-        cos_offset : '15'
+        cos_offset : this.appGlobalsProvider.cos_offset
+      }
+
+      let filters = {
+        date : date.work_date,
+        cos_offset : this.appGlobalsProvider.cos_offset
       }
 
       let optionalHeaders = {
-      'X-API-KEY' : data.x_api_key
+      'X-API-KEY' : data.x_api_key,
+      'From' : data.user_id
       };
 
-    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '').subscribe( (response) => {
-      console.log(response);
+    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '' , filters, true).subscribe( (response) => {
+      // console.log(response);
       this.summaryContentData = response;
       this.zone.run(() => {});
 
@@ -192,7 +232,7 @@ export class SummarySidebarComponent {
         summaryContentData : this.summaryContentData
       }
 
-      console.log(data);
+      // console.log(data);
 
       this.events.publish('update:content', data);
 

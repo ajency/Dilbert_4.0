@@ -31,26 +31,28 @@
                   </div>
                 </div>
                 <div class="relative lang-container">
-                    <ion-select class="select-lang mobile-hide" color="gray-link" interface="popover">
-                        <ion-option selected="true" value="eng">
+                    <ion-select [(ngModel)]="lang" (ionChange)="setLocale()" class="select-lang mobile-hide" color="gray-link" interface="popover">
+                        <ion-option selected = "{{langSelect}}"  value="en">
                             English
                         </ion-option>
-                        <ion-option value="french">
+                        <ion-option selected = "{{!langSelect}}" value="fr">
                             French
                         </ion-option>
                     </ion-select>
                 </div>
+                 
             </div>
             <div class="dilbert-nav__right nav-cols">
                 <!-- Notification -->
                 <button (click)="navigateToLogin()" *ngIf="header == 'notloggedin' " class="" clear="" color="gray-link" ion-button="" text-capitalize="">
-                    Login
+                {{ 'login' | translate}}
+                    
                 </button>
                 <button (click)="navigateToRegister()" *ngIf="header == 'notloggedin' " class="" clear="" color="gray-link" ion-button="" text-capitalize="">
-                    Register
+                    {{ 'register' | translate }}
                 </button>
                 <button *ngIf="header == 'new' " class="mobile-hide" clear="" color="gray-link" ion-button="" text-capitalize="">
-                    Contact Us
+                    {{ 'contact us' | translate}}
                 </button>
                <!--  <button *ngIf="header == 'loggedin' " class="notify hvr-pulse-grow mobile-hide" clear="" icon-only="" ion-button="" m-r-10="">
                     <ion-icon color="dark" name="notifications-outline">

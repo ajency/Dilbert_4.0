@@ -4,8 +4,8 @@
     <!-- Current week -->
     <div class="week__current current-card">
         <div class="current-card__header flex-row">
-            <p ion-text color="primary" no-margin>This Week</p>
-            <p ion-text no-margin color="text">{{weekTotal}}hr/45hr</p>
+            <p ion-text color="primary" no-margin>{{ "this_week" | translate }}</p>
+            <p ion-text no-margin color="text">{{weekTotal}}{{ "hr" | translate }}/45{{ "hr" | translate }}</p>
             <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}"></div>
         </div>
         <div class="timeline-container">
@@ -14,8 +14,8 @@
                 <h2 *ngIf = "sideBarData.data.current.total_time == 0" class="time" m-t-0 p-r-40>Leave<span class="xxx-small"></span></h2>
 
                 <div class="day">
-                    <p ion-text color="primary" no-margin m-b-5 class="day-title">Today</p>
-                    <span ion-text color="text-darker">{{today.day}}  {{today.date}}, {{today.month}}</span>
+                    <p ion-text color="primary" no-margin m-b-5 class="day-title">{{ "today" | translate }}</p>
+                    <span ion-text color="text-darker" translate>{{ today.day | translate}}  {{today.date}}, {{today.month | translate}}</span>
                 </div>
             </div>
             <div class="current-card__footer flex-row">
@@ -39,7 +39,7 @@
 
        <div class="week__full full-card">
         <div class="full-card__header flex-row">
-            <p no-margin>This Week</p>
+            <p no-margin>{{ "this_week" | translate }}</p>
             <!-- <button ion-button clear>
                 <ion-icon name="calendar" color="text" class="icon-size full"></ion-icon>
             </button> -->
@@ -55,8 +55,8 @@
                     <div class="btn-container" [ngClass]="{'leave-row': date.leave_status == 'Leave'}" >
                         <li class="week-list__row flex-row">
                             <div class="week-list__day">
-                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.work_date,1)}}</p>
-                                <span ion-text color="text-lighter">{{getDayDate(date.work_date,2)}}</span>
+                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{ getDayDate(date.work_date,1) | translate}}</p>
+                                <span ion-text color="text-lighter">{{ getDayDate(date.work_date,2) | translate }} {{getDayDate(date.work_date,6)}}</span>
                             </div>
                             <div *ngIf = "date.leave_status == 'Present'" class="week-list__session">
                                 <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.start_time,3)}}</span>
@@ -69,7 +69,7 @@
                                 <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
                             </div>
                             <div *ngIf = "date.leave_status == 'Leave'" class="leave__title">
-                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>Leave</p>
+                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{ "leave" | translate }}</p>
                             </div>
                              <div *ngIf = "date.leave_status == 'Leave'" class="leave__dash">
                                 <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-6>- -</p>
@@ -77,6 +77,8 @@
                         </li>
                     </div>
                 </button>
+
+                <div *ngIf = "sideBarData.data.periodData.length == 0" align="center"> {{ "no data found" | translate }} </div>
 
             </ul>
             <!-- Week list ends -->

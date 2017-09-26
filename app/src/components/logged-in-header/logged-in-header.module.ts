@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { LoggedInHeaderComponent } from './logged-in-header';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,8 @@ import { LoggedInHeaderComponent } from './logged-in-header';
   ],
   imports: [
     IonicPageModule.forChild(LoggedInHeaderComponent),
+    TranslateModule.forChild(),
+
   ],
   exports: [
     LoggedInHeaderComponent
