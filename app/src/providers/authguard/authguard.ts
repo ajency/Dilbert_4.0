@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class AuthguardProvider {
   private retrievedUserData: boolean = false;
-  private userData : any;
+  public userData : any;
   constructor(
     private cookieservice: CookieService,
     private storage: Storage,
@@ -31,7 +31,7 @@ export class AuthguardProvider {
         if(keepLoggedIn === 'yes'){
           this.storage.get("userData")
           .then((result) => {
-            console.log('result',result);
+            // console.log('result',result);
             this.retrievedUserData = true;
             this.userData = result;
             // add token validation here

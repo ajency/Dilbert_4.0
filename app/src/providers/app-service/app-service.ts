@@ -100,7 +100,7 @@ export class AppServiceProvider {
                   }
 
 
-                  handleClientLoad() {
+   handleClientLoad() {
 
       //Function to autheticate the user using google auth2
       let that = this;
