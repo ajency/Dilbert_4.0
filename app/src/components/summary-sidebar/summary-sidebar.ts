@@ -118,6 +118,15 @@ export class SummarySidebarComponent {
     // });
     let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
     console.log(url);
+
+
+    let filter1 = {
+        user_id:data.user_id,
+        start_date:ev.formatted,
+        period_unit:this.appGlobalsProvider.period_unit
+      };
+
+
     let filters = {
       date_range : date_range,
       period_unit : this.appGlobalsProvider.period_unit
@@ -133,7 +142,7 @@ export class SummarySidebarComponent {
       'From' : data.user_id,
     };
 
-      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '' , filters,  false).subscribe( (response) => {
+      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '' , filter1,  false).subscribe( (response) => {
       // console.log(response);
       this.sideBarData = response;
       this.calculateWeekTotal();
@@ -148,7 +157,7 @@ export class SummarySidebarComponent {
     }
 
     let filter2 = {
-      date : ev.formatted,
+      summary_date : ev.formatted,
       // cos_offset : this.appGlobalsProvider.cos_offset
     }
 
@@ -234,7 +243,7 @@ export class SummarySidebarComponent {
       }
 
       let filters = {
-        date : date.work_date,
+        summary_date : date.work_date,
         // cos_offset : this.appGlobalsProvider.cos_offset
       }
 

@@ -30,7 +30,7 @@
                         <!-- Summary content -->
                         <summary-content *ngIf="sideBarData && summaryContentData" [test]="summaryContentData.day_data" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
                         <!-- Summary content ends -->
-                        <div *ngIf = "sideBarData == null && failed"> Couldn't load results at the moment! </div>
+                        <div *ngIf = "failed" align="center"> {{message}} </div>
                     </div>
                 </ion-col>
                 <ion-col class="col dashboard__leaves mobile-hide" col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
