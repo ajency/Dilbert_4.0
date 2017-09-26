@@ -31,7 +31,7 @@ export class AuthguardProvider {
         if(keepLoggedIn === 'yes'){
           this.storage.get("userData")
           .then((result) => {
-            console.log('result',result);
+            // console.log('result',result);
             this.retrievedUserData = true;
             this.userData = result;
             // add token validation here

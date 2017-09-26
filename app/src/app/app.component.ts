@@ -145,7 +145,7 @@ export class MyApp {
         this.appglobals.pushToHistory(page);
       }
       else{
-        console.log("pressed pushing url history => ", page)
+        console.log("pressed pushing url history => ")
         this.platformlocation.pushState(data.state,"",page);
         this.appglobals.pushToHistory(page);
       }
@@ -160,8 +160,8 @@ export class MyApp {
      platformlocation.onPopState((event: any) => {
       // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
       let history = this.appglobals.getHistory();
-      console.log(event);
-      console.log(history);
+      // console.log(event);
+      // console.log(history);
       // this.events.publish('app:popstate',event.state);
 
       // this.updateNav({page: 'competitors', setroot: true});
@@ -237,7 +237,7 @@ export class MyApp {
         
         else{
         
-          if(obj1 != undefined && obj2 != undefined && obj1.date_rangestart && obj1.period_unit && obj2.date && obj2.cos_offset && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
+          if(obj1 != undefined && obj2 != undefined && obj1.date_rangestart && obj1.period_unit && obj2.date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
             this.updateNav('dashboard', obj1, obj2)
           // this.updateTitle('dashboard');
           }
@@ -267,7 +267,7 @@ private updateNav(data, obj1 : any , obj2: any) : any{
   }
 
   else{
-    console.log(obj1,obj2);
+    // console.log(obj1,obj2);
     this.nav.setRoot(data, {param1 : obj1,
                             param2 : obj2
       })

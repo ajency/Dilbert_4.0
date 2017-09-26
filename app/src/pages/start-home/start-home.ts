@@ -60,7 +60,7 @@ import { Storage } from '@ionic/storage';
   this.param1 = navParams.get("param1");
   this.param2 = navParams.get("param2");
 
-  console.log(this.param1, this.param2);
+  // console.log(this.param1, this.param2);
   
 }
 
@@ -83,9 +83,9 @@ ngOnInit(){
       if(this.param1 && this.param2){
         this.currentDate = this.param1.date_rangestart;
         this.period_unit = this.param1.period_unit;
-        this.cos_offset = this.param2.cos_offset;
-        console.log(this.cos_offset);
-        console.log(this.currentDate);
+        // this.cos_offset = this.param2.cos_offset;
+        // console.log(this.cos_offset);
+        // console.log(this.currentDate);
 
         if(this.startAndEndOfWeek(this.currentDate, this.param2.date)){
         this.summaryDate = this.param2.date;
@@ -172,7 +172,7 @@ ionViewDidLoad() {
 
 
     let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
-    console.log(url);
+    // console.log(url);
     let filters = {
         date_range:date_range,
         period_unit: this.period_unit
@@ -194,7 +194,7 @@ ionViewDidLoad() {
 
 
     url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
-    console.log(url);
+    // console.log(url);
     let body2 = {
       user_id : this.userId,
       date : this.summaryDate,
@@ -241,7 +241,7 @@ ionViewDidLoad() {
 
   // If no date object supplied, use current date
   // Copy date so don't modify supplied date
-  console.log(date1,date2);
+  // console.log(date1,date2);
   var now = new Date(date1);
 
   // set time to some convenient value
@@ -258,7 +258,7 @@ ionViewDidLoad() {
   // Return array of date objects
   var dayDate = new Date(date2);
 
-  console.log(monday, dayDate, sunday);
+  // console.log(monday, dayDate, sunday);
 
   if(monday <= dayDate && dayDate <= sunday){
     return true;
