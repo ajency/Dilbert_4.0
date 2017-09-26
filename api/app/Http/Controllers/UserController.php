@@ -92,35 +92,14 @@ class UserController extends Controller
                 if($callingUser->can('edit-user')) {
                     $user = User::find($userCode);
                     if($user != null) {
+                        $response = (new User)->updateUserDetails($request,$user);
+                        // if user exists
                         if(isset($request->delete) && $request->delete == true) {
                             // deleting a record
-                            User::find($userCode)->delete();
+                            $user->delete();
                             return response()->json(["status" => 200, "message" => "User deleted."]);
                         }
-                        $userData = ["username" => $user->email];
-                        $userDetails = [];
-                        $userComm = [];
-                        if(isset($request->details))
-                            $userDetails = $request->details;
-                        if(isset($request->status)) {
-                            $userData = ["username" => $user->email, "status" => $request->status];
-                        }
-                        if(isset($request->role)) {
-                            // check if that role exists
-                            if(Role::where('name',$request->role)->exists()) {
-                                // append it to the userdata so that it can be handled by the package
-                                $userData['roles'] = $request->role;
-                            }
-                            else {
-                                return response()->json(['status' => 400, "message" => "Role does not exist"]);
-                            }
-                        }
-                        if(isset($request->permissions)) {
-                            // [TODO] check if all permission are valid
-                            $userData['permissions'] = ["edit-user","super-user"];/*$request->permissions;*/
-                        }
-                        $data = (new UserAuth)->updateOrCreateUser($userData,$userDetails,$userComm);
-                        return response()->json(["status" => 200, "message" => "User details edit successful.", "data" => $data]);
+                        return response()->json($response);
                     }
                     else if(isset($request->delete) && $request->delete == false) {
                         // the user was soft deleted and needs to retrieved
@@ -128,8 +107,11 @@ class UserController extends Controller
                         if($trashedUser != null) {
                             $trashedUser->restore();
                         }
-                        // need to handle updating details of deleted users?
-                        return response()->json(["status" => 200, "message" => "User un-deleted."]);
+                        // now that user is restored we update the details
+                        $user = User::find($userCode);
+                        $response = (new User)->updateUserDetails($request,$user);
+                        $response['message'] = "User restored. ".$response['message'];
+                        return response()->json($response);
                     }
                     else
                         return response()->json(["status" => 400, "message" => __('api_messages.user_dne')]);
