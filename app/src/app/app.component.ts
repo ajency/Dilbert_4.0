@@ -59,6 +59,7 @@ export class MyApp {
               public cookieService : CookieService,
               private titlecasepipe : TitleCasePipe,
               private appglobals : AppGlobalsProvider ) {
+    
     this.initializeApp();
     
     // this language will be used as a fallback when a translation isn't found in the current language
@@ -69,8 +70,9 @@ export class MyApp {
      // translate.use('fr');
 
     this.loc = platformlocation;
+    this.appServiceProvider.handleClientLoad();
 
-      this.events.subscribe("app:localize",(lang) => {
+    this.events.subscribe("app:localize",(lang) => {
       this.translate.use(lang);
       this.appglobals.lang = lang;
     });
@@ -78,7 +80,8 @@ export class MyApp {
     this.events.subscribe('app:navroot',(data) => {
       this.updateNav(data, '' , '');
     });
-    this.appServiceProvider.handleClientLoad();
+
+
 
     this.events.subscribe('user:signedIn', (data) =>{
       this.navigateTo();
@@ -86,7 +89,7 @@ export class MyApp {
 
 
 
- this.events.subscribe('app:updatehistory',(data) => {
+    this.events.subscribe('app:updatehistory',(data) => {
 
     // this.showVerificationModal();
 
@@ -142,7 +145,7 @@ export class MyApp {
         this.appglobals.pushToHistory(page);
       }
       else{
-        console.log("pressed pushing url history => ", page)
+        console.log("pressed pushing url history => ")
         this.platformlocation.pushState(data.state,"",page);
         this.appglobals.pushToHistory(page);
       }
@@ -157,8 +160,8 @@ export class MyApp {
      platformlocation.onPopState((event: any) => {
       // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
       let history = this.appglobals.getHistory();
-      console.log(event);
-      console.log(history);
+      // console.log(event);
+      // console.log(history);
       // this.events.publish('app:popstate',event.state);
 
       // this.updateNav({page: 'competitors', setroot: true});
@@ -177,7 +180,7 @@ export class MyApp {
   }
 
 
-navigateTo(){
+  navigateTo(){
     console.log('%c url location on app entry ... location: [' + this.location.path(true) + ']','color:orange')
 
     // let path = this.location.path(true);
@@ -204,6 +207,7 @@ navigateTo(){
 
 
           if(pathparts2.length == 1){
+            this.flag = false;
             return;
           }
 
@@ -233,7 +237,7 @@ navigateTo(){
         
         else{
         
-          if(obj1 != undefined && obj2 != undefined && obj1.date_rangestart && obj1.period_unit && obj2.date && obj2.cos_offset && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
+          if(obj1 != undefined && obj2 != undefined && obj1.date_rangestart && obj1.period_unit && obj2.date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
             this.updateNav('dashboard', obj1, obj2)
           // this.updateTitle('dashboard');
           }
@@ -263,7 +267,7 @@ private updateNav(data, obj1 : any , obj2: any) : any{
   }
 
   else{
-    console.log(obj1,obj2);
+    // console.log(obj1,obj2);
     this.nav.setRoot(data, {param1 : obj1,
                             param2 : obj2
       })

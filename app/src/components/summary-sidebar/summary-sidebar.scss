@@ -7,11 +7,17 @@ summary-sidebar {
     .selection{
             color: rgba(85, 85, 85, 0);
         background: rgba(255, 255, 255, 0);
+    pointer-events: none;
+        
     }
 
     .btnpicker, .selectiongroup{
         background: rgba(255, 255, 255, 0);
     }
+}
+
+.btnActivated{
+    background-color: #f1f1f1;
 }
 
 }
