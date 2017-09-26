@@ -59,7 +59,7 @@ class LogsController extends Controller
                         else if($state == 'offline' && $log->to_state == 'New Session') {
                             $end = $log->cos;
                             if((new Log)->timeDifferenceInMins($start,$end) >= $cosOffset) {
-                                array_push($logs,['state' => $state, 'start_time' => $start, 'end_time' => $end, 'state_time' => (new Log)->timeDifferenceInMins($start,$end)]);
+                                array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => (new Log)->timeDifferenceInMins($start,$end)]);
                                 $state = 'active';
                                 $start = $log->cos;
                                 $end = null;
@@ -86,7 +86,7 @@ class LogsController extends Controller
                             $end = $log->cos;
                             // check if this change of state is to be passed
                             if((new Log)->timeDifferenceInMins($start,$end) >= $cosOffset) {
-                                array_push($logs,['state' => $state, 'start_time' => $start, 'end_time' => $end, 'state_time' => (new Log)->timeDifferenceInMins($start,$end)]);
+                                array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => (new Log)->timeDifferenceInMins($start,$end)]);
                                 $state = $log->to_state;
                                 $start = $log->cos;
                                 $end = null;
@@ -110,7 +110,7 @@ class LogsController extends Controller
                             continue;
                     }
                     if($state != null)
-                        array_push($logs,['state' => $state, 'start_time' => $start, 'end_time' => $end, 'state_time' => null]);
+                        array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => null]);
                     $data['logs'] = $logs;
                     return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
                 }
