@@ -15,7 +15,7 @@ class Locked_Data extends Model
      * @param  [type] $lockedData Eloquent object
      * @return array containing the formatted data
      */
-    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder) {
+    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "default") {
         $data = [];
         $output = new ConsoleOutput;
         $start = new \DateTime($start);

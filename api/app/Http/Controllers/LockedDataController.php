@@ -78,7 +78,7 @@ class LockedDataController extends Controller
 
                         //get latest data (current data)
                         $currentData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => date('Y-m-d')])->get();
-                        $cDayData = (new Locked_Data)->formattedLockedData($request->user_id,$currentData,date('Y-m-d'),date('Y-m-d'),"asc");
+                        $cDayData = (new Locked_Data)->formattedLockedData($request->user_id,$currentData,date('Y-m-d'),date('Y-m-d'));
                         $data['current'] = $cDayData;
 
                         // if sorting options are set
