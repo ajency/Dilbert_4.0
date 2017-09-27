@@ -57,7 +57,7 @@ class Organisation extends Model
                 // $response['message'] = "Go to dashboard.";
                 $response['message'] = __('api_messages.goto_dashboard');
                 $response['data'] = [
-                    'user_id' => $user_resp['user']->first()->id,
+                    'user_id' => $user_resp['user']->id,
                     'userEmail' => $email,
                     'x_api_key' => $user_resp['user_details']->api_token,
                 ];
@@ -90,7 +90,7 @@ class Organisation extends Model
             $output->writeln($user_resp['user']->id);
             $response['data'] = [
                 'email' => $email,
-                'user_id' => $user_resp['user']->first()->id,
+                'user_id' => $user_resp['user']->id,
                 'x_api_key' => $user_resp['user_details']->api_token,
                 'domain' => $domain,
                 'ip' => $ip,
