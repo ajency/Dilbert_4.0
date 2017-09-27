@@ -25,7 +25,7 @@
                     <!-- Summary section -->
                     <div class="summary">
                         <!-- Summary sidebar <section></section>ion (From component-sidebar)-->
-                        <summary-sidebar *ngIf="sideBarData" [test]="sideBarData" class="summary__sidebar" p-h-20 ></summary-sidebar>
+                        <summary-sidebar *ngIf="sideBarData && summaryContentData" [test]="sideBarData" [day_data]="summaryContentData" class="summary__sidebar" p-h-20 ></summary-sidebar>
                         <!-- Summary sidebar ends -->
                         <!-- Summary content -->
                         <summary-content *ngIf="sideBarData && summaryContentData" [test]="summaryContentData.day_data" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
