@@ -4,7 +4,7 @@
         <!-- Days details -->
         <div class="day-detail flex-row" >
             <div class="day-detail__current detail-cols desk-hide">
-                <h5 *ngIf = "day_data[0]" m-t-0 m-b-8 class="currentime">{{getDayDate(day_data[0].total_time,5)}} hr</h5>
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time != '' " m-t-0 m-b-8 class="currentime">{{getDayDate(day_data[0].total_time,5)}} hr</h5>
                 <span ion-text color="text-lighter" no-margin m-b-5 class="day-title" *ngIf = "today"> {{today.day | translate}} {{today.date}}, {{today.month | translate}} </span>
             </div>
             <div class="day-detail__day detail-cols mobile-hide">
@@ -92,17 +92,17 @@
         </li>
 
         <div *ngFor = "let obj of logs">
-            <li *ngIf = "obj.state == 'idle' && obj.end_time != null" class="detail-view__cols idle">
+            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " class="detail-view__cols idle">
                 <h6  ion-text font-weight-3 color="dark">{{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
             </li>
-            <li *ngIf = "obj.state == 'offline' && obj.end_time != null" class="detail-view__cols offline">
+            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " class="detail-view__cols offline">
                 <h6  ion-text font-weight-3 color="dark">{{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
             </li>
-            <li *ngIf = "obj.state == 'active' && obj.end_time != null" class="detail-view__cols online">
+            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " class="detail-view__cols online">
                 <h6  ion-text font-weight-3 color="dark">{{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
             </li>
 
-            <li *ngIf = "obj.state == 'active' && obj.end_time == null " class="detail-view__cols online">
+            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " class="detail-view__cols online">
                 <h6  ion-text font-weight-3 color="dark">{{ "online" | translate }} </h6>
             </li>
 

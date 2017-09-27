@@ -40,8 +40,8 @@ export class PopoverPage {
       // let that = this;
         gapi.load('client:auth2', function () {
         gapi.client.init({
-           client_id: '676621258132-6q9s2j1hc8343jj3nn75k0is4s1nb893.apps.googleusercontent.com',
-              // client_id: '164623832984-ivug8glc6tgtu0sgjbm51oigp27u0033.apps.googleusercontent.com',
+           // client_id: '676621258132-6q9s2j1hc8343jj3nn75k0is4s1nb893.apps.googleusercontent.com',
+              client_id: '460485328187-93cuogcf3omo4ort1l8kd32n25ktf5hn.apps.googleusercontent.com',
 
         cookiepolicy: 'single_host_origin',
         scope: 'https://www.googleapis.com/auth/spreadsheets'

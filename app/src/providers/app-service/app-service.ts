@@ -106,7 +106,9 @@ export class AppServiceProvider {
       let that = this;
       gapi.load('client:auth2',()=> {
         gapi.client.init({
-          client_id: '460485328187-u3um84ihtuq08aiu23er9d58e43269do.apps.googleusercontent.com',
+          // client_id: '460485328187-u3um84ihtuq08aiu23er9d58e43269do.apps.googleusercontent.com',
+          client_id: '460485328187-93cuogcf3omo4ort1l8kd32n25ktf5hn.apps.googleusercontent.com',
+          
           cookiepolicy: 'single_host_origin',
           scope: 'profile'
         }).then( () => {

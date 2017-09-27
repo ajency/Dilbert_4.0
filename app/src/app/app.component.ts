@@ -220,7 +220,7 @@ export class MyApp {
         else if(pathparts2.length == 3){
           obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
           obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-
+          console.log(obj1,obj2);
           }
 
         }
@@ -237,7 +237,7 @@ export class MyApp {
         
         else{
         
-          if(obj1 != undefined && obj2 != undefined && obj1.date_rangestart && obj1.period_unit && obj2.date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
+          if(obj1 != undefined && obj2 != undefined && obj1.start_date && obj1.period_unit && obj1.user_id && obj2.summary_date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
             this.updateNav('dashboard', obj1, obj2)
           // this.updateTitle('dashboard');
           }

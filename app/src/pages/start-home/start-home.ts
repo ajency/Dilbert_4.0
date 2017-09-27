@@ -44,6 +44,7 @@ import { Storage } from '@ionic/storage';
  public param2 : any;
  period_unit : string ;
  cos_offset : string ;
+ message : string;
 
  constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -81,14 +82,15 @@ ngOnInit(){
       console.log('params passed');
 
       if(this.param1 && this.param2){
-        this.currentDate = this.param1.date_rangestart;
+        this.currentDate = this.param1.start_date;
         this.period_unit = this.param1.period_unit;
+        this.userId = this.param1.user_id;
         // this.cos_offset = this.param2.cos_offset;
         // console.log(this.cos_offset);
         // console.log(this.currentDate);
 
-        if(this.startAndEndOfWeek(this.currentDate, this.param2.date)){
-        this.summaryDate = this.param2.date;
+        if(this.startAndEndOfWeek(this.currentDate, this.param2.summary_date)){
+        this.summaryDate = this.param2.summary_date;
         this.getData();
         }
 
@@ -167,16 +169,24 @@ ionViewDidLoad() {
  
     let optionalHeaders = {
       'X-API-KEY' : this.key,
-      'From' : this.userId
+      'From' : this.authguard.userData.user_id
     };
 
 
     let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
     // console.log(url);
-    let filters = {
-        date_range:date_range,
-        period_unit: this.period_unit
+    let filter1 = {
+        user_id:this.userId,
+        start_date:this.currentDate,
+        period_unit:this.period_unit
       };
+
+     let filters = {
+      date_range : date_range,
+      period_unit : this.period_unit
+
+      };
+
 
     let body = {
       user_id:this.userId,
@@ -186,34 +196,42 @@ ionViewDidLoad() {
 
 
 
-    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','', filters, false).subscribe( (response) => {
+    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','', filter1, false).subscribe( (response) => {
       // console.log(response);
-      this.sideBarData = response;
-      this.failed = true;
-      this.zone.run(() => {});
+      if(response.status == 200){
+
+        this.sideBarData = response;
+        this.zone.run(() => {});
+        url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
 
 
-    url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
-    // console.log(url);
-    let body2 = {
-      user_id : this.userId,
-      date : this.summaryDate,
-      cos_offset : this.cos_offset
+          // console.log(url);
+        let body2 = {
+          user_id : this.userId,
+          date : this.summaryDate,
+          cos_offset : this.cos_offset
+        }
+
+       let filter2 = {
+        summary_date:this.summaryDate,
+        // cos_offset : this.cos_offset
+       }
+
+
+        this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
+        // console.log(response);
+        this.summaryContentData = response;
+        this.zone.run(() => {});
+      });
+
     }
 
-    let filter2 = {
-      date : this.summaryDate,
-      // cos_offset : this.cos_offset
+    else{
+        this.failed = true;
+        this.message = response.message;
+        this.zone.run(() => {});
+        
     }
-
-
-      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
-      // console.log(response);
-      this.summaryContentData = response;
-      this.zone.run(() => {});
-    });
-
-
 
 
     });
