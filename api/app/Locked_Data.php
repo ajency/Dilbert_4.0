@@ -13,6 +13,7 @@ class Locked_Data extends Model
      * violation data
      * @param  $user_id
      * @param  [type] $lockedData Eloquent object
+     * @param  start  start_date of
      * @return array containing the formatted data
      */
     public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "default") {
@@ -42,7 +43,7 @@ class Locked_Data extends Model
             ]);
         }
         foreach ($lockedData as $ld) {
-            while($dateCounter->format('Y-m-d') != $ld->work_date && $dateCounter <= $end) {
+            while($dateCounter->format('Y-m-d') != $ld->work_date && $dateCounter != $end) {
                 // add an empty item
                 array_push($data,[
                     "work_date" => $dateCounter->format('Y-m-d'),
@@ -54,6 +55,8 @@ class Locked_Data extends Model
                     "violation_count" => ""
                 ]);
                 $dateCounter->modify($dateModifyString);
+                // to handle comparing datecounter and end based on the order
+
             }
             $dateCounter->modify($dateModifyString);
             // handle total_time = null
