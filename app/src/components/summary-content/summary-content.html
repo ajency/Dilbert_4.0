@@ -92,17 +92,17 @@
         </li>
 
         <div *ngFor = "let obj of logs">
-            <li *ngIf = "obj.state == 'idle' && obj.end_time != null" class="detail-view__cols idle">
+            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " class="detail-view__cols idle">
                 <h6  ion-text font-weight-3 color="dark">{{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
             </li>
-            <li *ngIf = "obj.state == 'offline' && obj.end_time != null" class="detail-view__cols offline">
+            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " class="detail-view__cols offline">
                 <h6  ion-text font-weight-3 color="dark">{{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
             </li>
-            <li *ngIf = "obj.state == 'active' && obj.end_time != null" class="detail-view__cols online">
+            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " class="detail-view__cols online">
                 <h6  ion-text font-weight-3 color="dark">{{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
             </li>
 
-            <li *ngIf = "obj.state == 'active' && obj.end_time == null " class="detail-view__cols online">
+            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " class="detail-view__cols online">
                 <h6  ion-text font-weight-3 color="dark">{{ "online" | translate }} </h6>
             </li>
 

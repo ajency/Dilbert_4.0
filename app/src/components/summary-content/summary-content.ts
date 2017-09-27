@@ -45,7 +45,7 @@ export class SummaryContentComponent {
     // console.log(this.summaryContentData);
 
     this.day_data = this.summaryContentData.data.day_data;
-    console.log(this.day_data);
+    // console.log(this.day_data);
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
   }
