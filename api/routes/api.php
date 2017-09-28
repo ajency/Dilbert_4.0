@@ -23,8 +23,8 @@ Route::get('/login/{provider}/{locale?}','Ajency\User\SocialAuthController@apiSo
 // Route::post('/addOrg','LoginController@addOrg');
 
 // dashboard api
-Route::post('/period-data/{locale?}','LockedDataController@periodData');    // month or week data
-Route::post('/day-summary/{locale?}','LogsController@daySummary');    // detailed data for a particular day
+Route::post('/period-data/{locale?}','LockedDataController@periodData')->middleware('check-permissions');    // month or week dataz
+Route::post('/day-summary/{locale?}','LogsController@daySummary')->middleware('check-permissions');    // detailed data for a particular day
 
 // organisation api
 Route::post('/join-organisation/{locale?}','OrganisationController@joinOrAddOrganisation');   // for first time login
