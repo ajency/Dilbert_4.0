@@ -227,7 +227,7 @@ export class MyApp {
         else if(pathparts2.length == 3){
           obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
           obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-          console.log(obj1,obj2);
+          // console.log(obj1,obj2);
           }
 
         }
@@ -256,7 +256,7 @@ export class MyApp {
             param2 : obj2
           }
           this.updateTitle('dashboard');
-          this.events.publish('dashboard:params', params)
+          this.events.publish('dashboard:params', params);
           }
 
 
