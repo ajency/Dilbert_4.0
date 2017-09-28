@@ -256,6 +256,7 @@ export class MyApp {
             param2 : obj2
           }
           this.updateTitle('dashboard');
+          console.log('publish event');
           this.events.publish('dashboard:params', params);
           }
 
