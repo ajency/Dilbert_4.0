@@ -1,5 +1,5 @@
 import { Events } from 'ionic-angular';
-import { Component, Input } from '@angular/core';
+import { Component, NgZone, Input } from '@angular/core';
 import * as moment from 'moment';
 
 /**
@@ -23,7 +23,8 @@ export class SummaryContentComponent {
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
-  constructor( public events : Events) {
+  constructor( public events : Events,
+               public zone : NgZone) {
     // console.log('SummaryContentComponent Component');
        this.events.subscribe('update:content',(data) => {
 	   // this.currentData = data.date;
@@ -48,6 +49,12 @@ export class SummaryContentComponent {
     // console.log(this.day_data);
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
+  }
+
+ ionViewDidLoad() {
+    
+   this.zone.run(() => {});
+
   }
 
   getDayDate(date: string, option: number): string {

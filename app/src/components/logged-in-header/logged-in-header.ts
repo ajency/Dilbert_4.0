@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import {  PopoverController, Events } from 'ionic-angular';
 import { CookieService } from 'ngx-cookie';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
@@ -33,7 +33,8 @@ export class LoggedInHeaderComponent {
               public events : Events,
               public appservice : AppServiceProvider,
               public translate: TranslateService,
-              public appglobals : AppGlobalsProvider
+              public appglobals : AppGlobalsProvider,
+              public zone : NgZone 
               ) {
 
 
@@ -75,10 +76,16 @@ export class LoggedInHeaderComponent {
 
   }
 
+  ionViewDidLoad() {
+    
+   this.zone.run(() => {});
+
+  }
+
+
   private lang;
-  private setLocale(lang: string){
-    console.log(this.lang)
-    // this.translate.use(this.lang);
+  private setLocale(){
+    console.log(this.lang);
     this.events.publish("app:localize",this.lang);
 
   }

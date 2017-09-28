@@ -10,7 +10,7 @@
         </div>
         <div class="timeline-container">
             <div class="current-card__body flex-row" p-v-25>
-                <h2 *ngIf = "sideBarData.data.current[0].total_time != '' " class="time" m-t-0 p-r-40>{{getDayDate(sideBarData.data.current.total_time, 5)}}<span class="xxx-small">hr</span></h2>
+                <h2 *ngIf = "sideBarData.data.current[0].total_time != '' " class="time" m-t-0 p-r-40>{{getDayDate(sideBarData.data.current[0].total_time, 5)}}<span class="xxx-small">hr</span></h2>
                 <!-- <h2 *ngIf = "sideBarData.data.current[0].total_time == 0" class="time" m-t-0 p-r-40>Leave<span class="xxx-small"></span></h2> -->
 
                 <div class="day">
@@ -20,7 +20,7 @@
             </div>
             <div class="current-card__footer flex-row">
                 <div *ngIf = "sideBarData.data.current[0].start_time != '' " class="timing in" p-h-12 p-v-12>
-                    <i class="custom-icon indoor"></i> <span>{{getDayDate(sideBarData.data.current.start_time,3)}}</span>
+                    <i class="custom-icon indoor"></i> <span>{{getDayDate(sideBarData.data.current[0].start_time,3)}}</span>
                 </div>
 
              <!--    <div *ngIf = "sideBarData.data.current.start_time == undefined" class="timing in" p-h-12 p-v-12>
@@ -28,7 +28,7 @@
                 </div> -->
 
                 <div class="timing out" p-h-12 p-v-12 *ngIf = "sideBarData.data.current[0].leave_status == 'Present'">
-                    <i class="custom-icon outdoor"></i> <span ion-text color="success">{{sideBarData.data.current.status}}</span>
+                    <i class="custom-icon outdoor"></i> <span ion-text color="success">{{sideBarData.data.current[0].status}}</span>
                 </div>
             </div>
         </div>

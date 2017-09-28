@@ -73,6 +73,13 @@ export class SummarySidebarComponent {
   }
 
 
+  ionViewDidLoad() {
+  
+   this.zone.run(() => {});   
+   
+  }
+
+
   getDayDate(date: string, option: number): string {
     var text: string;
     switch (option) {

@@ -62,7 +62,7 @@ export function createTranslateLoader(http: Http) {
     IonicModule.forRoot(MyApp,{
       mode: 'md',
       preloadModules : false,
-      locationStrategy: window.location.hostname == 'localhost' ? 'path' : 'path' 
+      locationStrategy: window.location.hostname == 'localhost' ? 'hash' : 'path' 
     }),
    
   ],
