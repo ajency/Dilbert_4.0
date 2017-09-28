@@ -67,7 +67,7 @@ export class SummarySidebarComponent {
 
   ngOnInit(){
   	this.zone.run(() => {});
-    console.log(this.summaryContentData);
+    // console.log(this.summaryContentData);
     this.calculateWeekTotal();
  
   }
@@ -196,15 +196,15 @@ export class SummarySidebarComponent {
   }
 
     calculateWeekTotal(){
-      console.log('calculateWeekTotal');
+      // console.log('calculateWeekTotal');
       let minutes = 0
       for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
       {
         this.sideBarData.data.periodData[i].btnActive = false;
-        console.log(this.sideBarData.data.periodData[i]);
+        // console.log(this.sideBarData.data.periodData[i]);
         if(this.sideBarData.data.periodData[i].work_date == this.summaryContentData.data.day_data[0].work_date){
            this.sideBarData.data.periodData[i].btnActive = true;
-           console.log('inside if ', this.sideBarData.data.periodData[i]);
+           // console.log('inside if ', this.sideBarData.data.periodData[i]);
 
         }
         if(this.sideBarData.data.periodData[i].leave_status == "Present")

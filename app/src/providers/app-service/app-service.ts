@@ -100,12 +100,15 @@ export class AppServiceProvider {
                   }
 
 
-   handleClientLoad() {
+   handleClientLoad(call : any): Promise<any> {
+
+    return new Promise((resolve,reject) => {
 
       //Function to autheticate the user using google auth2
       let that = this;
       gapi.load('client:auth2',()=> {
         gapi.client.init({
+      
           // client_id: '460485328187-u3um84ihtuq08aiu23er9d58e43269do.apps.googleusercontent.com',
           client_id: '460485328187-93cuogcf3omo4ort1l8kd32n25ktf5hn.apps.googleusercontent.com',
           
@@ -114,14 +117,30 @@ export class AppServiceProvider {
         }).then( () => {
 
          console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
+         console.log(call);
+
+        if(!call){
          that.updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-	          // console.log(gapi.auth2.getAuthInstance().currentUser.get());
+        }
+
+         if(gapi.auth2.getAuthInstance().isSignedIn.get()){
+          resolve(true);
+         }
+
+         else{
+          reject(false);
+         }
+         
+            // console.log(gapi.auth2.getAuthInstance().currentUser.get());
 
 
           });
       });
 
-    }
+    })
+
+
+  }
 
     updateSigninStatus(isSignedIn) {
 

@@ -39,6 +39,7 @@ export class MyApp {
   rootPage: any ;
 
   flag : boolean;
+  flag2 : boolean = true;
   loc : any;
   private currentPage : string;
   private appName : string = "Dilbert";
@@ -70,7 +71,12 @@ export class MyApp {
      // translate.use('fr');
 
     this.loc = platformlocation;
-    this.appServiceProvider.handleClientLoad();
+    this.appServiceProvider.handleClientLoad(false).then( () =>{
+      console.log('Logged in');
+    })
+    .catch( () => {
+      console.log('Not logged in')
+    })
 
     this.events.subscribe("app:localize",(lang) => {
       this.translate.use(lang);
@@ -78,7 +84,7 @@ export class MyApp {
     });
 
     this.events.subscribe('app:navroot',(data) => {
-      this.updateNav(data, '' , '');
+      this.updateNav(data);
     });
 
 
@@ -191,7 +197,7 @@ export class MyApp {
 
     if(this.cookieService.get("keepLoggedIn") !== 'yes'){
 
-      this.updateNav('login', '', '');
+      this.updateNav('login');
       
     }
 
@@ -208,6 +214,7 @@ export class MyApp {
 
           if(pathparts2.length == 1){
             this.flag = false;
+            this.flag2 = false;
             return;
           }
 
@@ -229,8 +236,12 @@ export class MyApp {
 
         if(!this.flag){
 
-           this.updateNav('dashboard','','');
-           // let params = path.split('?');
+             if(this.flag2){
+               this.updateNav('dashboard');
+             }
+             else{
+              this.updateTitle('dashboard');          
+             }
 
 
          }
@@ -238,11 +249,19 @@ export class MyApp {
         else{
         
           if(obj1 != undefined && obj2 != undefined && obj1.start_date && obj1.period_unit && obj1.user_id && obj2.summary_date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
-            this.updateNav('dashboard', obj1, obj2)
+            // this.updateNav('dashboard', obj1, obj2)
           // this.updateTitle('dashboard');
+          let params = {
+            param1 : obj1,
+            param2 : obj2
           }
+          this.updateTitle('dashboard');
+          this.events.publish('dashboard:params', params)
+          }
+
+
           else{
-            this.updateNav('not-found', '', '');
+            this.updateNav('not-found');
           }
         }
 
@@ -259,20 +278,12 @@ export class MyApp {
 
 
 
-private updateNav(data, obj1 : any , obj2: any) : any{
+private updateNav(data) : any{
 
-  if(data !== 'dashboard'){
-  this.nav.setRoot(data);
-  this.updateTitle(data);
-  }
-
-  else{
-    // console.log(obj1,obj2);
-    this.nav.setRoot(data, {param1 : obj1,
-                            param2 : obj2
-      })
+  
+    this.nav.setRoot(data)
     this.updateTitle(data);
-  }
+
 
  }
 

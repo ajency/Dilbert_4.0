@@ -3,7 +3,7 @@
 // import { SummaryContentComponent } from '../../components/summary-content/summary-content';
 // import { SummarySidebarService } from './../../components/summary-sidebar/summary-sidebar.service';
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 
 
 import { CookieService } from 'ngx-cookie';
@@ -51,6 +51,7 @@ import { Storage } from '@ionic/storage';
   public popoverCtrl: PopoverController, 
   private cookieservice: CookieService,
   public zone : NgZone,
+  public events : Events,
   public userDataProvider : UserDataProvider,
   public authguard : AuthguardProvider,
   public appServiceProvider : AppServiceProvider,
@@ -58,9 +59,14 @@ import { Storage } from '@ionic/storage';
   public appGlobalsProvider : AppGlobalsProvider) {
   this.apiURL = this.appGlobalsProvider.getApiUrl();
 
-  this.param1 = navParams.get("param1");
-  this.param2 = navParams.get("param2");
+  // this.param1 = navParams.get("param1");
+  // this.param2 = navParams.get("param2");
 
+  this.events.subscribe('dashboard:params' , (params) =>{
+    this.param1 = params.param1;
+    this.param2 = params.param2;
+    console.log(this.param1,this.param2);
+  });
   // console.log(this.param1, this.param2);
   
 }
@@ -146,10 +152,15 @@ ionViewDidLoad() {
     return new Promise((resolve,reject) => {
       this.authguard.verifyToken('dashboard')
       .then(() => {
-        console.log('can enter dashboard')
-        // this.appglobals.setPageToNavigate({page: 'dashboard'});
-        // this.currentPage = 'dashboard';
-        resolve(true)
+
+        this.appServiceProvider.handleClientLoad(true).then( () =>{
+          console.log('can enter dashboard')
+           resolve(true)
+        })
+        .catch(() => {
+          reject(true)
+        });
+       
       })
       .catch(() => {
         reject(true)
