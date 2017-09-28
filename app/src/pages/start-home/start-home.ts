@@ -62,17 +62,21 @@ import { Storage } from '@ionic/storage';
   // this.param1 = navParams.get("param1");
   // this.param2 = navParams.get("param2");
 
-  this.events.subscribe('dashboard:params' , (params) =>{
-    this.param1 = params.param1;
-    this.param2 = params.param2;
-    console.log(this.param1,this.param2);
-  });
+  // this.events.subscribe('dashboard:params' , (params) =>{
+  //   this.param1 = params.param1;
+  //   this.param2 = params.param2;
+  //   console.log(this.param1,this.param2);
+  // });
   // console.log(this.param1, this.param2);
   
 }
 
 ngOnInit(){
   
+    this.param1 = this.appGlobalsProvider.dashboard_params.param1;
+    this.param2 = this.appGlobalsProvider.dashboard_params.param2;
+
+    console.log(this.param1, this.param2);
 
     this.userId = this.authguard.userData.user_id;
     this.key = this.authguard.userData.x_api_key;

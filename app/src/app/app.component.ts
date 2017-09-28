@@ -251,13 +251,12 @@ export class MyApp {
           if(obj1 != undefined && obj2 != undefined && obj1.start_date && obj1.period_unit && obj1.user_id && obj2.summary_date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
             // this.updateNav('dashboard', obj1, obj2)
           // this.updateTitle('dashboard');
-          let params = {
-            param1 : obj1,
-            param2 : obj2
-          }
           this.updateTitle('dashboard');
           console.log('publish event');
-          this.events.publish('dashboard:params', params);
+          this.appglobals.dashboard_params.param1 = obj1;
+          this.appglobals.dashboard_params.param2 = obj2;
+
+          // this.events.publish('dashboard:params', params);
           }
 
 

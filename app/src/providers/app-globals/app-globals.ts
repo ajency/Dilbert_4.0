@@ -16,6 +16,10 @@ export class AppGlobalsProvider {
 	lang : any;
   period_unit: string = 'week';
   cos_offset : string = '0';
+  dashboard_params : any = {
+    param1 : '',
+    param2 : ''
+  };
 
   private semVersion: any = {
     major: 1,
