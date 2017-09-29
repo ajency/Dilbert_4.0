@@ -1,6 +1,11 @@
-import { Events } from 'ionic-angular';
+import { Events, ModalController, PopoverController } from 'ionic-angular';
 import { Component, NgZone, Input } from '@angular/core';
 import * as moment from 'moment';
+import { AuthguardProvider } from '../../providers/authguard/authguard';
+import { AppServiceProvider } from '../../providers/app-service/app-service';
+import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+
+
 
 /**
  * Generated class for the SummaryContentComponent component.
@@ -24,15 +29,51 @@ export class SummaryContentComponent {
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
   constructor( public events : Events,
-               public zone : NgZone) {
+               public zone : NgZone,
+               public modalCtrl : ModalController,
+               public popoverCtrl : PopoverController,
+               public authguard : AuthguardProvider,
+               public appServiceProvider : AppServiceProvider,
+               public appGlobalsProvider : AppGlobalsProvider) {
     // console.log('SummaryContentComponent Component');
+
        this.events.subscribe('update:content',(data) => {
 	   // this.currentData = data.date;
      this.day_data = data.summaryContentData.data.day_data;
      this.logs = data.summaryContentData.data.logs;
+     this.summaryContentData = data.summaryContentData;
 
      this.setToday();
     });
+
+       this.events.subscribe("changed:log", (data) =>{
+
+          let object = {
+          user_id : this.authguard.userData.user_id,
+          work_date : data.work_date,
+          // modified_by : this.authguard.userData.user_id,
+          // modified_on : moment(new Date()).format("YYYY-MM-DD"),
+          // old_value : this.summaryContentData.data.day_data[0],
+          changes : data.changes
+       }
+
+        // this.day_data[0] = data;
+        console.log(object);
+
+       let url  = `${this.appGlobalsProvider.getApiUrl()}/period-data/edit/${this.appGlobalsProvider.lang}`;
+
+       let optionalHeaders = {
+          'X-API-KEY' : this.authguard.userData.x_api_key,
+          'From' : this.authguard.userData.user_id,
+        };
+
+      // this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+      //  });
+
+      })
+  
+
   }
 
   ngOnInit(){
@@ -101,6 +142,15 @@ export class SummaryContentComponent {
   }
 
 
+  editModal(ev){
+    console.log("inside editModal");
+
+      // let data = this.day_data[0];
+      // console.log(this.day_data[0]);
+      let popover = this.popoverCtrl.create( 'EditModalPage',{data:this.day_data[0]});
+      popover.present();
+
+  }
 
 
 }

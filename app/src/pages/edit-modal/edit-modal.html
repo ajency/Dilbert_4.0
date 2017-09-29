@@ -1,0 +1,52 @@
+<!--
+  Generated template for the BuyPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+	<ion-navbar>
+		<ion-title>Modify Sujit's log</ion-title>
+	</ion-navbar>
+</ion-header>
+
+
+<ion-content padding class =  "scroll">
+
+</ion-content>
+
+<ion-footer>
+	<ion-toolbar>
+		<ion-buttons >
+			<button ion-button color="danger">
+				Cancel
+			</button>
+		</ion-buttons>
+		<ion-buttons end>
+			<button ion-button color="dark">
+				Save changes
+			</button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-footer> -->
+
+
+<div padding class="my-popup">
+
+	<div padding>
+		Modify Sujit's log
+	</div>
+
+	<div padding>
+		<label>Start time:</label> <input type="time"   [(ngModel)]="start_time">
+		<label>End_time:</label>  <input type="time"   [(ngModel)]="end_time"> <br />
+	</div>
+
+	<div class="footer">
+	
+	<button ion-button color="dark" (click) = "changeLogs()" > Save Changes</button> <button ion-button color="danger" (click) = "close()" > Cancel</button>	
+
+
+	</div>
+
+</div>
