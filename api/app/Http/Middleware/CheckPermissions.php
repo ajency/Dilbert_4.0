@@ -31,6 +31,7 @@ class CheckPermissions
             'api/period-data/edit/{locale?}' => ['edit-period-data'],
             'api/day-summary/{locale?}' => ['view-period-data'],
             'api/day-summary/edit/{locale?}' => ['edit-period-data'],
+            'api/users/edit/{userCode}/{locale?}' => ['edit-user']
         ];
 
         // first check the person is accessing his own data
