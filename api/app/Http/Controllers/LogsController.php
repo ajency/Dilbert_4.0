@@ -29,7 +29,7 @@ class LogsController extends Controller
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
                 // check for the user-permissions
                 $callingUser = User::where('id',$request->header('from'))->first();
-                if($callingUser->can('edit-personal')) {
+                // if($callingUser->can('edit-personal')) {
                     // check if a change of state offset is given
                     if(isset($request->cos_offset))
                         $cosOffset = $request->cos_offset;
@@ -113,10 +113,10 @@ class LogsController extends Controller
                         array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => null]);
                     $data['logs'] = $logs;
                     return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
-                }
-                else {
-                    return response()->json(["message" => "you dont have the right permissions."]);
-                }
+                // }
+                // else {
+                //     return response()->json(["message" => "you dont have the right permissions."]);
+                // }
             }
             else
                 return response()->json(['status' => 400, 'message' => __('api_messages.authorisation')]);
