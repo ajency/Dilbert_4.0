@@ -32,7 +32,7 @@ class LockedDataController extends Controller
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
                 // when some valid user accesses this api check if the calling user has the right permissions
                 $callingUser = User::where('id',$request->header('from'))->first();
-                if($callingUser->can('edit-personal')) {
+                // if($callingUser->can('edit-personal')) {
                     // check if the user_id exists in the users table
                     if(User::where('id',$request->user_id)->count() != 0)
                         $user = UserDetail::where('user_id',$request->user_id)->first();
@@ -95,10 +95,10 @@ class LockedDataController extends Controller
                         $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),$sortOrder);
                         $data['periodData'] = $periodData;
                         return response()->json(['status' => 200, 'message' => __('api_messages.user_periodic_data'), 'data' => $data]);
-                }
-                else {
-                    return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
-                }
+                // }
+                // else {
+                //     return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
+                // }
             }
             else {
                 return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
