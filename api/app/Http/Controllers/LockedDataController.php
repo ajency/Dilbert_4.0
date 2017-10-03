@@ -139,7 +139,7 @@ class LockedDataController extends Controller
                         // if the field is start time or end time get it in the right format
                         if($ckey == 'start_time' || $ckey == 'end_time') {
                             $cvalue = new \DateTime($request->work_date.' '.$cvalue);
-                            $cvalue = $cvalue->format('Y-m-d h:i:s');
+                            $cvalue = $cvalue->format('Y-m-d H:i:s');
                         }
                         if($lockedEntry->$ckey != $cvalue) {
                             // make an entry in the data_changes table
