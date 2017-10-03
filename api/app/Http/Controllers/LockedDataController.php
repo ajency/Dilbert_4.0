@@ -72,6 +72,10 @@ class LockedDataController extends Controller
                                 return response()->json(['status' => 400, 'message' => __('api_messages.org_period_unit')]);
                         }
 
+                        // check if end date is ahead of time
+                        if($endDate > new \DateTime())
+                            $endDate = new \DateTime();
+                        $output->writeln("enddate: ".$endDate->format('Y-m-d'));
                         //get all the user details from the locked_data table
                         // return response()->json(['count' => count($lockedData)]);
                         $data = [];
