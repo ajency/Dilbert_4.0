@@ -19,6 +19,7 @@ class Locked_Data extends Model
     public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "default") {
         $data = [];
         $output = new ConsoleOutput;
+        $output->writeln(json_encode($lockedData));
         $start = new \DateTime($start);
         $end = new \DateTime($end);
         $dateModifyString = "+1 days";

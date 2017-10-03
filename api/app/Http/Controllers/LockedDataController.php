@@ -12,6 +12,7 @@ use App\Log;
 use App\Organisation;
 use App\Role;
 use App\Permission;
+use App\Data_Changes;
 use Ajency\User\Ajency\userauth\UserAuth;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -106,6 +107,73 @@ class LockedDataController extends Controller
         }
         else {
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
+        }
+    }
+
+    /**
+     * edit a users lockedData (start time, end time)
+     * @param  Request $request request data
+     * @param  string  $locale  preferred language
+     * @return object   response same as periodData
+     */
+    public function editPeriodData(Request $request, $locale = "default") {
+        $output = new ConsoleOutput();
+        // set the preferred locale
+        if($locale == "default") {
+            $userDets = UserDetail::where('user_id',$request->input('from'))->first();
+            $locale = $userDets['lang'];
+        }
+        App::setLocale($locale);
+        if(!empty($request->user_id) && !empty($request->input('changes')) && !empty($request->input('work_date')) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
+            if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
+                if(User::where('id',$request->user_id)->count() != 0)
+                    $user = UserDetail::where('user_id',$request->user_id)->first();
+                else
+                    return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
+                // see which all chnages are to be made
+                try {
+                    // get the data for that day
+                    $lockedEntry = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->work_date])->first();
+                    foreach($request->input('changes') as $ckey => $cvalue) {
+                        // first check to see if the value really needs to be changed
+                        // if the field is start time or end time get it in the right format
+                        if($ckey == 'start_time' || $ckey == 'end_time') {
+                            $cvalue = new \DateTime($request->work_date.' '.$cvalue);
+                            $cvalue = $cvalue->format('Y-m-d h:i:s');
+                        }
+                        if($lockedEntry->$ckey != $cvalue) {
+                            // make an entry in the data_changes table
+                            $dataChanges = new Data_Changes;
+                            $dataChanges->user_id = $request->user_id;
+                            $dataChanges->modified_by = $request->header('from');
+                            $dataChanges->modified_on = date('Y-m-d');
+                            $dataChanges->table_modified = 'locked__datas';
+                            $dataChanges->column_modified = $ckey;
+                            $dataChanges->old_value = $lockedEntry->$ckey;
+                            $dataChanges->new_value = $cvalue;
+                            $dataChanges->save();
+                            // reflect this change in the locked__datas table
+                            $lockedEntry->$ckey = $cvalue;
+                            $lockedEntry->save();
+                        }
+                    }
+                    // $data = $lockedEntry;
+                    // $data['violation_count'] = 0;
+                    //
+                    // $output->writeln(json_encode($lockedEntry));
+                    return response()->json(['status' => 200, 'message' => 'Changes made successfully.', 'data' => (new Locked_Data)->formattedLockedData($request->user_id,array($lockedEntry),$request->work_date,$request->work_date)]);
+                }
+                catch(Exception $e) {
+                    return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+                }
+            }
+            else {
+                return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
+            }
+        }
+        else {
+            $output->writeln("sdddddddddddddddddddddddd");
+            return response()->json(['status' => 400, 'message' => __('api_messages.params_missing'), 'data' => ['user_id' => $request->user_id, 'changes' => json_encode($request->input('changes')), 'x-api-key' => $request->header('X-API-KEY'), 'from' => $request->header('from')]]);
         }
     }
 }
