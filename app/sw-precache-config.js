@@ -5,7 +5,9 @@ module.exports = {
   staticFileGlobs: [
     'manifest.json',
     'build/**.js',
-    'build/**.css'
+    'build/**.css',
+    'assets/img/dilbert.png',
+    'assets/i18n/**.json'
   ],
   navigateFallback: 'index.html',
   runtimeCaching: [
