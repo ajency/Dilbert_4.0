@@ -62,6 +62,18 @@ export class SummarySidebarComponent {
       month : this.monthNames[dummy.getMonth()]
     };
 
+    this.events.subscribe("summary-sidebar:log", (data) =>{
+       for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
+        {
+          if(this.sideBarData.data.periodData[i].btnActive == true){
+             
+            this.sideBarData.data.periodData[i] = data;
+            this.sideBarData.data.periodData[i].btnActive = true;
+          }
+        
+        }
+    })
+
       
   }
 
@@ -197,7 +209,10 @@ export class SummarySidebarComponent {
 
     calculateWeekTotal(){
       // console.log('calculateWeekTotal');
-      let minutes = 0
+      let minutes = 0;
+      // let current_date = new Date('2017-09-06');
+      // let length = ;
+      // let j=0;
       for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
       {
         this.sideBarData.data.periodData[i].btnActive = false;
@@ -213,6 +228,11 @@ export class SummarySidebarComponent {
           minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
 
         }
+
+        // if(new Date(this.sideBarData.data.periodData[i].work_date) > current_date ){
+        //    this.sideBarData.data.periodData.splice(0,1);
+        //   console.log(this.sideBarData.data.periodData);
+        // }
       
       }
     this.zone.run(() => {});
