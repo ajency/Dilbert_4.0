@@ -62,6 +62,7 @@ export class SummaryContentComponent {
 
        let url  = `${this.appGlobalsProvider.getApiUrl()}/period-ddata/edit/${this.appGlobalsProvider.lang}`;
 
+       console.log(url);
        let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id,
