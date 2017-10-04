@@ -44,7 +44,7 @@
 
 	<div class="footer">
 	
-	<button ion-button color="dark" (click) = "changeLogs()" > Save Changes</button> <button ion-button color="danger" (click) = "close()" > Cancel</button>	
+	<button ion-button color="dark" (click) = "changeLogs()" [disabled] = "start_time > end_time || start_time == '' || end_time == ''"  > Save Changes</button> <button ion-button color="danger" (click) = "close()" > Cancel</button>	
 
 
 	</div>

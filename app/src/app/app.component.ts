@@ -1,6 +1,6 @@
 import { AppServiceProvider } from '../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgZone } from '@angular/core';
 import { Nav, Platform, NavController,Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -8,6 +8,8 @@ import { Location, PlatformLocation } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
 import { TitleCasePipe } from '../pipes/title-case/title-case';
 import { TranslateService } from '@ngx-translate/core';
+
+
 
 // import {TranslateService, TranslatePipe, TranslateLoader, TranslateStaticLoader} from 'ng2-translate';
 // import { TranslateService, TranslatePipe } from '@ngx-translate/core';
@@ -59,7 +61,8 @@ export class MyApp {
               private platformlocation: PlatformLocation,
               public cookieService : CookieService,
               private titlecasepipe : TitleCasePipe,
-              private appglobals : AppGlobalsProvider ) {
+              private appglobals : AppGlobalsProvider,
+              public zone : NgZone ) {
     
     this.initializeApp();
     
@@ -81,6 +84,7 @@ export class MyApp {
     this.events.subscribe("app:localize",(lang) => {
       this.translate.use(lang);
       this.appglobals.lang = lang;
+      this.zone.run(() => {});
     });
 
     this.events.subscribe('app:navroot',(data) => {

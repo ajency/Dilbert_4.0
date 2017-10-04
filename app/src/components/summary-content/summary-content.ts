@@ -58,18 +58,22 @@ export class SummaryContentComponent {
        }
 
         // this.day_data[0] = data;
-        console.log(object);
+       console.log(object);
 
-       let url  = `${this.appGlobalsProvider.getApiUrl()}/period-data/edit/${this.appGlobalsProvider.lang}`;
+       let url  = `${this.appGlobalsProvider.getApiUrl()}/period-ddata/edit/${this.appGlobalsProvider.lang}`;
 
+       console.log(url);
        let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id,
         };
 
-      // this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+      this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
 
-      //  });
+          console.log(response);
+          this.day_data[0] = response.data[0];
+          this.events.publish("summary-sidebar:log", response.data[0]);
+       });
 
       })
   
