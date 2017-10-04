@@ -34,6 +34,7 @@ export class SignInCardComponent {
   logInProcess : boolean = false;
   disableBtn : boolean = false;
   loginResponse : any;
+  error_msg : any;
   next_url : any;
   constructor(public navCtrl: NavController,
 			   public navParams: NavParams, 
@@ -51,10 +52,10 @@ export class SignInCardComponent {
 
     console.log('Hello SignInCardComponent Component');
 
-    if(this.cookieservice.get("domainError")== 'yes'){
-      this.domainError =true;    
-    }
-    this.cookieservice.remove("domainError");
+    // if(this.cookieservice.get("domainError")== 'yes'){
+    //   this.domainError =true;    
+    // }
+    // this.cookieservice.remove("domainError");
 
 	
 
@@ -89,7 +90,7 @@ export class SignInCardComponent {
     
 
  	 this.zone.run(() => {});
-     this.cookieservice.remove("domainError");
+     // this.cookieservice.remove("domainError");
      
 
    
@@ -109,22 +110,27 @@ export class SignInCardComponent {
   	signin(){
   		// this.showLoader = true;
  		this.logInProcess = true;
- 		this.disableBtn = true;
+ 		this.domainError = false;
  		
 
  		this.appServiceProvider.signIn().then( (token) =>{
 
 		this.token = token;
+ 		this.disableBtn = true;
+ 		this.zone.run(() => {});
+
  		this.postRequest();
+
+
  		});
 
- 		this.zone.run(() => {});
 
 
  	}
 
 
  	postRequest() {
+
 		var headers = new Headers();
 		headers.append("Accept", 'application/json');
 		headers.append('Content-Type', 'application/json' );
@@ -167,9 +173,14 @@ export class SignInCardComponent {
 		}
 
 		else if(this.status =="400"){
-			this.events.publish('app:navroot', 'login');
+			// this.events.publish('app:navroot', 'login');
 			this.domainError = true;
-			this.cookieservice.put("domainError","yes");
+			this.error_msg = this.loginResponse.message;
+			console.log(this.error_msg);
+	 		this.disableBtn = false;
+ 			this.zone.run(() => {});
+
+			// this.cookieservice.put("domainError","yes");
 			// this.errorToast();
 
 		}
