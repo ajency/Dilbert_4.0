@@ -89,7 +89,6 @@ class SocialAuthController extends Controller {
 
             $account = Socialite::driver($provider)->userFromToken($token);
             $social_data = $service->getSocialData($account, $provider);
-
             $valid_response = $userauthObj->validateUserLogin($social_data["user"], $provider);
 
             if($valid_response["status"] == "success" || $valid_response["message"] == "no_account") {
