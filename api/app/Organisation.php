@@ -35,9 +35,15 @@ class Organisation extends Model
             $org = Organisation::where('domain',$account->user['domain']);
             $domain = $account->user['domain'];
         }
+        else if(config('app.env') == "local"){
+            $org = Organisation::where('domain','gmail.com');     // fetch the test domain
+            $domain = "gmail.com";
+        }
         else {
-            $org = Organisation::where('domain','000');     // just to get an empty object
-            $domain = "dev-mode-domain.com";
+            $response['next_url'] = '/login';
+            $response['status'] = 400;
+            $response['message'] = 'Invalid Domain (not in test mode)';
+            return $response;
         }
 
         if($org->exists()) {
