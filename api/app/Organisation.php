@@ -56,8 +56,9 @@ class Organisation extends Model
                     $dashFlag = false;
             }
             if($dashFlag) {
-            // if($user_resp['user_details']->org_id) {
+                // if($user_resp['user_details']->org_id) {
                 // go to dashboard
+                $userRole = $user_resp['user']->getRoleNames()->first();
                 $response['next_url'] = "/dashboard";
                 $response['status'] = 200;
                 // $response['message'] = "Go to dashboard.";
@@ -66,6 +67,7 @@ class Organisation extends Model
                     'user_id' => $user_resp['user']->id,
                     'userEmail' => $email,
                     'x_api_key' => $user_resp['user_details']->api_token,
+                    'role' => $userRole
                 ];
                 return $response;
             }
