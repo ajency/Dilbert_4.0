@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use App;
 use App\User;
 use App\UserDetail;
+use App\Organisation;
 use App\Log;
 use App\Locked_Data;
 
@@ -48,7 +49,13 @@ class LogsController extends Controller
                     $state = null;
                     $start = null;
                     $end = null;
+                    // Organisation's ip list
+                    $ip_list = unserialize(Organisation::find(UserDetail::find($request->user_id)->org_id)->ip_lists);
                     foreach($userLogs as $log) {
+                        // check if the logs ip belongs to organisation's ip_lists
+                        // if not skip the log
+                        if(!in_array($log->ip_addr,$ip_list))
+                            continue;
                         // if this is the start of the startDate
                         if($start == null && $log->to_state == 'New Session') {   // New Session = active
                                 $state = 'active';
