@@ -34,7 +34,7 @@
     <!-- Detail view -->
 
     <div class="detail-view" p-t-35>
-        <ul *ngIf = "logs.length != 0" class="detail-view__container violated-row" p-h-20 m-h-10>
+        <ul *ngIf = "logs.length != 0 && day_data[0].leave_status == 'Present'" class="detail-view__container violated-row" p-h-20 m-h-10>
             <!-- <li class="detail-view__cols violated"> -->
             <!-- violation and chat box -->
            <!--  <div class="violated-data">
@@ -117,5 +117,5 @@
         </li>
     </ul>
 
-    <div *ngIf = "logs.length == 0" align="center"> {{ "no logs found" | translate }}</div>
+    <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
 </div>
