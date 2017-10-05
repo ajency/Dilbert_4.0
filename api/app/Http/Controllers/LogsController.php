@@ -39,7 +39,7 @@ class LogsController extends Controller
                     // acquire the data to be sent
                     $data = [];
                     // pass basic user data for next api request
-                    $data['user'] = ['user_id' => $request->user_id, 'x_api_key' => $request->header('X-API-KEY')];
+                    $data['user'] = ['user_id' => $request->user_id];
                     // get the days data from locked__datas -------------- call that new function
                     $daysData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
                     $data['day_data'] = (new Locked_Data)->formattedLockedData($request->user_id,$daysData,$request->date,$request->date);  // formatted locked data
