@@ -52,7 +52,7 @@
             <!-- Week list -->
             <ul class="week-list list-control overflow-active">
                 <button ion-item class="week-container"  *ngFor="let date of sideBarData.data.periodData;let i = index " (click) = "updateSummaryContent(date, i)" [ngClass]="{'btnActivated': sideBarData.data.periodData[i] && sideBarData.data.periodData[i].btnActive == true}" >
-                    <div class="btn-container" [ngClass]="{'leave-row': date.leave_status == 'Leave' || date.leave_status == ''}"  >
+                    <div class="btn-container" [ngClass]="{'leave-row': (date.leave_status == 'Leave' || date.leave_status == '') && !sideBarData.data.periodData[i].btnActive}"  >
                         <li class="week-list__row flex-row">
                             <div class="week-list__day">
                                 <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{ getDayDate(date.work_date,1) | translate}}</p>

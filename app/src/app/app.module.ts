@@ -20,6 +20,7 @@ import { TitleCasePipe } from '../pipes/title-case/title-case';
 import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+// import { TimePickerComponent } from '../components/time-picker/time-picker';
 
 
 // import { TranslateModule} from '@ngx-translate/core';
@@ -38,6 +39,7 @@ export function createTranslateLoader(http: Http) {
   declarations: [
     MyApp,
     TitleCasePipe,
+    // TimePickerComponent,
     // FooterComponent,
     // SignInCardComponent,
     // SummaryContentComponent,
