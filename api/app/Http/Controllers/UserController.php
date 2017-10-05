@@ -28,7 +28,7 @@ class UserController extends Controller
             $locale = $userDets['lang'];
         }
         App::setLocale($locale);
-        if($request->header('from')!= null && !empty($request->input('org_id')) && $request->header('X-API-KEY')!= null) {
+        if($request->header('from')!= null && !empty($request->input('filters.org_id')) && $request->header('X-API-KEY')!= null) {
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
                 // when some valid user accesses this api check if the calling user has the right permissions
                 $callingUser = User::where('id',$request->header('from'))->first();
@@ -39,20 +39,20 @@ class UserController extends Controller
                     $filters['sortBy'] = "name";
                     $filters['sortOrder'] = "asc";
                     $filters['status'] = "active";
-                    if($request->input('filters.display_limit') != null)
-                        $filters['displayLimit'] = $request->input('filters.display_limit');
-                    if($request->input('filters.page') != null)
-                        $filters['page'] = $request->input('filters.page');
-                    if($request->input('filters.sort_by') != null)
-                        $filters['sortBy'] = $request->input('filters.sort_by');
-                    if($request->input('filters.sort_order') != null)
-                        $filters['sortOrder'] = $request->input('filters.sort_order');
-                    if($request->input('filters.status') != null)
-                        $filters['status'] = $request->input('filters.status');
+                    if($request->input('display_limit') != null)
+                        $filters['displayLimit'] = $request->input('display_limit');
+                    if($request->input('page') != null)
+                        $filters['page'] = $request->input('page');
+                    if($request->input('sort_by') != null)
+                        $filters['sortBy'] = $request->input('sort_by');
+                    if($request->input('sort_order') != null)
+                        $filters['sortOrder'] = $request->input('sort_order');
+                    if($request->input('status') != null)
+                        $filters['filters.status'] = $request->input('status');
                     /**
                      * handle the other filters like status (where clause type)
                      */
-                     $data['org_id'] = $request->input('org_id');
+                     $data['org_id'] = $request->input('filters.org_id');
                      $data['org_logo'] = Organisation::where('id',$request->input('org_id'))->first()->logo;
                      $data['users'] = (new Organisation)->getOrgUsers($request->input('org_id'),$filters);
                      return response()->json(['status' => 200, "message" => "Organisations users returned.", "data" => $data]);
