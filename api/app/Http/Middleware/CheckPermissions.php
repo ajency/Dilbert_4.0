@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+use App;
 use App\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -34,6 +35,14 @@ class CheckPermissions
             'api/users/edit/{userCode}/{locale?}' => ['edit-user']
         ];
 
+        $uriPath = $request->route()->uri();
+
+        // localisation (default english)
+        if($request->route('locale') != null)
+            App::setLocale($request->route('locale'));
+        else
+            App::setLocale('en');
+
         // check if a from is given or not
         if(empty($request->header('from')))
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
@@ -43,7 +52,6 @@ class CheckPermissions
         }
         else {
             // check if the the calling user has the necessary permissions
-            $uriPath = $request->route()->uri();
             $user = User::find($request->header('from'));
             // $userPermissions = $user->getAllPermissions();
             $userPermissions = [];
