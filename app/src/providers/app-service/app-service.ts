@@ -45,6 +45,8 @@ export class AppServiceProvider {
   private appFocused: boolean = true;
   private isOnline: boolean = true;
   handleError : any;
+  jQuery: any;
+
   
 
   constructor(public http: Http,
@@ -55,6 +57,8 @@ export class AppServiceProvider {
    private toastctrl : ToastController,
    private loadingctrl :LoadingController
    ) {
+    this.jQuery = $;
+    
     
     console.log('AppServiceProvider Provider');
 
