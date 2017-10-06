@@ -140,15 +140,19 @@ class LockedDataController extends Controller
                     $user = UserDetail::where('user_id',$userCode)->first();
                 else
                     return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
+                // check if it's a member (not hr / admin) who wants to make a change a second time
+                $userRole = (User::find($request->header('from')))->getRoleNames()->first();
+                if($userRole == 'member' && !(new Data_Changes)->userCanMakeChanges($request->header('from'),$request->work_date))
+                    return response()->json(['status' => 200, "message" => "Sorry your total changes allowed for this day are up. Contact the HR."]);
                 // see which all chnages are to be made
                 try {
                     // get the data for that day
-                    $lockedEntry = Locked_Data::where(['user_id' => $userCode, 'work_date' => $request->work_date]);
+                    $lockedEntry = Locked_Data::where(['user_id' => $userCode, 'work_date' => $request->work_date])->get();
                     // when no data exists
-                    if($lockedEntry == null)
+                    if(count($lockedEntry) == 0)
                         return response()->json(['status' => 400, 'message' => "Period data doesn't exist"]);
                     // when more than one entries are there (extremely rare scenario)
-                    if($lockedEntry->count() == 1)
+                    if(count($lockedEntry) == 1)
                         $lockedEntry = $lockedEntry->first();
                     else
                         return response()->json(['status' => 400, 'message' => "More than one entries in locked table"]);
