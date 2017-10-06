@@ -143,9 +143,25 @@ class LockedDataController extends Controller
                 // see which all chnages are to be made
                 try {
                     // get the data for that day
-                    $lockedEntry = Locked_Data::where(['user_id' => $userCode, 'work_date' => $request->work_date])->first();
+                    $lockedEntry = Locked_Data::where(['user_id' => $userCode, 'work_date' => $request->work_date]);
+                    // when no data exists
                     if($lockedEntry == null)
                         return response()->json(['status' => 400, 'message' => "Period data doesn't exist"]);
+                    // when more than one entries are there (extremely rare scenario)
+                    if($lockedEntry->count() == 1)
+                        $lockedEntry = $lockedEntry->first();
+                    else
+                        return response()->json(['status' => 400, 'message' => "More than one entries in locked table"]);
+                    // if person has to be marked as leave
+                    if($request->mark_as_leave != NULL and $request->mark_as_leave) {
+                        $lockedEntry->start_time = NULL;
+                        $lockedEntry->end_time = NULL;
+                        $lockedEntry->total_time = "00:00";
+                        $lockedEntry->status = "Leave";
+                        $lockedEntry->save();
+                        return response()->json(['status' => 200, 'message' => "Marked as leave"]);
+                    }
+                    // for the other changes
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // first check to see if the value really needs to be changed
                         // if the field is start time or end time get it in the right format
@@ -185,7 +201,6 @@ class LockedDataController extends Controller
             }
         }
         else {
-            $output->writeln("sdddddddddddddddddddddddd");
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing'), 'data' => ['user_id' => $userCode, 'changes' => json_encode($request->input('changes')), 'x-api-key' => $request->header('X-API-KEY'), 'from' => $request->header('from')]]);
         }
     }

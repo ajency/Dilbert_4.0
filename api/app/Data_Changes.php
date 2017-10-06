@@ -12,6 +12,8 @@ class Data_Changes extends Model
     /**
      * Fetches all changes made to a users data on that particular day
      * @param          $user      user's reference code who is requesting to view these changes
+     *                            for only count you can send any id for from because it doesn't matter
+     *                            ideally send 0
      * @param          $userCode  user reference code who's changes are requested - for now user id
      * @param          $work_Date date
      * @param  boolean $onlyCount default false, set to true if only the number chnages required
