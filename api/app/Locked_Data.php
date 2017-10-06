@@ -23,13 +23,14 @@ class Locked_Data extends Model
         $start = new \DateTime($start);
         $end = new \DateTime($end);
         $dateModifyString = "+1 days";
-        // // if in ascending order interchange the start and end
+        // if in descending order interchange the start and end
         if($sortOrder == "desc") {
             $temp = $start;
             $start = $end;
             $end = $temp;
             $dateModifyString = "-1 days";
         }
+        $output->writeln("start: ".$start->format('Y-m-d')." end: ".$end->format('Y-m-d'));
         $dateCounter = clone $start;
         // special case when acquired the formatted locked data of a non existent date (single)
         if($dateCounter == $end && count($lockedData) == 0) {
@@ -44,6 +45,7 @@ class Locked_Data extends Model
             ]);
         }
         foreach ($lockedData as $ld) {
+            $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
             while($dateCounter->format('Y-m-d') != $ld->work_date && $dateCounter != $end) {
                 // add an empty item
                 array_push($data,[
@@ -55,9 +57,9 @@ class Locked_Data extends Model
                     "total_time" => "",
                     "violation_count" => ""
                 ]);
-                $dateCounter->modify($dateModifyString);
                 // to handle comparing datecounter and end based on the order
-
+                $dateCounter->modify($dateModifyString);
+                // $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
             }
             $dateCounter->modify($dateModifyString);
             // handle total_time = null

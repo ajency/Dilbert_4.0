@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use App;
 use App\User;
 use App\UserDetail;
+use App\Organisation;
 use App\Log;
 use App\Locked_Data;
 
@@ -38,7 +39,17 @@ class LogsController extends Controller
                     // acquire the data to be sent
                     $data = [];
                     // pass basic user data for next api request
-                    $data['user'] = ['user_id' => $request->user_id, 'x_api_key' => $request->header('X-API-KEY')];
+                    $user = User::where(['id' => $request->user_id]);
+                    if($user->exists())
+                        $name = $user->first()->name;
+                    else
+                        return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
+                    // if the calling user is requesting their own data
+                    if($request->header('from') == $request->user_id)
+                        $self = true;
+                    else
+                        $self = false;
+                    $data['user'] = ['user_id' => $request->user_id, 'name' => $name, 'self' => $self];
                     // get the days data from locked__datas -------------- call that new function
                     $daysData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
                     $data['day_data'] = (new Locked_Data)->formattedLockedData($request->user_id,$daysData,$request->date,$request->date);  // formatted locked data
@@ -48,7 +59,13 @@ class LogsController extends Controller
                     $state = null;
                     $start = null;
                     $end = null;
+                    // Organisation's ip list
+                    $ip_list = unserialize(Organisation::find(UserDetail::where(['user_id' => $request->user_id])->first()->org_id)->ip_lists);
                     foreach($userLogs as $log) {
+                        // check if the logs ip belongs to organisation's ip_lists
+                        // if not skip the log
+                        if(!in_array($log->ip_addr,$ip_list))
+                            continue;
                         // if this is the start of the startDate
                         if($start == null && $log->to_state == 'New Session') {   // New Session = active
                                 $state = 'active';

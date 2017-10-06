@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+use App;
 use App\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -28,11 +29,19 @@ class CheckPermissions
         // define the permission for each uri if not self
         $uri = [
             'api/period-data/{locale?}' => ['view-period-data'],
-            'api/period-data/edit/{locale?}' => ['edit-period-data'],
+            'api/period-data/edit/{userCode}/{locale?}' => ['edit-period-data'],
             'api/day-summary/{locale?}' => ['view-period-data'],
             'api/day-summary/edit/{locale?}' => ['edit-period-data'],
             'api/users/edit/{userCode}/{locale?}' => ['edit-user']
         ];
+
+        $uriPath = $request->route()->uri();
+
+        // localisation (default english)
+        if($request->route('locale') != null)
+            App::setLocale($request->route('locale'));
+        else
+            App::setLocale('en');
 
         // check if a from is given or not
         if(empty($request->header('from')))
@@ -43,7 +52,6 @@ class CheckPermissions
         }
         else {
             // check if the the calling user has the necessary permissions
-            $uriPath = $request->route()->uri();
             $user = User::find($request->header('from'));
             // $userPermissions = $user->getAllPermissions();
             $userPermissions = [];
