@@ -161,6 +161,7 @@ class LockedDataController extends Controller
                             $dataChanges->modified_on = date('Y-m-d');
                             $dataChanges->table_modified = 'locked__datas';
                             $dataChanges->column_modified = $ckey;
+                            $dataChanges->work_date = $request->work_date;
                             $dataChanges->old_value = $lockedEntry->$ckey;
                             $dataChanges->new_value = $cvalue;
                             $dataChanges->save();
