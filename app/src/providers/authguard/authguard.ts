@@ -12,6 +12,9 @@ import { Storage } from '@ionic/storage';
 export class AuthguardProvider {
   private retrievedUserData: boolean = false;
   public userData : any;
+
+  user_id : any;
+
   constructor(
     private cookieservice: CookieService,
     private storage: Storage,
@@ -34,6 +37,8 @@ export class AuthguardProvider {
             // console.log('result',result);
             this.retrievedUserData = true;
             this.userData = result;
+            this.user_id = this.userData.user_id;
+
             // add token validation here
             if(result && result.x_api_key){
 
@@ -58,7 +63,7 @@ export class AuthguardProvider {
       }
       else{
         if(this.userData.x_api_key){
-
+          this.user_id = this.userData.user_id;
           resolve(true);
         }
         else{

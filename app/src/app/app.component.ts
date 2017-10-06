@@ -265,6 +265,7 @@ export class MyApp {
 
 
           else{
+            console.log('navigate to not found page')
             this.updateNav('not-found');
           }
         }

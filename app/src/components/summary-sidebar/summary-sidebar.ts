@@ -8,6 +8,7 @@ import {IMyDpOptions} from 'mydatepicker';
 import { UserDataProvider } from '../../providers/user-data/user-data';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+import { AuthguardProvider } from '../../providers/authguard/authguard';
 
 /**
  * Generated class for the SummarySidebarComponent component.
@@ -51,7 +52,9 @@ export class SummarySidebarComponent {
               public events: Events,
               public appServiceProvider : AppServiceProvider,
               public storage : Storage,
-              public appGlobalsProvider : AppGlobalsProvider) {
+              public appGlobalsProvider : AppGlobalsProvider,
+              public authguard : AuthguardProvider
+              ) {
     
     this.apiURL = this.appGlobalsProvider.getApiUrl(); 
     // console.log(this.apiURL);
@@ -142,7 +145,7 @@ export class SummarySidebarComponent {
 
 
     let filter1 = {
-        user_id:data.user_id,
+        user_id:this.authguard.user_id,
         start_date:ev.formatted,
         period_unit:this.appGlobalsProvider.period_unit
       };
@@ -154,7 +157,7 @@ export class SummarySidebarComponent {
     }
     
     let body = {
-    user_id : data.user_id,
+    user_id : this.authguard.user_id,
     filters : filters
     };
  
@@ -171,7 +174,7 @@ export class SummarySidebarComponent {
       url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
       console.log(url);
       let body2 = {
-      user_id : data.user_id,
+      user_id : this.authguard.user_id,
       date : ev.formatted,
       cos_offset : this.appGlobalsProvider.cos_offset
     }
@@ -274,7 +277,7 @@ export class SummarySidebarComponent {
       this.storage.get('userData').then((data) => {
       
       let body2 = {
-        user_id : data.user_id,
+        user_id : this.authguard.user_id,
         date : date.work_date,
         cos_offset : this.appGlobalsProvider.cos_offset
       }
