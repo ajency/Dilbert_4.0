@@ -140,12 +140,32 @@ class LockedDataController extends Controller
                     $user = UserDetail::where('user_id',$userCode)->first();
                 else
                     return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
+                // check if it's a member (not hr / admin) who wants to make a change a second time
+                $userRole = (User::find($request->header('from')))->getRoleNames()->first();
+                if($userRole == 'member' && !(new Data_Changes)->userCanMakeChanges($request->header('from'),$request->work_date))
+                    return response()->json(['status' => 200, "message" => "Sorry your total changes allowed for this day are up. Contact the HR."]);
                 // see which all chnages are to be made
                 try {
                     // get the data for that day
-                    $lockedEntry = Locked_Data::where(['user_id' => $userCode, 'work_date' => $request->work_date])->first();
-                    if($lockedEntry == null)
+                    $lockedEntry = Locked_Data::where(['user_id' => $userCode, 'work_date' => $request->work_date])->get();
+                    // when no data exists
+                    if(count($lockedEntry) == 0)
                         return response()->json(['status' => 400, 'message' => "Period data doesn't exist"]);
+                    // when more than one entries are there (extremely rare scenario)
+                    if(count($lockedEntry) == 1)
+                        $lockedEntry = $lockedEntry->first();
+                    else
+                        return response()->json(['status' => 400, 'message' => "More than one entries in locked table"]);
+                    // if person has to be marked as leave
+                    if($request->mark_as_leave != NULL and $request->mark_as_leave) {
+                        $lockedEntry->start_time = NULL;
+                        $lockedEntry->end_time = NULL;
+                        $lockedEntry->total_time = "00:00";
+                        $lockedEntry->status = "Leave";
+                        $lockedEntry->save();
+                        return response()->json(['status' => 200, 'message' => "Marked as leave"]);
+                    }
+                    // for the other changes
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // first check to see if the value really needs to be changed
                         // if the field is start time or end time get it in the right format
@@ -161,6 +181,7 @@ class LockedDataController extends Controller
                             $dataChanges->modified_on = date('Y-m-d');
                             $dataChanges->table_modified = 'locked__datas';
                             $dataChanges->column_modified = $ckey;
+                            $dataChanges->work_date = $request->work_date;
                             $dataChanges->old_value = $lockedEntry->$ckey;
                             $dataChanges->new_value = $cvalue;
                             $dataChanges->save();
@@ -184,7 +205,6 @@ class LockedDataController extends Controller
             }
         }
         else {
-            $output->writeln("sdddddddddddddddddddddddd");
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing'), 'data' => ['user_id' => $userCode, 'changes' => json_encode($request->input('changes')), 'x-api-key' => $request->header('X-API-KEY'), 'from' => $request->header('from')]]);
         }
     }

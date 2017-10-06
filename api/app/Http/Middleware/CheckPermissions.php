@@ -29,7 +29,7 @@ class CheckPermissions
         // define the permission for each uri if not self
         $uri = [
             'api/period-data/{locale?}' => ['view-period-data'],
-            'api/period-data/edit/{userCode}/{locale?}' => ['edit-period-data'],
+            'api/period-data/edit/{userCode}/{locale?}' => ['edit-period-dataa'],
             'api/day-summary/{locale?}' => ['view-period-data'],
             'api/day-summary/edit/{locale?}' => ['edit-period-data'],
             'api/users/edit/{userCode}/{locale?}' => ['edit-user']
@@ -47,7 +47,11 @@ class CheckPermissions
         if(empty($request->header('from')))
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
         // next check if the person is accessing his own data
-        if($request->header('from') == $request->user_id) {
+        if($request->route('userCode') != null)
+            $userId = $request->route('userCode');
+        else
+            $userId = $request->user_id;
+        if($request->header('from') == $userId) {
             return $next($request);
         }
         else {
