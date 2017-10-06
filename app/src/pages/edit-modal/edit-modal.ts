@@ -20,6 +20,8 @@ export class EditModalPage {
   total_time : any;
   start_time : any;
   end_time : any;
+  leave_status : boolean;
+  status : any;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -29,7 +31,14 @@ export class EditModalPage {
     this.data = this.navParams.get('data');
     this.start_time = this.data.start_time;
     this.end_time = this.data.end_time;
-
+    if(this.data.leave_status == 'Present'){
+      this.leave_status = true;
+      this.status = 'Present';
+    }
+    else{
+      this.leave_status = false;
+      this.status = 'Leave'
+    }
   }
 
   ionViewDidLoad() {
@@ -92,7 +101,17 @@ export class EditModalPage {
       changes : {
          start_time : this.start_time,
          end_time : this.end_time
-      }
+      },
+
+      mark_as_leave : false
+
+    }
+
+    if(this.status == 'Present'){
+      data.mark_as_leave = false;
+    }
+    else{
+      data.mark_as_leave = true;
     }
    
     this.events.publish("changed:log", data);

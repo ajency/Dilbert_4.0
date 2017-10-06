@@ -18,7 +18,9 @@
                     <!-- Heading -->
                     <div class="section-title">
                         <i class="custom-icon summary" m-r-10></i>
-                        <h5 class="page-title">{{ "my_summary" | translate }}</h5>
+                        <h5 *ngIf="sideBarData && sideBarData.data.user.self" class="page-title">{{ "my_summary" | translate }}</h5>
+                        <h5 *ngIf="sideBarData && !sideBarData.data.user.self" class="page-title"> {{sideBarData.data.user.name}}'s {{ "summary" | translate }}</h5>
+
                     </div>
                 </ion-col>
                 <ion-col class="col dashboard__summary" col-12 col-md-12 col-lg-8 p-h-0 p-v-0>

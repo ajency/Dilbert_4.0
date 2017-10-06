@@ -5,20 +5,36 @@
   Ionic pages and navigation.
 -->
 
-<ion-header>
-
-   <logged-in-header> </logged-in-header>
-
-</ion-header>
 
 
-<ion-content padding>
+<div padding class="my-popup">
 
-	<h1> Changed-logs </h1>
+	<h3> Changed-logs </h3>
 
+<div>
+	<table padding>
+		<thead>
+			<tr>
+				<th>By</th>
+				<th>On</th>
+				<th>Modified</th>
+				<th>From</th>
+				<th>To</th>
+			</tr>
+		</thead>
 
-</ion-content>
+		<tbody>
+			<tr *ngFor = "let item of changed_logs.changes">
+				<td>{{item.modified_by}}</td>
+				<td>{{item.modified_on}}</td>
+				<td>{{item.name}}</td>
+				<td>{{item.from}}</td>
+				<td>{{item.to}}</td>
+			</tr>
+		</tbody>
 
-<ion-footer>
- <footer-element></footer-element>
-</ion-footer>
+	</table>
+</div>
+
+</div>
+

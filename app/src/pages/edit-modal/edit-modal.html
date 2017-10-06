@@ -40,12 +40,16 @@
 	<div padding>
 		<label>Start time:</label> <input type="time"   [(ngModel)]="start_time">
 		<label>End_time:</label>  <input type="time"   [(ngModel)]="end_time"> <br />
-		<ion-datetime class = "relative" displayFormat="hh:mm:a" pickerFormat="hh/mm/a"></ion-datetime>
+		<!-- <ion-datetime class = "relative" displayFormat="hh:mm:a" pickerFormat="hh/mm/a"></ion-datetime> -->
+		<ion-select [(ngModel)]="status" class = "relative">
+	      <ion-option selected = "{{leave_status}}" value= "Present" >Present</ion-option>
+	      <ion-option selected = "{{!leave_status}}" value= "Leave" >Leave</ion-option>
+		</ion-select>
 	</div>
 
 	<div class="footer">
 	
-	<button ion-button color="dark" (click) = "changeLogs()" [disabled] = "start_time > end_time || start_time == '' || end_time == ''"  > Save Changes</button> <button ion-button color="danger" (click) = "close()" > Cancel</button>	
+	<button ion-button color="dark" (click) = "changeLogs()" [disabled] = "((start_time > end_time || start_time == '' || end_time == '') && status == 'Present') "  > Save Changes</button> <button ion-button color="danger" (click) = "close()" > Cancel</button>	
 
 
 	</div>

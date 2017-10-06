@@ -293,8 +293,12 @@ private updateNav(data) : any{
  }
 
 private updateTitle(title: string = ''): void{
+  console.log(title);
   this.currentPage = title ? title : this.currentPage;
+  console.log(this.currentPage);
   document.title = `${this.appName} - ${this.titlecasepipe.transform(this.currentPage)}`;
+  this.zone.run(() => {});
+
 }
 
 

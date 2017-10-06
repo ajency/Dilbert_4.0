@@ -26,7 +26,9 @@
                 <span ion-text color="text-lighter">{{ "total_time" | translate }}</span>
             </div>
 
-             <button  (click) = "editModal(day_data[0])" > Edit </button>
+             <button  (click) = "editModal(day_data[0])" > Edit </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <button  (click) = "logsChanged($event)" > Changes </button>
+
         </div>
 
 

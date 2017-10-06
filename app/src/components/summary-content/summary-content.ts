@@ -49,15 +49,11 @@ export class SummaryContentComponent {
        this.events.subscribe("changed:log", (data) =>{
 
           let object = {
-          // user_id : this.authguard.user_id,
-          work_date : data.work_date,
-          // modified_by : this.authguard.userData.user_id,
-          // modified_on : moment(new Date()).format("YYYY-MM-DD"),
-          // old_value : this.summaryContentData.data.day_data[0],
-          changes : data.changes
+          work_date : data.work_date,   
+          changes : data.changes,
+          mark_as_leave : data.mark_as_leave
        }
 
-        // this.day_data[0] = data;
        console.log(object);
 
        let url  = `${this.appGlobalsProvider.getApiUrl()}/period-data/edit/${this.authguard.user_id}/${this.appGlobalsProvider.lang}`;
@@ -163,6 +159,75 @@ export class SummaryContentComponent {
       // console.log(this.day_data[0]);
       let popover = this.popoverCtrl.create( 'EditModalPage',{data:this.day_data[0]});
       popover.present();
+
+  }
+
+  logsChanged(ev){
+
+     console.log("inside logsChangedModal");
+
+      // let data = this.day_data[0];
+      // console.log(this.day_data[0]);
+      //  let optionalHeaders = {
+      //     'X-API-KEY' : this.authguard.userData.x_api_key,
+      //     'From' : this.authguard.userData.user_id,
+      //   };
+
+      // let object = {
+      //     user_id : this.authguard.user_id,   
+      //     date_range = {
+      //       start : this.day_data[0].work_date,
+      //       end : ''
+      //     }
+      //  }
+
+      //  let url  = `${this.appGlobalsProvider.getApiUrl()}/log-changes/${this.appGlobalsProvider.lang}`;
+
+
+
+      //  this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+
+      //     console.log(response);
+
+      //     if(response.status == 200){
+           
+      //       let popover = this.popoverCtrl.create( 'LogsChangedPage', {data:response.changes});
+      //       popover.present();
+      //     }
+
+      //     else{
+      //       this.appServiceProvider.presentToast(response.message, 'error');
+      //     }
+
+
+      //  });
+
+      let data = {
+            "changes": [{
+            "modified_by": "sujit",
+            "modified_on": "2017-09-06",
+            "work_date": "2017-08-09",
+            "type": "Locked_data table",
+            "name": "Start time",
+            "from": "09:34",
+            "to": "09:58",
+            "self": "true"
+          }]
+      }
+
+      console.log(data);
+
+        let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:data});
+        popover.present();
+
+
+    // let popover = this.popoverCtrl.create('LogsChangedPage', {data1:data});
+    
+    // popover.present({
+    //   ev: ev
+    // });
+      
 
   }
 
