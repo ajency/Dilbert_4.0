@@ -126,7 +126,7 @@ class LockedDataController extends Controller
      * @param  string  $locale  preferred language
      * @return object   response same as periodData
      */
-    public function editPeriodData(Request $request, $locale = "default") {
+    public function editPeriodData(Request $request, $userCode, $locale = "default") {
         $output = new ConsoleOutput();
         // set the preferred locale
         if($locale == "default") {
@@ -134,16 +134,18 @@ class LockedDataController extends Controller
             $locale = $userDets['lang'];
         }
         App::setLocale($locale);
-        if(!empty($request->user_id) && !empty($request->input('changes')) && !empty($request->input('work_date')) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
+        if(!empty($request->input('changes')) && !empty($request->input('work_date')) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
-                if(User::where('id',$request->user_id)->count() != 0)
-                    $user = UserDetail::where('user_id',$request->user_id)->first();
+                if(User::where('id',$userCode)->count() != 0)
+                    $user = UserDetail::where('user_id',$userCode)->first();
                 else
                     return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
                 // see which all chnages are to be made
                 try {
                     // get the data for that day
-                    $lockedEntry = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->work_date])->first();
+                    $lockedEntry = Locked_Data::where(['user_id' => $userCode, 'work_date' => $request->work_date])->first();
+                    if($lockedEntry == null)
+                        return response()->json(['status' => 400, 'message' => "Period data doesn't exist"]);
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // first check to see if the value really needs to be changed
                         // if the field is start time or end time get it in the right format
@@ -154,7 +156,7 @@ class LockedDataController extends Controller
                         if($lockedEntry->$ckey != $cvalue) {
                             // make an entry in the data_changes table
                             $dataChanges = new Data_Changes;
-                            $dataChanges->user_id = $request->user_id;
+                            $dataChanges->user_id = $userCode;
                             $dataChanges->modified_by = $request->header('from');
                             $dataChanges->modified_on = date('Y-m-d');
                             $dataChanges->table_modified = 'locked__datas';
@@ -171,7 +173,7 @@ class LockedDataController extends Controller
                     // $data['violation_count'] = 0;
                     //
                     // $output->writeln(json_encode($lockedEntry));
-                    return response()->json(['status' => 200, 'message' => 'Changes made successfully.', 'data' => (new Locked_Data)->formattedLockedData($request->user_id,array($lockedEntry),$request->work_date,$request->work_date)]);
+                    return response()->json(['status' => 200, 'message' => 'Changes made successfully.', 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                 }
                 catch(Exception $e) {
                     return response()->json(['status' => 400, 'message' => $e->getMessage()]);
@@ -183,7 +185,7 @@ class LockedDataController extends Controller
         }
         else {
             $output->writeln("sdddddddddddddddddddddddd");
-            return response()->json(['status' => 400, 'message' => __('api_messages.params_missing'), 'data' => ['user_id' => $request->user_id, 'changes' => json_encode($request->input('changes')), 'x-api-key' => $request->header('X-API-KEY'), 'from' => $request->header('from')]]);
+            return response()->json(['status' => 400, 'message' => __('api_messages.params_missing'), 'data' => ['user_id' => $userCode, 'changes' => json_encode($request->input('changes')), 'x-api-key' => $request->header('X-API-KEY'), 'from' => $request->header('from')]]);
         }
     }
 }

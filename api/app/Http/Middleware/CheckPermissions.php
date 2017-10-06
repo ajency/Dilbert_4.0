@@ -29,7 +29,7 @@ class CheckPermissions
         // define the permission for each uri if not self
         $uri = [
             'api/period-data/{locale?}' => ['view-period-data'],
-            'api/period-data/edit/{locale?}' => ['edit-period-data'],
+            'api/period-data/edit/{userCode}/{locale?}' => ['edit-period-data'],
             'api/day-summary/{locale?}' => ['view-period-data'],
             'api/day-summary/edit/{locale?}' => ['edit-period-data'],
             'api/users/edit/{userCode}/{locale?}' => ['edit-user']
