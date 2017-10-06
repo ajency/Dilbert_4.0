@@ -163,7 +163,7 @@ class LockedDataController extends Controller
                         $lockedEntry->total_time = "00:00";
                         $lockedEntry->status = "Leave";
                         $lockedEntry->save();
-                        return response()->json(['status' => 200, 'message' => "Marked as leave"]);
+                        return response()->json(['status' => 200, 'message' => "Marked as leave", 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                     }
                     // for the other changes
                     foreach($request->input('changes') as $ckey => $cvalue) {
