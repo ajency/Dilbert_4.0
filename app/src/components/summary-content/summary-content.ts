@@ -49,7 +49,7 @@ export class SummaryContentComponent {
        this.events.subscribe("changed:log", (data) =>{
 
           let object = {
-          user_id : this.authguard.user_id,
+          // user_id : this.authguard.user_id,
           work_date : data.work_date,
           // modified_by : this.authguard.userData.user_id,
           // modified_on : moment(new Date()).format("YYYY-MM-DD"),
@@ -60,7 +60,7 @@ export class SummaryContentComponent {
         // this.day_data[0] = data;
        console.log(object);
 
-       let url  = `${this.appGlobalsProvider.getApiUrl()}/period-ddata/edit/${this.appGlobalsProvider.lang}`;
+       let url  = `${this.appGlobalsProvider.getApiUrl()}/period-data/edit/${this.authguard.user_id}/${this.appGlobalsProvider.lang}`;
 
        console.log(url);
        let optionalHeaders = {
@@ -70,9 +70,19 @@ export class SummaryContentComponent {
 
       this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
 
+
           console.log(response);
-          this.day_data[0] = response.data[0];
-          this.events.publish("summary-sidebar:log", response.data[0]);
+
+          if(response.status == 200){
+            this.day_data[0] = response.data[0];
+            this.events.publish("summary-sidebar:log", response.data[0]);
+          }
+
+          else{
+            this.appServiceProvider.presentToast(response.message, 'error');
+          }
+
+
        });
 
       })
