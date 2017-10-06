@@ -16,6 +16,9 @@ export class AppGlobalsProvider {
 	lang : any;
   period_unit: string = 'week';
   cos_offset : string = '0';
+
+  
+
   dashboard_params : any = {
     param1 : '',
     param2 : ''
@@ -66,6 +69,20 @@ private activeTabsList: any = {
   getApiUrl(){
   	return this.environment.dilbertApi;
   }
+
+  // public validateParams() : Promise<any>{
+
+  //   return new Promise((resolve,reject) => {
+  //     if(this.dashboard_params.param1 != '' && this.dashboard_params.param2 != ''){
+  //       resolve(true)
+  //     }
+
+  //     else{
+  //       reject{true}
+  //     }
+  //   })
+
+  // }
 
    public updateCurrentHistory(page){
     if(this.historyStack.length){

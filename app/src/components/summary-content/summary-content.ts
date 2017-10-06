@@ -49,7 +49,7 @@ export class SummaryContentComponent {
        this.events.subscribe("changed:log", (data) =>{
 
           let object = {
-          user_id : this.authguard.userData.user_id,
+          user_id : this.authguard.user_id,
           work_date : data.work_date,
           // modified_by : this.authguard.userData.user_id,
           // modified_on : moment(new Date()).format("YYYY-MM-DD"),

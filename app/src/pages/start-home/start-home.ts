@@ -78,7 +78,7 @@ ngOnInit(){
 
     console.log(this.param1, this.param2);
 
-    this.userId = this.authguard.userData.user_id;
+    this.userId = this.authguard.user_id;
     this.key = this.authguard.userData.x_api_key;
 
     if((this.param1 == '' && this.param2 == '') || (this.param1 == undefined && this.param2 == undefined) ){
@@ -94,7 +94,8 @@ ngOnInit(){
       if(this.param1 && this.param2){
         this.currentDate = this.param1.start_date;
         this.period_unit = this.param1.period_unit;
-        this.userId = this.param1.user_id;
+        this.authguard.user_id = this.param1.user_id
+        this.userId = this.authguard.user_id;
         // this.cos_offset = this.param2.cos_offset;
         // console.log(this.cos_offset);
         // console.log(this.currentDate);
@@ -146,7 +147,12 @@ ionViewDidLoad() {
   }
 
 
-  ionViewDidEnter(){
+  ionViewWillLeave(){
+    console.log('ion view will leave dashboard');
+    this.appGlobalsProvider.dashboard_params.param1 = '';
+    this.appGlobalsProvider.dashboard_params.param2 = '';
+    this.authguard.user_id = '';
+
   }
 
 
@@ -158,8 +164,18 @@ ionViewDidLoad() {
       .then(() => {
 
         this.appServiceProvider.handleClientLoad(true).then( () =>{
-          console.log('can enter dashboard')
-           resolve(true)
+          // if(this.appGlobalsProvider.dashboard_params.param1 && this.appGlobalsProvider.dashboard_params.param2 ){
+          //  console.log('can enter dashboard')   
+          //  resolve(true)
+          // }
+
+          // else{
+          //   console.log('cannot enter dashboard')
+          //   reject(false)
+           console.log('can enter dashboard') 
+          resolve(true);
+            
+          
         })
         .catch(() => {
           reject(true)
