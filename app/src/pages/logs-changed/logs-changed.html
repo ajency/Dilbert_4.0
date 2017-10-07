@@ -25,12 +25,12 @@
 		</thead>
 
 		<tbody>
-			<tr *ngFor = "let item of changed_logs.changes">
+			<tr *ngFor = "let item of changed_logs">
 				<td>{{item.modified_by}}</td>
-				<td>{{item.modified_on}}</td>
+				<td>{{splitDay_Date(item.modified_on,1)}}</td>
 				<td>{{item.name}}</td>
-				<td>{{item.from}}</td>
-				<td>{{item.to}}</td>
+				<td>item.from</td>
+				<td>item.to</td>
 			</tr>
 		</tbody>
 

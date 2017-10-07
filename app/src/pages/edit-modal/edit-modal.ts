@@ -100,7 +100,9 @@ export class EditModalPage {
       work_date : this.data.work_date,
       changes : {
          start_time : this.start_time,
-         end_time : this.end_time
+         end_time : this.end_time,
+         status : this.status
+
       },
 
       mark_as_leave : false
