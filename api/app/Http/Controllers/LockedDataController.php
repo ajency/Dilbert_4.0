@@ -158,6 +158,19 @@ class LockedDataController extends Controller
                         return response()->json(['status' => 400, 'message' => "More than one entries in locked table"]);
                     // if person has to be marked as leave
                     if($request->mark_as_leave != NULL and $request->mark_as_leave) {
+                        // make an entry in the data changes table
+                        foreach(['start_time' => null, 'end_time' => null, 'total_time' => null, 'status' => 'Leave'] as $ckey => $cvalue){
+                            $dataChanges = new Data_Changes;
+                            $dataChanges->user_id = $userCode;
+                            $dataChanges->modified_by = $request->header('from');
+                            $dataChanges->modified_on = date('Y-m-d');
+                            $dataChanges->table_modified = 'locked__datas';
+                            $dataChanges->column_modified = $ckey;
+                            $dataChanges->work_date = $request->work_date;
+                            $dataChanges->old_value = $lockedEntry->$ckey;
+                            $dataChanges->new_value = $cvalue;
+                            $dataChanges->save();
+                        }
                         $lockedEntry->start_time = NULL;
                         $lockedEntry->end_time = NULL;
                         $lockedEntry->total_time = "00:00";

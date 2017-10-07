@@ -60,8 +60,8 @@ class DataChangesController extends Controller
                 $data = [];
                 // get the start and the end date
                 $start = $request->input('filters.work_date_range.start');
-                if($request->input('filters.work_date.end') != null)
-                    $end = $request->input('filters.work_date.end');
+                if($request->input('filters.work_date_range.end') != null)
+                    $end = $request->input('filters.work_date_range.end');
                 else
                     $end = $request->input('filters.work_date_range.start');
                 // table to consider
