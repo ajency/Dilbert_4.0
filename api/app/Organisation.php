@@ -68,7 +68,8 @@ class Organisation extends Model
                     'userEmail' => $email,
                     'x_api_key' => $user_resp['user_details']->api_token,
                     'role' => $userRole,
-                    'permissions' => $user_resp['user']->getAllPermissions()
+                    'permissions' => $user_resp['user']->getAllUserPermissions(),
+                    'class-permissions' => $this->getClassPermissions()
                 ];
                 return $response;
             }
@@ -126,10 +127,15 @@ class Organisation extends Model
             $user['name'] = $ou->name;
             $user['avatar'] = $ou->avatar;
             $user['role'] = User::find($ou->user_id)->getRoleNames()->first();
-            $user['permissions'] = $user_resp['user']->getAllPermissions();
             $user['joining_date'] = $ou->joining_date;
             array_push($users,$user);
         }
         return $users;
+    }
+
+    public function getClassPermissions() {
+        return [
+            'edit-btn-pd' => 'edit-period-data'
+        ];
     }
 }
