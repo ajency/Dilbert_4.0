@@ -13,16 +13,27 @@ class Data_Changes extends Model
 {
     /**
      * Fetches all changes made to a users data on that particular day
-     * @param          $user      user's reference code who is requesting to view these changes
-     *                            for only count you can send any id for from because it doesn't matter
-     *                            ideally send 0 [this is used to figure out self]
-     * @param          $userCode  user reference code who's changes are requested - for now user id
-     * @param          $work_Date date
-     * @param  boolean $onlyCount default false, set to true if only the number chnages required
-     * @return [type]             [description]
+     * @param          $user       user's reference code who is requesting to view these changes
+     *                             for only count you can send any id for from because it doesn't matter
+     *                             ideally send 0 [this is used to figure out self]
+     * @param          $userCode   user reference code who's changes are requested - for now user id
+     * @param          $table      locked__datas/logs
+     * @param          $dateObj    array consisting of date type(modified/work_date) and start and end date
+     * @param  boolean $onlyCount  default false, set to true if only the number changes required
+     * @return  count or array of all chnages
      */
-    public function getDataChanges($user, $userCode, $workDate, $onlyCount = false) {
-        $dataChanges = Data_Changes::where(['user_id' => $userCode, 'work_date' => $workDate])->get();
+    public function getDataChanges($user, $userCode, $table, $dateObj, $onlyCount = false) {
+        $output = new ConsoleOutput;
+        $output->writeln($user);
+        $output->writeln($userCode);
+        $output->writeln($table);
+        $output->writeln($dateObj);
+        $output->writeln($onlyCount);
+
+        // parse the date object
+        $dataChanges = Data_Changes::where(['user_id' => $userCode, 'table_modified' => $table])->whereBetween($dateObj[0],[$dateObj[1],$dateObj[2]])->get();
+        // $dataChanges = Data_Changes::where(['user_id' => $userCode, 'work_date' => $workDate])->get();
+
         // if onlyCount is true return count
         if($onlyCount)
             return count($dataChanges);

@@ -28,11 +28,12 @@
 			"edit-period-data",
 			"view-day-summary",
 			"edit-day-summary",
-			"edit-user"
+			"edit-user",
+			"view-log-changes"
 		],
 		"roles_permissions" => [
-			array("role" => 0, "permissions" => [0, 1, 2, 3, 4]),
-			array("role" => 1, "permissions" => [0, 1, 2, 3, 4]),
+			array("role" => 0, "permissions" => [0, 1, 2, 3, 4, 5]),
+			array("role" => 1, "permissions" => [0, 1, 2, 3, 4, 5]),
 			array("role" => 2, "permissions" => [0, 2])
         ]
 	];

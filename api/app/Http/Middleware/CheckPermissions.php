@@ -32,7 +32,8 @@ class CheckPermissions
             'api/period-data/edit/{userCode}/{locale?}' => ['edit-period-data'],
             'api/day-summary/{locale?}' => ['view-period-data'],
             'api/day-summary/edit/{locale?}' => ['edit-period-data'],
-            'api/users/edit/{userCode}/{locale?}' => ['edit-user']
+            'api/users/edit/{userCode}/{locale?}' => ['edit-user'],
+            'api/log-changes/{locale?}' => ['view-log-changes']
         ];
 
         $uriPath = $request->route()->uri();
@@ -51,7 +52,6 @@ class CheckPermissions
             $userId = $request->route('userCode');
         else
             $userId = $request->user_id;
-        $output->writeln("user id:".$userId);
         if($request->header('from') == $userId) {
             return $next($request);
         }
@@ -64,7 +64,6 @@ class CheckPermissions
                 array_push($userPermissions,$uperm->name);
             }
             $uriPermissions = $uri[$uriPath];
-            $output->writeln("user permissions: ".json_encode($userPermissions)." uri permissions: ".json_encode($uriPermissions));
             // $output->writeln(array_intersect($userPermissions,$uriPermissions));
             if(count(array_intersect($userPermissions,$uriPermissions)) == 0) {
                 // abort(403);

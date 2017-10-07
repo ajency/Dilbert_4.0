@@ -27,6 +27,9 @@ Route::post('/period-data/{locale?}','LockedDataController@periodData')->middlew
 Route::post('/period-data/edit/{userCode}/{locale?}','LockedDataController@editPeriodData')->middleware('check-permissions');      // edit a user's locked data
 Route::post('/day-summary/{locale?}','LogsController@daySummary')->middleware('check-permissions');    // detailed data for a particular day
 
+// log histories api
+Route::post('/log-history/{locale?}','DataChangesController@viewLockedDataChanges')/*->middleware('check-permissions')*/;
+
 // organisation api
 Route::post('/join-organisation/{locale?}','OrganisationController@joinOrAddOrganisation');   // for first time login
 

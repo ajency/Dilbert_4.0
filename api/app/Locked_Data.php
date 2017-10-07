@@ -44,7 +44,7 @@ class Locked_Data extends Model
                 "end_time" => "",
                 "total_time" => "",
                 "violation_count" => "",
-                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,$dateCounter->format('Y-m-d'),true)
+                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
             ]);
         }
         foreach ($lockedData as $ld) {
@@ -59,7 +59,7 @@ class Locked_Data extends Model
                     "end_time" => "",
                     "total_time" => "",
                     "violation_count" => "",
-                    "changes" => (new Data_Changes)->getDataChanges(0,$user_id,$dateCounter->format('Y-m-d'),true)
+                    "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
                 ]);
                 // to handle comparing datecounter and end based on the order
                 $dateCounter->modify($dateModifyString);
@@ -81,7 +81,7 @@ class Locked_Data extends Model
                 $dayData['end_time'] = '';
                 $dayData['total_time'] = 0;
                 $dayData['violation_count'] = 0;
-                $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,$ld->work_date,true);
+                $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
                 array_push($data,$dayData);
                 continue;
             }
@@ -101,7 +101,7 @@ class Locked_Data extends Model
             $dayData['leave_status'] = 'Present';
             //violation status - for now dummy
             $dayData['violation_count'] = 0;
-            $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,$ld->work_date,true);
+            $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
             array_push($data,$dayData);
         }
         return $data;
