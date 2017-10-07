@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { AuthguardProvider } from '../../providers/authguard/authguard';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+import { Storage } from '@ionic/storage';
 
 
 
@@ -25,6 +26,7 @@ export class SummaryContentComponent {
   today : any;
   logs : any;
   day_data : any;
+  edit_btn_pd : boolean = true;
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
@@ -34,7 +36,8 @@ export class SummaryContentComponent {
                public popoverCtrl : PopoverController,
                public authguard : AuthguardProvider,
                public appServiceProvider : AppServiceProvider,
-               public appGlobalsProvider : AppGlobalsProvider) {
+               public appGlobalsProvider : AppGlobalsProvider,
+               public storage : Storage) {
     // console.log('SummaryContentComponent Component');
 
     this.events.subscribe('update:content',(data) => {
@@ -97,6 +100,34 @@ export class SummaryContentComponent {
     // console.log(this.day_data);
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
+    this.checkPermissions();
+    
+  }
+
+  checkPermissions(){
+    console.log('inside checkPermissions');
+
+
+    if(!this.summaryContentData.data.user.self){
+
+        
+            let result = this.authguard.userData;
+            // console.log('result',result);
+            let perm_class =result.class_permissions.edit_btn_pd;
+
+            if(result.permissions.includes(perm_class)){
+              this.edit_btn_pd =true;
+              console.log("user has permissions to edit logs");
+            }
+            else{
+              this.edit_btn_pd = false;
+              console.log("user does not have permissions to edit logs");
+
+            }
+            
+         
+         
+    }
   }
 
  ionViewDidLoad() {

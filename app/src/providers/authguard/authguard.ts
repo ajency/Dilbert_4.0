@@ -37,6 +37,7 @@ export class AuthguardProvider {
             // console.log('result',result);
             this.retrievedUserData = true;
             this.userData = result;
+            // console.log(result);
             this.user_id = this.userData.user_id;
 
             // add token validation here

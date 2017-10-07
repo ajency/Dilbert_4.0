@@ -4,8 +4,8 @@
     <!-- Current week -->
     <div class="week__current current-card">
         <div class="current-card__header flex-row">
-            <p *ngIf = "sideBarData.data.periodData.length == 7" ion-text color="primary" no-margin>{{ "this_week" | translate }}</p>
-            <p *ngIf = "sideBarData.data.periodData.length != 7" ion-text color="primary" no-margin>{{ "this_month" | translate }}</p>
+            <p *ngIf = "sideBarData.data.periodData.length <= 7" ion-text color="primary" no-margin>{{ "this_week" | translate }}</p>
+            <p *ngIf = "sideBarData.data.periodData.length > 7" ion-text color="primary" no-margin>{{ "this_month" | translate }}</p>
 
             <p ion-text no-margin color="text">{{weekTotal}} {{ "hr" | translate }}/{{minHours}} {{ "hr" | translate }}</p>
             <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}"></div>
@@ -41,8 +41,8 @@
 
        <div class="week__full full-card">
         <div class="full-card__header flex-row">
-            <p *ngIf = "sideBarData.data.periodData.length == 7" no-margin>{{ "this_week" | translate }}</p>
-            <p *ngIf = "sideBarData.data.periodData.length != 7" no-margin>{{ "this_month" | translate }}</p>
+            <p *ngIf = "sideBarData.data.periodData.length <= 7" no-margin>{{ "this_week" | translate }}</p>
+            <p *ngIf = "sideBarData.data.periodData.length > 7" no-margin>{{ "this_month" | translate }}</p>
 
             <!-- <button ion-button clear>
                 <ion-icon name="calendar" color="text" class="icon-size full"></ion-icon>
@@ -64,7 +64,7 @@
                             </div>
 
                             <ion-icon name="list-box" class="icon-size mini" *ngIf = "date.changes > 0"></ion-icon>
-                            
+
                             <div *ngIf = "date.leave_status == 'Present'" class="week-list__session">
                                 <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.start_time,3)}}</span>
                                 <span *ngIf = "date.status == '' " ion-text >{{getDayDate(date.end_time,3)}}</span>
