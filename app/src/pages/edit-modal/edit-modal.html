@@ -41,6 +41,8 @@
 		<label>Start time:</label> <input type="time"   [(ngModel)]="start_time">
 		<label>End_time:</label>  <input type="time"   [(ngModel)]="end_time"> <br />
 		<!-- <ion-datetime class = "relative" displayFormat="hh:mm:a" pickerFormat="hh/mm/a"></ion-datetime> -->
+
+		<label>Leave status:</label>
 		<ion-select [(ngModel)]="status" class = "relative">
 	      <ion-option selected = "{{leave_status}}" value= "Present" >Present</ion-option>
 	      <ion-option selected = "{{!leave_status}}" value= "Leave" >Leave</ion-option>
