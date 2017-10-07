@@ -45,14 +45,29 @@ class Data_Changes extends Model
         ];
         foreach($dataChanges as $change) {
             echo $change->modifed_by;
+            // check if start time or time to send only time and not time stamp
+            if($change->column_modified == "start_time" || $change->column_modified == "end_time") {
+                if($change->old_value != null)
+                    $from = substr($change->old_value,11,5);
+                else
+                    $from = null;
+                if($change->new_value != null)
+                    $to = substr($change->new_value,11,5);
+                else
+                    $to = null;
+            }
+            else {
+                $from = $change->old_value;
+                $to = $change->new_value;
+            }
             $changeData = [
                 "modified_by" => User::find($change->modified_by)->name,
                 "modified_on" => $change->modified_on,
                 "work_date" => $change->work_date,
                 "type" => $type[$change->table_modified],
                 "name" => $change->column_modified,
-                "from" => $change->old_value,
-                "to" => $change->new_value,
+                "from" => $from,
+                "to" => $to,
                 "modified_by_self" => ($user == $change->modified_by ? true : false)
             ];
             array_push($changes,$changeData);
