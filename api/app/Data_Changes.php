@@ -15,7 +15,7 @@ class Data_Changes extends Model
      * Fetches all changes made to a users data on that particular day
      * @param          $user       user's reference code who is requesting to view these changes
      *                             for only count you can send any id for from because it doesn't matter
-     *                             ideally send 0 [this is used to figure out self]
+     *                             ideally send 0 [this is used to figure out modified_by_self]
      * @param          $userCode   user reference code who's changes are requested - for now user id
      * @param          $table      locked__datas/logs
      * @param          $dateObj    array consisting of date type(modified/work_date) and start and end date
@@ -53,7 +53,7 @@ class Data_Changes extends Model
                 "name" => $change->column_modified,
                 "from" => $change->old_value,
                 "to" => $change->new_value,
-                "self" => ($user == $change->modified_by ? true : false)
+                "modified_by_self" => ($user == $change->modified_by ? true : false)
             ];
             array_push($changes,$changeData);
         }
