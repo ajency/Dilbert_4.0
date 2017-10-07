@@ -24,12 +24,12 @@
 			"member"
 		],
 		"permissions" => [
-			"view-period-data",
-			"edit-period-data",
-			"view-day-summary",
-			"edit-day-summary",
-			"edit-user",
-			"view-log-changes"
+			"view_period_data",
+			"edit_period_data",
+			"view_day_summary",
+			"edit_day_summary",
+			"edit_user",
+			"view_log_history"
 		],
 		"roles_permissions" => [
 			array("role" => 0, "permissions" => [0, 1, 2, 3, 4, 5]),

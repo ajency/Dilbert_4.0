@@ -69,7 +69,7 @@ class Organisation extends Model
                     'x_api_key' => $user_resp['user_details']->api_token,
                     'role' => $userRole,
                     'permissions' => $user_resp['user']->getAllUserPermissions(),
-                    'class-permissions' => $this->getClassPermissions()
+                    'class_permissions' => $this->getClassPermissions()
                 ];
                 return $response;
             }
