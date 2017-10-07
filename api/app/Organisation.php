@@ -135,8 +135,8 @@ class Organisation extends Model
 
     public function getClassPermissions() {
         return [
-            'edit-btn-pd' => 'edit-period-data',
-            'view-log-history-btn' => 'view-log-history'
+            'edit_btn_pd' => 'edit_period_data',
+            'view_log_history_btn' => 'view_log_history'
         ];
     }
 }
