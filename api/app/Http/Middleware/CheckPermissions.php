@@ -59,10 +59,10 @@ class CheckPermissions
             // check if the the calling user has the necessary permissions
             $user = User::find($request->header('from'));
             // $userPermissions = $user->getAllPermissions();
-            $userPermissions = [];
-            foreach($user->getAllPermissions() as $uperm) {
-                array_push($userPermissions,$uperm->name);
-            }
+            $userPermissions = $user->getAllUSerPermissions();
+            // foreach($user->getAllPermissions() as $uperm) {
+            //     array_push($userPermissions,$uperm->name);
+            // }
             $uriPermissions = $uri[$uriPath];
             // $output->writeln(array_intersect($userPermissions,$uriPermissions));
             if(count(array_intersect($userPermissions,$uriPermissions)) == 0) {

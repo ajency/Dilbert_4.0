@@ -67,7 +67,8 @@ class Organisation extends Model
                     'user_id' => $user_resp['user']->id,
                     'userEmail' => $email,
                     'x_api_key' => $user_resp['user_details']->api_token,
-                    'role' => $userRole
+                    'role' => $userRole,
+                    'permissions' => $user_resp['user']->getAllPermissions()
                 ];
                 return $response;
             }
@@ -125,6 +126,7 @@ class Organisation extends Model
             $user['name'] = $ou->name;
             $user['avatar'] = $ou->avatar;
             $user['role'] = User::find($ou->user_id)->getRoleNames()->first();
+            $user['permissions'] = $user_resp['user']->getAllPermissions();
             $user['joining_date'] = $ou->joining_date;
             array_push($users,$user);
         }
