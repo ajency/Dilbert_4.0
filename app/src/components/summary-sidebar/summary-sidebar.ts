@@ -41,6 +41,7 @@ export class SummarySidebarComponent {
   @Input('day_data') summaryContentData : any ;
   today : any;
   weekTotal :any;
+  minHours : any;
   loader_percentage : any;
 
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -75,6 +76,7 @@ export class SummarySidebarComponent {
           }
         
         }
+        this.calculateWeekTotal();
     })
 
       
@@ -213,6 +215,7 @@ export class SummarySidebarComponent {
     calculateWeekTotal(){
       // console.log('calculateWeekTotal');
       let minutes = 0;
+      let no_of_days = 0;
       // let current_date = new Date('2017-09-06');
       // let length = ;
       // let j=0;
@@ -229,8 +232,10 @@ export class SummarySidebarComponent {
         {
           let temp = this.sideBarData.data.periodData[i].total_time.split(":");
           minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
-
+          no_of_days+=1;
         }
+
+
 
         // if(new Date(this.sideBarData.data.periodData[i].work_date) > current_date ){
         //    this.sideBarData.data.periodData.splice(0,1);
@@ -238,12 +243,16 @@ export class SummarySidebarComponent {
         // }
       
       }
-    this.zone.run(() => {});
+      this.zone.run(() => {});
 
-      this.loader_percentage =  minutes/2700*100;
+      this.minHours = no_of_days * 9;
+
+      this.loader_percentage =  minutes/(this.minHours*60)*100;
       if(this.loader_percentage>100){
         this.loader_percentage = 100;
       }
+
+      console.log(this.minHours);
 
       this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
     }

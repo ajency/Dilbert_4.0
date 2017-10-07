@@ -44,4 +44,25 @@ export class LogsChangedPage {
 
   }
 
+  
+
+  splitDay_Date(date: string, option : number): string{
+    var text: string = '-';
+    if(date != null){
+      switch (option) {
+        case 1:
+          text = date.split(" ")[0]
+          break;
+        case 2:
+          text = date.split(" ")[1]
+          break;
+      }
+    
+    }
+      return text;
+
+  }
+
+
+
 }
