@@ -143,7 +143,7 @@ class LockedDataController extends Controller
                 // check if it's a member (not hr / admin) who wants to make a change a second time
                 $userRole = (User::find($request->header('from')))->getRoleNames()->first();
                 if($userRole == 'member' && !(new Data_Changes)->userCanMakeChanges($request->header('from'),$request->work_date))
-                    return response()->json(['status' => 200, "message" => "Sorry your total changes allowed for this day are up. Contact the HR."]);
+                    return response()->json(['status' => 400, "message" => "Sorry your total changes allowed for this day are up. Contact the HR."]);
                 // see which all chnages are to be made
                 try {
                     // get the data for that day
