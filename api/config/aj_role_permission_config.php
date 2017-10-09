@@ -29,11 +29,12 @@
 			"view_day_summary",
 			"edit_day_summary",
 			"edit_user",
-			"view_log_history"
+			"view_log_history",
+			"leave_marking"
 		],
 		"roles_permissions" => [
-			array("role" => 0, "permissions" => [0, 1, 2, 3, 4, 5]),
-			array("role" => 1, "permissions" => [0, 1, 2, 3, 4, 5]),
+			array("role" => 0, "permissions" => [0, 1, 2, 3, 4, 5, 6]),
+			array("role" => 1, "permissions" => [0, 1, 2, 3, 4, 5, 6]),
 			array("role" => 2, "permissions" => [0, 2])
         ]
 	];
