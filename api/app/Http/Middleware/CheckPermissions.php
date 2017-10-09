@@ -33,7 +33,7 @@ class CheckPermissions
             'api/day-summary/{locale?}' => ['view_period_data'],
             'api/day-summary/edit/{locale?}' => ['edit_period_data'],
             'api/users/edit/{userCode}/{locale?}' => ['edit_user'],
-            'api/log-changes/{locale?}' => ['view_log_changes']
+            'api/log-history/{locale?}' => ['view_log_history']
         ];
 
         $uriPath = $request->route()->uri();
@@ -56,6 +56,10 @@ class CheckPermissions
             return $next($request);
         }
         else {
+            // first check if the uri is or view log histories
+            if($uriPath == 'api/log-history/{locale?}' && $request->input('user_id') != null && count($request->input('user_id')) == 1 && $request->header('from') == $request->input('user_id')[0]) {
+                    return $next($request);
+            }
             // check if the the calling user has the necessary permissions
             $user = User::find($request->header('from'));
             // $userPermissions = $user->getAllPermissions();
