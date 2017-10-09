@@ -30,7 +30,7 @@ export class SummarySidebarComponent {
         // other options...
         dateFormat: 'yyyy-mm-dd',
         disableUntil: {year: 2017, month: 1, day: 1},
-        disableSince: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:  new Date().getDate() } 
+        disableSince: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:  new Date().getDate()+1 } 
         // disableUntil: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:new Date().getDate }
     };
 
@@ -117,7 +117,7 @@ export class SummarySidebarComponent {
         }
         break;
       case 5:
-        text = moment(date, "kk:mm:ss").format("hh:mm");
+        text = moment(date, "kk:mm:ss").format("HH:mm");
         break;
       case 6:
         text = moment(date, "YYYY-MM-DD").format("D");

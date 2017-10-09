@@ -23,6 +23,8 @@
 
 	   "my_summary" : "My Summary",
 	  "this_week" : "This Week",
+	  "week_total" : "Week Total",
+	  "month_total" : "Month Total",
 	  "today" : "Today",
 	  "the_summary" : "The Summary",
 	  "summary" : "Summary",
