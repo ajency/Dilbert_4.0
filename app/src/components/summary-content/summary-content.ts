@@ -27,6 +27,7 @@ export class SummaryContentComponent {
   logs : any;
   day_data : any;
   edit_btn_pd : boolean = true;
+  view_log_history_btn : boolean = true;
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
@@ -124,6 +125,21 @@ export class SummaryContentComponent {
               console.log("user does not have permissions to edit logs");
 
             }
+
+            perm_class = result.class_permissions.view_log_history_btn;
+
+            if(result.permissions.includes(perm_class)){
+              this.view_log_history_btn = true;
+              console.log("user has permissions to view log history");
+
+            }
+
+            else{
+              this.view_log_history_btn = false;
+              console.log("user does not have permissions to view log history");
+
+            }
+
             
          
          
