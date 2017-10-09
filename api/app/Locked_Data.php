@@ -88,7 +88,11 @@ class Locked_Data extends Model
             if($ld->end_time != null) {
                 $endTime = new \DateTime($ld->end_time);
                 $dayData['end_time'] = $endTime->format('H:i');
-                $dayData['status'] = $this->getCurrentStatus($user_id,date('Y-m-d'));;
+                // if current day get status from logs
+                if($ld->work_date == date('Y-m-d'))
+                    $dayData['status'] = $this->getCurrentStatus($user_id,date('Y-m-d'));
+                else
+                    $dayData['status'] = '';
             }
             else {
                 //the day isnt over yet
