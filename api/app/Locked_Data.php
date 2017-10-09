@@ -21,7 +21,7 @@ class Locked_Data extends Model
     public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "default") {
         $data = [];
         $output = new ConsoleOutput;
-        $output->writeln(json_encode($lockedData));
+        // $output->writeln(json_encode($lockedData));
         $start = new \DateTime($start);
         $end = new \DateTime($end);
         $dateModifyString = "+1 days";
@@ -36,6 +36,7 @@ class Locked_Data extends Model
         $dateCounter = clone $start;
         // special case when acquired the formatted locked data of a non existent date (single)
         if($dateCounter == $end && count($lockedData) == 0) {
+            // [REDUNDANT CODE] create a function generateLeaveData()
             array_push($data,[
                 "work_date" => $dateCounter->format('Y-m-d'),
                 "status" => "",
@@ -51,6 +52,7 @@ class Locked_Data extends Model
             $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
             while($dateCounter->format('Y-m-d') != $ld->work_date && $dateCounter != $end) {
                 // add an empty item
+                // [REDUNDANT CODE] create a function generateLeaveData()
                 array_push($data,[
                     "work_date" => $dateCounter->format('Y-m-d'),
                     "status" => "",
@@ -63,7 +65,7 @@ class Locked_Data extends Model
                 ]);
                 // to handle comparing datecounter and end based on the order
                 $dateCounter->modify($dateModifyString);
-                // $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
+                $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
             }
             $dateCounter->modify($dateModifyString);
             // handle total_time = null
@@ -107,6 +109,22 @@ class Locked_Data extends Model
             $dayData['violation_count'] = 0;
             $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
             array_push($data,$dayData);
+        }
+        // so that the last entry is not excluded if empty
+        if($dateCounter == $end) {
+            // [REDUNDANT CODE] create a function generateLeaveData()
+            array_push($data,[
+                "work_date" => $dateCounter->format('Y-m-d'),
+                "status" => "",
+                "leave_status" => "",
+                "start_time" => "",
+                "end_time" => "",
+                "total_time" => "",
+                "violation_count" => "",
+                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
+            ]);
+            // to handle comparing datecounter and end based on the order
+            $dateCounter->modify($dateModifyString);
         }
         return $data;
     }
