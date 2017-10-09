@@ -23,6 +23,8 @@
 
 	  "my_summary" : "Mon résumé",
 	  "this_week" : "Cette semaine",
+	  "week_total" : "Total de la semaine",
+	  "month_total" : "Total du mois",
 	  "today" : "Aujourd'hui",
 	  "the_summary" : "Le résumé",
 	  "summary" : "résumé",

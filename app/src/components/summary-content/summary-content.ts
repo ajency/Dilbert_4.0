@@ -172,7 +172,7 @@ export class SummaryContentComponent {
         }
         break;
       case 5:
-        text = moment(date, "kk:mm:ss").format("hh:mm");
+        text = moment(date, "kk:mm:ss").format("HH:mm");
         break;
     }
     return text;
