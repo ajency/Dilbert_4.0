@@ -23,9 +23,20 @@ module.exports = {
     {
       urlPattern: 'api/(.*)',
       handler: "networkFirst",
+      method: 'get',
       options: {
         cache: {
-          name: 'api_cache'
+          name: 'get_api_cache'
+        }
+      }
+    },
+    {
+      urlPattern: 'api/(.*)',
+      handler: "networkFirst",
+      method: 'post',
+      options: {
+        cache: {
+          name: 'post_api_cache'
         }
       }
     }

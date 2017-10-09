@@ -286,7 +286,8 @@ self.addEventListener('fetch', function(event) {
 // Runtime cache configuration, using the sw-toolbox library.
 
 toolbox.router.get("assets/**/**.*", toolbox.networkFirst, {"cache":{"name":"asset_cache"}});
-toolbox.router.get("api/(.*)", toolbox.networkFirst, {"cache":{"name":"api_cache"}});
+toolbox.router.get("api/(.*)", toolbox.networkFirst, {"cache":{"name":"get_api_cache"}});
+toolbox.router.post("api/(.*)", toolbox.networkFirst, {"cache":{"name":"post_api_cache"}});
 
 
 
