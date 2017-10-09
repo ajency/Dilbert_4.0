@@ -29,8 +29,12 @@
 				<td>{{item.modified_by}}</td>
 				<td>{{splitDay_Date(item.modified_on,1)}}</td>
 				<td>{{item.name}}</td>
-				<td>{{item.from}}</td>
-				<td>{{item.to}}</td>
+				<td *ngIf = "item.from != null" >{{item.from}}</td>
+				<td *ngIf = "item.from == null" > - </td>
+
+				<td *ngIf = "item.to != null">{{item.to}}</td>
+				<td *ngIf = "item.to == null"> - </td>
+
 			</tr>
 		</tbody>
 

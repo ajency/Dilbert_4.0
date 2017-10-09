@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { IonicPage, Events,  NavController, NavParams, ViewController } from 'ionic-angular';
 import * as moment from 'moment';
 import { AuthguardProvider } from '../../providers/authguard/authguard';
+import { AppServiceProvider } from '../../providers/app-service/app-service';
 
 /**
  * Generated class for the EditModalPage page.
@@ -22,12 +23,22 @@ export class EditModalPage {
   end_time : any;
   leave_status : boolean;
   status : any;
+  private nativeElement: any;
+  private $: any;
+  
+
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public viewCtrl : ViewController,
               public events : Events,
-              public authguard : AuthguardProvider) {
+              public authguard : AuthguardProvider,
+              public element: ElementRef,
+              public appServiceProvider : AppServiceProvider) {
+    
+    this.nativeElement = this.element.nativeElement;
+    this.$ = this.appServiceProvider.jQuery;
+
     this.data = this.navParams.get('data');
     this.start_time = this.data.start_time;
     this.end_time = this.data.end_time;
@@ -39,6 +50,11 @@ export class EditModalPage {
       this.leave_status = false;
       this.status = 'Leave'
     }
+  }
+
+  ngOnInit(){
+    this.$(this.nativeElement).parents().find('.popover-content').addClass("logs-changed-popover2");
+
   }
 
   ionViewDidLoad() {
