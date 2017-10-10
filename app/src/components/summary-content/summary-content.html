@@ -27,7 +27,7 @@
             </div>
 
              <button *ngIf = "edit_btn_pd" (click) = "editModal(day_data[0])" title="Edit logs" > Edit </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             <button *ngIf = "day_data[0].changes != 0 && view_log_history_btn" (click) = "logsChanged($event)" title="View changes"> <ion-icon name="md-list-box" p-r-5></ion-icon> </button>
+             <ion-icon *ngIf = "day_data[0].changes != 0 && view_log_history_btn" name="md-list-box" p-r-5></ion-icon>
 
         </div>
 

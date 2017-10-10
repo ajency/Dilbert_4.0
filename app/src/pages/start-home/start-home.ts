@@ -45,6 +45,8 @@ import { Storage } from '@ionic/storage';
  period_unit : string ;
  cos_offset : string ;
  message : string;
+ view_log_history_btn : boolean = true;
+ changedLogs : any;
 
  constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -68,6 +70,12 @@ import { Storage } from '@ionic/storage';
   //   console.log(this.param1,this.param2);
   // });
   // console.log(this.param1, this.param2);
+  this.events.subscribe("start-home:changedLogs", (data) =>{
+    console.log('inside publish changedLogs');
+    this.view_log_history_btn = this.appGlobalsProvider.view_log_history_btn;
+    this.changedLogs = data;
+
+  });
   
 }
 
@@ -233,10 +241,13 @@ ionViewDidLoad() {
 
         this.sideBarData = response;
         this.zone.run(() => {});
+        
+
+        // Call for day summary (RHS or logs data) 
         url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
 
 
-          // console.log(url);
+        
         let body2 = {
           user_id : this.userId,
           date : this.summaryDate,
@@ -253,6 +264,59 @@ ionViewDidLoad() {
         // console.log(response);
         this.summaryContentData = response;
         this.zone.run(() => {});
+
+        this.checkPermissions();
+
+        // Call for changed logs
+        
+       let data = this.summaryContentData.data.day_data[0];
+       console.log(data);
+      
+      if(data.changes>0 && this.view_log_history_btn){
+
+        let object = {
+            user_id : [this.authguard.user_id],   
+
+            filters : {
+              work_date_range : {
+                start : data.work_date,
+                end : ''  
+              }
+              
+            }
+         }
+         console.log(object);
+
+         url  = `${this.apiURL}/log-history/${this.appGlobalsProvider.lang}`;
+
+
+         this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+
+            console.log(response);
+
+            if(response.status == 200){
+             
+              // let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:response.data[0].history});
+              // popover.present();
+              this.changedLogs = response.data[0].history;
+              this.view_log_history_btn =true;
+            }
+
+            else{
+              this.appServiceProvider.presentToast(response.message, 'error');
+              this.view_log_history_btn = false;
+            }
+
+
+        });
+
+
+     }
+     else{
+      this.view_log_history_btn =false;
+     }
+
       });
 
     }
@@ -269,6 +333,37 @@ ionViewDidLoad() {
 
 
     
+  }
+
+
+   checkPermissions(){
+    console.log('inside checkPermissions');
+
+
+    if(!this.summaryContentData.data.user.self){
+
+        
+            let result = this.authguard.userData;
+            // console.log('result',result);
+
+            let perm_class = result.class_permissions.view_log_history_btn;
+
+            if(result.permissions.includes(perm_class)){
+              this.view_log_history_btn = true;
+              console.log("user has permissions to view log history");
+
+            }
+
+            else{
+              this.view_log_history_btn = false;
+              console.log("user does not have permissions to view log history");
+
+            }
+
+            
+         
+         
+    }
   }
 
   getUserDate() {

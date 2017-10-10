@@ -43,6 +43,8 @@ export class SummarySidebarComponent {
   weekTotal :any;
   minHours : any;
   loader_percentage : any;
+  // changedLogs : any;
+  view_log_history_btn : boolean = true;
 
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -191,12 +193,68 @@ export class SummarySidebarComponent {
       this.summaryContentData = response;
       this.calculateWeekTotal();
 
-      let data = {
+      let data1 = {
         date : ev.formatted,
         summaryContentData : this.summaryContentData
       }
 
-       this.events.publish('update:content', data);
+       this.events.publish('update:content', data1);
+
+       this.checkPermissions();
+
+       // Call for changed logs
+       let data = this.summaryContentData.data.day_data[0];
+       console.log(data);
+
+
+
+      if(data.changes>0 && this.view_log_history_btn){
+
+      let object = {
+          user_id : [this.authguard.user_id],   
+
+          filters : {
+            work_date_range : {
+              start : data.work_date,
+              end : ''  
+            }
+            
+          }
+       }
+       console.log(object);
+
+       url  = `${this.apiURL}/log-history/${this.appGlobalsProvider.lang}`;
+
+
+       this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+
+          console.log(response);
+
+          if(response.status == 200){
+           
+            // let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:response.data[0].history});
+            // popover.present();
+            // this.changedLogs = response.data[0].history;
+           this.appGlobalsProvider.view_log_history_btn =true;
+
+           this.events.publish("start-home:changedLogs",response.data[0].history);
+
+          }
+
+          else{
+            this.appServiceProvider.presentToast(response.message, 'error');
+          }
+
+
+      });
+     }
+     else{
+      this.appGlobalsProvider.view_log_history_btn = false;
+      data = {};
+      this.events.publish("start-home:changedLogs", data);
+
+     }
 
     });
 
@@ -306,21 +364,104 @@ export class SummarySidebarComponent {
       this.summaryContentData = response;
       this.zone.run(() => {});
 
-      let data = {
+      let data1 = {
         date : date,
         summaryContentData : this.summaryContentData
       }
 
       // console.log(data);
 
-      this.events.publish('update:content', data);
+      this.events.publish('update:content', data1);
+      this.checkPermissions();
+
+       // Call for changed logs
+       let data = this.summaryContentData.data.day_data[0];
+       console.log(data);
+      
+      if(data.changes>0 && this.view_log_history_btn){
+      let object = {
+          user_id : [this.authguard.user_id],   
+
+          filters : {
+            work_date_range : {
+              start : data.work_date,
+              end : ''  
+            }
+            
+          }
+       }
+       console.log(object);
+
+       url  = `${this.apiURL}/log-history/${this.appGlobalsProvider.lang}`;
+
+
+       this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+
+          console.log(response);
+
+          if(response.status == 200){
+           
+            // let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:response.data[0].history});
+            // popover.present();
+            // this.changedLogs = response.data[0].history;
+           this.appGlobalsProvider.view_log_history_btn = true;
+            
+           this.events.publish("start-home:changedLogs",response.data[0].history);
+
+          }
+
+          else{
+            this.appServiceProvider.presentToast(response.message, 'error');
+          }
+
+
+      });
+     
+     }
+     else{
+      this.appGlobalsProvider.view_log_history_btn = false;
+      data = {}
+      this.events.publish("start-home:changedLogs", data);
+
+     }
 
     });
   });
     
 
 
+}
+
+  checkPermissions(){
+    console.log('inside checkPermissions');
+
+
+    if(!this.summaryContentData.data.user.self){
+
+        
+            let result = this.authguard.userData;
+            // console.log('result',result);
+
+            let perm_class = result.class_permissions.view_log_history_btn;
+
+            if(result.permissions.includes(perm_class)){
+              this.view_log_history_btn = true;
+              console.log("user has permissions to view log history");
+
+            }
+
+            else{
+              this.view_log_history_btn = false;
+              console.log("user does not have permissions to view log history");
+
+            }
+
+            
+         
+         
     }
+  }
 
 
 

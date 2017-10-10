@@ -36,12 +36,26 @@
                     </div>
                 </ion-col>
                 <ion-col class="col dashboard__leaves mobile-hide" col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
-                    <!-- <ion-content class="overflow-scroll" scroll="true">
-                  <div class="section-title">
-                  <i class="custom-icon summary" m-r-10></i><h6 class="main-title">My Summary</h6>
-               </div>
-               </ion-content> -->
-                    <!-- <div text-center m-t-20><button ion-button (click)="openStyle()">Style Guide</button></div> -->
+                  
+                    <!-- <div text-center m-t-20><button ion-button >Style Guide</button></div> -->
+
+                    <div padding *ngIf = "view_log_history_btn && summaryContentData && sideBarData">
+                       <h5> Changed logs </h5>
+                        <hr>
+
+                        <div *ngFor = "let item of changedLogs">
+                            <ul style="list-style: none;">
+                               <li>Modified {{item.name}} from : <strong> <span *ngIf = "item.from != null"> {{item.from}} </span> 
+                                <span *ngIf = "item.from == null"> 00:00 </span> to 
+                                <span *ngIf = "item.to != null">{{item.to}}</span>
+                                <span *ngIf = "item.to == null"> 00:00 </span> </strong> </li>
+                               <li>On {{item.modified_on}}</li>
+                               <li *ngIf = "!summaryContentData.data.user.self">By {{item.modified_by}}</li>
+                           </ul>
+                           <hr>
+                        </div>
+                        
+                    </div>
                 </ion-col>
             </ion-row>
         </ion-grid>
