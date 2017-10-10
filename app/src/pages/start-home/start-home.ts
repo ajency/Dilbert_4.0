@@ -150,6 +150,12 @@ ngOnInit(){
       case 2:
         text = moment(date.split(" ")[1], "kk:mm:ss").format("hh:mm a");
         break;
+      case 3:
+        text = moment(date, "kk:mm:ss").format("hh:mm a");
+        break;
+      case 4:
+        text = moment(date, "kk:mm:ss").format("HH:mm");
+        break;
     }
     return text;
   }
