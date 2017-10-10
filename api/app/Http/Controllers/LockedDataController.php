@@ -214,6 +214,23 @@ class LockedDataController extends Controller
                             $dataChanges->save();
                             // reflect this change in the locked__datas table
                             $lockedEntry->$ckey = $cvalue;
+                            if($ckey == 'start_time' || $ckey == 'end_time') {
+                                if($lockedEntry->end_time != null) {
+                                    $st = new DateTime($lockedEntry->start_time);
+                                    $et = new DateTime($lockedEntry->end_time);
+                                    $lockedEntry->total_time = date_diff($st,$et)->format("%h:%i");
+                                    $dataChanges = new Data_Changes;
+                                    $dataChanges->user_id = $userCode;
+                                    $dataChanges->modified_by = $request->header('from');
+                                    $dataChanges->modified_on = date('Y-m-d');
+                                    $dataChanges->table_modified = 'locked__datas';
+                                    $dataChanges->column_modified = 'total_time';
+                                    $dataChanges->work_date = $request->work_date;
+                                    $dataChanges->old_value = $lockedEntry->$ckey;
+                                    $dataChanges->new_value = date_diff($st,$et)->format("%h:%i");
+                                    $dataChanges->save();
+                                }
+                            }
                             $lockedEntry->save();
                         }
                     }
