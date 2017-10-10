@@ -62,7 +62,7 @@ class Data_Changes extends Model
             }
             $changeData = [
                 "modified_by" => User::find($change->modified_by)->name,
-                "modified_on" => $change->created_at->format('Y-m-d h:i'),
+                "modified_on" => $change->created_at->modify('+5 hours 30 minutes')->format('Y-m-d H:i'),
                 "work_date" => $change->work_date,
                 "type" => $type[$change->table_modified],
                 "name" => $change->column_modified,
@@ -75,18 +75,18 @@ class Data_Changes extends Model
         return $changes;
     }
 
-    /**
-     * if the person can make changes to their own data for that particular day
-     * @param  $user   user changing self data
-     * @param  $workDate data of which date is being changed
-     * @return boolean true/false
-     * [future functionality] may have to check number of changes for a specific field
-     */
-    public function userCanMakeChanges($user, $workDate) {
-        // user can make self change only once
-        if(Data_Changes::where(['user_id' => $user, 'modified_by' => $user, 'work_date' => $workDate])->count() > 0)
-            return false;
-        else
-            return true;
-    }
+//     /**
+//      * if the person can make changes to their own data for that particular day
+//      * @param  $user   user changing self data
+//      * @param  $workDate data of which date is being changed
+//      * @return boolean true/false
+//      * [future functionality] may have to check number of changes for a specific field
+//      */
+//     public function userCanMakeChanges($user, $workDate) {
+//         // user can make self change only once
+//         if(Data_Changes::where(['user_id' => $user, 'modified_by' => $user, 'work_date' => $workDate])->count() > 0)
+//             return false;
+//         else
+//             return true;
+//     }
 }
