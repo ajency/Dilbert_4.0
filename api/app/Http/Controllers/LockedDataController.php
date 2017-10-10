@@ -227,7 +227,7 @@ class LockedDataController extends Controller
                                     $dataChanges->column_modified = 'total_time';
                                     $dataChanges->work_date = $request->work_date;
                                     $dataChanges->old_value = $lockedEntry->$ckey;
-                                    $dataChanges->new_value = $lockedEntry->total_time;
+                                    $dataChanges->new_value = date_diff($st,$et)->format("%h:%i");
                                     $dataChanges->save();
                                 }
                             }
