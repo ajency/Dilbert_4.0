@@ -16,6 +16,7 @@ export class AppGlobalsProvider {
 	lang : any;
   period_unit: string = 'week';
   cos_offset : string = '0';
+  view_log_history_btn : boolean = true;
 
   
 

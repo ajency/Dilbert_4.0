@@ -23,6 +23,7 @@ export class SummaryContentComponent {
   
   @Input('test') currentData : any ;
   @Input('logs') summaryContentData : any;
+  // changedLogs : any;
   today : any;
   logs : any;
   day_data : any;
@@ -73,10 +74,13 @@ export class SummaryContentComponent {
           if(response.status == 200){
             this.day_data[0] = response.data[0];
             this.events.publish("summary-sidebar:log", response.data[0]);
+            this.appGlobalsProvider.view_log_history_btn = true;
+            this.logsChanged();
           }
 
           else{
             this.appServiceProvider.presentToast(response.message, 'error');
+            
           }
 
 
@@ -206,12 +210,15 @@ export class SummaryContentComponent {
 
   }
 
-  logsChanged(ev){
+  logsChanged(){
+
 
      console.log("inside logsChangedModal");
 
       let data = this.day_data[0];
       console.log(this.day_data[0]);
+
+      if(data.changes > 0){
        let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id,
@@ -240,8 +247,10 @@ export class SummaryContentComponent {
 
           if(response.status == 200){
            
-            let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:response.data[0].history});
-            popover.present();
+           this.events.publish("start-home:changedLogs",response.data[0].history);
+           // this.changedLogs = response;
+            // let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:response.data[0].history});
+            // popover.present();
           }
 
           else{
@@ -250,6 +259,7 @@ export class SummaryContentComponent {
 
 
       });
+     }
 
       // let data = {
       //       "changes": [{

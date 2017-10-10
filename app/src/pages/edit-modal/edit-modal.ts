@@ -71,7 +71,7 @@ export class EditModalPage {
             }
             else{
               this.leave_marking_dropdown = false;
-              console.log("user does not have permissions mark leave");
+              console.log("user does not have permissions to mark leave");
 
             }
   }
