@@ -142,9 +142,12 @@ class LockedDataController extends Controller
                     $user = UserDetail::where('user_id',$userCode)->first();
                 else
                     return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
+                    $output->writeln("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
                 // check if it's a member (not hr / admin) who wants to make a change a second time
                 $userRole = (User::find($request->header('from')))->getRoleNames()->first();
-                if($userRole == 'member' && !(new Data_Changes)->userCanMakeChanges($request->header('from'),$request->work_date))
+                $maxCount = (int)OrganisationMeta::where(['organisation_id' => UserDetail::where('user_id',$userCode)->first()->org_id, 'key' => 'changes_max_count_'.$userRole])->first()->value;
+                $output->writeln("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ            ".$maxCount);
+                if($maxCount != -1 && Data_Changes::where(['user_id' => $userCode, 'modified_by' => $request->header('from'), 'work_date' => $request->work_date])->count() >= $maxCount)
                     return response()->json(['status' => 400, "message" => "Sorry your total changes allowed for this day are up. Contact the HR."]);
                 // see which all chnages are to be made
                 try {
@@ -182,7 +185,7 @@ class LockedDataController extends Controller
                     }
                     // for the other changes
                     $roleMeta = (new OrganisationMeta)->getAllRoleMeta(UserDetail::where('user_id',$userCode)->first()->org_id,$userRole);
-                    $output->writeln(json_encode($roleMeta));
+                    // $output->writeln(json_encode($roleMeta));
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // do the time check
                         $now = new DateTime();

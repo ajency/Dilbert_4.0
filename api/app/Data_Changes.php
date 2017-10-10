@@ -75,18 +75,18 @@ class Data_Changes extends Model
         return $changes;
     }
 
-    /**
-     * if the person can make changes to their own data for that particular day
-     * @param  $user   user changing self data
-     * @param  $workDate data of which date is being changed
-     * @return boolean true/false
-     * [future functionality] may have to check number of changes for a specific field
-     */
-    public function userCanMakeChanges($user, $workDate) {
-        // user can make self change only once
-        if(Data_Changes::where(['user_id' => $user, 'modified_by' => $user, 'work_date' => $workDate])->count() > 0)
-            return false;
-        else
-            return true;
-    }
+//     /**
+//      * if the person can make changes to their own data for that particular day
+//      * @param  $user   user changing self data
+//      * @param  $workDate data of which date is being changed
+//      * @return boolean true/false
+//      * [future functionality] may have to check number of changes for a specific field
+//      */
+//     public function userCanMakeChanges($user, $workDate) {
+//         // user can make self change only once
+//         if(Data_Changes::where(['user_id' => $user, 'modified_by' => $user, 'work_date' => $workDate])->count() > 0)
+//             return false;
+//         else
+//             return true;
+//     }
 }
