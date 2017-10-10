@@ -226,7 +226,7 @@ class LockedDataController extends Controller
                                     $dataChanges->table_modified = 'locked__datas';
                                     $dataChanges->column_modified = 'total_time';
                                     $dataChanges->work_date = $request->work_date;
-                                    $dataChanges->old_value = $lockedEntry->total_time;
+                                    $dataChanges->old_value = $lockedEntry->$ckey;
                                     $dataChanges->new_value = $lockedEntry->total_time;
                                     $dataChanges->save();
                                 }
