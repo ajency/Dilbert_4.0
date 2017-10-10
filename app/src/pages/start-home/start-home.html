@@ -49,7 +49,7 @@
                                 <span *ngIf = "item.from == null"> 00:00 </span> to 
                                 <span *ngIf = "item.to != null">{{item.to}}</span>
                                 <span *ngIf = "item.to == null"> 00:00 </span> </strong> </li>
-                               <li>On {{item.modified_on}}</li>
+                               <li>On {{getDayDate(item.modified_on,1)}} at {{getDayDate(item.modified_on,2)}}</li>
                                <li *ngIf = "!item.modified_by_self">By {{item.modified_by}}</li>
                            </ul>
                            <hr>

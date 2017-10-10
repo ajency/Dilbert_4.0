@@ -4,6 +4,7 @@
 // import { SummarySidebarService } from './../../components/summary-sidebar/summary-sidebar.service';
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
+import * as moment from 'moment';
 
 
 import { CookieService } from 'ngx-cookie';
@@ -138,6 +139,21 @@ ngOnInit(){
  //      ev: myEvent
  //    });
  //  }
+
+
+   getDayDate(date: string, option: number): string {
+    var text: string = '';
+    switch (option) {
+      case 1:
+        text = moment(date.split(" ")[0], "YYYY-MM-DD").format("DD MMM YYYY");
+        break;
+      case 2:
+        text = moment(date.split(" ")[1], "kk:mm:ss").format("hh:mm a");
+        break;
+    }
+    return text;
+  }
+
 
  openStyle(){
 
