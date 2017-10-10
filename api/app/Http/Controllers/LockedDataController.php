@@ -218,7 +218,6 @@ class LockedDataController extends Controller
                                 if($lockedEntry->end_time != null) {
                                     $st = new DateTime($lockedEntry->start_time);
                                     $et = new DateTime($lockedEntry->end_time);
-                                    $lockedEntry->total_time = date_diff($st,$et)->format("%h:%i");
                                     $dataChanges = new Data_Changes;
                                     $dataChanges->user_id = $userCode;
                                     $dataChanges->modified_by = $request->header('from');
@@ -226,9 +225,10 @@ class LockedDataController extends Controller
                                     $dataChanges->table_modified = 'locked__datas';
                                     $dataChanges->column_modified = 'total_time';
                                     $dataChanges->work_date = $request->work_date;
-                                    $dataChanges->old_value = $lockedEntry->$ckey;
-                                    $dataChanges->new_value = date_diff($st,$et)->format("%h:%i");
+                                    $dataChanges->old_value = $lockedEntry->total_time;
+                                    $dataChanges->new_value = date_diff($st,$et)->format("%H:%I");
                                     $dataChanges->save();
+                                    $lockedEntry->total_time = date_diff($st,$et)->format("%H:%I");
                                 }
                             }
                             $lockedEntry->save();
