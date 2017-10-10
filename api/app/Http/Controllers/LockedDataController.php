@@ -13,6 +13,8 @@ use App\Organisation;
 use App\Role;
 use App\Permission;
 use App\Data_Changes;
+use App\OrganisationMeta;
+use DateTime;
 use Ajency\User\Ajency\userauth\UserAuth;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -179,7 +181,16 @@ class LockedDataController extends Controller
                         return response()->json(['status' => 200, 'message' => "Marked as leave", 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                     }
                     // for the other changes
+                    $roleMeta = (new OrganisationMeta)->getAllRoleMeta(UserDetail::where('user_id',$userCode)->first()->org_id,$userRole);
+                    $output->writeln(json_encode($roleMeta));
                     foreach($request->input('changes') as $ckey => $cvalue) {
+                        // do the time check
+                        $now = new DateTime();
+                        $createdAt = new DateTime($lockedEntry->created_at);
+                        // [ NOTE undefined index needs to be handled ]
+                        $threshold = (int)$roleMeta['changes_allowed_time_'.$ckey.'_'.$userRole];
+                        if($threshold != -1 && date_diff($now,$createdAt)->h > $threshold)
+                            return response()->json(['status' => 400, 'message' => "Time to make changes is up."]);
                         // first check to see if the value really needs to be changed
                         // if the field is start time or end time get it in the right format
                         if($ckey == 'start_time' || $ckey == 'end_time') {
