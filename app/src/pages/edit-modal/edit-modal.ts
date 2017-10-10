@@ -25,6 +25,7 @@ export class EditModalPage {
   status : any;
   private nativeElement: any;
   private $: any;
+  leave_marking_dropdown : boolean =true;
   
 
 
@@ -54,7 +55,25 @@ export class EditModalPage {
 
   ngOnInit(){
     this.$(this.nativeElement).parents().find('.popover-content').addClass("logs-changed-popover2");
+    this.checkPermissions();
+  }
 
+   checkPermissions(){
+            console.log('inside checkPermissions');
+
+            let result = this.authguard.userData;
+            // console.log('result',result);
+            let perm_class =result.class_permissions.leave_marking_dropdown;
+
+            if(result.permissions.includes(perm_class)){
+              this.leave_marking_dropdown =true;
+              console.log("user has permissions to mark leave");
+            }
+            else{
+              this.leave_marking_dropdown = false;
+              console.log("user does not have permissions mark leave");
+
+            }
   }
 
   ionViewDidLoad() {
