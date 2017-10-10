@@ -62,7 +62,7 @@ class Data_Changes extends Model
             }
             $changeData = [
                 "modified_by" => User::find($change->modified_by)->name,
-                "modified_on" => $change->modified_on,
+                "modified_on" => $change->created_at->format('Y-m-d h:i'),
                 "work_date" => $change->work_date,
                 "type" => $type[$change->table_modified],
                 "name" => $change->column_modified,
