@@ -178,7 +178,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        'Ajency\User\LaravelAjUserServiceProvider'
+        'Ajency\User\LaravelAjUserServiceProvider',
+        'Ajency\Violations\ViolationsServiceProvider'
 
     ],
 
@@ -231,7 +232,8 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 
-        'AjUser' => 'Ajency\User\LaravelAjUserServiceProvider'
+        'AjUser' => 'Ajency\User\LaravelAjUserServiceProvider',
+        'AjViolation' => 'Ajency\Violations\ViolationsServiceProvider'
 
     ],
 

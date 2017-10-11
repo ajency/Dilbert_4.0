@@ -119,6 +119,7 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'A' => 
         array (
             'App\\' => 4,
+            'Ajency\\Violations\\' => 18,
             'Ajency\\User\\' => 12,
         ),
     );
@@ -314,6 +315,10 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
+        'Ajency\\Violations\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/ajency/violations/src',
+        ),
         'Ajency\\User\\' => 
         array (
             0 => __DIR__ . '/../..' . '/packages/ajency/user/src',
@@ -365,6 +370,10 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'Ajency\\User\\Commands\\CustomMigrationsCommand' => __DIR__ . '/../..' . '/packages/ajency/user/src/Commands/CustomMigrationsCommand.php',
         'Ajency\\User\\Commands\\GenerateRolesPermissionsCommand' => __DIR__ . '/../..' . '/packages/ajency/user/src/Commands/GenerateRolesPermissionsCommand.php',
         'Ajency\\User\\LaravelAjUserServiceProvider' => __DIR__ . '/../..' . '/packages/ajency/user/src/LaravelAjUserServiceProvider.php',
+        'Ajency\\Violations\\Ajency\\ViolationRules' => __DIR__ . '/../..' . '/packages/ajency/violations/src/Ajency/ViolationRules.php',
+        'Ajency\\Violations\\Models\\Violation' => __DIR__ . '/../..' . '/packages/ajency/violations/src/models/Violation.php',
+        'Ajency\\Violations\\Models\\ViolationType' => __DIR__ . '/../..' . '/packages/ajency/violations/src/models/ViolationType.php',
+        'Ajency\\Violations\\ViolationsServiceProvider' => __DIR__ . '/../..' . '/packages/ajency/violations/src/ViolationsServiceProvider.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Events\\Event' => __DIR__ . '/../..' . '/app/Events/Event.php',
         'App\\Events\\EventChrome' => __DIR__ . '/../..' . '/app/Events/EventChrome.php',
@@ -403,6 +412,7 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\UserCommunication' => __DIR__ . '/../..' . '/app/UserCommunication.php',
         'App\\UserDetail' => __DIR__ . '/../..' . '/app/UserDetail.php',
+        'App\\Violation' => __DIR__ . '/../..' . '/app/Violation.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',
