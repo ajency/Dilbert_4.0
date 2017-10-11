@@ -3,11 +3,11 @@ var packageJson = require('./package.json');
 module.exports = {
   cacheId: packageJson.name,
   staticFileGlobs: [
-    'manifest.json',
-    'build/**.js',
-    'build/**.css',
+    'assets/i18n/**.json',
     'assets/img/dilbert.png',
-    'assets/i18n/**.json'
+    'build/**.css',
+    'build/**.js',
+    'manifest.json'
   ],
   navigateFallback: 'index.html',
   runtimeCaching: [
@@ -16,7 +16,7 @@ module.exports = {
       handler: "networkFirst",
       options: {
         cache: {
-          name: 'asset_cache',
+          name: 'asset_cache'
         }
       }
     },
@@ -37,6 +37,15 @@ module.exports = {
       options: {
         cache: {
           name: 'post_api_cache'
+        }
+      }
+    },
+    {
+      urlPattern : "https://apis.google.com/js/client.js",
+      handler : "networkFirst",
+      options : {
+        cache : {
+          name : 'google_api_cache'
         }
       }
     }

@@ -65,9 +65,10 @@
                                         <span *ngIf = "item.to == null"> 00:00 </span> 
                                     </strong> 
                                 </li>
-
-                               <li>{{ "on" | translate}}  {{getDayDate(item.modified_on,1) | translate}} {{ "at" | translate}}  {{getDayDate(item.modified_on,2)}}</li>
-                               <li *ngIf = "!item.modified_by_self">{{ "by" | translate}}  {{item.modified_by}}</li>
+                                <div style="color: grey;">
+                                   <li>{{ "on" | translate}}  {{getDayDate(item.modified_on,1) | translate}} {{ "at" | translate}}  {{getDayDate(item.modified_on,2)}}</li>
+                                   <li *ngIf = "!item.modified_by_self">{{ "by" | translate}}  {{item.modified_by}}</li>
+                                </div>
                            </ul>
                            <hr>
                         </div>
