@@ -90,7 +90,21 @@
 	  "Sep" : "Sep",
 	  "Oct" : "Oct",
 	  "Nov" : "Nov",
-	  "Dec" : "Déc"
+	  "Dec" : "Déc",
+
+
+	  "changed_logs" : "fr_Changed logs",
+	  "modified" : "fr_Modified",
+	  "status" : "fr_Status",
+	  "from" : "fr_from",
+	  "on" : "fr_on",
+	  "at" : "fr_at",
+	  "by" : "fr_by"
+
+
+
+
+
 
 
 

@@ -40,34 +40,34 @@
                     <!-- <div text-center m-t-20><button ion-button >Style Guide</button></div> -->
 
                     <div padding *ngIf = "view_log_history_btn && summaryContentData && sideBarData">
-                       <h5> Changed logs </h5>
+                       <h5> {{ "changed_logs" | translate }} </h5>
                         <hr>
 
                         <div *ngFor = "let item of changedLogs">
                             <ul style="list-style: none;">
-                               <li>Modified {{item.name}} from : 
+                               <li>{{ "modified" | translate }} {{item.name | translate}}  {{ "from" | translate}} : 
                                     <strong *ngIf = "item.name == 'start_time' || item.name == 'end_time' "> 
                                         <span *ngIf = "item.from != null"> {{getDayDate(item.from,3)}} </span> 
-                                        <span *ngIf = "item.from == null"> 00:00 </span> to 
+                                        <span *ngIf = "item.from == null"> 00:00 </span>  {{ "to" | translate}} 
                                         <span *ngIf = "item.to != null">{{getDayDate(item.to,3)}}</span>
                                         <span *ngIf = "item.to == null"> 00:00 </span> 
                                     </strong> 
 
                                     <strong *ngIf = "item.name == 'status' "> 
-                                        <span > {{item.from}} </span> to 
-                                        <span > {{item.to}} </span> 
+                                        <span > {{item.from | translate}} </span> {{ "to" | translate}} 
+                                        <span > {{item.to | translate}} </span> 
                                     </strong> 
 
                                     <strong *ngIf = "item.name == 'total_time' "> 
                                         <span *ngIf = "item.from != null"> {{getDayDate(item.from,4)}} </span> 
-                                        <span *ngIf = "item.from == null"> 00:00 </span> to 
+                                        <span *ngIf = "item.from == null"> 00:00 </span> {{ "to" | translate}} 
                                         <span *ngIf = "item.to != null">{{getDayDate(item.to,4)}}</span>
                                         <span *ngIf = "item.to == null"> 00:00 </span> 
                                     </strong> 
                                 </li>
 
-                               <li>On {{getDayDate(item.modified_on,1)}} at {{getDayDate(item.modified_on,2)}}</li>
-                               <li *ngIf = "!item.modified_by_self">By {{item.modified_by}}</li>
+                               <li>{{ "on" | translate}}  {{getDayDate(item.modified_on,1) | translate}} {{ "at" | translate}}  {{getDayDate(item.modified_on,2)}}</li>
+                               <li *ngIf = "!item.modified_by_self">{{ "by" | translate}}  {{item.modified_by}}</li>
                            </ul>
                            <hr>
                         </div>

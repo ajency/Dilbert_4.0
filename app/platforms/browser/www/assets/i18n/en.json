@@ -91,7 +91,19 @@
 	  "Sep" : "Sep",
 	  "Oct" : "Oct",
 	  "Nov" : "Nov",
-	  "Dec" : "Dec"
+	  "Dec" : "Dec",
+
+
+	  "changed_logs" : "Changed logs",
+	  "modified" : "Modified",
+	  "status" : "Status",
+	  "from" : "from",
+	  "on" : "On",
+	  "at" : "at",
+	  "by" : "By"
+
+
+
 
 
 
