@@ -11,7 +11,7 @@ class ViolationApp extends Model
      * creates a formatted violation data object for the package
      * @param  [type] $userData  all the user details (UserAuth obj)
      * @param  [type] $keyFields violation key fields (key => value)
-     * @param  $rhsFields  rhs field keys
+     * @param  $rhsFields  rhs field keys (only keys)
      * @param  $mailLists  contains the cc and bcc lists( only roles)
      * @return formatted violation data object
      */
