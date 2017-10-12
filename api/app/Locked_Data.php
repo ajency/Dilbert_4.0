@@ -103,7 +103,7 @@ class Locked_Data extends Model
                 //set as the current time
                 $dayData['end_time'] = $endTime->modify('+5 hour +30 minutes')->format('H:i');
                 $dayData['status'] = $this->getCurrentStatus($user_id,date('Y-m-d'));
-                $dayData['total_time'] = date_diff($startTime,$endTime)->format('H:i');
+                $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
             }
             // $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
             $dayData['leave_status'] = 'Present';
