@@ -194,16 +194,16 @@ export class MyApp {
     console.log(this.location.path(true));
     this.url =this.location.path(true);
 
-    this.nav.viewDidEnter
-            .subscribe((res) => {
-              console.log('view did enter =>' + this.currentPage + " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-              // setTimeout(() => {
-                // this.app.setTitle(`${this.appName} - ${this.titlecasepipe.transform(this.currentPage)}`);
-                this.updateTitle(this.currentPage);
-              // },250);
-            },(err) => {
-              console.warn('view enter error', err);
-            })
+    // this.nav.viewDidEnter
+    //         .subscribe((res) => {
+    //           console.log('view did enter =>' + this.currentPage + " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    //           // setTimeout(() => {
+    //             // this.app.setTitle(`${this.appName} - ${this.titlecasepipe.transform(this.currentPage)}`);
+    //             this.updateTitle(this.currentPage);
+    //           // },250);
+    //         },(err) => {
+    //           console.warn('view enter error', err);
+    //         })
      
   }
 
@@ -304,8 +304,8 @@ export class MyApp {
 private updateNav(data) : any{
 
     this.currentPage = data;
-    this.nav.setRoot(data)
-
+    this.nav.setRoot(data);
+    this.updateTitle(data);
 
      
 
@@ -316,7 +316,11 @@ private updateTitle(title: string = ''): void{
   console.log(title);
   this.currentPage = title ? title : this.currentPage;
   console.log(this.currentPage);
-  document.title = `${this.appName} - ${this.titlecasepipe.transform(this.currentPage)}`;
+  setTimeout( () =>{
+  document.title = `${this.appName} - ${this.titlecasepipe.transform(this.currentPage)}`;    
+  },100);
+
+  console.log(this.titlecasepipe.transform(this.currentPage));
   
   
 
