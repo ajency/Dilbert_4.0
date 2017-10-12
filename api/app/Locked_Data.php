@@ -95,6 +95,7 @@ class Locked_Data extends Model
                     $dayData['status'] = $this->getCurrentStatus($user_id,date('Y-m-d'));
                 else
                     $dayData['status'] = '';
+                $dayData['total_time'] = $ld->total_time;
             }
             else {
                 //the day isnt over yet
@@ -102,9 +103,9 @@ class Locked_Data extends Model
                 //set as the current time
                 $dayData['end_time'] = $endTime->modify('+5 hour +30 minutes')->format('H:i');
                 $dayData['status'] = $this->getCurrentStatus($user_id,date('Y-m-d'));
+                $dayData['total_time'] = date_diff($startTime,$endTime)->format('H:i');
             }
             // $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
-            $dayData['total_time'] = $ld->total_time;
             $dayData['leave_status'] = 'Present';
             //violation status - for now dummy
             $dayData['violation_count'] = 0;
