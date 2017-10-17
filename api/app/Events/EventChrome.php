@@ -152,6 +152,13 @@ class EventChrome extends Event implements ShouldBroadcast {
                                     /**
                                      * [ADD VIOLATION HERE]
                                      */
+                                    $user = (new UserAuth)->getUserData($redis_list->user_id,true);
+                                    $keyFields = ['start_time' => date("H:i")];
+                                    $rhsFields = ['organisation_start_time'];
+                                    $mailLists = ["cc_list" => ['time_manager','hr'], "bcc_list" => ['owner']];
+                                    $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailLists);
+                                    (new ViolationRules)->checkViolationRules('late_alert',$data);
+
                                     // $output->writeln("Late Login");
                                     // // if past 11am send a mail
                                     // $u = User::where('id',$log->user_id)->get()->first();

@@ -14,6 +14,7 @@ return array(
     'Ajency\\Violations\\Ajency\\Operator' => $baseDir . '/packages/ajency/violations/src/Ajency/Operator.php',
     'Ajency\\Violations\\Ajency\\ViolationEmail' => $baseDir . '/packages/ajency/violations/src/Ajency/ViolationEmail.php',
     'Ajency\\Violations\\Ajency\\ViolationRules' => $baseDir . '/packages/ajency/violations/src/Ajency/ViolationRules.php',
+    'Ajency\\Violations\\Commands\\GenerateViolationEmailTemplates' => $baseDir . '/packages/ajency/violations/src/Commands/GenerateViolationEmailTemplates.php',
     'Ajency\\Violations\\Models\\Violation' => $baseDir . '/packages/ajency/violations/src/models/Violation.php',
     'Ajency\\Violations\\Models\\ViolationType' => $baseDir . '/packages/ajency/violations/src/models/ViolationType.php',
     'Ajency\\Violations\\ViolationsServiceProvider' => $baseDir . '/packages/ajency/violations/src/ViolationsServiceProvider.php',
