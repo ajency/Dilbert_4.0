@@ -52,10 +52,15 @@ class ViolationApp extends Model
         $data['rule_key_fields'] = $keyFields;
 
         // rule_rhs
-        foreach($rhsFields as $rhsf) {
-            $rule_rhs[$rhsf] = (new OrganisationMeta)->getParamValue($rhsf,$userDetails['org_id'],$user['violation_grp_id']);
+        if(count(array_filter(array_keys($rhsFields),'is_string')) == 0) {  // this means that they are not key value pairs
+            foreach($rhsFields as $rhsf) {
+                $rule_rhs[$rhsf] = (new OrganisationMeta)->getParamValue($rhsf,$userDetails['org_id'],$user['violation_grp_id']);
+            }
+            $data['rule_rhs'] = $rule_rhs;
         }
-        $data['rule_rhs'] = $rule_rhs;
+        else {
+            $data['rule_rhs'] = $rhsFields;
+        }
         return $data;
     }
 }
