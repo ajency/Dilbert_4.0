@@ -12,10 +12,10 @@ class ViolationApp extends Model
      * @param  [type] $userData  all the user details (UserAuth obj)
      * @param  [type] $keyFields violation key fields (key => value)
      * @param  $rhsFields  rhs field keys (only keys)
-     * @param  $mailLists  contains the cc and bcc lists( only roles)
+     * @param  $mailList  contains the cc and bcc lists( only roles)
      * @return formatted violation data object
      */
-    public function createFormattedViolationData($userData,$keyFields,$rhsFields,$mailLists) {
+    public function createFormattedViolationData($userData,$keyFields,$rhsFields,$mailList) {
         $data = [];
         // all user data
         $user = $userData['user'];
@@ -28,23 +28,32 @@ class ViolationApp extends Model
         $violation_data['who_meta']['email'] = $userComm->where('type','email')->first()->value;
         $violation_data['who_meta']['name'] = $user['name'];
 
-        // populate the cc list
-        $cc_list = [];
-        foreach($mailLists['cc_list'] as $cc) {
-            $ccEmail = (new OrganisationMeta)->getParamValue($cc,$userDetails['org_id'],0);
-            if($ccEmail != null)
-                array_push($cc_list,$ccEmail);
-        }
-        $violation_data['cc_list'] = $cc_list;
+        // // populate the cc list
+        // $cc_list = [];
+        // foreach($mailLists['cc_list'] as $cc) {
+        //     $ccEmail = (new OrganisationMeta)->getParamValue($cc,$userDetails['org_id'],0);
+        //     if($ccEmail != null)
+        //         array_push($cc_list,$ccEmail);
+        // }
+        // $violation_data['cc_list'] = $cc_list;
+        //
+        // // populate the bcc list
+        // $bcc_list = [];
+        // foreach($mailLists['bcc_list'] as $bcc) {
+        //     $bccEmail = (new OrganisationMeta)->getParamValue($bcc,$userDetails['org_id'],0);
+        //     if($ccEmail != null)
+        //         array_push($bcc_list,$bccEmail);
+        // }
+        // $violation_data['bcc_list'] = $bcc_list;
 
-        // populate the bcc list
-        $bcc_list = [];
-        foreach($mailLists['bcc_list'] as $bcc) {
-            $bccEmail = (new OrganisationMeta)->getParamValue($bcc,$userDetails['org_id'],0);
-            if($ccEmail != null)
-                array_push($bcc_list,$bccEmail);
+        // populate the mailing lists
+        $mlList = [];
+        foreach($mailList as $ml) {
+            $mlEmail = (new OrganisationMeta)->getParamValue($ml,$userDetails['org_id'],0);
+            if($mlEmail != null)
+                $mlList[$ml] = $mlEmail;
         }
-        $violation_data['bcc_list'] = $bcc_list;
+        $violation_data['mailing_list'] = $mlList;
 
         $data['violation_data'] = $violation_data;
 
