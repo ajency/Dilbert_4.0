@@ -14,7 +14,9 @@ use App\UserCommunication;
 use App\Organisation;
 use App\Log;
 use App\Locked_Data;
+use App\ViolationApp;
 
+use Ajency\Violations\Ajency\ViolationRules;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LockedDataController;
 use Request;
@@ -145,19 +147,21 @@ class EventChrome extends Event implements ShouldBroadcast {
                                 $locking_today_data->save();
                                 $output->writeln("Saved Data\n");
 
-                                //check if the time is past 11am
-                                $loginTime = new \DateTime($log->work_date.' '.$log->cos);
-                                $cutoffTime = new \DateTime($log->work_date.' 11:00:00');
-                                if($loginTime > $cutoffTime) {
+                                // //check if the time is past 11am
+                                // $loginTime = new \DateTime($log->work_date.' '.$log->cos);
+                                // $cutoffTime = new \DateTime($log->work_date.' 11:00:00');
+                                // if($loginTime > $cutoffTime) {
+
+
                                     /**
                                      * [ADD VIOLATION HERE]
                                      */
                                     $user = (new UserAuth)->getUserData($redis_list->user_id,true);
                                     $keyFields = ['start_time' => date("H:i")];
                                     $rhsFields = ['organisation_start_time'];
-                                    $mailLists = ["cc_list" => ['time_manager','hr'], "bcc_list" => ['owner']];
-                                    $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailLists);
-                                    (new ViolationRules)->checkViolationRules('late_alert',$data);
+                                    $mailList = ['time_manager','hr','owner'];
+                                    $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailList);
+                                    (new ViolationRules)->checkForViolation('late_alert',$data);
 
                                     // $output->writeln("Late Login");
                                     // // if past 11am send a mail
@@ -168,8 +172,8 @@ class EventChrome extends Event implements ShouldBroadcast {
                                     // //     $message->from('dilbert@ajency.in','Dilbert');
                                     // //     $message->to($u->email)->cc(['avanti@ajency.in','anuj@ajency.in','tanvi@ajency.in'])->subject('Late alert');
                                     // // });
-                                }
-                                $output->writeln("Mail Sent");
+                                // }
+                                // $output->writeln("Mail Sent");
                             }
 
                             if($redis_list->to_state == "New Session" || $redis_list->to_state == "active") { // If it is a New Session or Active Session
