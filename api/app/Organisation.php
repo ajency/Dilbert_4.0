@@ -52,6 +52,7 @@ class Organisation extends Model
             if($dashFlag) {
             // if($user_resp['user_details']->org_id) {
                 // go to dashboard
+                $orgDetails = $org->first();
                 $response['next_url'] = "/dashboard";
                 $response['status'] = 200;
                 // $response['message'] = "Go to dashboard.";
@@ -60,6 +61,8 @@ class Organisation extends Model
                     'user_id' => $user_resp['user']->id,
                     'userEmail' => $email,
                     'x_api_key' => $user_resp['user_details']->api_token,
+                    'idle_time' => $orgDetails['idle_time'],
+                    'ping_freq' => $orgDetails['ping_freq']
                 ];
                 return $response;
             }
