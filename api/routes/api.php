@@ -37,6 +37,16 @@ Route::post('/users/edit/{userCode}/{locale?}','UserController@editUserDetails')
 // role management
 Route::post('/role/{locale?}','RoleController@changeOrAddRole');
 
+// cron jobs
+Route::group(['prefix' => 'cron'], function() {
+    // daily cron for leave marking and daily violation
+    Route::post('/daily','CronController@daily');
+    // weekly cron for total_hours_per_week violation
+    Route::post('/weekly','CronController@weekly');
+    // monthly cron for total_hours_per_month violation
+    Route::post('/monthly','CronController@monthly');
+});
+
 /**
  * Chrome App - EventChrome
  */
