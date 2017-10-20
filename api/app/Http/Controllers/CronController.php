@@ -71,10 +71,8 @@ class CronController extends Controller
         $users = User::where(['status' => 'active'])->get(); // Get users that are active
         foreach($users as $user) {
             $u = (new UserAuth)->getUserData($user);
-            echo "start ".$date->modify('first day of this month')->format('Y-m-d')." end ".$date->modify('last day of this month')->format('Y-m-d')."\n";
             $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$date->modify('first day of this month')->format('Y-m-d'),$date->modify('last day of this month')->format('Y-m-d')])->whereNotNull('start_time')->get();	//number of days present
             $minHours = count($userHours) * 9;
-            echo "min hours".$minHours;
             //minimum workhours for a week is 45
             if($minHours > $this->getWorkingDaysOfMonth($date) * 9)
                 $minHours = $this->getWorkingDaysOfMonth($date) * 9;
@@ -88,14 +86,12 @@ class CronController extends Controller
             }
             // getting the total hours
             $totalHours = (int)$totalHours/60;
-            echo "total hours".$totalHours;
             // check for violation
             $keyFields = ['total_hrs_in_month' => $totalHours];
             $rhsFields = ['total_month_hours' => $minHours];
             $mailList = ['time_manager','owner'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
             (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data);
-            echo "exit";
         }
     }
 
