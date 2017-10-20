@@ -73,7 +73,7 @@ class CronController extends Controller
             $u = (new UserAuth)->getUserData($user);
             $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$date->modify('first day of this month')->format('Y-m-d'),$date->modify('last day of this month')->format('Y-m-d')])->whereNotNull('start_time')->get();	//number of days present
             $minHours = count($userHours) * 9;
-            //minimum workhours for a week is 45
+            //minimum workhours
             if($minHours > $this->getWorkingDaysOfMonth($date) * 9)
                 $minHours = $this->getWorkingDaysOfMonth($date) * 9;
             // total time in minutes
