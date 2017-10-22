@@ -47,6 +47,10 @@ Route::group(['prefix' => 'cron'], function() {
     Route::post('/monthly','CronController@monthly');
 });
 
+// Desktop App
+Route::get('/ping','AppController@periodicalPing');
+// Route::get('/state-update','CronController@statusUpdate');  // cron runs every 5 minutes
+
 /**
  * Chrome App - EventChrome
  */

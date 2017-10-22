@@ -24,6 +24,7 @@ return array(
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Group' => $baseDir . '/app/Group.php',
     'App\\Http\\Controllers\\Ajency\\User\\SocialAuthController' => $baseDir . '/app/Http/Controllers/Ajency/User/SocialAuthController.php',
+    'App\\Http\\Controllers\\AppController' => $baseDir . '/app/Http/Controllers/AppController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
     'App\\Http\\Controllers\\Auth\\RegisterController' => $baseDir . '/app/Http/Controllers/Auth/RegisterController.php',
