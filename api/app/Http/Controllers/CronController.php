@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use DateTime;
-use ViolationApp;
-use Locked_Data;
-use User;
+use App\ViolationApp;
+use App\Locked_Data;
+use App\Log;
+use App\User;
+use App\Organisation;
 use Ajency\User\Ajency\userauth\UserAuth;
 use Ajency\Violations\Ajency\ViolationRules;
 
@@ -91,7 +93,7 @@ class CronController extends Controller
             $rhsFields = ['total_month_hours' => $minHours];
             $mailList = ['time_manager','owner'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
-            (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data);
+            (new ViolationRules)->checkForViolation('mingetimum_hrs_of_month',$data);
         }
     }
 
@@ -112,5 +114,53 @@ class CronController extends Controller
             $dateCounter->modify('+1 days');
         }
         return $count;
+    }
+
+    /**
+     * runs every 5 mins to check
+     * @return [type] [description]
+     */
+    public function stateUpdate() {
+        // get all the users that are present today
+        $presentUsers = Locked_Data::where(['work_date' => date('Y-m-d')])->get();
+        // for each user check the last log
+        foreach($presentUsers as $pUser) {
+            $user = (new UserAuth)->getUserData($pUser['user_id'],true);
+            // get the users last log from a valid organisation ip
+            $orgDetails = Organisation::find($user['user_details'][0]['org_id']);
+            $ipList = unserialize($orgDetails['ip_lists']);
+            $lastLog = Log::where(['user_id' => $pUser['user_id'], 'work_date' => date('Y-m-d')])->whereIn('ip_addr',$ipList)->orderBy('id','desc')->first();
+
+            //if last log is offline continue else check the update_time
+            if($lastLog->to_state == 'offline')
+                continue;
+            else {
+                if($this->getTimeDifferenceInMinutes($pUser['update_at'],date('H:i')) >= 5) {
+                    // add offline state in logs for that user
+                    $offlineLog = new Log;
+                    $offlineLog->work_date = date('Y-m-d');
+                    $offlineLog->cos = $pUser['end_time']; // cos if of time so datetime get convert to time only format
+                    $offlineLog->user_id = $pUser['user_id'];
+                    $offlineLog->from_state = ($lastLog->to_state == 'New Session') ? 'active' : $lastLog->to_state;
+                    $offlineLog->to_state = 'offline';
+                    $offlineLog->ip_addr = $lastLog->ip_addr;
+                    $offlineLog->save();
+                }
+            }
+        }
+        return response()->json(['status' => 200]);
+    }
+
+    /**
+     * returns the time difference in minutes
+     * @param  [type] $start [description]
+     * @param  [type] $end   [description]
+     * @return [type]        [description]
+     */
+    public function getTimeDifferenceInMinutes($start,$end) {
+        $start = new DateTime($start);
+        $end = new DateTime($end);
+        $dateDiff = date_diff($start,$end);
+        return ($dateDiff->h * 60) + ($dateDiff->m);
     }
 }
