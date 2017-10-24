@@ -12,6 +12,7 @@ use Ajency\User\Ajency\userauth\UserAuth;
 use Ajency\Violations\Ajency\ViolationRules;
 
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class CronController extends Controller
 {
@@ -135,7 +136,7 @@ class CronController extends Controller
             if($lastLog->to_state == 'offline')
                 continue;
             else {
-                if($this->getTimeDifferenceInMinutes($pUser['update_at'],date('H:i')) >= 5) {
+                if($this->getTimeDifferenceInMinutes($pUser['updated_at'],date('H:i')) >= 5) {
                     // add offline state in logs for that user
                     $offlineLog = new Log;
                     $offlineLog->work_date = date('Y-m-d');
@@ -161,6 +162,6 @@ class CronController extends Controller
         $start = new DateTime($start);
         $end = new DateTime($end);
         $dateDiff = date_diff($start,$end);
-        return ($dateDiff->h * 60) + ($dateDiff->m);
+        return (($dateDiff->h * 60) + ($dateDiff->m));
     }
 }
