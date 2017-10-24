@@ -31,7 +31,7 @@ class AppController extends Controller
                     $log->cos = $this->getCurrentTimeZoneTime($timeZone);
                     $log->user_id = $request->header('from');
                     $log->from_state = $request->from_state;
-                    $log->to_state = $request->to_state;
+                    $log->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
                     $log->ip_addr = $request->ip();
                     $log->save();
                 } elseif ($request->from_state != $request->to_state) {
@@ -46,7 +46,7 @@ class AppController extends Controller
                         $log->cos = $this->getCurrentTimeZoneTime($timeZone);
                         $log->user_id = $request->header('from');
                         $log->from_state = $request->from_state;
-                        $log->to_state = $request->to_state;
+                        $log->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
                         $log->ip_addr = $request->ip();
                         $log->save();
                     }
