@@ -56,7 +56,7 @@ class AppController extends Controller
                 $orgDetails = Organisation::where(['id' => $user['user_details']['org_id']])->first();
                 $ipList = unserialize($orgDetails['ip_lists']);
                 $lockedEntry = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')]);
-                if(!in_array($request->ip(), $ipList)) {
+                if(in_array($request->ip(), $ipList)) {
                     // add entry to locked_data table
                     // check if it is the first entry for the day [ TODO add this to the queue ]
                     if ($lockedEntry->count() == 0) {
