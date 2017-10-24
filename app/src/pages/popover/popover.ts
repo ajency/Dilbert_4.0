@@ -35,6 +35,12 @@ export class PopoverPage {
     this.viewCtrl.dismiss();
   }
 
+  navigateToChangedLogs(){
+    this.events.publish('app:navroot', 'logs-changed');
+    this.viewCtrl.dismiss();
+    
+  }
+
   handleClientLoad() {
 
       // let that = this;

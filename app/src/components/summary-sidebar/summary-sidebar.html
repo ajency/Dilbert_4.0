@@ -4,13 +4,15 @@
     <!-- Current week -->
     <div class="week__current current-card">
         <div class="current-card__header flex-row">
-            <p ion-text color="primary" no-margin>{{ "this_week" | translate }}</p>
-            <p ion-text no-margin color="text">{{weekTotal}}{{ "hr" | translate }}/45{{ "hr" | translate }}</p>
+            <p *ngIf = "sideBarData.data.periodData.length <= 7" ion-text color="primary" no-margin>{{ "week_total" | translate }}</p>
+            <p *ngIf = "sideBarData.data.periodData.length > 7" ion-text color="primary" no-margin>{{ "month_total" | translate }}</p>
+
+            <p ion-text no-margin color="text">{{weekTotal}} {{ "hr" | translate }}/{{minHours}} {{ "hr" | translate }}</p>
             <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}"></div>
         </div>
         <div class="timeline-container">
             <div class="current-card__body flex-row" p-v-25>
-                <h2 *ngIf = "sideBarData.data.current[0].total_time != '' " class="time" m-t-0 p-r-40>{{getDayDate(sideBarData.data.current[0].total_time, 5)}}<span class="xxx-small">hr</span></h2>
+                <h2 *ngIf = "sideBarData.data.current[0].total_time != '' " class="time" m-t-0 p-r-40>{{getDayDate(sideBarData.data.current[0].total_time, 5)}}<span class="xxx-small">{{ "hr" | translate }}</span></h2>
                 <!-- <h2 *ngIf = "sideBarData.data.current[0].total_time == 0" class="time" m-t-0 p-r-40>Leave<span class="xxx-small"></span></h2> -->
 
                 <div class="day">
@@ -39,7 +41,9 @@
 
        <div class="week__full full-card">
         <div class="full-card__header flex-row">
-            <p no-margin>{{ "this_week" | translate }}</p>
+            <p *ngIf = "sideBarData.data.periodData.length <= 7" no-margin>{{ "this_week" | translate }}</p>
+            <p *ngIf = "sideBarData.data.periodData.length > 7" no-margin>{{ "this_month" | translate }}</p>
+
             <!-- <button ion-button clear>
                 <ion-icon name="calendar" color="text" class="icon-size full"></ion-icon>
             </button> -->
@@ -51,20 +55,24 @@
         <div class="full-card__body">
             <!-- Week list -->
             <ul class="week-list list-control overflow-active">
-                <button ion-item class="week-container"  *ngFor="let date of sideBarData.data.periodData;let i = index " (click) = "updateSummaryContent(date, i)" [ngClass]="{'btnActivated': sideBarData.data.periodData[i].btnActive == true}" >
-                    <div class="btn-container" [ngClass]="{'leave-row': date.leave_status == 'Leave' || date.leave_status == ''}"  >
+                <button ion-item class="week-container"  *ngFor="let date of sideBarData.data.periodData;let i = index " (click) = "updateSummaryContent(date, i)" [ngClass]="{'btnActivated': sideBarData.data.periodData[i] && sideBarData.data.periodData[i].btnActive == true}" >
+                    <div class="btn-container" [ngClass]="{'leave-row': (date.leave_status == 'Leave' || date.leave_status == '') && !sideBarData.data.periodData[i].btnActive}"  >
                         <li class="week-list__row flex-row">
                             <div class="week-list__day">
                                 <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{ getDayDate(date.work_date,1) | translate}}</p>
                                 <span ion-text color="text-lighter">{{ getDayDate(date.work_date,2) | translate }} {{getDayDate(date.work_date,6)}}</span>
                             </div>
+
+                            <ion-icon name="list-box" class="icon-size mini" *ngIf = "date.changes > 0"></ion-icon>
+
                             <div *ngIf = "date.leave_status == 'Present'" class="week-list__session">
                                 <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.start_time,3)}}</span>
                                 <span *ngIf = "date.status == '' " ion-text >{{getDayDate(date.end_time,3)}}</span>
-                                <span *ngIf = "date.status == 'Offline' " ion-text [ngClass]="{'text-md-success': date.status == 'Offline'}">Online</span>
+                                <span *ngIf = "date.status != '' " ion-text [ngClass]="{'text-md-success': date.status != ''}">{{date.status}}</span>
                             </div>
                             <div *ngIf = "date.leave_status == 'Present'" class="week-list__time flex-row">
                                 <ion-icon name="alert" color="danger" class="icon-size mini" *ngIf = "date.violation_count != 0"></ion-icon>
+
                                 <h6 class="total-time" p-h-12 ion-text color="text-darker">{{getDayDate(date.total_time,5)}}<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>
                                 <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
                             </div>

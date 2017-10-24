@@ -4,6 +4,7 @@
 // import { SummarySidebarService } from './../../components/summary-sidebar/summary-sidebar.service';
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
+import * as moment from 'moment';
 
 
 import { CookieService } from 'ngx-cookie';
@@ -45,6 +46,8 @@ import { Storage } from '@ionic/storage';
  period_unit : string ;
  cos_offset : string ;
  message : string;
+ view_log_history_btn : boolean = true;
+ changedLogs : any;
 
  constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -68,6 +71,12 @@ import { Storage } from '@ionic/storage';
   //   console.log(this.param1,this.param2);
   // });
   // console.log(this.param1, this.param2);
+  this.events.subscribe("start-home:changedLogs", (data) =>{
+    console.log('inside publish changedLogs');
+    this.view_log_history_btn = this.appGlobalsProvider.view_log_history_btn;
+    this.changedLogs = data;
+
+  });
   
 }
 
@@ -78,7 +87,7 @@ ngOnInit(){
 
     console.log(this.param1, this.param2);
 
-    this.userId = this.authguard.userData.user_id;
+    this.userId = this.authguard.user_id;
     this.key = this.authguard.userData.x_api_key;
 
     if((this.param1 == '' && this.param2 == '') || (this.param1 == undefined && this.param2 == undefined) ){
@@ -94,7 +103,8 @@ ngOnInit(){
       if(this.param1 && this.param2){
         this.currentDate = this.param1.start_date;
         this.period_unit = this.param1.period_unit;
-        this.userId = this.param1.user_id;
+        this.authguard.user_id = this.param1.user_id
+        this.userId = this.authguard.user_id;
         // this.cos_offset = this.param2.cos_offset;
         // console.log(this.cos_offset);
         // console.log(this.currentDate);
@@ -130,6 +140,27 @@ ngOnInit(){
  //    });
  //  }
 
+
+   getDayDate(date: string, option: number): string {
+    var text: string = '';
+    switch (option) {
+      case 1:
+        text = moment(date.split(" ")[0], "YYYY-MM-DD").format("DD MMM YYYY");
+        break;
+      case 2:
+        text = moment(date.split(" ")[1], "kk:mm:ss").format("hh:mm a");
+        break;
+      case 3:
+        text = moment(date, "kk:mm:ss").format("hh:mm a");
+        break;
+      case 4:
+        text = moment(date, "kk:mm:ss").format("HH:mm");
+        break;
+    }
+    return text;
+  }
+
+
  openStyle(){
 
   var navOption = {
@@ -146,7 +177,12 @@ ionViewDidLoad() {
   }
 
 
-  ionViewDidEnter(){
+  ionViewWillLeave(){
+    console.log('ion view will leave dashboard');
+    this.appGlobalsProvider.dashboard_params.param1 = '';
+    this.appGlobalsProvider.dashboard_params.param2 = '';
+    this.authguard.user_id = '';
+
   }
 
 
@@ -158,8 +194,18 @@ ionViewDidLoad() {
       .then(() => {
 
         this.appServiceProvider.handleClientLoad(true).then( () =>{
-          console.log('can enter dashboard')
-           resolve(true)
+          // if(this.appGlobalsProvider.dashboard_params.param1 && this.appGlobalsProvider.dashboard_params.param2 ){
+          //  console.log('can enter dashboard')   
+          //  resolve(true)
+          // }
+
+          // else{
+          //   console.log('cannot enter dashboard')
+          //   reject(false)
+           console.log('can enter dashboard') 
+          resolve(true);
+            
+          
         })
         .catch(() => {
           reject(true)
@@ -217,10 +263,13 @@ ionViewDidLoad() {
 
         this.sideBarData = response;
         this.zone.run(() => {});
+        
+
+        // Call for day summary (RHS or logs data) 
         url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
 
 
-          // console.log(url);
+        
         let body2 = {
           user_id : this.userId,
           date : this.summaryDate,
@@ -237,6 +286,59 @@ ionViewDidLoad() {
         // console.log(response);
         this.summaryContentData = response;
         this.zone.run(() => {});
+
+        this.checkPermissions();
+
+        // Call for changed logs
+        
+       let data = this.summaryContentData.data.day_data[0];
+       console.log(data);
+      
+      if(data.changes>0 && this.view_log_history_btn){
+
+        let object = {
+            user_id : [this.authguard.user_id],   
+
+            filters : {
+              work_date_range : {
+                start : data.work_date,
+                end : ''  
+              }
+              
+            }
+         }
+         console.log(object);
+
+         url  = `${this.apiURL}/log-history/${this.appGlobalsProvider.lang}`;
+
+
+         this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+
+            console.log(response);
+
+            if(response.status == 200){
+             
+              // let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:response.data[0].history});
+              // popover.present();
+              this.changedLogs = response.data[0].history;
+              this.view_log_history_btn =true;
+            }
+
+            else{
+              this.appServiceProvider.presentToast(response.message, 'error');
+              this.view_log_history_btn = false;
+            }
+
+
+        });
+
+
+     }
+     else{
+      this.view_log_history_btn =false;
+     }
+
       });
 
     }
@@ -253,6 +355,37 @@ ionViewDidLoad() {
 
 
     
+  }
+
+
+   checkPermissions(){
+    console.log('inside checkPermissions');
+
+
+    if(!this.summaryContentData.data.user.self){
+
+        
+            let result = this.authguard.userData;
+            // console.log('result',result);
+
+            let perm_class = result.class_permissions.view_log_history_btn;
+
+            if(result.permissions.includes(perm_class)){
+              this.view_log_history_btn = true;
+              console.log("user has permissions to view log history");
+
+            }
+
+            else{
+              this.view_log_history_btn = false;
+              console.log("user does not have permissions to view log history");
+
+            }
+
+            
+         
+         
+    }
   }
 
   getUserDate() {

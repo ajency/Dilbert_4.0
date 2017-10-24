@@ -35,9 +35,15 @@ class Organisation extends Model
             $org = Organisation::where('domain',$account->user['domain']);
             $domain = $account->user['domain'];
         }
+        else if(config('app.env') == "local"){
+            $org = Organisation::where('domain','gmail.com');     // fetch the test domain
+            $domain = "gmail.com";
+        }
         else {
-            $org = Organisation::where('domain','000');     // just to get an empty object
-            $domain = "dev-mode-domain.com";
+            $response['next_url'] = '/login';
+            $response['status'] = 400;
+            $response['message'] = 'Invalid Domain (not in test mode)';
+            return $response;
         }
 
         if($org->exists()) {
@@ -50,8 +56,9 @@ class Organisation extends Model
                     $dashFlag = false;
             }
             if($dashFlag) {
-            // if($user_resp['user_details']->org_id) {
+                // if($user_resp['user_details']->org_id) {
                 // go to dashboard
+                $userRole = $user_resp['user']->getRoleNames()->first();
                 $orgDetails = $org->first();
                 $response['next_url'] = "/dashboard";
                 $response['status'] = 200;
@@ -62,6 +69,9 @@ class Organisation extends Model
                     'user_id' => $user_resp['user']->id,
                     'userEmail' => $email,
                     'x_api_key' => $user_resp['user_details']->api_token,
+                    'role' => $userRole,
+                    'permissions' => $user_resp['user']->getAllUserPermissions(),
+                    'class_permissions' => $this->getClassPermissions()
                     'idle_time' => $orgDetails['idle_time'],
                     'ping_freq' => $orgDetails['ping_freq']
                 ];
@@ -125,5 +135,13 @@ class Organisation extends Model
             array_push($users,$user);
         }
         return $users;
+    }
+
+    public function getClassPermissions() {
+        return [
+            'edit_btn_pd' => 'edit_period_data',
+            'view_log_history_btn' => 'view_log_history',
+            'leave_marking_dropdown' => 'leave_marking'
+        ];
     }
 }

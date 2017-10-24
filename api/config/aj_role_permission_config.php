@@ -18,11 +18,23 @@
 		]
 	*/
 	return [
-		"roles" => ["admin", "hr", "member"],
-		"permissions" => ["super-user", "edit-user", "edit-personal"],
+		"roles" => [
+			"admin",
+			"hr",
+			"member"
+		],
+		"permissions" => [
+			"view_period_data",
+			"edit_period_data",
+			"view_day_summary",
+			"edit_day_summary",
+			"edit_user",
+			"view_log_history",
+			"leave_marking"
+		],
 		"roles_permissions" => [
-			array("role" => 0, "permissions" => [0, 1, 2]),
-			array("role" => 1, "permissions" => [1, 2]),
-			array("role" => 2, "permissions" => [2])
+			array("role" => 0, "permissions" => [0, 1, 2, 3, 4, 5, 6]),
+			array("role" => 1, "permissions" => [0, 1, 2, 3, 4, 5, 6]),
+			array("role" => 2, "permissions" => [0, 2])
         ]
 	];

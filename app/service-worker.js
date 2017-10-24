@@ -208,7 +208,7 @@ self.addEventListener('activate', function(event) {
 
 
 self.addEventListener('fetch', function(event) {
-  if (event.request.method === 'GET') {
+  if (event.request.method === 'GET' || event.request.method === 'POST') {
     // Should we call event.respondWith() inside this fetch event handler?
     // This needs to be determined synchronously, which will give other fetch
     // handlers a chance to handle the request if need be.

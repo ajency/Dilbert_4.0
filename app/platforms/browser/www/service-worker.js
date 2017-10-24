@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["build/0.main.js","e441354895ad9383e79fa6d2c8517063"],["build/1.main.js","5f69e9b1a2f8caa0d39fcc0edbfff055"],["build/2.main.js","3033b9f47e58e226c5393b018f1ccbc2"],["build/3.main.js","cf185079a19697d1f8c9d4bb876959cc"],["build/4.main.js","4704fee959a2015052ec83b51aa68d81"],["build/5.main.js","03d5166ff2c1b7db2e637faf339a99ef"],["build/6.main.js","6ca6f7eb55d173ab727e4c1f6b8ffda8"],["build/7.main.js","9466e1be3106d6556b86c75b76b100ae"],["build/8.main.js","c7052d2cee17d783cb90d52504c16da8"],["build/9.main.js","2f9288d91a4b09a4a711bf56dbfe2d7c"],["build/main.css","ffbb030874efd36910a5bcc7405b15ef"],["build/main.js","2fc7eae94cd559035dacb9b829209c2b"],["build/polyfills.js","6da628b2e650e6734c5a204397fc942a"],["build/sw-toolbox.js","2770efb889cc10c4de88d0b746c2a13c"],["manifest.json","5eef776a280e256139e2b3789b3c41ba"]];
+var precacheConfig = [["assets/i18n/en.json","56e489658e82c5df9bdfa611c85cf919"],["assets/i18n/fr.json","ed49c85c067e4d99ebcd9b652060f59a"],["build/0.main.js","edcbaf136e1c8f5140d8a650cf8b5dad"],["build/1.main.js","e90b64704a2c089010f353d83ced5a07"],["build/10.main.js","aebd92e475ffbd4417c8a33478673e01"],["build/11.main.js","403c156b3da67bc932d1012b29a1abea"],["build/2.main.js","04dde47355cdd7fed365fee2f981bc95"],["build/3.main.js","ca80cfda8ecce801aeb957f2dc2450b5"],["build/4.main.js","ede124bc3997149d5476cf67b18e0175"],["build/5.main.js","63e3a2334aae5b2e7871a5aaee13824d"],["build/6.main.js","a5dcd7f29111a732a0031fd8a452a7c9"],["build/7.main.js","b98e6998b027cee34f07774681cc52b8"],["build/8.main.js","ced202becb17075633894fc652c24ec7"],["build/9.main.js","3e7a2f95e185dde93369e7776cee4c9f"],["build/main.css","c16cb6b4e044bb1de6914602c54785db"],["build/main.js","58e91d0c945112e4a3f1eb8048db2987"],["build/polyfills.js","6da628b2e650e6734c5a204397fc942a"],["build/sw-toolbox.js","2770efb889cc10c4de88d0b746c2a13c"],["manifest.json","38d257403c4c34081fb72dfb42060784"]];
 var cacheName = 'sw-precache-v3-Dilbert-WebApp-' + (self.registration ? self.registration.scope : '');
 
 
@@ -286,7 +286,9 @@ self.addEventListener('fetch', function(event) {
 // Runtime cache configuration, using the sw-toolbox library.
 
 toolbox.router.get("assets/**/**.*", toolbox.networkFirst, {"cache":{"name":"asset_cache"}});
-toolbox.router.get("api/(.*)", toolbox.networkFirst, {"cache":{"name":"api_cache"}});
+toolbox.router.get("api/(.*)", toolbox.networkFirst, {"cache":{"name":"get_api_cache"}});
+toolbox.router.post("api/(.*)", toolbox.networkFirst, {"cache":{"name":"post_api_cache"}});
+toolbox.router.get("https://apis.google.com/js/client.js", toolbox.networkFirst, {"cache":{"name":"google_api_cache"}});
 
 
 

@@ -25,12 +25,18 @@
 
                 <span ion-text color="text-lighter">{{ "total_time" | translate }}</span>
             </div>
+
+             <button *ngIf = "edit_btn_pd" (click) = "editModal(day_data[0])" title="Edit logs" > Edit </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <ion-icon *ngIf = "day_data[0].changes != 0 && view_log_history_btn" name="md-list-box" p-r-5></ion-icon>
+
         </div>
-    </div>
+
+
+</div>
     <!-- Detail view -->
 
     <div class="detail-view" p-t-35>
-        <ul *ngIf = "logs.length != 0" class="detail-view__container violated-row" p-h-20 m-h-10>
+        <ul *ngIf = "logs.length != 0 && day_data[0].leave_status == 'Present'" class="detail-view__container violated-row" p-h-20 m-h-10>
             <!-- <li class="detail-view__cols violated"> -->
             <!-- violation and chat box -->
            <!--  <div class="violated-data">
@@ -113,5 +119,5 @@
         </li>
     </ul>
 
-    <div *ngIf = "logs.length == 0" align="center"> {{ "no logs found" | translate }}</div>
+    <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
 </div>

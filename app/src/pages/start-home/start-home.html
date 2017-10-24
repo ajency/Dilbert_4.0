@@ -18,7 +18,9 @@
                     <!-- Heading -->
                     <div class="section-title">
                         <i class="custom-icon summary" m-r-10></i>
-                        <h5 class="page-title">{{ "my_summary" | translate }}</h5>
+                        <h5 *ngIf="sideBarData && sideBarData.data.user.self" class="page-title">{{ "my_summary" | translate }}</h5>
+                        <h5 *ngIf="sideBarData && !sideBarData.data.user.self" class="page-title"> {{sideBarData.data.user.name}}'s {{ "summary" | translate }}</h5>
+
                     </div>
                 </ion-col>
                 <ion-col class="col dashboard__summary" col-12 col-md-12 col-lg-8 p-h-0 p-v-0>
@@ -34,12 +36,44 @@
                     </div>
                 </ion-col>
                 <ion-col class="col dashboard__leaves mobile-hide" col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
-                    <!-- <ion-content class="overflow-scroll" scroll="true">
-                  <div class="section-title">
-                  <i class="custom-icon summary" m-r-10></i><h6 class="main-title">My Summary</h6>
-               </div>
-               </ion-content> -->
-                    <!-- <div text-center m-t-20><button ion-button (click)="openStyle()">Style Guide</button></div> -->
+                  
+                    <!-- <div text-center m-t-20><button ion-button >Style Guide</button></div> -->
+
+                    <div padding *ngIf = "view_log_history_btn && summaryContentData && sideBarData">
+                       <h5> {{ "changed_logs" | translate }} </h5>
+                        <hr>
+
+                        <div *ngFor = "let item of changedLogs">
+                            <ul style="list-style: none;">
+                               <li>{{ "modified" | translate }} {{item.name | translate}}  {{ "from" | translate}} : 
+                                    <strong *ngIf = "item.name == 'start_time' || item.name == 'end_time' "> 
+                                        <span *ngIf = "item.from != null"> {{getDayDate(item.from,3)}} </span> 
+                                        <span *ngIf = "item.from == null"> 00:00 </span>  {{ "to" | translate}} 
+                                        <span *ngIf = "item.to != null">{{getDayDate(item.to,3)}}</span>
+                                        <span *ngIf = "item.to == null"> 00:00 </span> 
+                                    </strong> 
+
+                                    <strong *ngIf = "item.name == 'status' "> 
+                                        <span > {{item.from | translate}} </span> {{ "to" | translate}} 
+                                        <span > {{item.to | translate}} </span> 
+                                    </strong> 
+
+                                    <strong *ngIf = "item.name == 'total_time' "> 
+                                        <span *ngIf = "item.from != null"> {{getDayDate(item.from,4)}} </span> 
+                                        <span *ngIf = "item.from == null"> 00:00 </span> {{ "to" | translate}} 
+                                        <span *ngIf = "item.to != null">{{getDayDate(item.to,4)}}</span>
+                                        <span *ngIf = "item.to == null"> 00:00 </span> 
+                                    </strong> 
+                                </li>
+                                <div style="color: grey;">
+                                   <li>{{ "on" | translate}}  {{getDayDate(item.modified_on,1) | translate}} {{ "at" | translate}}  {{getDayDate(item.modified_on,2)}}</li>
+                                   <li *ngIf = "!item.modified_by_self">{{ "by" | translate}}  {{item.modified_by}}</li>
+                                </div>
+                           </ul>
+                           <hr>
+                        </div>
+                        
+                    </div>
                 </ion-col>
             </ion-row>
         </ion-grid>

@@ -67,4 +67,15 @@ class User extends Authenticatable
         return ["status" => 200, "message" => "User details edit successful.", "data" => $data];
     }
 
+    /**
+     * returns only permission names
+     * @return array of permissions
+     */
+    public function getAllUserPermissions() {
+        $permissions = [];
+        foreach($this->getAllPermissions() as $perm) {
+            array_push($permissions,$perm->name);
+        }
+        return $permissions;
+    }
 }

@@ -23,8 +23,11 @@
 
 	   "my_summary" : "My Summary",
 	  "this_week" : "This Week",
+	  "week_total" : "Week Total",
+	  "month_total" : "Month Total",
 	  "today" : "Today",
 	  "the_summary" : "The Summary",
+	  "summary" : "Summary",
 	  "day" : "Day",
 	  "start_time" : "Start time",
 	  "end_time" : "End time",
@@ -88,7 +91,19 @@
 	  "Sep" : "Sep",
 	  "Oct" : "Oct",
 	  "Nov" : "Nov",
-	  "Dec" : "Dec"
+	  "Dec" : "Dec",
+
+
+	  "changed_logs" : "Changed logs",
+	  "modified" : "Modified",
+	  "status" : "Status",
+	  "from" : "from",
+	  "on" : "On",
+	  "at" : "at",
+	  "by" : "By"
+
+
+
 
 
 
