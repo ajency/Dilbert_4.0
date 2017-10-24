@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->exec('curl https://dilbert4.ajency.in/api/state-update')->everyFiveMinutes()->between("04:00","16:00");
+        // $schedule->exec('curl https://dilbert4.ajency.in/api/state-update')->everyFiveMinutes()->between("04:00","16:00");
+        $schedule->call('\App\Http\Controllers\CronController@stateUpdate')->everyFiveMinutes()->between("04:00","16:00");
     }
 
     /**
