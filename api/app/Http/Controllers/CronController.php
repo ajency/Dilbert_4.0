@@ -162,6 +162,6 @@ class CronController extends Controller
         $start = new DateTime($start);
         $end = new DateTime($end);
         $dateDiff = date_diff($start,$end);
-        return (($dateDiff->h * 60) + ($dateDiff->m));
+        return ((int)($dateDiff->h * 60) + (int)($dateDiff->m));
     }
 }
