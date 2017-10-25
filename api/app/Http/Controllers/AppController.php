@@ -21,6 +21,14 @@ class AppController extends Controller
             $user = (new UserAuth)->getUserData($request->header('from'), true);
             $user['user_details'] = $user['user_details']->first();
             if ($user['user_details']['api_token'] == $request->header('X-API-KEY')) {
+
+                // testing purpose
+                $pingLog = new PingLogs;
+                $pingLogs->user_id = $request->header('from');
+                $pingLogs->from_state = $request->from_state;
+                $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
+                $pingLogs->save();
+                
                 // first make an entry into the logs table
                 $orgDetails = Organisation::find($user['user_details']['org_id']);
                 $timeZone = ($user['user_details']['timeZone'] == null) ? $orgDetails['default_tz'] : $user['user_details']['timeZone'];
