@@ -24,7 +24,7 @@ class AppController extends Controller
             if ($user['user_details']['api_token'] == $request->header('X-API-KEY')) {
 
                 // testing purpose
-                $pingLog = new PingLogs;
+                $pingLogs = new PingLogs;
                 $pingLogs->user_id = $request->header('from');
                 $pingLogs->from_state = $request->from_state;
                 $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
