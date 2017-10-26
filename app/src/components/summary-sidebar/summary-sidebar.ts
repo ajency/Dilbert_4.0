@@ -78,6 +78,10 @@ export class SummarySidebarComponent {
           }
         
         }
+        if(data.work_date == this.sideBarData.data.current[0].work_date){
+          this.sideBarData.data.current[0] = data;
+          console.log("todays logs changed");
+        }
         this.calculateWeekTotal();
     })
 
