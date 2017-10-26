@@ -169,7 +169,7 @@ class CronController extends Controller
             $rhsFields = ['total_month_hours' => $minHours];
             $mailList = ['time_manager','owner'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
-            (new ViolationRules)->checkForViolation('mingetimum_hrs_of_month',$data);
+            (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data);
         }
     }
 
