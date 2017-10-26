@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Ajency\User\Ajency\userauth\UserAuth;
+use Ajency\Violations\Ajency\ViolationRules;
 
 use App\Log;
 use App\Locked_Data;
 use App\Organisation;
 use App\PingLogs;
-
+use App\ViolationApp;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class AppController extends Controller
@@ -67,9 +68,16 @@ class AppController extends Controller
                 $lockedEntry = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')]);
                 if(in_array($request->ip(), $ipList)) {
                     // add entry to locked_data table
-                    // check if it is the first entry for the day [ TODO add this to the queue ]
+                    // check if it is the first entry for the day
                     if ($lockedEntry->count() == 0) {
-                        // [ TODO violation check for late_alert ]
+                        // violation check for late_alert
+                        $keyFields = ['start_time' => $this->getCurrentTimeZoneTime($timeZone)];
+                        $rhsFields = ['organisation_start_time'];
+                        $mailList = ['time_manager','hr','owner'];
+                        $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailList);
+                        $vioResponse = (new ViolationRules)->checkForViolation('late_alert',$data);
+
+                        // make an entry into the Locked data table
                         $locked = new Locked_Data;
                         $locked->user_id = $request->header('from');
                         $locked->work_date = date('Y-m-d');
