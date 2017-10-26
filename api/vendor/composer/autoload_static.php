@@ -433,6 +433,7 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Role' => __DIR__ . '/../..' . '/app/Role.php',
+        'App\\SpecialDays' => __DIR__ . '/../..' . '/app/SpecialDays.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\UserCommunication' => __DIR__ . '/../..' . '/app/UserCommunication.php',
         'App\\UserDetail' => __DIR__ . '/../..' . '/app/UserDetail.php',

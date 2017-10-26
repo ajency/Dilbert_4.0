@@ -7,7 +7,10 @@ use App\ViolationApp;
 use App\Locked_Data;
 use App\Log;
 use App\User;
+use App\UserDetail;
 use App\Organisation;
+use App\SpecialDays;
+
 use Ajency\User\Ajency\userauth\UserAuth;
 use Ajency\Violations\Ajency\ViolationRules;
 
@@ -21,11 +24,81 @@ class CronController extends Controller
      * @return [type] [description]
      */
     public function daily() {
-
+        // get all the users
+        $users = User::select('id')->where('status','active')->get();
+        echo "got users\n";
+        foreach($users as $user) {
+            $orgAndGrp = UserDetail::select('org_id','grp_id')->where('user_id',$user->id)->first();
+            echo $user->id."\n";
+            // get the Locked Data
+            $userLockedData = Locked_Data::where(['user_id' => $user->id, 'work_date' => date('Y-m-d')]);
+            if(!$userLockedData->exists()) {
+                echo "absent\n";
+                // enter an empty locked entry
+                $lockedEntry = new Locked_Data;
+                $lockedEntry->user_id = $user->id;
+                $lockedEntry->work_date = date('Y-m-d');
+                $lockedEntry->start_time = null;
+                $lockedEntry->end_time = null;
+                $lockedEntry->total_time = "00:00";
+                $lockedEntry->status = $this->getUserStatus('absent',$orgAndGrp['org_id'],$orgAndGrp['grp_id']);
+                $lockedEntry->save();
+            }
+            else {
+                echo "present\n";
+                // check for min hours per day
+                // [ TODO add a violation check here ]
+                // $vioResponse = (new ViolationRules)->checkForViolation('',$data);
+                $vioResponse['status'] = 'failure';
+                if($vioResponse['status'] == 'success') {
+                    $userLockedData = $userLockedData->first();
+                    $userLockedData->status = "Leave due to violation";
+                    $userLockedData->save();
+                }
+                else {
+                    $userLockedData = $userLockedData->first();
+                    $userLockedData->status = $this->getUserStatus('present',$orgAndGrp['org_id'],$orgAndGrp['grp_id']);
+                    $userLockedData->save();
+                }
+            }
+        }
     }
 
     /**
-     * runs every sunday at 12:30 am IST
+     * returns the users status based on their presence (present / absent)
+     * @param  [type] $presence present / absent
+     * @param         $orgId
+     * @param         $grpId
+     * @return [type]           [description]
+     */
+    public function getUserStatus($presence,$orgId,$grpId) {
+        if($presence == 'absent') {
+            if(SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'holiday'])->exists())
+                // if it is a holiday
+                return 'Holiday';
+            else if((date('w') == 0 || date('w') == 1) && !SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+                // if sat or sun and not a working weekend
+                return 'Weekend';
+            else
+                return 'Leave';
+        }
+        else {
+            if(SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'holiday', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+                // if it is a holiday
+                return 'Worked on holiday';
+            else if(SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+                // special working day like working-weekend
+                return 'Worked';
+            else if(date('w') == 0 || date('w') == 1)
+                // if today is a sat or a sun
+                return 'Worked on weekend';
+            else
+                return 'Worked';
+        }
+    }
+
+    /**
+     * runs every sunday at 10:30 pm IST
      * @return [type] [description]
      */
     public function weekly() {
@@ -59,12 +132,11 @@ class CronController extends Controller
             $mailList = ['time_manager','owner'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
             (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data);
-            echo "exit";
         }
     }
 
     /**
-     * runs every 1st at 12:30 am IST
+     * runs last day of every month at 10:30 pm IST
      * @return [type] [description]
      */
     public function monthly() {
@@ -118,7 +190,7 @@ class CronController extends Controller
     }
 
     /**
-     * runs every 5 mins to check
+     * runs every 5 mins to check if any users gone offline
      * @return [type] [description]
      */
     public function stateUpdate() {
