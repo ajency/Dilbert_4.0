@@ -25,10 +25,10 @@ class CronController extends Controller
      */
     public function daily() {
         // get all the users
-        $users = User::select('id')->where('status','active')->get();
+        $users = User::select('id','violation_grp_id')->where('status','active')->get();
         echo "got users\n";
         foreach($users as $user) {
-            $orgAndGrp = UserDetail::select('org_id','grp_id')->where('user_id',$user->id)->first();
+            $org = UserDetail::select('org_id')->where('user_id',$user->id)->first();
             echo $user->id."\n";
             // get the Locked Data
             $userLockedData = Locked_Data::where(['user_id' => $user->id, 'work_date' => date('Y-m-d')]);
@@ -41,23 +41,26 @@ class CronController extends Controller
                 $lockedEntry->start_time = null;
                 $lockedEntry->end_time = null;
                 $lockedEntry->total_time = "00:00";
-                $lockedEntry->status = $this->getUserStatus('absent',$orgAndGrp['org_id'],$orgAndGrp['grp_id']);
+                $lockedEntry->status = $this->getUserStatus('absent',$org->org_id,$user->violation_grp_id);
                 $lockedEntry->save();
             }
             else {
                 echo "present\n";
+                $userLockedData = $userLockedData->first();
+
                 // check for min hours per day
-                // [ TODO add a violation check here ]
-                // $vioResponse = (new ViolationRules)->checkForViolation('',$data);
-                $vioResponse['status'] = 'failure';
-                if($vioResponse['status'] == 'success') {
-                    $userLockedData = $userLockedData->first();
+                $userData = (new UserAuth)->getUserData($user->id,true);
+                $keyFields = ['total_hrs_in_day' => (int)$userLockedData['total_time']];        // this type casting returns you the only the hours
+                $rhsFields = ['minimum_hrs_in_day'];
+                $mailList = ['time_manager','hr','owner'];
+                $data = (new ViolationApp)->createFormattedViolationData($userData,$keyFields,$rhsFields,$mailList);
+                $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data);
+                if($vioResponse['status'] == 'violation') {
                     $userLockedData->status = "Leave due to violation";
                     $userLockedData->save();
                 }
                 else {
-                    $userLockedData = $userLockedData->first();
-                    $userLockedData->status = $this->getUserStatus('present',$orgAndGrp['org_id'],$orgAndGrp['grp_id']);
+                    $userLockedData->status = $this->getUserStatus('present',$org->org_id,$user->violation_grp_id);
                     $userLockedData->save();
                 }
             }
