@@ -46,9 +46,9 @@ class AppController extends Controller
                     $log->save();
                 } elseif ($request->from_state != $request->to_state) {
                     // if it's '-' to 'New Session' add an offline cos before adding '-' to 'New Session'
-                    if($request->from_state == '-' && $request->to_state == 'New Session') {
-                        // then add an offline state
-                        $lastLog = Log::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->orderBy('id', 'desc')->first();
+                    $lastLog = Log::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->orderBy('id', 'desc')->first();
+                    if($request->from_state == '-' && $request->to_state == 'New%20Session' && ($lastLog->to_state != 'offline' || $lastLog->to_state != 'Offline') || $lastLog->to_state != 'OFFLINE') {
+                        // then add an offline state [ for the APP ]
                         $lockedData = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->first();
                         $log = new Log;
                         $log->work_date = date("Y-m-d");
