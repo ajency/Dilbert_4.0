@@ -23,14 +23,14 @@ class RoleController extends Controller
                 // when some valid user accesses this api check if the calling user has the right permissions
                 $callingUser = User::where('id',$request->header('from'))->first();
                 if($callingUser->can('edit-user')) {
-                    
+
                 }
                 else {
-                    return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
+                    return response()->json(["status" => 403, "message" => __('api_messages.authorisation')]);
                 }
             }
             else {
-                return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
             }
         }
         else {

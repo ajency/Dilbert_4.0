@@ -114,7 +114,7 @@ class LockedDataController extends Controller
                 // }
             }
             else {
-                return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
             }
         }
         else {
@@ -245,7 +245,7 @@ class LockedDataController extends Controller
                 }
             }
             else {
-                return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
             }
         }
         else {

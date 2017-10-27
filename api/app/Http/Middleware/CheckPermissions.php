@@ -71,7 +71,7 @@ class CheckPermissions
             // $output->writeln(array_intersect($userPermissions,$uriPermissions));
             if(count(array_intersect($userPermissions,$uriPermissions)) == 0) {
                 // abort(403);
-                return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
+                return response()->json(["status" => 403, "message" => __('api_messages.authorisation')]);
             }
             else
                 return $next($request);

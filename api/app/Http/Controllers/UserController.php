@@ -62,7 +62,7 @@ class UserController extends Controller
                 }
             }
             else {
-                return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
             }
         }
         else {
@@ -117,11 +117,11 @@ class UserController extends Controller
                         return response()->json(["status" => 400, "message" => __('api_messages.user_dne')]);
                 }
                 else {
-                    return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
+                    return response()->json(["status" => 403, "message" => __('api_messages.authorisation')]);
                 }
             }
             else {
-                return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
             }
         }
         else {

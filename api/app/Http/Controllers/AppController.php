@@ -108,7 +108,7 @@ class AppController extends Controller
                     return response()->json(['start_time' => $newLockedEntry->start_time, 'end_time' => $newLockedEntry->end_time, 'total_time' => $newLockedEntry->total_time]);
                 }
             } else {
-                return response()->json(['status' => 400, 'message' => __('api_messages.authentication')]);
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
             }
         } else {
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);

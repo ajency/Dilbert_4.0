@@ -136,7 +136,7 @@ class LogsController extends Controller
                 // }
             }
             else
-                return response()->json(['status' => 400, 'message' => __('api_messages.authorisation')]);
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
         }
         else
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);

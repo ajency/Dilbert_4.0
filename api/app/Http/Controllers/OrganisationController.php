@@ -25,7 +25,7 @@ class OrganisationController extends Controller
         App::setLocale($locale);
 
         if(isset($request->username) && isset($request->organisation) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {    // parameter check
-            if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {  // authorised user check
+            if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {  // authenticated user check
                 if($request->has('organisation.id')) {
                     // join organisation
                     // if organisation id is present link the user with that organisation
@@ -47,10 +47,10 @@ class OrganisationController extends Controller
                 }
             }
             else
-                return response()->json(['status' => 'failure', 'message' => __('api_messages.authorisation')]);
+                return response()->json(['status' => '401', 'message' => __('api_messages.authentication')]);
         }
         else
-            return response()->json(['status' => 'failure', 'message' => __('api_messages.params_missing')]);
+            return response()->json(['status' => '400', 'message' => __('api_messages.params_missing')]);
     }
 
     public function joinOrganisation($userId,$orgId) {
