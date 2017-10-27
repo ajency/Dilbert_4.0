@@ -218,7 +218,7 @@ class CronController extends Controller
                     $offlineLog->cos = $pUser['end_time']; // cos if of time so datetime get convert to time only format
                     $offlineLog->user_id = $pUser['user_id'];
                     $offlineLog->from_state = ($lastLog->to_state == 'New Session') ? 'active' : $lastLog->to_state;
-                    $offlineLog->to_state = 'offline - cron';
+                    $offlineLog->to_state = 'offline';
                     $offlineLog->ip_addr = $lastLog->ip_addr;
                     $offlineLog->save();
                 }

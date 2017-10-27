@@ -45,11 +45,25 @@ class AppController extends Controller
                     $log->ip_addr = $request->ip();
                     $log->save();
                 } elseif ($request->from_state != $request->to_state) {
+                    // if it's '-' to 'New Session' add an offline cos before adding '-' to 'New Session'
+                    if($request->from_state == '-' && $request->to_state == 'New Session') {
+                        // then add an offline state
+                        $lastLog = Log::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->orderBy('id', 'desc')->first();
+                        $lockedData = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->first();
+                        $log = new Log;
+                        $log->work_date = date("Y-m-d");
+                        $log->cos = $lockedData->end_time;
+                        $log->user_id = $request->header('from');
+                        $log->from_state = $lastLog->to_state;
+                        $log->to_state = 'OFFLINE';
+                        $log->ip_addr = $lastLog->ip_addr;
+                        $log->save();
+                    }
                     // ie theres a state change
                     // check if last entry is the same as request, if not make a log entry
                     $lastLog = Log::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->orderBy('id', 'desc')->first();
                     if ($request->from_state != $lastLog->from_state || $request->to_state != $lastLog->to_state) {
-                        // then make an entry to the logs
+                        // if its not the same entry then make an entry to the logs
                         $timeZone = ($user['user_details']['timeZone'] == null) ? $orgDetails['default_tz'] : $user['user_details']['timeZone'];
                         $log = new Log;
                         $log->work_date = date("Y-m-d");
