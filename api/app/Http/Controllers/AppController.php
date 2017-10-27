@@ -54,7 +54,7 @@ class AppController extends Controller
                         $log->work_date = date("Y-m-d");
                         $log->cos = $lockedData->end_time;
                         $log->user_id = $request->header('from');
-                        $log->from_state = $lastLog->to_state;
+                        $log->from_state = ($lastLog->to_state == 'New Session') ? 'active' : $lastLog->to_state;
                         $log->to_state = 'OFFLINE';
                         $log->ip_addr = $lastLog->ip_addr;
                         $log->save();
