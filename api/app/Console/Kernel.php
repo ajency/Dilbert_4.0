@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
         // monthly cron for monthly total hours violation
         $schedule->call('\App\Http\Controllers\CronController@monthly')->when(function () {
             return \Carbon\Carbon::now()->endOfMonth()->isToday();
-        });
+        })->at('17:00');
     }
 
     /**
