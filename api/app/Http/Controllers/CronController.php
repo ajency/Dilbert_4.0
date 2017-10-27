@@ -54,7 +54,7 @@ class CronController extends Controller
                 $rhsFields = ['minimum_hrs_in_day'];
                 $mailList = ['time_manager','hr','owner'];
                 $data = (new ViolationApp)->createFormattedViolationData($userData,$keyFields,$rhsFields,$mailList);
-                $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data);
+                $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data,false,true);
                 if($vioResponse['status'] == 'violation') {
                     $userLockedData->status = "Leave due to violation";
                     $userLockedData->save();
@@ -134,7 +134,7 @@ class CronController extends Controller
             $rhsFields = ['total_week_hours' => $minHours];
             $mailList = ['time_manager','owner'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
-            (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data);
+            (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
         }
     }
 
@@ -169,7 +169,7 @@ class CronController extends Controller
             $rhsFields = ['total_month_hours' => $minHours];
             $mailList = ['time_manager','owner'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
-            (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data);
+            (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data,false,true);
         }
     }
 

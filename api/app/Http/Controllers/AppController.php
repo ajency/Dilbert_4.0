@@ -89,7 +89,7 @@ class AppController extends Controller
                         $rhsFields = ['organisation_start_time'];
                         $mailList = ['time_manager','hr','owner'];
                         $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailList);
-                        $vioResponse = (new ViolationRules)->checkForViolation('late_alert',$data);
+                        $vioResponse = (new ViolationRules)->checkForViolation('late_alert',$data,false,true);
 
                         // make an entry into the Locked data table
                         $locked = new Locked_Data;
