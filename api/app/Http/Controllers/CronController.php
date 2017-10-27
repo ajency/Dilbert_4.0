@@ -208,7 +208,7 @@ class CronController extends Controller
             $lastLog = Log::where(['user_id' => $pUser['user_id'], 'work_date' => date('Y-m-d')])->whereIn('ip_addr',$ipList)->orderBy('id','desc')->first();
 
             //if last log is offline continue else check the update_time
-            if($lastLog->to_state == 'offline' || $lastLog->to_state == 'Offline' || $lastLog->to_state != 'OFFLINE')
+            if($lastLog->to_state == 'offline' || $lastLog->to_state == 'Offline' || $lastLog->to_state == 'OFFLINE')
                 continue;
             else {
                 if($this->getTimeDifferenceInMinutes($pUser['updated_at'],date('H:i')) >= 5) {
