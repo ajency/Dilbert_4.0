@@ -128,4 +128,23 @@ class UserController extends Controller
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
         }
     }
+
+    /**
+     * reset users api_token | used to force users to login again
+     * @param [type] $users array of users - if empty all users will be considered
+     */
+    public function resetApiTokens($users) {
+        // if there are no users mentioned, take all users
+        if(count($users) == 0) {
+            $users = User::select('id')->get();
+        }
+        // access all user details
+        $usersDetails = UserDetail::whereIn('user_id',$users)->get();
+
+        // create a new api_token and save
+        foreach($usersDetails as $user) {
+            $user->api_token = str_random(60);
+            $user->save();
+        }
+    }
 }
