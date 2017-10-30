@@ -28,7 +28,7 @@ class AppController extends Controller
                 $pingLogs = new PingLogs;
                 $pingLogs->user_id = $request->header('from');
                 $pingLogs->from_state = $request->from_state;
-                $pingLogs->to_state = ($request->to_state == 'NewSession') ? 'New Session' : $request->to_state;
+                $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
                 $pingLogs->save();
 
                 // first make an entry into the logs table
@@ -41,13 +41,13 @@ class AppController extends Controller
                     $log->cos = $this->getCurrentTimeZoneTime($timeZone);
                     $log->user_id = $request->header('from');
                     $log->from_state = $request->from_state;
-                    $log->to_state = ($request->to_state == 'NewSession') ? 'New Session' : $request->to_state;
+                    $log->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
                     $log->ip_addr = $request->ip();
                     $log->save();
                 } elseif ($request->from_state != $request->to_state) {
                     // if it's '-' to 'New Session' add an offline cos before adding '-' to 'New Session'
                     $lastLog = Log::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->orderBy('id', 'desc')->first();
-                    if($request->from_state == '-' && $request->to_state == 'NewSession' && $lastLog->to_state != 'offline' && $lastLog->to_state != 'Offline' && $lastLog->to_state != 'OFFLINE') {
+                    if($request->from_state == '-' && $request->to_state == 'New%20Session' && $lastLog->to_state != 'offline' && $lastLog->to_state != 'Offline' && $lastLog->to_state != 'OFFLINE') {
                         // then add an offline state [ for the APP ]
                         $lockedData = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->first();
                         $log = new Log;
@@ -70,7 +70,7 @@ class AppController extends Controller
                         $log->cos = $this->getCurrentTimeZoneTime($timeZone);
                         $log->user_id = $request->header('from');
                         $log->from_state = $request->from_state;
-                        $log->to_state = ($request->to_state == 'NewSession') ? 'New Session' : $request->to_state;
+                        $log->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
                         $log->ip_addr = $request->ip();
                         $log->save();
                     }
