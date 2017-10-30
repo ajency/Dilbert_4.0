@@ -129,6 +129,7 @@ class LogsController extends Controller
                     if($state != null)
                         array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => null]);
                     $data['logs'] = $logs;
+                    $data['leave_status_values'] = ['Holiday', 'Weekend', 'Worked', 'Worked on weekend', 'Worked on holiday', 'Leave', 'Leave due to violation'];
                     return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
                 // }
                 // else {
