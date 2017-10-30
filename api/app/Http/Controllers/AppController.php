@@ -52,7 +52,7 @@ class AppController extends Controller
                         $lockedData = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->first();
                         $log = new Log;
                         $log->work_date = date("Y-m-d");
-                        $log->cos = $lockedData->end_time;
+                        $log->cos = (count($lockedData) == 0) ? date('H:i') : $lockedData->end_time;
                         $log->user_id = $request->header('from');
                         $log->from_state = ($lastLog->to_state == 'New Session') ? 'active' : $lastLog->to_state;
                         $log->to_state = 'OFFLINE';
