@@ -92,7 +92,7 @@ class CronController extends Controller
             else if(SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
                 // special working day like working-weekend
                 return 'Worked';
-            else if(date('w') == 0 || date('w') == 1)
+            else if(date('w') == 0 || date('w') == 6)
                 // if today is a sat or a sun
                 return 'Worked on weekend';
             else
