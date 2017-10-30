@@ -68,7 +68,7 @@
                             <div *ngIf = "date.leave_status == 'Present'" class="week-list__session" style="display: flex;">
                                 <div>
                                 <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.start_time,3)}}</span>
-                                <span *ngIf = "date.status == '' " ion-text >{{getDayDate(date.end_time,3)}}</span>
+                                <span *ngIf = "date.status == '' && date.end_time != ''" ion-text >{{getDayDate(date.end_time,3)}}</span>
                                 <span *ngIf = "date.status != '' " ion-text [ngClass]="{'text-md-success': date.status != ''}">{{date.status}}</span>
                                 </div>
 
