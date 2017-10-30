@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Ajency\User\Ajency\userauth\UserAuth;
 use App\Role;
 use App\UserDetail;
+use App\ModelHasRoles;
 
 class User extends Authenticatable
 {
@@ -109,6 +110,13 @@ class User extends Authenticatable
              $userComm->is_verified = 1;
              $userComm->is_visible = 1;
              $userComm->save();
+
+             // add user in model_has_roles
+             $modelRoles = new ModelHasRoles;
+             $modelRoles->role_id = 3;
+             $modelRoles->model_id = $user->id;
+             $modelRoles->model_type = 'App\User';
+             $modelRoles->save();
          }
      }
 }
