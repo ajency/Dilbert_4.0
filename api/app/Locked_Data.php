@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Data_Changes;
+use App\Http\Controllers\CronController;
+use Ajency\User\Ajency\userauth\UserAuth;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -32,7 +34,7 @@ class Locked_Data extends Model
             $end = $temp;
             $dateModifyString = "-1 days";
         }
-        $output->writeln("start: ".$start->format('Y-m-d')." end: ".$end->format('Y-m-d'));
+        // $output->writeln("start: ".$start->format('Y-m-d')." end: ".$end->format('Y-m-d'));
         $dateCounter = clone $start;
         // special case when acquired the formatted locked data of a non existent date (single)
         if($dateCounter == $end && count($lockedData) == 0) {
@@ -47,9 +49,10 @@ class Locked_Data extends Model
                 "violation_count" => "",
                 "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
             ]);
+            return $data;
         }
         foreach ($lockedData as $ld) {
-            $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
+            // $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
             while($dateCounter->format('Y-m-d') != $ld->work_date && $dateCounter != $end) {
                 // add an empty item
                 // [REDUNDANT CODE] create a function generateLeaveData()
@@ -78,7 +81,7 @@ class Locked_Data extends Model
             else {
                 // it's a leave
                 $dayData['status'] = '';
-                $dayData['leave_status'] = 'Leave';
+                $dayData['leave_status'] = /*'Leave'*/$ld->status;
                 $dayData['start_time'] = '';
                 $dayData['end_time'] = '';
                 $dayData['total_time'] = 0;
@@ -108,7 +111,11 @@ class Locked_Data extends Model
                 $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
             }
             // $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
-            $dayData['leave_status'] = 'Present';
+            /*
+                for calculating leave status
+             */
+            $udet = (new UserAuth)->getUserData($user_id,true);
+            $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id']) : $ld->status/*'Present'*/;
             //violation status - for now dummy
             $dayData['violation_count'] = 0;
             $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);

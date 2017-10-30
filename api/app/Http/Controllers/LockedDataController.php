@@ -78,7 +78,7 @@ class LockedDataController extends Controller
                     // check if end date is ahead of time
                     if($endDate > new \DateTime())
                         $endDate = new \DateTime();
-                    $output->writeln("enddate: ".$endDate->format('Y-m-d'));
+                    // $output->writeln("enddate: ".$endDate->format('Y-m-d'));
                     //get all the user details from the locked_data table
                     // return response()->json(['count' => count($lockedData)]);
                     $data = [];
@@ -142,11 +142,9 @@ class LockedDataController extends Controller
                     $user = UserDetail::where('user_id',$userCode)->first();
                 else
                     return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
-                    $output->writeln("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
                 // check if it's a member (not hr / admin) who wants to make a change a second time
                 $userRole = (User::find($request->header('from')))->getRoleNames()->first();
                 $maxCount = (int)OrganisationMeta::where(['organisation_id' => UserDetail::where('user_id',$userCode)->first()->org_id, 'key' => 'changes_max_count_'.$userRole])->first()->value;
-                $output->writeln("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ            ".$maxCount);
                 if($maxCount != -1 && Data_Changes::where(['user_id' => $userCode, 'modified_by' => $request->header('from'), 'work_date' => $request->work_date])->count() >= $maxCount)
                     return response()->json(['status' => 400, "message" => "Sorry your total changes allowed for this day are up. Contact the HR."]);
                 // see which all chnages are to be made
@@ -162,7 +160,8 @@ class LockedDataController extends Controller
                     else
                         return response()->json(['status' => 400, 'message' => "More than one entries in locked table"]);
                     // if person has to be marked as leave
-                    if($request->mark_as_leave != NULL and $request->mark_as_leave) {
+                    // if($request->mark_as_leave != NULL and $request->mark_as_leave) {
+                    if($request->status == 'Leave') {
                         // make an entry in the data changes table
                         foreach(['start_time' => null, 'end_time' => null, 'total_time' => null, 'status' => 'Leave'] as $ckey => $cvalue){
                             $dataChanges = new Data_Changes;
