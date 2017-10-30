@@ -98,7 +98,7 @@ class AppController extends Controller
                         $locked->start_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
                         $locked->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
                         $locked->total_time = "00:00";
-                        $locked->status = "Present";
+                        // $locked->status = "Present";
                         $locked->save();
                     } else {
                         // just update the end time and total time
