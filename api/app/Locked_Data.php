@@ -140,7 +140,7 @@ class Locked_Data extends Model
      * @return active/idle/offline/''
      */
     public function getCurrentStatus($userId,$workDate) {
-        $usersLogs = Log::where(['user_id' => $userId, 'work_date' => $workDate])->orderBy('created_at','desc');
+        $usersLogs = Log::where(['user_id' => $userId, 'work_date' => $workDate])->orderBy('id','desc');
         if($usersLogs->exists()) {
             $usersLogs = $usersLogs->first();
             if($usersLogs->to_state == 'New Session')
