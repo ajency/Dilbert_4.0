@@ -73,7 +73,9 @@ class Organisation extends Model
                     'permissions' => $user_resp['user']->getAllUserPermissions(),
                     'class_permissions' => $this->getClassPermissions(),
                     'idle_time' => $orgDetails['idle_time'],
-                    'ping_freq' => $orgDetails['ping_freq']
+                    'ping_freq' => $orgDetails['ping_freq'],
+                    'org_id' => $orgDetails['id'],
+                    'org_name' => $orgDetails['name']
                 ];
                 return $response;
             }
