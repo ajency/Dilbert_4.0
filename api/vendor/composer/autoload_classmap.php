@@ -18,6 +18,7 @@ return array(
     'Ajency\\Violations\\Models\\Violation' => $baseDir . '/packages/ajency/violations/src/models/Violation.php',
     'Ajency\\Violations\\Models\\ViolationType' => $baseDir . '/packages/ajency/violations/src/models/ViolationType.php',
     'Ajency\\Violations\\ViolationsServiceProvider' => $baseDir . '/packages/ajency/violations/src/ViolationsServiceProvider.php',
+    'App\\Console\\Commands\\reset_api_tokens' => $baseDir . '/app/Console/Commands/reset_api_tokens.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Data_Changes' => $baseDir . '/app/Data_Changes.php',
     'App\\Events\\Event' => $baseDir . '/app/Events/Event.php',

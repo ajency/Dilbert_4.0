@@ -10,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 use Ajency\User\Ajency\userauth\UserAuth;
 use App\Role;
+use App\UserDetail;
 
 class User extends Authenticatable
 {
@@ -78,4 +79,36 @@ class User extends Authenticatable
         }
         return $permissions;
     }
+
+    /**
+     * used only to migrate the old user table into the user details and
+     * user communication table
+     */
+     public function migrate() {
+         $users = User::all();
+         foreach($users as $user) {
+             // transfer to user details
+             $userDetails = new UserDetail;
+             $userDetails->avatar = $user->avatar;
+             $userDetails->lang = $user->lang;
+             $userDetails->timeZone = $user->timeZone;
+             $userDetails->joining_date = $user->acd;
+             $userDetails->org_id = $user->org_id;
+             $userDetails->api_token = $user->api_token;
+             $userDetails->user_id = $user->id;
+             $userDetails->save();
+
+             // transfer to user communication
+             $userComm = new UserCommunication;
+             $userComm->object_type = 'App\User';
+             $userComm->object_id = $user->id;
+             $userComm->type = 'email';
+             $userComm->value = $user->email;
+             $userComm->is_primary = 1;
+             $userComm->is_communication = 1;
+             $userComm->is_verified = 1;
+             $userComm->is_visible = 1;
+             $userComm->save();
+         }
+     }
 }
