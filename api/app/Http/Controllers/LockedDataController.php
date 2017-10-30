@@ -251,4 +251,78 @@ class LockedDataController extends Controller
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing'), 'data' => ['user_id' => $userCode, 'changes' => json_encode($request->input('changes')), 'x-api-key' => $request->header('X-API-KEY'), 'from' => $request->header('from')]]);
         }
     }
+
+    public function allUsersSummary(Request $request, $orgId, $locale = "default") {
+        $output = new ConsoleOutput();
+        // set the preferred locale
+        if($locale == "default") {
+            $userDets = UserDetail::where('user_id',$request->input('from'))->first();
+            $locale = $userDets['lang'];
+        }
+        App::setLocale($locale);
+        if(!empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
+            if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
+                // get the organisation details
+                $orgDetails = Organisation::where('id',$orgId)->first();
+                // check if the start and end dates are given
+                if($request->has('filters.date_range.start') && $request->has('filters.date_range.end')) {
+                    // if both start and end are given
+                    $startDate = new \DateTime($request->input('filters.date_range.start'));
+                    $endDate = new \DateTime($request->input('filters.date_range.end'));
+                }
+                else if($request->has('filters.date_range.start')) {
+                    // if only start is given
+                    if(!empty($request->input('filters.period_unit')))
+                        $periodUnit = $request->input('filters.period_unit');
+                    else
+                        $periodUnit = $orgDetails->period_unit;
+                    //startDate and endDate will be the first and the last day of the org_period
+                    $date = explode('-',$request->input('filters.date_range.start'));
+                    if($periodUnit == 'week') {
+                        $sdWeekNo = new \DateTime($request->input('filters.date_range.start'));
+                        $sdWeekNo = $sdWeekNo->format('W');
+                        $startDate = new \DateTime();
+                        $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
+                        $endDate = clone $startDate;
+                        $endDate->modify('+6 days');
+                    }
+                    else if ($periodUnit == 'month'){
+                        $startDate = new \DateTime($date[0].'-'.$date[1].'-01');
+                        $endDate = new \DateTime($date[0]."-".$date[1]."-".cal_days_in_month(CAL_GREGORIAN,$date[1],$date[0]));
+                    }
+                    else
+                        //just in case the organisation's period_unit is not set
+                        return response()->json(['status' => 400, 'message' => __('api_messages.org_period_unit')]);
+                }
+
+                // get all the users in the organisation
+                $orgUsers = UserDetail::where('org_id',$orgId)->get();
+                $data = [];
+                foreach($orgUsers as $oUser) {
+                    $usr = User::find($oUser->user_id);
+                    // user details
+                    $userObj['user'] = [
+                        'user_id' => $oUser->user_id,
+                        'name' => $usr->name,
+                        'avatar' => $oUser->avatar
+                    ];
+
+                    // summary
+                    // user's data for the particular period
+                    $summaryData = Locked_Data::where('user_id',$oUser->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->get();
+                    $periodData = (new Locked_Data)->formattedLockedData($oUser->user_id,$summaryData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'));
+                    $userObj['summary'] = $periodData;
+
+                    array_push($data,$userObj);
+                }
+                return response()->json(['status' => 200, 'message' => "All users' summary returned", 'data' => $data]);
+            }
+            else {
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
+            }
+        }
+        else {
+            return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
+        }
+    }
 }
