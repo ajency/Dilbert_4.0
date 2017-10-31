@@ -238,16 +238,20 @@ class LockedDataController extends Controller
                     //
                     // $output->writeln(json_encode($lockedEntry));
                     // if status not passed
-                    if($request->status == null) {
+                    if($request->status == null || $request->status == '') {
                         // then you calculate the status
                         $uDets = (new UserAuth)->getUserData($userCode,true);
                         // get the total time
                         $totalTimeEntry = explode(':',$lockedEntry->total_time);
                         if((int)$totalTimeEntry[0] >= 5)
-                            $lockedEntry->status = (new CronController)->getUserStatus('present',$uDets['user_details'][0]['org_id'],$uDets['user']['violation_grp_id']);
+                            $lockedEntry->status = (new CronController)->getUserStatus('present',$uDets['user_details'][0]['org_id'],$uDets['user']['violation_grp_id'],$request->work_date);
                         else
                             $lockedEntry->status = 'Leave due to violation';
 
+                        $lockedEntry->save();
+                    }
+                    else {
+                        $lockedEntry->status = $request->status;
                         $lockedEntry->save();
                     }
                     return response()->json(['status' => 200, 'message' => 'Changes made successfully.', 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
