@@ -245,7 +245,7 @@ class LockedDataController extends Controller
                         $lockedEntry->status = (new CronController)->getUserStatus('present',$uDets['user_details'][0]['org_id'],$uDets['user']['violation_grp_id'],$request->work_date);
                         // get the total time
                         $totalTimeEntry = explode(':',$lockedEntry->total_time);
-                        if((int)$totalTimeEntry[0] <= 5 && $request->work_date != date('Y-m-d'))
+                        if((int)$totalTimeEntry[0] <= (int)(new OrganisationMeta)->getParamValue('minimum_hrs_in_day',$uDets['user_details'][0]['org_id'],$uDets['user']['violation_grp_id']) && $request->work_date != date('Y-m-d'))
                             $lockedEntry->status = 'Leave due to violation';
 
                         $lockedEntry->save();
