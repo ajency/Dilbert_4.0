@@ -22,30 +22,33 @@
 
 <ion-content >
 
+
+<div class="container" p-h-20>
+
  <div class="user-page-title">
           <h1 class="dashboard-title"> Ajency.in  Work Summary </h1> 
           <h4 class="sub-title dash">Track Time. Record Work. Boost Productivity.</h4>
   </div>
 
-<!-- <div class="table-view month hscroll-table hide-in-week-view">
+<div class="table-view month hscroll-table hide-in-week-view">
   <div class="table-responsive">
-                            <table class="table first-table">
+                            <table style="width: 100%; height: 100%;">
                                 <thead>
                                     <tr>
-                                        <th class="employee-id" (click)="sortBy('name')">
+                                        <th style="width: 20%; height: 20%;" class="employee-id" (click)="sortBy('name')">
                                             <span class="th-label small-title">
                                                 
                                                 <span class="th-date">Employees <a href="#" class="sort-col"><i class="fa fa-sort"></i></a></span>
                                             </span>
                                         </th>
-                                        <th *ngFor="let item of weekBucket;let key = index">
+                                        <th style="width: 8%; height: 8%%;" *ngFor="let item of weekBucket;let key = index">
                                             <span class="th-label small-title" (click)="sortBy('date',item,key)">
                                                 <span class="th-date"> {{item | date : 'dd MMM'}}<a href="#" class="sort-col" ><i class="fa fa-sort"></i></a></span>
                                                 <span class="th-day">{{item | date: 'EEE'}}</span>
                                             </span>
                                         </th>
                                         
-                                        <th>
+                                        <th style="width: 8%; height: 8%%;" >
                                             <span class="th-label small-title" (click)="sortBy('total')">
                                                 <span class="th-date">Total <a href="#" class="sort-col"><i class="fa fa-sort"></i></a></span>
                                                 <span class="th-day">&nbsp;</span>
@@ -54,11 +57,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ng-container *ngIf="userData && userData.length != 0">
-                                        <tr class="" *ngFor="let item of userData">
+                                    <ng-container *ngIf="summaryData && summaryData.length != 0">
+                                        <tr class="" *ngFor="let item of summaryData">
                                             <td class="employee-id">
                                                 <a href="/dashboard/{{item.email}}" class="employee-name" data-toggle="tooltip" data-html="true" data-placement="bottom" title="More details of this employee">
-                                                    <span class="th-total">{{item.name}}</span>
+                                                    <span class="th-total">{{item.user.name}}</span>
                                                    
                                                 </a>
                                             </td>
@@ -67,18 +70,19 @@
                                                     <span class="th-total">No Data Acquired</span>
                                                 </td>
                                             </ng-container>
+
                                             <ng-container *ngIf="item.summary.length != 0">
-                                                <td *ngFor="let workday of item.summary.data">
+                                                <td *ngFor="let workday of item.summary">
                                                     <a href="#" class="single-day" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
-                                                        <div *ngIf="workday.status === null || (workday.status && workday.status.toLowerCase() === 'present')">
+                                                        <div *ngIf="workday.leave_status === 'Present' || workday.leave_status === 'Worked' || workday.leave_status === 'Leave due to violation' || workday.leave_status === 'Worked on weekend' || workday.leave_status === 'Worked on holiday' ">
                                                             <span class="th-total">{{workday.total_time != null ? workday.total_time : "n/a" }}</span>
                                                             <span class="th-spilt">
-                                                                <span class="th-work">{{workday.start_time | date:'HH:mm'}}</span> -
-                                                                <span class="th-break">{{workday.end_time | date:'HH:mm'}}</span>
+                                                                <span class="th-work">{{getDayDate(workday.start_time, 5)}}</span> -
+                                                                <span class="th-break">{{getDayDate(workday.end_time, 5)}}</span>
                                                             </span>
                                                         </div>
-                                                        <div *ngIf="!(workday.status === null || (workday.status && workday.status.toLowerCase() === 'present'))">
-                                                            <span class="th-total">{{workday.status}}</span>
+                                                        <div *ngIf="!(workday.leave_status === 'Present' || workday.leave_status === 'Worked' || workday.leave_status === 'Leave due to violation' || workday.leave_status === 'Worked on weekend' || workday.status === 'Worked on holiday')">
+                                                            <span class="th-total">{{workday.leave_status}}</span>
                                                             <span class="th-spilt">
                                                                 <span class="th-work"></span> - <span class="th-break"></span>
                                                             </span>
@@ -86,7 +90,7 @@
                                                     </a>
                                                 </td>
                                                
-                                                <td [colSpan]="6 - item.summary.data.length" *ngIf="item.summary.data.length !== 6"></td>
+                                                <td [colSpan]="6 - item.summary.length" *ngIf="item.summary.length !== 6"></td>
                                                 <td class="sunday">
                                                    
                                                 </td>
@@ -110,8 +114,8 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div> -->
-
+                    </div>
+                 </div>
 </ion-content>
 
 <ion-footer>

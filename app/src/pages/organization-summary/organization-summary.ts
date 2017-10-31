@@ -104,13 +104,19 @@ export class OrganizationSummaryPage {
 
 
 	if(date.hasOwnProperty('start'))
-      curr = new Date(date.start_date);
+      curr = new Date(date.start);
     else
       curr = new Date(date);
 
+    console.log(curr);
+
     let first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+    console.log(first);
 
 		let firstDay = new Date(curr.setDate(first));
+		console.log(firstDay);
+
+
     this.weekBucket = [];
     let i = 0;
 
@@ -118,12 +124,12 @@ export class OrganizationSummaryPage {
       console.log(i);
       let temp = new Date (firstDay);
       let nextD = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate() + 1 );// Get Next Date
+      console.log(nextD);
       this.weekBucket.push(nextD);
       firstDay = nextD;
       i++;
     }
    
-
 
 
 
@@ -165,12 +171,38 @@ export class OrganizationSummaryPage {
       // console.log(response);
       if(response.status == 200){
 
-        this.summaryData = response;
+        this.summaryData = response.data;
+
+        this.summaryData.forEach( (user) => {
+        if(user.summary.length !== 0) { // Checks if summary has Length greater than 0, if so the week's data is present
+          user.total_time = "00:00";
+          for ( i = 0; i < user.summary.length; i++) {
+            if(user.summary[i].leave_status == "Present" || user.summary[i].leave_status == "Worked" || user.summary[i].leave_status == "Worked on holiday" || 
+            user.summary[i].leave_status == "Worked on weekend" || user.summary[i].leave_status == "Leave due to violation"  ) // Check the status before calculating
+              user.total_time = this.getSumofTime(user.total_time, user.summary[i].total_time);
+          }
+        } else { // No summary data found related to that user
+          user.total_time = "00:00";
+        }
+      });
+
+
+        console.log(this.summaryData);
+
         this.zone.run(() => {});
  	   }
 	})
 
 }
+
+  getSumofTime(sumTime, newTime) { // Get 2 times, sum it up & return the summedUp value
+    var temp1 = newTime.split(":");
+    var temp2 = sumTime.split(":");
+    var time2Mins = (parseInt(temp2[0]) + parseInt(temp1[0])) * 60 + (parseInt(temp2[1]) + parseInt(temp1[1])); // Convert the Summed-Up time to Mins
+    sumTime = ((time2Mins / 60) < 10 ? "0" : "") + Math.floor(time2Mins / 60).toString() + ":" + ((time2Mins % 60) < 10 ? "0" : "") + Math.floor(time2Mins % 60).toString();
+
+    return sumTime;
+  }
 
   getStartAndEndOfDate(date) { // Get the start & end date for the API
     var curr = new Date(date);
@@ -190,6 +222,36 @@ export class OrganizationSummaryPage {
 
   sortBy(){
 
+  }
+
+
+    getDayDate(date: string, option: number): string {
+    var text: string;
+    switch (option) {
+      case 1:
+        text = moment(date, "YYYY-MM-DD").format("ddd");
+        break;
+      case 2:
+        text = moment(date, "YYYY-MM-DD").format("MMM");
+        break;
+      case 3:
+        text = moment(date, "kk:mm:ss").format("hh:mm a");
+        break;
+      case 4:
+        if (date.length > 0) {
+          text = moment(date, "kk:mm:ss").format("hh:mm a");
+        } else {
+          text = 'Online'
+        }
+        break;
+      case 5:
+        text = moment(date, "kk:mm:ss").format("HH:mm");
+        break;
+      case 6:
+        text = moment(date, "YYYY-MM-DD").format("D");
+        break;
+    }
+    return text;
   }
 
 
