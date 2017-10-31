@@ -77,6 +77,7 @@ import { Storage } from '@ionic/storage';
     this.changedLogs = data;
 
   });
+
   
 }
 

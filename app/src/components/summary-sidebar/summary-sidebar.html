@@ -56,7 +56,7 @@
             <!-- Week list -->
             <ul class="week-list list-control overflow-active">
                 <button ion-item class="week-container"  *ngFor="let date of sideBarData.data.periodData;let i = index " (click) = "updateSummaryContent(date, i)" [ngClass]="{'btnActivated': sideBarData.data.periodData[i] && sideBarData.data.periodData[i].btnActive == true}" >
-                    <div class="btn-container" [ngClass]="{'leave-row': (date.leave_status == 'Leave' || date.leave_status == '') && !sideBarData.data.periodData[i].btnActive}"  >
+                    <div class="btn-container" [ngClass]="{'leave-row': (date.leave_status == 'Leave' || date.leave_status == '' || date.leave_status == 'Weekend' || date.leave_status == 'Holiday' ) && !sideBarData.data.periodData[i].btnActive}"  >
                         <li class="week-list__row flex-row">
                             <div class="week-list__day">
                                 <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{ getDayDate(date.work_date,1) | translate}}</p>
@@ -65,7 +65,7 @@
 
                             <!-- <ion-icon name="list-box" class="icon-size mini" *ngIf = "date.changes > 0"></ion-icon> -->
 
-                            <div *ngIf = "date.leave_status == 'Present'" class="week-list__session" style="display: flex;">
+                            <div *ngIf = "date.leave_status == 'Present' || date.leave_status == 'Worked' || date.leave_status == 'Worked_on_weekend' || date.leave_status == Worked_on_holiday || date.leave_status == 'Leave_due_to_violation' " class="week-list__session" style="display: flex;">
                                 <div>
                                 <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.start_time,3)}}</span>
                                 <span *ngIf = "date.status == '' && date.end_time != ''" ion-text >{{getDayDate(date.end_time,3)}}</span>
@@ -74,25 +74,27 @@
 
                                 <ion-icon name="sync" class="icon-size mini" *ngIf = "date.changes > 0"></ion-icon>
                             </div>
-                            <div *ngIf = "date.leave_status == 'Present'" class="week-list__time flex-row">
+
+                            <div *ngIf = "date.leave_status == 'Present' || date.leave_status == 'Worked' || date.leave_status == 'Worked_on_weekend' || date.leave_status == Worked_on_holiday || date.leave_status == 'Leave_due_to_violation' " class="week-list__time flex-row">
                                 <ion-icon name="alert" color="danger" class="icon-size mini" *ngIf = "date.violation_count != 0"></ion-icon>
 
                                 <h6 class="total-time" p-h-12 ion-text color="text-darker">{{getDayDate(date.total_time,5)}}<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>
                                 <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
                             </div>
-                            <div style="display: flex;" *ngIf = "date.leave_status == 'Leave'" class="leave__title">
-                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{ "leave" | translate }}</p>
+
+                            <div style="display: flex;" *ngIf = "date.leave_status == 'Leave' || date.leave_status == 'Weekend' || date.leave_status == 'Holiday' " class="leave__title">
+                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{date.leave_status}}</p>
                                 &nbsp; &nbsp; &nbsp; &nbsp;
                                 <ion-icon name="sync" class="icon-size mini" *ngIf = "date.changes > 0"></ion-icon>
                             </div>
-                             <div *ngIf = "date.leave_status == 'Leave'" class="leave__dash">
+                             <div *ngIf = "date.leave_status == 'Leave' || date.leave_status == 'Weekend' || date.leave_status == 'Holiday' " class="leave__dash">
                                 <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-6>- -</p>
                             </div>
 
-                            <div *ngIf = "date.leave_status == ''" class="leave__title">
+                            <div *ngIf = "date.leave_status == '' " class="leave__title">
                                 <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{ "holiday" | translate }}</p>
                             </div>
-                             <div *ngIf = "date.leave_status == ''" class="leave__dash">
+                             <div *ngIf = "date.leave_status == '' " class="leave__dash">
                                 <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-6>- -</p>
                             </div>
 

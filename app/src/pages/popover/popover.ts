@@ -79,6 +79,13 @@ export class PopoverPage {
 
   }
 
+  viewSummary(){
+    this.viewCtrl.dismiss();
+    this.events.publish('app:navroot', 'summary');   
+    console.log('navigating to summary page');
+
+  }
+
 
 
 }

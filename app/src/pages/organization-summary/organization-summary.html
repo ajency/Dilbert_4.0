@@ -1,0 +1,119 @@
+<!--
+  Generated template for the SummaryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+	<ion-navbar>
+		<ion-title>Ajency.in</ion-title>
+
+     <ion-buttons end>
+        <button ion-button icon-only (click)="presentPopover($event)">
+          Sujit Gawas <ion-icon name="arrow-dropdown"></ion-icon> 
+        </button>
+      </ion-buttons>
+    
+	</ion-navbar>
+</ion-header> -->
+<ion-header>
+    <logged-in-header> </logged-in-header>
+</ion-header>
+
+<ion-content >
+
+ <div class="user-page-title">
+          <h1 class="dashboard-title"> Ajency.in  Work Summary </h1> 
+          <h4 class="sub-title dash">Track Time. Record Work. Boost Productivity.</h4>
+  </div>
+
+<!-- <div class="table-view month hscroll-table hide-in-week-view">
+  <div class="table-responsive">
+                            <table class="table first-table">
+                                <thead>
+                                    <tr>
+                                        <th class="employee-id" (click)="sortBy('name')">
+                                            <span class="th-label small-title">
+                                                
+                                                <span class="th-date">Employees <a href="#" class="sort-col"><i class="fa fa-sort"></i></a></span>
+                                            </span>
+                                        </th>
+                                        <th *ngFor="let item of weekBucket;let key = index">
+                                            <span class="th-label small-title" (click)="sortBy('date',item,key)">
+                                                <span class="th-date"> {{item | date : 'dd MMM'}}<a href="#" class="sort-col" ><i class="fa fa-sort"></i></a></span>
+                                                <span class="th-day">{{item | date: 'EEE'}}</span>
+                                            </span>
+                                        </th>
+                                        
+                                        <th>
+                                            <span class="th-label small-title" (click)="sortBy('total')">
+                                                <span class="th-date">Total <a href="#" class="sort-col"><i class="fa fa-sort"></i></a></span>
+                                                <span class="th-day">&nbsp;</span>
+                                            </span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngIf="userData && userData.length != 0">
+                                        <tr class="" *ngFor="let item of userData">
+                                            <td class="employee-id">
+                                                <a href="/dashboard/{{item.email}}" class="employee-name" data-toggle="tooltip" data-html="true" data-placement="bottom" title="More details of this employee">
+                                                    <span class="th-total">{{item.name}}</span>
+                                                   
+                                                </a>
+                                            </td>
+                                            <ng-container *ngIf="item.summary.length == 0">
+                                                <td [colSpan]="7" class="noData">
+                                                    <span class="th-total">No Data Acquired</span>
+                                                </td>
+                                            </ng-container>
+                                            <ng-container *ngIf="item.summary.length != 0">
+                                                <td *ngFor="let workday of item.summary.data">
+                                                    <a href="#" class="single-day" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
+                                                        <div *ngIf="workday.status === null || (workday.status && workday.status.toLowerCase() === 'present')">
+                                                            <span class="th-total">{{workday.total_time != null ? workday.total_time : "n/a" }}</span>
+                                                            <span class="th-spilt">
+                                                                <span class="th-work">{{workday.start_time | date:'HH:mm'}}</span> -
+                                                                <span class="th-break">{{workday.end_time | date:'HH:mm'}}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div *ngIf="!(workday.status === null || (workday.status && workday.status.toLowerCase() === 'present'))">
+                                                            <span class="th-total">{{workday.status}}</span>
+                                                            <span class="th-spilt">
+                                                                <span class="th-work"></span> - <span class="th-break"></span>
+                                                            </span>
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                               
+                                                <td [colSpan]="6 - item.summary.data.length" *ngIf="item.summary.data.length !== 6"></td>
+                                                <td class="sunday">
+                                                   
+                                                </td>
+                                            </ng-container>
+                                            <td>
+                                                <a href="#" class="single-day total current" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
+                                                    <span class="th-total">{{item.total_time}}</span>
+                                                    <span class="th-spilt">
+                                                        <span class="th-break"></span>
+                                                       
+                                                    </span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <ng-container *ngIf="userData && userData.length == 0">
+                                        <tr>
+                                            <td colspan="9" class="noData">No data to display</td>       
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> -->
+
+</ion-content>
+
+<ion-footer>
+ <footer-element></footer-element>
+</ion-footer>
