@@ -313,6 +313,9 @@ class LockedDataController extends Controller
                 $data = [];
                 foreach($orgUsers as $oUser) {
                     $usr = User::find($oUser->user_id);
+                    // check if user is active
+                    if($usr->status != 'active')
+                        continue;
                     // user details
                     $userObj['user'] = [
                         'user_id' => $oUser->user_id,
