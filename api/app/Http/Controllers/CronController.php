@@ -74,25 +74,27 @@ class CronController extends Controller
      * @param         $grpId
      * @return [type]           [description]
      */
-    public function getUserStatus($presence,$orgId,$grpId) {
+    public function getUserStatus($presence,$orgId,$grpId,$date = 'default') {
+        if($date == 'default')
+            $date = date('Y-m-d');
         if($presence == 'absent') {
-            if(SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'holiday'])->exists())
+            if(SpecialDays::where(['date' => $date/*date('Y-m-d')*/, 'type' => 'holiday'])->exists())
                 // if it is a holiday
                 return 'Holiday';
-            else if((date('w') == 0 || date('w') == 1) && !SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+            else if((date('w',strtotime($date)) == 0 || date('w',strtotime($date)) == 6) && !SpecialDays::where(['date' => $date/*date('Y-m-d')*/, 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
                 // if sat or sun and not a working weekend
                 return 'Weekend';
             else
                 return 'Leave';
         }
         else {
-            if(SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'holiday', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+            if(SpecialDays::where(['date' => $date/*date('Y-m-d')*/, 'type' => 'holiday', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
                 // if it is a holiday
                 return 'Worked on holiday';
-            else if(SpecialDays::where(['date' => date('Y-m-d'), 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+            else if(SpecialDays::where(['date' => $date/*date('Y-m-d')*/, 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
                 // special working day like working-weekend
                 return 'Worked';
-            else if(date('w') == 0 || date('w') == 6)
+            else if(date('w',strtotime($date)) == 0 || date('w',strtotime($date)) == 6)
                 // if today is a sat or a sun
                 return 'Worked on weekend';
             else
