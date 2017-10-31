@@ -29,7 +29,7 @@
                     <i class="custom-icon indoor"></i> <span>n/a</span>
                 </div> -->
 
-                <div class="timing out" p-h-12 p-v-12 *ngIf = "sideBarData.data.current[0].leave_status == 'Present'">
+                <div class="timing out" p-h-12 p-v-12 *ngIf = "sideBarData.data.current[0].leave_status == 'Present' || sideBarData.data.current[0].leave_status == 'Worked' || sideBarData.data.current[0].leave_status == 'Worked_on_weekend' || sideBarData.data.current[0].leave_status == 'Worked_on_holiday' || sideBarData.data.current[0].leave_status == 'Leave_due_to_violation' ">
                     <i class="custom-icon outdoor"></i> <span ion-text color="success">{{sideBarData.data.current[0].status}}</span>
                 </div>
             </div>

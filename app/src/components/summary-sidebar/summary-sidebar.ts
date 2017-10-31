@@ -294,7 +294,9 @@ export class SummarySidebarComponent {
            // console.log('inside if ', this.sideBarData.data.periodData[i]);
 
         }
-        if(this.sideBarData.data.periodData[i].leave_status == "Present")
+        if(this.sideBarData.data.periodData[i].leave_status == "Present" || this.sideBarData.data.periodData[i].leave_status =="Worked" || 
+          this.sideBarData.data.periodData[i].leave_status == "Worked_on_holiday" || this.sideBarData.data.periodData[i].leave_status == "Worked_on_weekend" ||
+          this.sideBarData.data.periodData[i].leave_status == "Leave_due_to_violation" )
         {
           let temp = this.sideBarData.data.periodData[i].total_time.split(":");
           minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
@@ -307,9 +309,15 @@ export class SummarySidebarComponent {
         //    this.sideBarData.data.periodData.splice(0,1);
         //   console.log(this.sideBarData.data.periodData);
         // }
+        if(this.sideBarData.data.periodData[i].work_date == this.todays_date && this.sideBarData.data.periodData[i].leave_status == '' ){
+          console.log(this.sideBarData.data.periodData[i])
+          this.sideBarData.data.periodData.splice(i,1);
+          console.log(this.sideBarData.data.periodData)
+          i = i-1; 
+        }
+
       
       }
-      this.zone.run(() => {});
 
       this.minHours = no_of_days * 9;
 
@@ -321,6 +329,9 @@ export class SummarySidebarComponent {
       console.log(this.minHours);
 
       this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+
+      this.zone.run(() => {});
+
     }
 
 
