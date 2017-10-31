@@ -52,7 +52,7 @@ class CronController extends Controller
                 $userData = (new UserAuth)->getUserData($user->id,true);
                 $keyFields = ['total_hrs_in_day' => (int)$userLockedData['total_time']];        // this type casting returns you the only the hours
                 $rhsFields = ['minimum_hrs_in_day'];
-                $mailList = ['time_manager','hr','owner'];
+                $mailList = ['hr','owner1','owner2'];
                 $data = (new ViolationApp)->createFormattedViolationData($userData,$keyFields,$rhsFields,$mailList);
                 $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data,false,true);
                 if($vioResponse['status'] == 'violation') {
@@ -134,7 +134,7 @@ class CronController extends Controller
             // check for violation
             $keyFields = ['total_hrs_in_week' => $totalHours];
             $rhsFields = ['total_week_hours' => $minHours];
-            $mailList = ['time_manager','owner'];
+            $mailList = ['hr','owner1','owner2'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
             (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
         }
@@ -169,7 +169,7 @@ class CronController extends Controller
             // check for violation
             $keyFields = ['total_hrs_in_month' => $totalHours];
             $rhsFields = ['total_month_hours' => $minHours];
-            $mailList = ['time_manager','owner'];
+            $mailList = ['hr','owner1','owner2'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
             (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data,false,true);
         }

@@ -87,7 +87,7 @@ class AppController extends Controller
                         // violation check for late_alert
                         $keyFields = ['start_time' => $this->getCurrentTimeZoneTime($timeZone)];
                         $rhsFields = ['organisation_start_time'];
-                        $mailList = ['time_manager','hr','owner'];
+                        $mailList = ['hr','owner1','owner2'];
                         $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailList);
                         $vioResponse = (new ViolationRules)->checkForViolation('late_alert',$data,false,true);
 
