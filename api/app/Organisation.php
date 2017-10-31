@@ -59,7 +59,7 @@ class Organisation extends Model
                 // if($user_resp['user_details']->org_id) {
                 // go to dashboard
                 $userRole = $user_resp['user']->getRoleNames()->first();
-                $orgDetails = $org->first();
+                $orgDetails = $org->first();  // [ NOTE ] This is wrong!
                 $response['next_url'] = "/dashboard";
                 $response['status'] = 200;
                 // $response['message'] = "Go to dashboard.";
