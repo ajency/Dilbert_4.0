@@ -9,7 +9,7 @@ use Ajency\Violations\Ajency\ViolationRules;
 use App\Log;
 use App\Locked_Data;
 use App\Organisation;
-use App\PingLogs;
+// use App\PingLogs;
 use App\ViolationApp;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -25,11 +25,11 @@ class AppController extends Controller
             if ($user['user_details']['api_token'] == $request->header('X-API-KEY')) {
 
                 // testing purpose
-                $pingLogs = new PingLogs;
-                $pingLogs->user_id = $request->header('from');
-                $pingLogs->from_state = $request->from_state;
-                $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
-                $pingLogs->save();
+                // $pingLogs = new PingLogs;
+                // $pingLogs->user_id = $request->header('from');
+                // $pingLogs->from_state = $request->from_state;
+                // $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
+                // $pingLogs->save();
 
                 // first make an entry into the logs table
                 $orgDetails = Organisation::find($user['user_details']['org_id']);
