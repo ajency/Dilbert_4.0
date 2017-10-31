@@ -27,6 +27,7 @@ export class SummaryContentComponent {
   today : any;
   logs : any;
   day_data : any;
+  leave_status_values;
   edit_btn_pd : boolean = true;
   view_log_history_btn : boolean = true;
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -44,10 +45,13 @@ export class SummaryContentComponent {
 
     this.events.subscribe('update:content',(data) => {
 	   // this.currentData = data.date;
+     console.log('inside update content');
      this.day_data = data.summaryContentData.data.day_data;
      this.logs = data.summaryContentData.data.logs;
-     this.summaryContentData = data.summaryContentData;
+     this.leave_status_values = data.summaryContentData.data.leave_status_values;
 
+     this.summaryContentData = data.summaryContentData;
+     console.log(this.leave_status_values);
      this.setToday();
     });
 
@@ -103,6 +107,8 @@ export class SummaryContentComponent {
 
     this.day_data = this.summaryContentData.data.day_data;
     // console.log(this.day_data);
+    this.leave_status_values = this.summaryContentData.data.leave_status_values;
+
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
     this.checkPermissions();
@@ -201,11 +207,11 @@ export class SummaryContentComponent {
 
 
   editModal(ev){
-    console.log("inside editModal");
+      console.log("inside editModal");
 
       // let data = this.day_data[0];
       // console.log(this.day_data[0]);
-      let popover = this.popoverCtrl.create( 'EditModalPage',{data:this.day_data[0]});
+      let popover = this.popoverCtrl.create( 'EditModalPage',{data:this.day_data[0] , leave_status_values : this.leave_status_values});
       popover.present();
 
   }

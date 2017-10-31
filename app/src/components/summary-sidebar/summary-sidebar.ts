@@ -295,8 +295,8 @@ export class SummarySidebarComponent {
 
         }
         if(this.sideBarData.data.periodData[i].leave_status == "Present" || this.sideBarData.data.periodData[i].leave_status =="Worked" || 
-          this.sideBarData.data.periodData[i].leave_status == "Worked_on_holiday" || this.sideBarData.data.periodData[i].leave_status == "Worked_on_weekend" ||
-          this.sideBarData.data.periodData[i].leave_status == "Leave_due_to_violation" )
+          this.sideBarData.data.periodData[i].leave_status == "Worked on holiday" || this.sideBarData.data.periodData[i].leave_status == "Worked on weekend" ||
+          this.sideBarData.data.periodData[i].leave_status == "Leave due to violation" )
         {
           let temp = this.sideBarData.data.periodData[i].total_time.split(":");
           minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
@@ -312,7 +312,7 @@ export class SummarySidebarComponent {
         if(this.sideBarData.data.periodData[i].work_date == this.todays_date && this.sideBarData.data.periodData[i].leave_status == '' ){
           console.log(this.sideBarData.data.periodData[i])
           this.sideBarData.data.periodData.splice(i,1);
-          console.log(this.sideBarData.data.periodData)
+          console.log("After removal : ",this.sideBarData.data)
           i = i-1; 
         }
 

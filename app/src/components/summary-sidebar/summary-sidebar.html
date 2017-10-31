@@ -29,7 +29,7 @@
                     <i class="custom-icon indoor"></i> <span>n/a</span>
                 </div> -->
 
-                <div class="timing out" p-h-12 p-v-12 *ngIf = "sideBarData.data.current[0].leave_status == 'Present' || sideBarData.data.current[0].leave_status == 'Worked' || sideBarData.data.current[0].leave_status == 'Worked_on_weekend' || sideBarData.data.current[0].leave_status == 'Worked_on_holiday' || sideBarData.data.current[0].leave_status == 'Leave_due_to_violation' ">
+                <div class="timing out" p-h-12 p-v-12 *ngIf = "sideBarData.data.current[0].leave_status == 'Present' || sideBarData.data.current[0].leave_status == 'Worked' || sideBarData.data.current[0].leave_status == 'Worked on weekend' || sideBarData.data.current[0].leave_status == 'Worked on holiday' || sideBarData.data.current[0].leave_status == 'Leave due to violation' ">
                     <i class="custom-icon outdoor"></i> <span ion-text color="success">{{sideBarData.data.current[0].status}}</span>
                 </div>
             </div>
@@ -65,7 +65,7 @@
 
                             <!-- <ion-icon name="list-box" class="icon-size mini" *ngIf = "date.changes > 0"></ion-icon> -->
 
-                            <div *ngIf = "date.leave_status == 'Present' || date.leave_status == 'Worked' || date.leave_status == 'Worked_on_weekend' || date.leave_status == Worked_on_holiday || date.leave_status == 'Leave_due_to_violation' " class="week-list__session" style="display: flex;">
+                            <div *ngIf = "date.leave_status == 'Present' || date.leave_status == 'Worked' || date.leave_status == 'Worked on weekend' || date.leave_status == 'Worked on holiday' || date.leave_status == 'Leave due to violation' " class="week-list__session" style="display: flex;">
                                 <div>
                                 <span class="dis-block session-start" m-t-0 m-b-8 font-weight-4>{{getDayDate(date.start_time,3)}}</span>
                                 <span *ngIf = "date.status == '' && date.end_time != ''" ion-text >{{getDayDate(date.end_time,3)}}</span>
@@ -75,7 +75,7 @@
                                 <ion-icon name="sync" class="icon-size mini" *ngIf = "date.changes > 0"></ion-icon>
                             </div>
 
-                            <div *ngIf = "date.leave_status == 'Present' || date.leave_status == 'Worked' || date.leave_status == 'Worked_on_weekend' || date.leave_status == Worked_on_holiday || date.leave_status == 'Leave_due_to_violation' " class="week-list__time flex-row">
+                            <div *ngIf = "date.leave_status == 'Present' || date.leave_status == 'Worked' || date.leave_status == 'Worked on weekend' || date.leave_status == 'Worked on holiday' || date.leave_status == 'Leave due to violation' " class="week-list__time flex-row">
                                 <ion-icon name="alert" color="danger" class="icon-size mini" *ngIf = "date.violation_count != 0"></ion-icon>
 
                                 <h6 class="total-time" p-h-12 ion-text color="text-darker">{{getDayDate(date.total_time,5)}}<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>

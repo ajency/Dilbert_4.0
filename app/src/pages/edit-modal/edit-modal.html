@@ -45,8 +45,8 @@
 		<div *ngIf = "leave_marking_dropdown">
 			<label>Leave status:</label>
 			<ion-select style = "display: inline-flex;" [(ngModel)]="status" class = "relative">
-		      <ion-option selected = "{{leave_status}}" value= "Present" >Present</ion-option>
-		      <ion-option selected = "{{!leave_status}}" value= "Leave" >Leave</ion-option>
+		      <ion-option *ngFor = 'let option of leave_status_values' >{{option}}</ion-option>
+		      <!-- <ion-option  value= "Leave" >Leave</ion-option> -->
 			</ion-select>
 		</div>
 	</div>

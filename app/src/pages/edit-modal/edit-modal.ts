@@ -26,7 +26,7 @@ export class EditModalPage {
   private nativeElement: any;
   private $: any;
   leave_marking_dropdown : boolean =true;
-  
+  leave_status_values : any;
 
 
   constructor(public navCtrl: NavController, 
@@ -41,16 +41,15 @@ export class EditModalPage {
     this.$ = this.appServiceProvider.jQuery;
 
     this.data = this.navParams.get('data');
+    this.leave_status_values = this.navParams.get('leave_status_values')
+
+    console.log(this.leave_status_values);
+    console.log(this.data);
+
     this.start_time = this.data.start_time;
     this.end_time = this.data.end_time;
-    if(this.data.leave_status == 'Present'){
-      this.leave_status = true;
-      this.status = 'Present';
-    }
-    else{
-      this.leave_status = false;
-      this.status = 'Leave'
-    }
+
+    this.status = this.data.leave_status;
   }
 
   ngOnInit(){
@@ -118,7 +117,7 @@ export class EditModalPage {
 
     this.total_time = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
 
-    console.log(this.total_time);
+    // console.log(this.total_time);
 
     // let new_value = {
     //   end_time : this.end_time,
@@ -136,20 +135,27 @@ export class EditModalPage {
       changes : {
          start_time : this.start_time,
          end_time : this.end_time,
-         status : this.status
+         // status : this.status
 
       },
 
-      mark_as_leave : false
+         status : this.status
+      
 
     }
 
-    if(this.status == 'Present'){
-      data.mark_as_leave = false;
+    if(this.leave_marking_dropdown == false) {
+      data.status = '';
     }
-    else{
-      data.mark_as_leave = true;
-    }
+
+    console.log(data);
+
+    // if(this.status == 'Present'){
+    //   data.mark_as_leave = false;
+    // }
+    // else{
+    //   data.mark_as_leave = true;
+    // }
    
     this.events.publish("changed:log", data);
 
