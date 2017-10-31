@@ -241,11 +241,11 @@ class LockedDataController extends Controller
                     if($request->status == null || $request->status == '') {
                         // then you calculate the status
                         $uDets = (new UserAuth)->getUserData($userCode,true);
+                        // update the status
+                        $lockedEntry->status = (new CronController)->getUserStatus('present',$uDets['user_details'][0]['org_id'],$uDets['user']['violation_grp_id'],$request->work_date);
                         // get the total time
                         $totalTimeEntry = explode(':',$lockedEntry->total_time);
-                        if((int)$totalTimeEntry[0] >= 5)
-                            $lockedEntry->status = (new CronController)->getUserStatus('present',$uDets['user_details'][0]['org_id'],$uDets['user']['violation_grp_id'],$request->work_date);
-                        else
+                        if((int)$totalTimeEntry[0] <= 5 && $request->work_date != date('Y-m-d'))
                             $lockedEntry->status = 'Leave due to violation';
 
                         $lockedEntry->save();
