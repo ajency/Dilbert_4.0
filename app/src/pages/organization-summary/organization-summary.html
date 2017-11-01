@@ -30,10 +30,32 @@
           <h4 class="sub-title dash">Track Time. Record Work. Boost Productivity.</h4>
   </div>
 
+        <div class="card-header">
+                    <div class="pull-left">
+                        <label for="search-table" class="search-emp-names">
+                            <input id="search-table" type="search" class=" form-control" placeholder="Filter by Name" (ngModel)="text" (keyup)="onTextChange($event.target.value)" >
+                            <i class="fa fa-search empty-icon"></i>
+                            <!-- show this icon only if text has been entered - so the text can be cleared as well as the filtered table can be cleared -->
+                            <a href="#" class="clear-icon hidden">&times;</a>
+                        </label>
+
+                         <label style="float: right;" for="find-week-day" class="wrapper">
+                         			Select date
+                                        <input type="date" class="picker form-control" max={{onFormatDate(todaysDate)}} [(ngModel)]="date" (change)="onDateChange(date)">
+                         </label>
+                    </div>
+                    <div class="table-navi pull-right">
+                        <!-- add class disabled to disable the btn/link -->
+                        <a href="#" class="week-navi prev" (click)="fetchData(false)"><i class="fa fa-angle-left"></i></a>
+                        <a href="#" class="week-navi next" (click)="fetchData(true)" [class.disabled]="nxtBtnDisable"><i class="fa fa-angle-right"></i></a>
+                    </div>
+                    <div class="clearfix"></div>
+        </div>
+
 <div class="table-view month hscroll-table hide-in-week-view">
   <div class="table-responsive">
-                            <table style="width: 100%; height: 100%;">
-                                <thead>
+                            <table style="width: 100%; height: 100%; border:none;">
+                                <thead style="height: 30px;">
                                     <tr>
                                         <th style="width: 20%; height: 20%;" class="employee-id" (click)="sortBy('name')">
                                             <span class="th-label small-title">
@@ -90,10 +112,10 @@
                                                     </a>
                                                 </td>
                                                
-                                                <td [colSpan]="6 - item.summary.length" *ngIf="item.summary.length !== 6"></td>
-                                                <td class="sunday">
+                                                <td [colSpan]="7 - item.summary.length" *ngIf="item.summary.length !== 7"></td>
+                                                <!-- <td class="sunday"> -->
                                                    
-                                                </td>
+                                                <!-- </td> -->
                                             </ng-container>
                                             <td>
                                                 <a href="#" class="single-day total current" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">

@@ -109,9 +109,12 @@ export class MyApp {
 
     // if(this.appglobals.getEnv().ionicEnvName === 'dev') return;
     // console.log("pushstate data =>" , data)
+    console.log(data);
     if(data.state){
       // console.log(data.frompath);
       let currentlocation = data.frompath ? data.frompath : this.location.path(true);
+
+      console.log(currentlocation);
       // console.log(this.location.path(true));
       // console.log(this.location.path());
 
@@ -151,7 +154,7 @@ export class MyApp {
      
 
       let page = data.state['query'] ? currentlocation + data.state['query'] : currentlocation + data.page;
-      // console.log(page);
+      console.log(page);
       // let page = window.location.pathname + data.page;
       if(data.replace){
         // console.log("pressed replacing url history => ", page)

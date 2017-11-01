@@ -52,7 +52,13 @@ private activeTabsList: any = {
       deeplink: 'join-organisation',
       placeholder: 'JoinOrganisation',
       active: false
-    }
+    },
+    summary:{
+      component: 'OrganizationSummaryPage',
+      deeplink: 'summary',
+      placeholder: 'Summary',
+      active: true
+    },
   };
 
 

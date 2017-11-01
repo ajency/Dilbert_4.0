@@ -36,7 +36,13 @@
     <!-- Detail view -->
 
     <div class="detail-view" p-t-35>
-        <ul *ngIf = "logs.length != 0 && day_data[0].leave_status == 'Present'" class="detail-view__container violated-row" p-h-20 m-h-10>
+        <ul *ngIf = "logs.length != 0" class="detail-view__container violated-row" p-h-20 m-h-10>
+
+
+            <!-- Removed condition from above element -->
+<!--              && (day_data[0].leave_status == 'Present' || day_data[0].leave_status == 'Worked' || day_data[0].leave_status == 'Worked on weekend' || day_data[0].leave_status == 'Worked on holiday' || day_data[0].leave_status == 'Leave due to violation') -->
+
+
             <!-- <li class="detail-view__cols violated"> -->
             <!-- violation and chat box -->
            <!--  <div class="violated-data">

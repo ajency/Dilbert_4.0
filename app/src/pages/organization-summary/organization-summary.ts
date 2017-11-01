@@ -35,6 +35,10 @@ export class OrganizationSummaryPage {
   apiURL : any;
   weekBucket: any [] = [];
   summaryData : any;
+  saveData : any;
+  date : any;
+  text : any;
+  dateSelected : any;
 
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -80,6 +84,38 @@ export class OrganizationSummaryPage {
 
   
  
+  }
+
+   ionViewCanEnter(): Promise<boolean>{
+
+    return new Promise((resolve,reject) => {
+      this.authguard.verifyToken('summary')
+      .then(() => {
+
+        this.appServiceProvider.handleClientLoad(true).then( () =>{
+          // if(this.appGlobalsProvider.dashboard_params.param1 && this.appGlobalsProvider.dashboard_params.param2 ){
+          //  console.log('can enter dashboard')   
+          //  resolve(true)
+          // }
+
+          // else{
+          //   console.log('cannot enter dashboard')
+          //   reject(false)
+           console.log('can enter summary page') 
+          resolve(true);
+            
+          
+        })
+        .catch(() => {
+          reject(true)
+        });
+       
+      })
+      .catch(() => {
+        reject(true)
+      })
+    });
+
   }
 
  getUserDate(dropdownValue, dateswnt) {
@@ -172,6 +208,7 @@ export class OrganizationSummaryPage {
       if(response.status == 200){
 
         this.summaryData = response.data;
+        // this.saveData = response.data;
 
         this.summaryData.forEach( (user) => {
         if(user.summary.length !== 0) { // Checks if summary has Length greater than 0, if so the week's data is present
@@ -186,14 +223,21 @@ export class OrganizationSummaryPage {
         }
       });
 
-
+        this.saveData = this.summaryData;
         console.log(this.summaryData);
 
         this.zone.run(() => {});
  	   }
 	})
+        this.zone.run(() => {});
 
 }
+
+ onTextChange(text) {
+    console.log(text, this.saveData);
+    this.summaryData = this.saveData.filter(item => item.user.name.toLowerCase().indexOf(text.toLowerCase()) !== -1); // LowerCase all the names & keyword so that it cover all the possibilities
+     this.zone.run(() => {}); 
+  }
 
   getSumofTime(sumTime, newTime) { // Get 2 times, sum it up & return the summedUp value
     var temp1 = newTime.split(":");
@@ -222,6 +266,31 @@ export class OrganizationSummaryPage {
 
   sortBy(){
 
+  }
+
+  fetchData(next){
+
+  }
+
+   onDateChange(date) {
+    if (date) {
+      this.dateSelected = new Date(date);
+      let dateObject = {
+          start: date
+          // end: this.formatDate(dates.end)
+        };
+      this.getData(dateObject);
+    }
+    console.log(date);
+  }
+
+  onFormatDate(dateValue) { // Format any form Date to 'yyyy-mm-dd'
+    var date = new Date(dateValue);
+
+    var month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();
+    var day = (date.getDate()) < 10 ? '0' + (date.getDate()).toString() : (date.getDate()).toString();
+
+    return date.getFullYear() + '-' + month + '-' + day;
   }
 
 
