@@ -87,7 +87,7 @@ class LockedDataController extends Controller
                         $self = true;
                     else
                         $self = false;
-                    $data['user'] = ['user_id' => $request->user_id, 'name' => $name, 'self' => $self];
+                    $data['user'] = ['user_id' => $request->user_id, 'name' => $name, 'self' => $self, 'joining_date' => $user->joining_date];
 
                     //get latest data (current data)
                     $currentData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => date('Y-m-d')])->get();
@@ -327,7 +327,8 @@ class LockedDataController extends Controller
                     $userObj['user'] = [
                         'user_id' => $oUser->user_id,
                         'name' => $oUser->name,
-                        'avatar' => $oUser->avatar
+                        'avatar' => $oUser->avatar,
+                        'joining_date' => $oUser->joining_date
                     ];
 
                     // summary
