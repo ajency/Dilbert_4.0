@@ -20,7 +20,7 @@ class Locked_Data extends Model
      * @param  start  start_date of
      * @return array containing the formatted data
      */
-    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "default") {
+    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "asc") {
         $data = [];
         // user details to be used later
         $udet = (new UserAuth)->getUserData($user_id,true);
@@ -70,7 +70,7 @@ class Locked_Data extends Model
                 ]);
                 // to handle comparing datecounter and end based on the order
                 $dateCounter->modify($dateModifyString);
-                $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
+                // $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
             }
             $dateCounter->modify($dateModifyString);
             // handle total_time = null
@@ -124,7 +124,7 @@ class Locked_Data extends Model
             array_push($data,$dayData);
         }
         // so that the last entry is not excluded if empty
-        if($dateCounter == $end) {
+        while(($sortOrder == 'asc' && $dateCounter <= $end) || ($sortOrder == 'desc' && $dateCounter >= $end)) {
             // [REDUNDANT CODE] create a function generateLeaveData()
             array_push($data,[
                 "work_date" => $dateCounter->format('Y-m-d'),
