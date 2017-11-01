@@ -312,6 +312,10 @@ class LockedDataController extends Controller
                         return response()->json(['status' => 400, 'message' => __('api_messages.org_period_unit')]);
                 }
 
+                // check if end date is ahead of time
+                if($endDate > new \DateTime())
+                    $endDate = new \DateTime();
+
                 // get all the users in the organisation
                 $orgUsers = User::join('user_details','user_details.user_id','=','users.id')->orderBy('name','asc')->get();
                 $data = [];
