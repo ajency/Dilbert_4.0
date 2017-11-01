@@ -24,11 +24,11 @@ class Data_Changes extends Model
      */
     public function getDataChanges($user, $userCode, $table, $dateObj, $onlyCount = false) {
         $output = new ConsoleOutput;
-        $output->writeln($user);
-        $output->writeln($userCode);
-        $output->writeln($table);
-        $output->writeln($dateObj);
-        $output->writeln($onlyCount);
+        // $output->writeln($user);
+        // $output->writeln($userCode);
+        // $output->writeln($table);
+        // $output->writeln($dateObj);
+        // $output->writeln($onlyCount);
 
         // parse the date object
         $dataChanges = Data_Changes::where(['user_id' => $userCode, 'table_modified' => $table])->whereBetween($dateObj[0],[$dateObj[1],$dateObj[2]])->get();
