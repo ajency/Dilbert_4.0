@@ -313,17 +313,16 @@ class LockedDataController extends Controller
                 }
 
                 // get all the users in the organisation
-                $orgUsers = UserDetail::where('org_id',$orgId)->get();
+                $orgUsers = User::join('user_details','user_details.user_id','=','users.id')->orderBy('name','asc')->get();
                 $data = [];
                 foreach($orgUsers as $oUser) {
-                    $usr = User::find($oUser->user_id);
                     // check if user is active
-                    if($usr->status != 'active')
+                    if($oUser->status != 'active')
                         continue;
                     // user details
                     $userObj['user'] = [
                         'user_id' => $oUser->user_id,
-                        'name' => $usr->name,
+                        'name' => $oUser->name,
                         'avatar' => $oUser->avatar
                     ];
 
