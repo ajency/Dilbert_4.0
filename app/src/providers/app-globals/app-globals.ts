@@ -25,6 +25,10 @@ export class AppGlobalsProvider {
     param2 : ''
   };
 
+  summary_params : any = {
+    param1 : ''
+  }
+
   private semVersion: any = {
     major: 1,
     minor: 1,

@@ -5,6 +5,7 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import * as moment from 'moment';
+import * as $ from 'jquery';
 
 
 import { CookieService } from 'ngx-cookie';
@@ -82,6 +83,9 @@ import { Storage } from '@ionic/storage';
 }
 
 ngOnInit(){
+
+    this.events.publish('app:updatehistory','dashboard');
+
   
     this.param1 = this.appGlobalsProvider.dashboard_params.param1;
     this.param2 = this.appGlobalsProvider.dashboard_params.param2;
@@ -238,7 +242,7 @@ ionViewDidLoad() {
     let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
     // console.log(url);
     let filter1 = {
-        user_id:this.userId,
+        user_id:this.authguard.user_id,
         start_date:this.currentDate,
         period_unit:this.period_unit
       };
@@ -251,19 +255,23 @@ ionViewDidLoad() {
 
 
     let body = {
-      user_id:this.userId,
+      user_id:this.authguard.user_id,
       filters : filters
     };
     
 
 
 
-    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','', filter1, false).subscribe( (response) => {
+    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', filter1, false).subscribe( (response) => {
       // console.log(response);
       if(response.status == 200){
 
         this.sideBarData = response;
         this.zone.run(() => {});
+        // this.events.publish('app:updatehistory','dashboard');
+      
+        let serializedquery =  `?${$.param(filter1)}`;
+        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` , replace : true});
         
 
         // Call for day summary (RHS or logs data) 
@@ -283,10 +291,13 @@ ionViewDidLoad() {
        }
 
 
-        this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
+        this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable', filter2, true).subscribe( (response) => {
         // console.log(response);
         this.summaryContentData = response;
         this.zone.run(() => {});
+
+        serializedquery = `?${$.param(filter2)}`;
+        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true });
 
         this.checkPermissions();
 

@@ -68,7 +68,7 @@ export class MyApp {
      
             
     
-    this.initializeApp();
+     this.initializeApp();
     
     // this language will be used as a fallback when a translation isn't found in the current language
      translate.setDefaultLang('en');
@@ -78,6 +78,8 @@ export class MyApp {
      // translate.use('fr');
 
     this.loc = platformlocation;
+
+
     this.appServiceProvider.handleClientLoad(false).then( () =>{
       console.log('Logged in');
     })
@@ -85,11 +87,14 @@ export class MyApp {
       console.log('Not logged in')
     })
 
+
     this.events.subscribe("app:localize",(lang) => {
       this.translate.use(lang);
       this.appglobals.lang = lang;
       this.zone.run(() => {});
     });
+
+
 
     this.events.subscribe('app:navroot',(data) => {
       this.updateNav(data);
@@ -105,34 +110,23 @@ export class MyApp {
 
     this.events.subscribe('app:updatehistory',(data) => {
 
-    // this.showVerificationModal();
-
-    // if(this.appglobals.getEnv().ionicEnvName === 'dev') return;
-    // console.log("pushstate data =>" , data)
     console.log(data);
+    
     if(data.state){
-      // console.log(data.frompath);
       let currentlocation = data.frompath ? data.frompath : this.location.path(true);
 
       console.log(currentlocation);
-      // console.log(this.location.path(true));
-      // console.log(this.location.path());
-
-      // if(currentlocation == "")
-      // {
-      //   currentlocation = "dashboard";
-      // }
+    
       if(currentlocation.indexOf('?') !== -1){
         let locationparts = currentlocation.split('?');
         currentlocation = locationparts[0];
         // console.log('inside if');
       }
-      // console.log(currentlocation);
-      // console.log(data.appendurl);
+     
 
 
       if(data.appendurl){
-      
+      console.log('inside appendurl')
       // console.log(this.appglobals.getHistory());
 
 
@@ -143,13 +137,14 @@ export class MyApp {
       if(length!= 0){
       let parts = this.appglobals.getHistory()[length-1].split('?');
       currentlocation =  parts[0] + '?' + parts[1];
+      console.log(currentlocation);
       }
 
       }
 
-      else{
-        currentlocation = '/dashboard'
-      }
+      // else{
+      //   currentlocation = '/dashboard'
+      // }
 
      
 
@@ -157,9 +152,9 @@ export class MyApp {
       console.log(page);
       // let page = window.location.pathname + data.page;
       if(data.replace){
-        // console.log("pressed replacing url history => ", page)
+        console.log("pressed replacing url history => ", page)
         this.platformlocation.replaceState(data.state,"",page);
-        this.appglobals.pushToHistory(page);
+        this.appglobals.updateCurrentHistory(page);
       }
       else{
         console.log("pressed pushing url history => ")
@@ -171,12 +166,13 @@ export class MyApp {
       this.appglobals.pushToHistory(data);
       // this.platformlocation.pushState({page: data},"",data);
     }
-    // console.log("app:updatehistory",this.appglobals.getHistory());
+    console.log("app:updatehistory",this.appglobals.getHistory());
   });
 
      platformlocation.onPopState((event: any) => {
       // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
       let history = this.appglobals.getHistory();
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
       // console.log(event);
       // console.log(history);
       // this.events.publish('app:popstate',event.state);
@@ -217,7 +213,7 @@ export class MyApp {
     // let path = this.location.path(true);
 
     let pathparts = this.url.split('/');
-
+    console.log(pathparts);
 
 
     if(this.cookieService.get("keepLoggedIn") !== 'yes'){
@@ -227,71 +223,144 @@ export class MyApp {
     }
 
     else{
+      if(this.url == ''){
+        console.log('navigating to dashboard');
+         this.updateNav('dashboard');
+      }
 
-      let obj1,obj2;
+      else{
 
-      pathparts.map((val) => {
-      if(val.includes('dashboard')){
-          this.flag = true;
-          let pathparts2 = val.split('?');
+        let pathparts2 = pathparts[1].split('?')
           console.log(pathparts2);
+          if(pathparts2.length == 1 ){
+            
+            if(pathparts2[0] == 'dashboard'){
+              console.log('updating title to dashboard');
+              this.updateTitle('dashboard')
+            }
+            else if(pathparts2[0] == 'summary'){
+              console.log('updating title to summary');
+              this.updateTitle('summary');
+            }
 
-
-          if(pathparts2.length == 1){
-            this.flag = false;
-            this.flag2 = false;
-            return;
+            else{
+              console.log('navigating to not-found page');
+              this.updateNav('not-found');
+            }
           }
-
-          else if(pathparts2.length == 2){
-           // console.log(decodeURI(pathparts2[1]));
-           // console.log(JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}'));
-          obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
-
-        }
-        else if(pathparts2.length == 3){
-          obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
-          obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-          // console.log(obj1,obj2);
-          }
-
-        }
-      });
-    
-
-        if(!this.flag){
-
-             if(this.flag2){
-               this.updateNav('dashboard');
-             }
-             else{
-              this.updateTitle('dashboard');          
-             }
-
-
-         }
-        
-        else{
-        
-          if(obj1 != undefined && obj2 != undefined && obj1.start_date && obj1.period_unit && obj1.user_id && obj2.summary_date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
-            // this.updateNav('dashboard', obj1, obj2)
-          // this.updateTitle('dashboard');
-          this.updateTitle('dashboard');
-          console.log('publish event');
-          this.appglobals.dashboard_params.param1 = obj1;
-          this.appglobals.dashboard_params.param2 = obj2;
-
-          // this.events.publish('dashboard:params', params);
-          }
-
 
           else{
-            // console.log('navigate to not found page')
-            // this.updateNav('not-found');
+
+            if(pathparts2[0] == 'dashboard'){
+
+                let obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+                let obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+
+                  if(obj1 != undefined && obj2 != undefined && obj1.start_date && obj1.period_unit && obj1.user_id && obj2.summary_date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
+                    this.updateTitle('dashboard');
+                    this.appglobals.dashboard_params.param1 = obj1;
+                    this.appglobals.dashboard_params.param2 = obj2;
+                  }
+                  else{
+                    this.updateTitle('dashboard');
+                    this.appglobals.dashboard_params.param1 = '';
+                    this.appglobals.dashboard_params.param2 = '';
+                  }
+            }
+
+            else if(pathparts2[0] == 'summary'){
+              let obj3 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+              console.log(obj3);
+              if(obj3 != undefined && obj3.date && obj3.period_unit && obj3.period_unit == 'week' && obj3.org_id){
+                this.updateTitle('summary');
+                this.appglobals.summary_params.param1 = obj3;
+
+              }
+              else{
+                this.appglobals.summary_params.param1 = '';
+
+              }
+            }
+            else{
+              console.log('navigating to not-found page');
+              this.updateNav('not-found');
+              
+            }
+
           }
-        }
+
+
+      }
+
 
     }
+
+    // else{
+
+    //   let obj1,obj2;
+
+    //   pathparts.map((val) => {
+    //   if(val.includes('dashboard')){
+    //       this.flag = true;
+    //       let pathparts2 = val.split('?');
+    //       console.log(pathparts2);
+
+
+    //       if(pathparts2.length == 1){
+    //         this.flag = false;
+    //         this.flag2 = false;
+    //         return;
+    //       }
+
+    //       else if(pathparts2.length == 2){
+    //        // console.log(decodeURI(pathparts2[1]));
+    //        // console.log(JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}'));
+    //       obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+
+    //     }
+    //     else if(pathparts2.length == 3){
+    //       obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+    //       obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+    //       // console.log(obj1,obj2);
+    //       }
+
+    //     }
+    //   });
+    
+
+    //     if(!this.flag){
+
+    //          if(this.flag2){
+    //            this.updateNav('dashboard');
+    //          }
+    //          else{
+    //           this.updateTitle('dashboard');          
+    //          }
+
+
+    //      }
+        
+    //     else{
+        
+    //       if(obj1 != undefined && obj2 != undefined && obj1.start_date && obj1.period_unit && obj1.user_id && obj2.summary_date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
+    //         // this.updateNav('dashboard', obj1, obj2)
+    //       // this.updateTitle('dashboard');
+    //       this.updateTitle('dashboard');
+    //       console.log('publish event');
+    //       this.appglobals.dashboard_params.param1 = obj1;
+    //       this.appglobals.dashboard_params.param2 = obj2;
+
+    //       // this.events.publish('dashboard:params', params);
+    //       }
+
+
+    //       else{
+    //         // console.log('navigate to not found page')
+    //         // this.updateNav('not-found');
+    //       }
+    //     }
+
+    // }
   
 
   }
@@ -306,6 +375,7 @@ export class MyApp {
 
 private updateNav(data) : any{
 
+    console.log("############################## updating nav ##############", data);
     this.currentPage = data;
     this.nav.setRoot(data);
     this.updateTitle(data);

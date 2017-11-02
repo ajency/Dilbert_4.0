@@ -2,6 +2,7 @@ import { Component, NgZone, Input } from '@angular/core';
 import * as moment from 'moment';
 import { Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import * as $ from 'jquery';
 
 
 import {IMyDpOptions} from 'mydatepicker';
@@ -35,7 +36,7 @@ export class SummarySidebarComponent {
         // disableUntil: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:new Date().getDate }
     };
 
-  private model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth()+1, day: new Date().getDate() } };
+  // private model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth()+1, day: new Date().getDate() } };
 
 
   @Input('test') sideBarData : any ;
@@ -138,7 +139,7 @@ export class SummarySidebarComponent {
 
    requestData(ev){
 
-
+    console.log("inside requestData function", ev);
     if(ev.date.year != 0 && ev.date.month != 0){
     
       let date_range = {
@@ -178,10 +179,12 @@ export class SummarySidebarComponent {
       'From' : data.user_id,
     };
 
-      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '' , filter1,  false).subscribe( (response) => {
+      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', 'disable' , filter1,  false).subscribe( (response) => {
       // console.log(response);
       this.sideBarData = response;
 
+       let serializedquery =  `?${$.param(filter1)}`;
+       this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` });
 
       url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
       console.log(url);
@@ -196,9 +199,13 @@ export class SummarySidebarComponent {
       // cos_offset : this.appGlobalsProvider.cos_offset
     }
 
-      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
+      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable', filter2, true).subscribe( (response) => {
       // console.log(response);
       this.summaryContentData = response;
+
+      serializedquery = `?${$.param(filter2)}`;
+      this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true });
+
       this.calculateWeekTotal();
 
       let data1 = {
@@ -378,10 +385,15 @@ export class SummarySidebarComponent {
       'From' : data.user_id
       };
 
-    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '' , filters, true).subscribe( (response) => {
+    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable' , filters, true).subscribe( (response) => {
       // console.log(response);
       this.summaryContentData = response;
       this.zone.run(() => {});
+
+
+      let serializedquery = `?${$.param(filters)}`;
+      this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true });
+
 
       let data1 = {
         date : date,

@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
+import * as $ from 'jquery';
 
 import { CookieService } from 'ngx-cookie';
 import { UserDataProvider } from '../../providers/user-data/user-data';
@@ -39,6 +40,9 @@ export class OrganizationSummaryPage {
   date : any;
   text : any;
   dateSelected : any;
+  param1 : any;
+  org_id : any;
+  period_unit : any;
 
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -77,9 +81,32 @@ export class OrganizationSummaryPage {
  //    	console.log(response.json());
  //    	this.weekBucket = response.json();
  //    })
+    this.events.publish('app:updatehistory','summary');
 
+    this.param1 = this.appGlobalsProvider.summary_params.param1;
+    console.log(this.param1);
+
+	  if((this.param1 == '') || (this.param1 == undefined) ){
+    
+    this.org_id = this.authguard.userData.org_id;
+    this.period_unit = this.appGlobalsProvider.period_unit ;
  		this.getUserDate(1, new Date());
+    console.log('no params passed');
+    }
 
+    else {
+      console.log('params passed');
+   	 this.org_id = this.param1.org_id;
+   	 this.period_unit = this.param1.period_unit;
+   	 let dateObject = {
+          start: this.param1.date
+          // end: this.formatDate(dates.end)
+        };
+      this.getData(dateObject);
+
+      }
+
+   
 
 
   
@@ -157,10 +184,10 @@ export class OrganizationSummaryPage {
     let i = 0;
 
     while (i !== 7) {
-      console.log(i);
+      // console.log(i);
       let temp = new Date (firstDay);
       let nextD = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate() + 1 );// Get Next Date
-      console.log(nextD);
+      // console.log(nextD);
       this.weekBucket.push(nextD);
       firstDay = nextD;
       i++;
@@ -188,13 +215,14 @@ export class OrganizationSummaryPage {
 
     // console.log(url);
     let filter1 = {
-        start_date:this.formatDate(new Date()),
-        period_unit:this.appGlobalsProvider.period_unit
+    		org_id : this.org_id,
+        date:date.start,
+        period_unit:this.period_unit
       };
 
      let filters = {
       date_range : date_range,
-      period_unit : this.appGlobalsProvider.period_unit
+      period_unit : this.period_unit
 
       };
 
@@ -203,11 +231,15 @@ export class OrganizationSummaryPage {
       }
 
 
-    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','', filter1, false).subscribe( (response) => {
+    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', filter1, false).subscribe( (response) => {
       // console.log(response);
       if(response.status == 200){
 
         this.summaryData = response.data;
+
+
+        let serializedquery =  `?${$.param(filter1)}`;
+        this.events.publish('app:updatehistory',{page: 'summary', state: {query: serializedquery},  frompath: `/summary` , replace : true });
         // this.saveData = response.data;
 
         this.summaryData.forEach( (user) => {
