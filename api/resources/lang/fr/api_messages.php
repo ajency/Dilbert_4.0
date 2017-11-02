@@ -23,7 +23,7 @@ return [
     "authentication" => "Vous n'êtes pas authentifié.",
     "authorisation" => "Vous n'êtes pas autorisé.",
     "params_missing" => "Certains paramètres sont manquants.",
-    "allowed_changes_error" => "Désolé, vos modifications totales autorisées pour cette journée sont en hausse. Contactez le HR.",
+    "allowed_changes_error" => "Désolé, vos modifications totales autorisées pour cette journée sont en hausse. Contactez HR.",
     "period_data_dne" => "Les données de période n'existent pas.",
     "more_than_one_period_data_entry" => "Plus d'une entrée dans une table verrouillée.",
     "marked_as_leave" => "Marqué comme congé.",

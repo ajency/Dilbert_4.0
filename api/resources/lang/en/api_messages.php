@@ -23,7 +23,7 @@ return [
     "authentication" => "You are not authenticated.",
     "authorisation" => "You are not authorised.",
     "params_missing" => "Some parameters are missing.",
-    "allowed_changes_error" => "Sorry your total changes allowed for this day are up. Contact the HR.",
+    "allowed_changes_error" => "Sorry your total changes allowed for this day are up. Contact HR.",
     "period_data_dne" => "Period data doesn't exist.",
     "more_than_one_period_data_entry" => "More than one entries in locked table.",
     "marked_as_leave" => "Marked as leave.",
