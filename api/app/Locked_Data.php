@@ -8,6 +8,7 @@ use App\Data_Changes;
 use App\ViolationApp;
 use App\Http\Controllers\CronController;
 use Ajency\User\Ajency\userauth\UserAuth;
+use Ajency\Violations\Ajency\ViolationRules;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
