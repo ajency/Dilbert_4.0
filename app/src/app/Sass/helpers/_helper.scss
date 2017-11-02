@@ -56,6 +56,19 @@
     align-items: center;
 }
 
+.justify-center{
+    justify-content: center;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
+.align-top{
+    align-items: flex-start;
+}
+
+
 .flex{
     flex: 1;
 }
