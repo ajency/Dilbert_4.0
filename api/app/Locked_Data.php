@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Data_Changes;
+use App\ViolationApp;
 use App\Http\Controllers\CronController;
 use Ajency\User\Ajency\userauth\UserAuth;
 
@@ -48,7 +49,7 @@ class Locked_Data extends Model
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "",
-                "violation_count" => "",
+                "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
                 "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
             ]);
             return $data;
@@ -65,7 +66,7 @@ class Locked_Data extends Model
                     "start_time" => "",
                     "end_time" => "",
                     "total_time" => "",
-                    "violation_count" => "",
+                    "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
                     "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
                 ]);
                 // to handle comparing datecounter and end based on the order
@@ -87,7 +88,7 @@ class Locked_Data extends Model
                 $dayData['start_time'] = '';
                 $dayData['end_time'] = '';
                 $dayData['total_time'] = 0;
-                $dayData['violation_count'] = 0;
+                $dayData['violations'] = (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
                 $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
                 array_push($data,$dayData);
                 continue;
@@ -119,7 +120,7 @@ class Locked_Data extends Model
             // $udet = (new UserAuth)->getUserData($user_id,true);
             $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$ld->work_date) : $ld->status/*'Present'*/;
             //violation status - for now dummy
-            $dayData['violation_count'] = 0;
+            $dayData['violations'] = (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
             $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
             array_push($data,$dayData);
         }
@@ -133,7 +134,7 @@ class Locked_Data extends Model
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "",
-                "violation_count" => "",
+                "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
                 "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
             ]);
             // to handle comparing datecounter and end based on the order

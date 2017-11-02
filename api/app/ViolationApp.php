@@ -72,4 +72,21 @@ class ViolationApp extends Model
         }
         return $data;
     }
+
+    /**
+     * gives a formatted violations data
+     * @param  [type] $violations data returned from getViolations()
+     * @return [type]             [description]
+     */
+    public function getFormattedViolationData($violations) {
+        $formattedViolations = [];
+        foreach($violations as $violation) {
+            $vioData['type'] = $violation['type'];
+            $vioData['user_id'] = $violation['who_id'];
+            $vioData['user_meta'] = $violation['who_meta'];
+            $vioData['violation_meta'] = $violation['whom_meta'];
+            array_push($formattedViolations,$vioData);
+        }
+        return $formattedViolations;
+    }
 }
