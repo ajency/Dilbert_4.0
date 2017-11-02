@@ -58,7 +58,7 @@ class User extends Authenticatable
                 $userData['roles'] = $request->role;
             }
             else {
-                return ['status' => 400, "message" => "Role does not exist"];
+                return ['status' => 400, "message" => __('api_messages.role_dne')];
             }
         }
         if(isset($request->permissions)) {
@@ -66,7 +66,7 @@ class User extends Authenticatable
             $userData['permissions'] = ["edit-user","super-user"];/*$request->permissions;*/
         }
         $data = (new UserAuth)->updateOrCreateUser($userData,$userDetails,$userComm);
-        return ["status" => 200, "message" => "User details edit successful.", "data" => $data];
+        return ["status" => 200, "message" => __('api_messages.user_detail_edit_success'), "data" => $data];
     }
 
     /**

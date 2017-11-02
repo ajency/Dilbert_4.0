@@ -146,19 +146,19 @@ class LockedDataController extends Controller
                 $userRole = (User::find($request->header('from')))->getRoleNames()->first();
                 $maxCount = (int)OrganisationMeta::where(['organisation_id' => UserDetail::where('user_id',$userCode)->first()->org_id, 'key' => 'changes_max_count_'.$userRole])->first()->value;
                 if($maxCount != -1 && Data_Changes::where(['user_id' => $userCode, 'modified_by' => $request->header('from'), 'work_date' => $request->work_date])->count() >= $maxCount)
-                    return response()->json(['status' => 400, "message" => "Sorry your total changes allowed for this day are up. Contact the HR."]);
+                    return response()->json(['status' => 400, "message" => __('api_messages.allowed_changes_error')]);
                 // see which all chnages are to be made
                 try {
                     // get the data for that day
                     $lockedEntry = Locked_Data::where(['user_id' => $userCode, 'work_date' => $request->work_date])->get();
                     // when no data exists
                     if(count($lockedEntry) == 0)
-                        return response()->json(['status' => 400, 'message' => "Period data doesn't exist"]);
+                        return response()->json(['status' => 400, 'message' => __('api_messages.period_data_dne')]);
                     // when more than one entries are there (extremely rare scenario)
                     if(count($lockedEntry) == 1)
                         $lockedEntry = $lockedEntry->first();
                     else
-                        return response()->json(['status' => 400, 'message' => "More than one entries in locked table"]);
+                        return response()->json(['status' => 400, 'message' => __api('api_messages.more_than_one_period_data_entry')]);
                     // if person has to be marked as leave
                     // if($request->mark_as_leave != NULL and $request->mark_as_leave) {
                     if($request->status == 'Leave') {
@@ -180,7 +180,7 @@ class LockedDataController extends Controller
                         $lockedEntry->total_time = "00:00";
                         $lockedEntry->status = "Leave";
                         $lockedEntry->save();
-                        return response()->json(['status' => 200, 'message' => "Marked as leave", 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
+                        return response()->json(['status' => 200, 'message' => __('api_messages.marked_as_leave'), 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                     }
                     // for the other changes
                     $roleMeta = (new OrganisationMeta)->getAllRoleMeta(UserDetail::where('user_id',$userCode)->first()->org_id,$userRole);
@@ -192,7 +192,7 @@ class LockedDataController extends Controller
                         // [ NOTE undefined index needs to be handled ]
                         $threshold = (int)$roleMeta['changes_allowed_time_'.$ckey.'_'.$userRole];
                         if($threshold != -1 && date_diff($now,$createdAt)->h > $threshold)
-                            return response()->json(['status' => 400, 'message' => "Time to make changes is up."]);
+                            return response()->json(['status' => 400, 'message' => __('api_messages.time_up')]);
                         // first check to see if the value really needs to be changed
                         // if the field is start time or end time get it in the right format
                         if($ckey == 'start_time' || $ckey == 'end_time') {
@@ -254,7 +254,7 @@ class LockedDataController extends Controller
                         $lockedEntry->status = $request->status;
                         $lockedEntry->save();
                     }
-                    return response()->json(['status' => 200, 'message' => 'Changes made successfully.', 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
+                    return response()->json(['status' => 200, 'message' => __('api_messages.changes_made_success'), 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                 }
                 catch(Exception $e) {
                     return response()->json(['status' => 400, 'message' => $e->getMessage()]);
@@ -340,7 +340,7 @@ class LockedDataController extends Controller
 
                     array_push($data,$userObj);
                 }
-                return response()->json(['status' => 200, 'message' => "All users' summary returned", 'data' => $data]);
+                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data]);
             }
             else {
                 return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);

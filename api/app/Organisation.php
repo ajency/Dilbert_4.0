@@ -43,7 +43,7 @@ class Organisation extends Model
         else {
             $response['next_url'] = '/login';
             $response['status'] = 400;
-            $response['message'] = 'Invalid Domain (not in test mode)';
+            $response['message'] = __('api_messages.invalid_domain_non_test_mode');
             return $response;
         }
 

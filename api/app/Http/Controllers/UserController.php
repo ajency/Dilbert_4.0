@@ -55,7 +55,7 @@ class UserController extends Controller
                      $data['org_id'] = $request->input('filters.org_id');
                      $data['org_logo'] = Organisation::where('id',$request->input('org_id'))->first()->logo;
                      $data['users'] = (new Organisation)->getOrgUsers($request->input('org_id'),$filters);
-                     return response()->json(['status' => 200, "message" => "Organisations users returned.", "data" => $data]);
+                     return response()->json(['status' => 200, "message" => __('api_messages.org_users_returned'), "data" => $data]);
                 }
                 else {
                     return response()->json(["status" => 400, "message" => __('api_messages.authorisation')]);
@@ -97,7 +97,7 @@ class UserController extends Controller
                         if(isset($request->delete) && $request->delete == true) {
                             // deleting a record
                             $user->delete();
-                            return response()->json(["status" => 200, "message" => "User deleted."]);
+                            return response()->json(["status" => 200, "message" => __('api_messages.user_deleted')]);
                         }
                         return response()->json($response);
                     }
@@ -110,7 +110,7 @@ class UserController extends Controller
                         // now that user is restored we update the details
                         $user = User::find($userCode);
                         $response = (new User)->updateUserDetails($request,$user);
-                        $response['message'] = "User restored. ".$response['message'];
+                        $response['message'] = __('api_messages.user_restored').$response['message'];
                         return response()->json($response);
                     }
                     else

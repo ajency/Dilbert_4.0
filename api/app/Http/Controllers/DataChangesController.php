@@ -53,7 +53,7 @@ class DataChangesController extends Controller
                     array_push($data,$changesData);
                 }
 
-                return response()->json(['status' => 200, 'message' => "User's changes data.", 'data' => $data]);
+                return response()->json(['status' => 200, 'message' => __('api_messages.user_data_changes'), 'data' => $data]);
             }
             else {
                 return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);

@@ -23,7 +23,29 @@ return [
     "authentication" => "Vous n'êtes pas authentifié.",
     "authorisation" => "Vous n'êtes pas autorisé.",
     "params_missing" => "Certains paramètres sont manquants.",
+    "allowed_changes_error" => "Désolé, vos modifications totales autorisées pour cette journée sont en hausse. Contactez le HR.",
+    "period_data_dne" => "Les données de période n'existent pas.",
+    "more_than_one_period_data_entry" => "Plus d'une entrée dans une table verrouillée.",
+    "marked_as_leave" => "Marqué comme congé.",
+    "time_up" => "Il est temps de faire des changements.",
+    "changes_made_success" => "Modifications effectuées avec succès",
+    "summary_returned" => "Résumé de tous les utilisateurs renvoyé.",
 
     // LogsController
     "day_summary" => "Résumé du jour de l'utilisateur retourné.",
+
+    // DataChangesController
+    "user_data_changes" => "L'utilisateur change les données.",
+
+    // UserController
+    "org_users_returned" => "Utilisateurs de l'organisation renvoyés.",
+    "user_deleted" => "Utilisateur supprimé.",
+    "user_restored" => "Utilisateur restauré.",
+
+    // User
+    "role_dne" => "Le rôle n'existe pas",
+    "user_detail_edit_success" => "Les détails de l'utilisateur éditent avec succès.",
+
+    // Organisation
+    "invalid_domain_non_test_mode" => "Domaine non valide (pas en mode test).",
 ];
