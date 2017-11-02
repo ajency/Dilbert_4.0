@@ -76,7 +76,9 @@ class Organisation extends Model
                     'idle_time' => $orgDetails['idle_time'],
                     'ping_freq' => $orgDetails['ping_freq'],
                     'org_id' => $orgDetails['id'],
-                    'org_name' => $orgDetails['name']
+                    'org_name' => $orgDetails['name'],
+                    'user_lang' => $user_resp['user_details']->lang,
+                    'default_period_unit' => $orgDetails['period_unit']
                 ];
                 return $response;
             }
@@ -108,7 +110,9 @@ class Organisation extends Model
                      'idle_time' => $orgDetails['idle_time'],
                      'ping_freq' => $orgDetails['ping_freq'],
                      'org_id' => $orgDetails['id'],
-                     'org_name' => $orgDetails['name']
+                     'org_name' => $orgDetails['name'],
+                     'user_lang' => $user_resp['user_details']->lang,
+                     'default_period_unit' => $orgDetails['period_unit']
                  ];
                  return $response;
                  /**
