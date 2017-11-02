@@ -50,7 +50,7 @@ class CronController extends Controller
 
                 // check for min hours per day
                 $userData = (new UserAuth)->getUserData($user->id,true);
-                $keyFields = ['total_hrs_in_day' => (int)$userLockedData['total_time']];        // this type casting returns you the only the hours
+                $keyFields = ['total_hrs_in_day' => $userLockedData['total_time']];        // this type casting returns you the only the hours
                 $rhsFields = ['minimum_hrs_in_day'];
                 $mailList = ['hr','owner1','owner2'];
                 $data = (new ViolationApp)->createFormattedViolationData($userData,$keyFields,$rhsFields,$mailList);
