@@ -87,7 +87,7 @@ export class SignInCardComponent {
   }
 
   ionViewDidLoad() {
-    
+    console.log("ionViewDidLoad SignInCardComponent")
 
  	 this.zone.run(() => {});
      // this.cookieservice.remove("domainError");

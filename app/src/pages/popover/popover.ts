@@ -86,6 +86,12 @@ export class PopoverPage {
 
   }
 
+  viewDashboard(){
+      this.viewCtrl.dismiss();
+    this.events.publish('app:navroot', 'dashboard');   
+    console.log('navigating to dashboard page');
+  }
+
 
 
 }
