@@ -144,6 +144,9 @@ class LockedDataController extends Controller
                     return response()->json(['status' => 400, 'message' => __('api_messages.user_dne')]);
                 // check if it's a member (not hr / admin) who wants to make a change a second time
                 $userRole = (User::find($request->header('from')))->getRoleNames()->first();
+                // make status empty if user has 'member' role because normal user doesnt have the previleges to make changes to the status
+                if($userRole == 'member')
+                    $request->status = '';
                 $maxCount = (int)OrganisationMeta::where(['organisation_id' => UserDetail::where('user_id',$userCode)->first()->org_id, 'key' => 'changes_max_count_'.$userRole])->first()->value;
                 if($maxCount != -1 && Data_Changes::where(['user_id' => $userCode, 'modified_by' => $request->header('from'), 'work_date' => $request->work_date])->count() >= $maxCount)
                     return response()->json(['status' => 400, "message" => __('api_messages.allowed_changes_error')]);
