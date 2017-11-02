@@ -84,10 +84,11 @@
                             "violation_type": "late_alert",
                             "violation_data": {
                               "cc_list": [
-                                "time_manager",
+                                "owner1",
+								"owner2",
                                 "hr"
                               ],
-                              "bcc_list": ["owner"],
+                              "bcc_list": [],
 							  "subject_line" : "Late alert"
                             },
 							"rule_operator" : "and",
@@ -106,8 +107,9 @@
                             "violation_type": "minimum_hrs_of_day",
                             "violation_data": {
                               "cc_list": [
-                                "time_manager",
-                                "owner"
+                                "owner1",
+                                "owner2",
+								"hr"
                               ],
                               "bcc_list": [],
 							  "subject_line" : "Minimum daily hours alert"
@@ -128,8 +130,9 @@
                             "violation_type": "minimum_hrs_of_week",
                             "violation_data": {
                               "cc_list": [
-                                "time_manager",
-                                "owner"
+								  "owner1",
+                                  "owner2",
+  								  "hr"
                               ],
                               "bcc_list": [],
 							  "subject_line" : "Minimum weekly hours alert"
@@ -150,8 +153,9 @@
                             "violation_type": "minimum_hrs_of_month",
                             "violation_data": {
                               "cc_list": [
-                                "time_manager",
-                                "owner"
+								  "owner1",
+  								  "owner2",
+  								  "hr"
                               ],
                               "bcc_list": [],
 							  "subject_line" : "Minimum monthly hours alert"
