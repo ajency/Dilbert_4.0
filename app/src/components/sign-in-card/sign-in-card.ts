@@ -9,6 +9,7 @@ import { UserDataProvider } from '../../providers/user-data/user-data';
 import { Storage } from '@ionic/storage';
 import { EnvVariables } from '../../config/env.token';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+import { AuthguardProvider } from '../../providers/authguard/authguard';
 
 
 /**
@@ -46,9 +47,10 @@ export class SignInCardComponent {
 			   public toastCtrl : ToastController,
 			   public zone : NgZone,
 			   public storage : Storage,
-         public userDataProvider : UserDataProvider,
-         private location : Location,
-         @Inject(EnvVariables) private environment) {
+			   public authguard : AuthguardProvider,
+	           public userDataProvider : UserDataProvider,
+		       private location : Location,
+	          @Inject(EnvVariables) private environment) {
 
     console.log('Hello SignInCardComponent Component');
 
@@ -147,7 +149,10 @@ export class SignInCardComponent {
 			// console.log(this.loginResponse);
 			this.status = this.loginResponse.status;
 			this.next_url = this.loginResponse.next_url;
+			this.authguard.userData = this.loginResponse.data;
+			this.authguard.retrievedUserData = true;
 			this.storage.set('userData', this.loginResponse.data).then( () => {
+				console.log('User information stored');
 		      });
 
 		if(this.status == "200"){

@@ -10,7 +10,7 @@ import { Storage } from '@ionic/storage';
 */
 @Injectable()
 export class AuthguardProvider {
-  private retrievedUserData: boolean = false;
+  public retrievedUserData: boolean = false;
   public userData : any;
 
   user_id : any;
@@ -32,6 +32,7 @@ export class AuthguardProvider {
 
         // add authentication logic here
         if(keepLoggedIn === 'yes'){
+          
           this.storage.get("userData")
           .then((result) => {
             // console.log('result',result);
