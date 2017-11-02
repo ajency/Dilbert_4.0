@@ -24,7 +24,7 @@ class OrganisationController extends Controller
         }
         App::setLocale($locale);
 
-        if(isset($request->username) && isset($request->organisation) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {    // parameter check
+        if(isset($request->user_id) && isset($request->organisation) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {    // parameter check
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {  // authenticated user check
                 if($request->has('organisation.id')) {
                     // join organisation
@@ -32,7 +32,7 @@ class OrganisationController extends Controller
                     $orgDetails = Organisation::where('id',$request->input('organisation.id'))->get();
                     if(count($orgDetails) > 0) {
                         // the organisation id provided is valid
-                        $orgData = $this->joinOrganisation($request->header('from'),$request->input('organisation.id'));
+                        $orgData = $this->joinOrganisation($request->header('from'),$request->input('organisation.id'),$request->input('organisation.timeZone'));
                         return response()->json(['status' => 'success', 'message' => __('api_messages.org_join_success'), 'data' => $orgData]);
                     }
                     else
@@ -53,15 +53,15 @@ class OrganisationController extends Controller
             return response()->json(['status' => '400', 'message' => __('api_messages.params_missing')]);
     }
 
-    public function joinOrganisation($userId,$orgId) {
+    public function joinOrganisation($userId,$orgId,$timeZone) {
         $output = new ConsoleOutput;
         //get the organisation details
         $orgDetails = Organisation::where('id',$orgId)->first();
         // update the org_id in user table and set timezone as default and is_active attribute as 1
-        // $user = User::where('email',$userName)->update(['org_id' => $orgDetails->id, 'timeZone' => $orgDetails->default_tz, 'is_active' => true]);
+        // $user = User::where('email',$user_id)->update(['org_id' => $orgDetails->id, 'timeZone' => $orgDetails->default_tz, 'is_active' => true]);
         $userObj = User::where('id',$userId)->first();
         $output->writeln("user_obj".$userId.json_encode($userObj));
-        $updateResponse = (new UserAuth)->updateOrCreateUserDetails($userObj, ['org_id' => $orgDetails->id]);
+        $updateResponse = (new UserAuth)->updateOrCreateUserDetails($userObj, ['org_id' => $orgDetails->id, 'timeZone' => $timeZone]);
         $output->writeln("+++++++++++++++++++++".json_encode($updateResponse));
         // return the organisation data
         $orgData  = ['id' => $orgDetails->id, 'name' => $orgDetails->name];
