@@ -41,16 +41,18 @@
 
        <div class="week__full full-card">
         <div class="full-card__header flex-row">
-            <p *ngIf = "sideBarData.data.periodData.length <= 7" no-margin>{{ "this_week" | translate }}</p>
-            <p *ngIf = "sideBarData.data.periodData.length > 7" no-margin>{{ "this_month" | translate }}</p>
-
+            <div class="flex">
+                <p *ngIf = "sideBarData.data.periodData.length <= 7" no-margin>{{ "this_week" | translate }}</p>
+                <p *ngIf = "sideBarData.data.periodData.length > 7" no-margin>{{ "this_month" | translate }}</p>
+            </div>
             <!-- <button ion-button clear>
                 <ion-icon name="calendar" color="text" class="icon-size full"></ion-icon>
             </button> -->
-
+            <div class="flex">
              <my-date-picker [options]="myDatePickerOptions" (dateChanged)="requestData($event)" [(ngModel)]="model" required placeholder = "Jump to date" >
                     
                 </my-date-picker>
+            </div>
         </div>
         <div class="full-card__body">
             <!-- Week list -->
