@@ -103,7 +103,7 @@
                                                                 <span class="th-break">{{ workday.end_time != '' ? getDayDate(workday.end_time, 5) : "n/a"}}</span>
                                                             </span>
                                                         </div>
-                                                        <div *ngIf="workday.leave_status == 'Leave' || workday.leave_status == 'Holiday' || workday.leave_status == 'Weekend' ">
+                                                        <div *ngIf="workday.leave_status == 'Leave' || workday.leave_status == 'Holiday' || workday.leave_status == 'Weekend' || workday.leave_status == 'Not joined' ">
                                                             <span class="th-total">{{workday.leave_status}}</span>
                                                             <span class="th-spilt">
                                                                 <span class="th-work"></span> - <span class="th-break"></span>

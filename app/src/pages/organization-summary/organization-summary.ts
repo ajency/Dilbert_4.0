@@ -43,6 +43,9 @@ export class OrganizationSummaryPage {
   param1 : any;
   org_id : any;
   period_unit : any;
+  private flag : boolean;
+  private flag2 : any;
+  private flag3 : boolean;
 
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -243,7 +246,41 @@ export class OrganizationSummaryPage {
         // this.saveData = response.data;
 
         this.summaryData.forEach( (user) => {
+
+        if(user.length != 0){
+            console.log(this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date)
+            if(this.sideBarData.data.periodData[0].work_date < this.sideBarData.data.user.joining_date){
+              this.sideBarData.data.periodData = [];
+              console.log(this.sideBarData);
+            }
+
+            else if(this.sideBarData.data.periodData[0].work_date > this.sideBarData.data.user.joining_date && 
+                      this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date < this.sideBarData.data.user.joining_date ){
+
+                  for(var i = 0; i < this.sideBarData.data.periodData.length; i++ ){
+                    if(this.sideBarData.data.periodData[i].work_date < this.sideBarData.data.user.joining_date && this.sideBarData.data.periodData[i].leave_status == 'Leave')
+                        this.sideBarData.data.periodData[i].leave_status = 'Not joined';
+                  }
+
+            }
+        }
+
         if(user.summary.length !== 0) { // Checks if summary has Length greater than 0, if so the week's data is present
+
+          if(user.summary[user.summary.length-1].work_date < user.user.joining_date ){
+            user.summary = [];
+          }
+
+          else if(user.summary[0].work_date < user.user.joining_date && user.summary[user.summary.length -1].work_date > user.user.joining_date){
+            for(i = 0; i < user.summary.length; i++){
+              if(user.summary[i].work_date < user.user.joining_date && user.summary[i].leave_status == 'Leave'){
+                user.summary[i].leave_status = 'Not joined';
+              }
+            }
+
+          }
+
+
           user.total_time = "00:00";
           for ( i = 0; i < user.summary.length; i++) {
             if(user.summary[i].leave_status == "Present" || user.summary[i].leave_status == "Worked" || user.summary[i].leave_status == "Worked on holiday" || 
@@ -257,6 +294,15 @@ export class OrganizationSummaryPage {
 
         this.saveData = this.summaryData;
         console.log(this.summaryData);
+
+        // Flags for sorting
+        this.flag2 = Array<number>(7);
+        for(var i = 0; i < this.flag2.length; i++)
+        {
+          this.flag2[i] = 0;
+        }
+        this.flag3 = true;
+        this.flag = false;
 
         this.zone.run(() => {});
  	   }
@@ -296,9 +342,7 @@ export class OrganizationSummaryPage {
     return temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-' + temp.getDate();
   }
 
-  sortBy(){
 
-  }
 
   fetchData(next){
 
@@ -370,6 +414,120 @@ export class OrganizationSummaryPage {
     this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
     this.events.publish('app:navroot', 'dashboard');
   }
+
+
+  sortBy(property, date, index) {
+    if (property === 'name') {
+
+      this.flag = !this.flag;
+      this.flag3 = true;
+      if(this.flag){
+       this.summaryData = this.summaryData.sort((obj1,obj2) => {
+
+          if(obj1.user.name > obj2.user.name)
+            return -1;
+          if(obj1.user.name < obj2.user.name)
+            return 1;
+         });
+      }
+      else{
+        this.summaryData = this.summaryData.sort((obj1,obj2) => {
+
+            if(obj1.user.name > obj2.user.name)
+              return 1;
+            if(obj1.user.name < obj2.user.name)
+              return -1;
+        });
+
+      }
+         // this.userSummary = this.userSummary.reverse();
+         // console.log(this.userSummary);
+         // console.log(this.myDate);
+         // console.log(typeof(this.myDate));
+         for(var i= 0; i<this.flag2.length; i++)
+         {
+          this.flag2[i] = 0;
+         }
+    }
+
+
+    else if (property === 'date') {
+      // this.sorting.date.date = new Date(date);
+      console.log(index);
+
+
+      if(this.summaryData[0].summary[index] != undefined){
+
+        this.flag = true;
+        this.flag3 = true;
+
+        for(var j= 0; j < 7; j++)
+             {
+              if(index!=j)
+              this.flag2[j] = 0;
+             }
+
+        this.flag2[index] +=1;
+
+        if(this.flag2[index]%2){
+
+           this.summaryData.sort( ( a, b) => {
+            // console.log(a,b);
+            if(this.getDayDate(a.summary[index].total_time,5) > this.getDayDate(b.summary[index].total_time,5))
+              return -1;
+            if(this.getDayDate(a.summary[index].total_time,5) <= this.getDayDate(b.summary[index].total_time,5))
+              return 1;
+           });
+
+        }
+
+        else{
+             this.summaryData.sort( ( a, b) => {
+            // console.log(a,b);
+            if(this.getDayDate(a.summary[index].total_time,5) > this.getDayDate(b.summary[index].total_time,5))
+              return 1;
+            if(this.getDayDate(a.summary[index].total_time,5) <= this.getDayDate(b.summary[index].total_time,5))
+              return -1;
+           });
+        }
+
+       
+
+      }
+    
+    }
+    else if (property === 'total') {
+      this.flag=true;
+      this.flag3 = !this.flag3;
+
+      for(var i= 0; i<this.flag2.length; i++){
+        this.flag2[i] = 0;
+      }
+
+      if(!this.flag3){
+       this.summaryData = this.summaryData.sort((obj1,obj2) => {
+
+          if(obj1.total_time > obj2.total_time)
+            return -1;
+          if(obj1.total_time < obj2.total_time)
+            return 1;
+         });
+      }
+      else{
+        this.summaryData = this.summaryData.sort((obj1,obj2) => {
+
+            if(obj1.total_time > obj2.total_time)
+              return 1;
+            if(obj1.total_time < obj2.total_time)
+              return -1;
+        });
+
+      }
+
+    }
+  
+  }
+
 
  
 
