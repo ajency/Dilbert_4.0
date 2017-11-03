@@ -95,8 +95,9 @@ class AppController extends Controller
                         $locked = new Locked_Data;
                         $locked->user_id = $request->header('from');
                         $locked->work_date = date('Y-m-d');
-                        $locked->start_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
-                        $locked->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
+                        // clip the start time to 9:30 am
+                        $locked->start_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
+                        $locked->end_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
                         $locked->total_time = "00:00";
                         // $locked->status = "Present";
                         $locked->save();
