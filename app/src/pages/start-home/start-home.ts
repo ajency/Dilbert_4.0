@@ -186,7 +186,7 @@ ionViewDidLoad() {
     console.log('ion view will leave dashboard');
     this.appGlobalsProvider.dashboard_params.param1 = '';
     this.appGlobalsProvider.dashboard_params.param2 = '';
-    this.authguard.user_id = '';
+    this.authguard.user_id = this.authguard.userData.user_id;
 
   }
 
