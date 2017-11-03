@@ -46,6 +46,7 @@ export class OrganizationSummaryPage {
   private flag : boolean;
   private flag2 : any;
   private flag3 : boolean;
+  future_date : boolean = false;
 
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -238,6 +239,17 @@ export class OrganizationSummaryPage {
       // console.log(response);
       if(response.status == 200){
 
+          console.log(date.start,'-----------',this.formatDate(new Date()));
+          if(date.start > this.formatDate(new Date())){
+            this.future_date = true;
+            console.log("?????????????????????????????")
+          }
+          else{
+            this.future_date = false;
+            console.log("+++++++++++++++++++++++++++++")
+
+          }
+
         this.summaryData = response.data;
 
 
@@ -247,23 +259,6 @@ export class OrganizationSummaryPage {
 
         this.summaryData.forEach( (user) => {
 
-        if(user.length != 0){
-            console.log(this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date)
-            if(this.sideBarData.data.periodData[0].work_date < this.sideBarData.data.user.joining_date){
-              this.sideBarData.data.periodData = [];
-              console.log(this.sideBarData);
-            }
-
-            else if(this.sideBarData.data.periodData[0].work_date > this.sideBarData.data.user.joining_date && 
-                      this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date < this.sideBarData.data.user.joining_date ){
-
-                  for(var i = 0; i < this.sideBarData.data.periodData.length; i++ ){
-                    if(this.sideBarData.data.periodData[i].work_date < this.sideBarData.data.user.joining_date && this.sideBarData.data.periodData[i].leave_status == 'Leave')
-                        this.sideBarData.data.periodData[i].leave_status = 'Not joined';
-                  }
-
-            }
-        }
 
         if(user.summary.length !== 0) { // Checks if summary has Length greater than 0, if so the week's data is present
 
@@ -339,7 +334,9 @@ export class OrganizationSummaryPage {
 
    formatDate(date) {
     let temp = new Date(date);
-    return temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-' + temp.getDate();
+    let month = (temp.getMonth() + 1) < 10 ? '0'+(temp.getMonth() + 1).toString()  : (temp.getMonth() + 1).toString();
+    let day = temp.getDate() < 10 ? '0' + temp.getDate().toString() : temp.getDate().toString();
+    return temp.getFullYear() + '-' + month + '-' + day;
   }
 
 

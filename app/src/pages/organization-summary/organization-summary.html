@@ -87,9 +87,14 @@
                                                    
                                                 </a>
                                             </td>
-                                            <ng-container *ngIf="item.summary.length == 0">
+                                            <ng-container *ngIf="item.summary.length == 0 && future_date">
                                                 <td [colSpan]="7" class="noData">
                                                     <span class="th-total" style="text-align: center;">No Data Acquired</span>
+                                                </td>
+                                            </ng-container>
+                                             <ng-container *ngIf="item.summary.length == 0 && ! future_date">
+                                                <td [colSpan]="7" class="noData">
+                                                    <span class="th-total" style="text-align: center;">Not joined</span>
                                                 </td>
                                             </ng-container>
 

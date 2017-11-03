@@ -86,6 +86,7 @@ export class PopoverPage {
 
   viewSummary(){
     this.viewCtrl.dismiss();
+    this.appglobals.summary_params.param1 = '';
     this.events.publish('app:navroot', 'summary');   
     console.log('navigating to summary page');
 
