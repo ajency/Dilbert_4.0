@@ -49,7 +49,7 @@ class Locked_Data extends Model
                 "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$dateCounter->format('Y-m-d')),
                 "start_time" => "",
                 "end_time" => "",
-                "total_time" => "",
+                "total_time" => "00:00",
                 "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
                 "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
             ]);
@@ -66,7 +66,7 @@ class Locked_Data extends Model
                     "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$dateCounter->format('Y-m-d')),
                     "start_time" => "",
                     "end_time" => "",
-                    "total_time" => "",
+                    "total_time" => "00:00",
                     "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
                     "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
                 ]);
@@ -88,7 +88,7 @@ class Locked_Data extends Model
                 $dayData['leave_status'] = /*'Leave'*/$ld->status;
                 $dayData['start_time'] = '';
                 $dayData['end_time'] = '';
-                $dayData['total_time'] = 0;
+                $dayData['total_time'] = "00:00";
                 $dayData['violations'] = (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
                 $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
                 array_push($data,$dayData);
@@ -134,7 +134,7 @@ class Locked_Data extends Model
                 "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$dateCounter->format('Y-m-d')),
                 "start_time" => "",
                 "end_time" => "",
-                "total_time" => "",
+                "total_time" => "00:00",
                 "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
                 "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
             ]);
