@@ -183,6 +183,24 @@ export class SummarySidebarComponent {
       // console.log(response);
       this.sideBarData = response;
 
+          if(this.sideBarData.data.periodData.length != 0){
+            console.log(this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date)
+            if(this.sideBarData.data.periodData[0].work_date < this.sideBarData.data.user.joining_date){
+             this.sideBarData.data.periodData = [];
+             console.log(this.sideBarData);
+          }
+
+            else if(this.sideBarData.data.periodData[0].work_date > this.sideBarData.data.user.joining_date && 
+                      this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date < this.sideBarData.data.user.joining_date ){
+
+                  for(var i = 0; i < this.sideBarData.data.periodData.length; i++ ){
+                    if(this.sideBarData.data.periodData[i].work_date < this.sideBarData.data.user.joining_date && this.sideBarData.data.periodData[i].leave_status == 'Leave')
+                        this.sideBarData.data.periodData[i].leave_status = 'Not joined';
+                  }
+
+            }
+        }
+
        let serializedquery =  `?${$.param(filter1)}`;
        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` });
 
@@ -325,12 +343,21 @@ export class SummarySidebarComponent {
       
       }
 
+     
+
       this.minHours = no_of_days * 9;
 
-      this.loader_percentage =  minutes/(this.minHours*60)*100;
-      if(this.loader_percentage>100){
-        this.loader_percentage = 100;
+       if(this.sideBarData.data.periodData.length == 0){
+        minutes = 0;
+        this.loader_percentage = 0;
       }
+      else{
+        this.loader_percentage =  minutes/(this.minHours*60)*100;
+        if(this.loader_percentage>100){
+         this.loader_percentage = 100;
+        }
+      }
+      
 
       console.log(this.minHours);
 

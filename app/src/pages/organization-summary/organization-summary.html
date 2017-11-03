@@ -96,15 +96,22 @@
                                             <ng-container *ngIf="item.summary.length != 0">
                                                 <td *ngFor="let workday of item.summary">
                                                     <a href="#" class="single-day" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
-                                                        <div *ngIf="workday.leave_status === 'Present' || workday.leave_status === 'Worked' || workday.leave_status === 'Leave due to violation' || workday.leave_status === 'Worked on weekend' || workday.leave_status === 'Worked on holiday' ">
-                                                            <span class="th-total">{{workday.total_time != null ? workday.total_time : "n/a" }}</span>
+                                                        <div *ngIf="workday.leave_status === 'Present' || workday.leave_status === 'Worked'  || workday.leave_status === 'Worked on weekend' || workday.leave_status === 'Worked on holiday' ">
+                                                            <span class="th-total">{{ (workday.total_time != null || workday.total_time != '') ? getDayDate(workday.total_time,5) : "n/a" }}</span>
                                                             <span class="th-spilt">
-                                                                <span class="th-work">{{getDayDate(workday.start_time, 5)}}</span> -
-                                                                <span class="th-break">{{getDayDate(workday.end_time, 5)}}</span>
+                                                                <span class="th-work">{{ workday.start_time != '' ? getDayDate(workday.start_time, 5) : "n/a"}}</span> -
+                                                                <span class="th-break">{{ workday.end_time != '' ? getDayDate(workday.end_time, 5) : "n/a"}}</span>
                                                             </span>
                                                         </div>
-                                                        <div *ngIf="!(workday.leave_status === 'Present' || workday.leave_status === 'Worked' || workday.leave_status === 'Leave due to violation' || workday.leave_status === 'Worked on weekend' || workday.status === 'Worked on holiday')">
+                                                        <div *ngIf="workday.leave_status == 'Leave' || workday.leave_status == 'Holiday' || workday.leave_status == 'Weekend' ">
                                                             <span class="th-total">{{workday.leave_status}}</span>
+                                                            <span class="th-spilt">
+                                                                <span class="th-work"></span> - <span class="th-break"></span>
+                                                            </span>
+                                                        </div>
+
+                                                        <div *ngIf="workday.leave_status == 'Leave due to violation' ">
+                                                            <span class="th-total">Leave</span>
                                                             <span class="th-spilt">
                                                                 <span class="th-work"></span> - <span class="th-break"></span>
                                                             </span>

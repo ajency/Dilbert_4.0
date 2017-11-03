@@ -267,6 +267,23 @@ ionViewDidLoad() {
       if(response.status == 200){
 
         this.sideBarData = response;
+        if(this.sideBarData.data.periodData.length != 0){
+            console.log(this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date)
+            if(this.sideBarData.data.periodData[0].work_date < this.sideBarData.data.user.joining_date){
+              this.sideBarData.data.periodData = [];
+              console.log(this.sideBarData);
+            }
+
+            else if(this.sideBarData.data.periodData[0].work_date > this.sideBarData.data.user.joining_date && 
+                      this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date < this.sideBarData.data.user.joining_date ){
+
+                  for(var i = 0; i < this.sideBarData.data.periodData.length; i++ ){
+                    if(this.sideBarData.data.periodData[i].work_date < this.sideBarData.data.user.joining_date && this.sideBarData.data.periodData[i].leave_status == 'Leave')
+                        this.sideBarData.data.periodData[i].leave_status = 'Not joined';
+                  }
+
+            }
+        }
 
         
 
