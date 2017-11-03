@@ -40,7 +40,7 @@
                         </label>
 
                          <label style="float: right;" for="find-week-day" class="wrapper">
-                         			Select date
+                         			Jump to date
                                         <input type="date" class="picker form-control" max={{onFormatDate(todaysDate)}} [(ngModel)]="date" (change)="onDateChange(date)">
                          </label>
                     </div>
@@ -82,20 +82,20 @@
                                     <ng-container *ngIf="summaryData && summaryData.length != 0">
                                         <tr class="" *ngFor="let item of summaryData">
                                             <td class="employee-id">
-                                                <a href="/dashboard/{{item.email}}" class="employee-name" data-toggle="tooltip" data-html="true" data-placement="bottom" title="More details of this employee">
-                                                    <span class="th-total">{{item.user.name}}</span>
+                                                <a (click) = "navigateToDashboard(item)" style="cursor: pointer;" class="employee-name" data-toggle="tooltip" data-html="true" data-placement="bottom" title="More details of this employee">
+                                                    <span style="text-align: center;" class="th-total">{{item.user.name}}</span>
                                                    
                                                 </a>
                                             </td>
                                             <ng-container *ngIf="item.summary.length == 0">
                                                 <td [colSpan]="7" class="noData">
-                                                    <span class="th-total">No Data Acquired</span>
+                                                    <span class="th-total" style="text-align: center;">No Data Acquired</span>
                                                 </td>
                                             </ng-container>
 
                                             <ng-container *ngIf="item.summary.length != 0">
                                                 <td *ngFor="let workday of item.summary">
-                                                    <a href="#" class="single-day" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
+                                                    <a  class="single-day" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
                                                         <div *ngIf="workday.leave_status === 'Present' || workday.leave_status === 'Worked'  || workday.leave_status === 'Worked on weekend' || workday.leave_status === 'Worked on holiday' ">
                                                             <span class="th-total">{{ (workday.total_time != null || workday.total_time != '') ? getDayDate(workday.total_time,5) : "n/a" }}</span>
                                                             <span class="th-spilt">
@@ -125,7 +125,7 @@
                                                 <!-- </td> -->
                                             </ng-container>
                                             <td>
-                                                <a href="#" class="single-day total current" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
+                                                <a class="single-day total current" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
                                                     <span class="th-total">{{item.total_time}}</span>
                                                     <span class="th-spilt">
                                                         <span class="th-break"></span>

@@ -247,7 +247,7 @@ export class OrganizationSummaryPage {
           user.total_time = "00:00";
           for ( i = 0; i < user.summary.length; i++) {
             if(user.summary[i].leave_status == "Present" || user.summary[i].leave_status == "Worked" || user.summary[i].leave_status == "Worked on holiday" || 
-            user.summary[i].leave_status == "Worked on weekend" || user.summary[i].leave_status == "Leave due to violation"  ) // Check the status before calculating
+            user.summary[i].leave_status == "Worked on weekend"  ) // Check the status before calculating
               user.total_time = this.getSumofTime(user.total_time, user.summary[i].total_time);
           }
         } else { // No summary data found related to that user
@@ -354,6 +354,24 @@ export class OrganizationSummaryPage {
     }
     return text;
   }
+
+  navigateToDashboard(data){
+    console.log(data);
+    let dash_param1 = {
+      user_id : data.user.user_id,
+      start_date : this.formatDate(new Date()),
+      period_unit : this.appGlobalsProvider.period_unit
+    }
+
+    let dash_param2 = {
+      summary_date : this.formatDate(new Date())
+    }
+    this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
+    this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
+    this.events.publish('app:navroot', 'dashboard');
+  }
+
+ 
 
 
 }
