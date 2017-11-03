@@ -267,6 +267,11 @@ ionViewDidLoad() {
       if(response.status == 200){
 
         this.sideBarData = response;
+
+        
+
+
+
         this.zone.run(() => {});
         // this.events.publish('app:updatehistory','dashboard');
       

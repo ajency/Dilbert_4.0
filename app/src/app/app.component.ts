@@ -243,6 +243,11 @@ export class MyApp {
               this.updateTitle('summary');
             }
 
+            else if(pathparts2[0] == 'login' || pathparts2[0] == 'register'){
+              console.log('navigating to dashboard')
+              this.updateNav('dashboard');
+            }
+
             else{
               console.log('navigating to not-found page');
               this.updateNav('not-found');
@@ -284,7 +289,7 @@ export class MyApp {
             else{
               console.log('navigating to not-found page');
               this.updateNav('not-found');
-              
+
             }
 
           }

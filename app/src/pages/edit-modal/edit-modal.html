@@ -53,7 +53,7 @@
 
 	<div class="footer">
 	
-	<button ion-button color="dark" (click) = "changeLogs()" [disabled] = "((start_time > end_time || start_time == '' || end_time == '') && status == 'Present') "  > Save Changes</button> 
+	<button ion-button color="dark" (click) = "changeLogs()" [disabled] = "((start_time > end_time || start_time == '' || end_time == '') && (status == 'Present' || status == 'Worked' || status == 'Worked on weekend' || status == 'Worked on holiday' || status == 'Leave due to violation') ) "  > Save Changes</button> 
 	<button style="float: right;" ion-button color="danger" (click) = "close()" > Cancel</button>	
 
 

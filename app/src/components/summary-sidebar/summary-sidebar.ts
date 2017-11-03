@@ -302,8 +302,7 @@ export class SummarySidebarComponent {
 
         }
         if(this.sideBarData.data.periodData[i].leave_status == "Present" || this.sideBarData.data.periodData[i].leave_status =="Worked" || 
-          this.sideBarData.data.periodData[i].leave_status == "Worked on holiday" || this.sideBarData.data.periodData[i].leave_status == "Worked on weekend" ||
-          this.sideBarData.data.periodData[i].leave_status == "Leave due to violation" )
+          this.sideBarData.data.periodData[i].leave_status == "Worked on holiday" || this.sideBarData.data.periodData[i].leave_status == "Worked on weekend")
         {
           let temp = this.sideBarData.data.periodData[i].total_time.split(":");
           minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
@@ -316,12 +315,12 @@ export class SummarySidebarComponent {
         //    this.sideBarData.data.periodData.splice(0,1);
         //   console.log(this.sideBarData.data.periodData);
         // }
-        if(this.sideBarData.data.periodData[i].work_date == this.todays_date && this.sideBarData.data.periodData[i].leave_status == '' ){
-          console.log(this.sideBarData.data.periodData[i])
-          this.sideBarData.data.periodData.splice(i,1);
-          console.log("After removal : ",this.sideBarData.data)
-          i = i-1; 
-        }
+        // if(this.sideBarData.data.periodData[i].work_date == this.todays_date && this.sideBarData.data.periodData[i].leave_status == '' ){
+        //   console.log(this.sideBarData.data.periodData[i])
+        //   this.sideBarData.data.periodData.splice(i,1);
+        //   console.log("After removal : ",this.sideBarData.data)
+        //   i = i-1; 
+        // }
 
       
       }
