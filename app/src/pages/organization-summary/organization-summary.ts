@@ -151,11 +151,11 @@ export class OrganizationSummaryPage {
 
  getUserDate(dropdownValue, dateswnt) {
 
-        let dates = this.getStartAndEndOfDate(new Date());
+        // let dates = this.getStartAndEndOfDate(new Date());
         
         let date = {
-          start: this.formatDate(dates.start),
-          end: this.formatDate(dates.end)
+          start: this.formatDate(new Date()),
+          // end: this.formatDate(dates.end)
         };
 
         this.getData(date);

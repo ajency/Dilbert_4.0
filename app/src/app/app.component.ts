@@ -166,7 +166,7 @@ export class MyApp {
       this.appglobals.pushToHistory(data);
       // this.platformlocation.pushState({page: data},"",data);
     }
-    // console.log("app:updatehistory",this.appglobals.getHistory());
+     console.log("app:updatehistory",this.appglobals.getHistory());
   });
 
      platformlocation.onPopState((event: any) => {

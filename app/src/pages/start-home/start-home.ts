@@ -319,7 +319,7 @@ ionViewDidLoad() {
         this.zone.run(() => {});
 
         serializedquery = `?${$.param(filter2)}`;
-        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true });
+        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true, replace : true });
 
         this.checkPermissions();
 
