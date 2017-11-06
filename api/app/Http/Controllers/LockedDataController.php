@@ -194,7 +194,7 @@ class LockedDataController extends Controller
                         $createdAt = new DateTime($lockedEntry->created_at);
                         // [ NOTE undefined index needs to be handled ]
                         $threshold = (int)$roleMeta['changes_allowed_time_'.$ckey.'_'.$userRole];
-                        if($threshold != -1 && date_diff($now,$createdAt)->h > $threshold)
+                        if($threshold != -1 && ((date_diff($now,$createdAt)->d * 24) + date_diff($now,$createdAt)->h) > $threshold)
                             return response()->json(['status' => 400, 'message' => __('api_messages.time_up')]);
                         // first check to see if the value really needs to be changed
                         // if the field is start time or end time get it in the right format
