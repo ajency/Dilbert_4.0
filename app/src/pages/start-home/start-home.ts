@@ -168,11 +168,11 @@ ngOnInit(){
 
  openStyle(){
 
-  var navOption = {
-    animation: "ios-transition"
-  }
+  // var navOption = {
+  //   animation: "ios-transition"
+  // }
   
-  this.navCtrl.push('StyleGuidePage',{},navOption);
+  // this.navCtrl.push('StyleGuidePage',{},navOption);
 }
 
 

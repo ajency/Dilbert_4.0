@@ -138,8 +138,8 @@ export class SignInCardComponent {
 		headers.append('Content-Type', 'application/json' );
 		// let options = new RequestOptions({ headers: headers });
 
-		// let url = `${this.environment.dilbertApi}/login/google/${this.appglobals.lang}?token=${this.token}`;
-		let url = `${this.environment.dilbertApi}/login/google/fr?token=${this.token}`;
+		let url = `${this.environment.dilbertApi}/login/google/${this.appglobals.lang}?token=${this.token}`;
+		// let url = `${this.environment.dilbertApi}/login/google/fr?token=${this.token}`;
 		
 		console.log(url);
 		// let postParams = {

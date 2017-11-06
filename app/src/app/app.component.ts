@@ -225,6 +225,7 @@ export class MyApp {
     else{
       if(this.url == ''){
         console.log('navigating to dashboard');
+        this.rootPage = 'dashboard';
          this.updateNav('dashboard');
       }
 
