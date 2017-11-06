@@ -20,6 +20,9 @@ class AppController extends Controller
     {
         // check if all parameters are there
         if ($request->header('from') != null && $request->header('X-API-KEY') != null && $request->from_state != null && $request->to_state != null) {
+            // correct the Offline state
+            if($request->to_state == 'Offline')
+                $request->to_state = 'offline';
             // authenticate the user
             $user = (new UserAuth)->getUserData($request->header('from'), true);
             $user['user_details'] = $user['user_details']->first();
