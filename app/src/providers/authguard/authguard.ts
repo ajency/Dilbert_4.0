@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { CookieService } from 'ngx-cookie';
 import { Storage } from '@ionic/storage';
+import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+
 /*
   Generated class for the AuthguardProvider provider.
 
@@ -18,7 +20,8 @@ export class AuthguardProvider {
   constructor(
     private cookieservice: CookieService,
     private storage: Storage,
-    private location: Location
+    private location: Location,
+    public appGlobalsProvider : AppGlobalsProvider
     ) {
     console.log('Hello AuthGuard Provider');
   }
@@ -38,6 +41,9 @@ export class AuthguardProvider {
             // console.log('result',result);
             this.retrievedUserData = true;
             this.userData = result;
+            this.appGlobalsProvider.lang = this.userData.user_lang;
+            this.appGlobalsProvider.period_unit = this.userData.default_period_unit;
+            this.appGlobalsProvider.org_name = this.userData.org_name;
             // console.log(result);
             this.user_id = this.userData.user_id;
 

@@ -20,6 +20,7 @@ import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 export class LoggedInHeaderComponent {
 
   header : any;
+  org_name : any;
   langSelect : boolean = true;
   image : any;
   param = {
@@ -54,6 +55,8 @@ export class LoggedInHeaderComponent {
   }
 
   ngOnInit(){
+
+    this.org_name = this.appglobals.org_name;
      if(this.cookieservice.get("keepLoggedIn")== 'yes'){
        this.header = "loggedin";
        if(this.appservice.image){

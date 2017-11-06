@@ -13,8 +13,9 @@ export class AppGlobalsProvider {
 
 
   private historyStack: Array<any> = [];
-	lang : any;
+	lang : any ;
   period_unit: string = 'week';
+  org_name : any;
   cos_offset : string = '0';
   view_log_history_btn : boolean = true;
 

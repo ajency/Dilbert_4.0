@@ -22,7 +22,7 @@
                 <div>
                   <div *ngIf="header == 'loggedin' " class="brand-name" font-weight-4="" start="">
                       <p color="secondary" ion-text="" no-margin="">
-                          Ajency.in
+                          {{org_name}}
                       </p>
                   </div>
                   <div *ngIf="header == 'notloggedin' || header == 'new' " class="brand-name" font-weight-4="" start="">
@@ -31,7 +31,7 @@
                       </p>
                   </div>
                 </div>
-                <div class="relative lang-container">
+                <div *ngIf="header == 'notloggedin' || header == 'new' " class="relative lang-container">
                     <ion-select [(ngModel)]="lang" (ionChange)="setLocale()" class="select-lang mobile-hide" color="gray-link" interface="popover">
                         <ion-option selected = "{{langSelect}}"  value="en">
                             English
