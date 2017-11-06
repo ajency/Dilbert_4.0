@@ -129,7 +129,7 @@ class CronController extends Controller
                 }
             }
             // getting the total hours
-            $totalHours = (int)$totalHours/60;
+            $totalHours = (int)($totalHours/60).':'.($totalHours%60);
             echo "total hours".$totalHours;
             // check for violation
             $keyFields = ['total_hrs_in_week' => $totalHours];
@@ -165,7 +165,7 @@ class CronController extends Controller
                 }
             }
             // getting the total hours
-            $totalHours = (int)$totalHours/60;
+            $totalHours = (int)($totalHours/60).':'.($totalHours%60);
             // check for violation
             $keyFields = ['total_hrs_in_month' => $totalHours];
             $rhsFields = ['total_month_hours' => $minHours];
