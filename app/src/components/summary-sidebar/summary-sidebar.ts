@@ -26,6 +26,7 @@ export class SummarySidebarComponent {
   apiURL :any;
   userId : any;
   todays_date : any;
+  lang_for_date_placeholder : any;
   // summaryContentData : any;
   btnActive : boolean = false;
   private myDatePickerOptions: IMyDpOptions = {
@@ -60,6 +61,8 @@ export class SummarySidebarComponent {
               public appGlobalsProvider : AppGlobalsProvider,
               public authguard : AuthguardProvider
               ) {
+
+    this.lang_for_date_placeholder = this.appGlobalsProvider.lang;
 
     this.todays_date = moment().format('YYYY-MM-DD');
    console.log(this.todays_date);

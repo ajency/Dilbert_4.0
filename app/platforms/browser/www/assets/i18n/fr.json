@@ -1,5 +1,6 @@
 {
 
+	  "DILBERT" : "DILBERT",
 	  "login" : "S'identifier",
 	  "register" : "Registre",
 	  "contact us" : "Contactez nous",
@@ -44,8 +45,25 @@
 	  "online" : "en ligne",
 	  "no logs found" : "Aucun journal trouvé",
 	  "no data found" : "Aucune donnée disponible",
-	  "leave" :  "Laisser",
-	  "holiday" : "Vacances",
+	  "Leave" :  "Laisser",
+	  "Holiday" : "Vacances",
+	  "Weekend" : "Fin de semaine",
+	  "Not joined" : "Pas rejoint",
+	  "active" : "Actif",
+	  "offline" : "Hors ligne",
+	  "idle" : "Tourner au ralenti",
+	  "Jump to date" : "Sauter à ce jour",
+	  "Edit log time" : "Modifier le temps du journal",
+	  "Modify_logs" : "Modifier les journaux",
+	  "Leave_status" : "Quitter le statut",
+	  "Save_changes" : "Sauvegarder les modifications",
+	  "Cancel" : "Annuler",
+	  "Worked" : "Travaillé",
+	  "Worked on weekend" : "Travaillé le week-end",
+	  "Worked on holiday" : "Travaillé en vacances",
+	  "Leave due to violation" : "partir en raison d'une violation", 
+
+
 
 	  "Monday" : "Lundi" ,
 	  "Tuesday" : "Mardi",
@@ -93,13 +111,12 @@
 	  "Dec" : "Déc",
 
 
-	  "changed_logs" : "fr_Changed logs",
-	  "modified" : "fr_Modified",
-	  "status" : "fr_Status",
-	  "from" : "fr_from",
-	  "on" : "fr_on",
-	  "at" : "fr_at",
-	  "by" : "fr_by"
+	  "changed_logs" : "journaux modifiés",
+	  "modified" : "modifié",
+	  "status" : "statut",
+	  "from" : "de",
+	  "on" : "sur",
+	  "at" : "à"
 
 
 

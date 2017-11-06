@@ -1,6 +1,6 @@
 <div>
    <p font-weight-5 m-v-20 class="contentitle flex-row space-between align-top">
-        {{ "the_summary" | translate }}  <button *ngIf = "edit_btn_pd" (click) = "editModal(day_data[0])" title="Edit logs" ion-button outline small m-t-0> Edit log time </button> </p>
+        {{ "the_summary" | translate }}  <button *ngIf = "edit_btn_pd" (click) = "editModal(day_data[0])" title="Edit logs" ion-button outline small m-t-0> {{ 'Edit log time' | translate}} </button> </p>
         <!-- Days details -->
         <div class="day-detail flex-row" >
             <div class="day-detail__current detail-cols desk-hide">
