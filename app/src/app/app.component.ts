@@ -35,7 +35,7 @@ declare var document : any;
   templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild(Nav) nav: NavController;
+  @ViewChild('mainContent') nav: NavController;
 
 
   rootPage: any ;
@@ -173,8 +173,8 @@ export class MyApp {
       // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
       let history = this.appglobals.getHistory();
       console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-      // console.log(event);
-      // console.log(history);
+      console.log(event);
+      console.log(history);
       // this.events.publish('app:popstate',event.state);
 
       // this.updateNav({page: 'competitors', setroot: true});
