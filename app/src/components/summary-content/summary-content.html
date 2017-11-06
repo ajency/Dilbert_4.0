@@ -124,7 +124,7 @@
             </li>
 
         </div>
-        <li  class="detail-view__cols completed total direction-col">
+        <li *ngIf = "day_data[0].status == '' " class="detail-view__cols completed total direction-col">
             <h6 ion-text font-weight-3 color="dark">{{ "u ended day at" | translate }} 
                 <h6 *ngIf = "day_data[0].end_time != '' && day_data[0].end_time != undefined " ion-text font-weight-4 color="primary" class="dis-inline started-time">{{getDayDate(day_data[0].end_time,3)}}</h6>
                  <h6 *ngIf = "day_data[0].end_time == '' || day_data[0].end_time == undefined " ion-text font-weight-4 color="primary" class="dis-inline started-time">n/a</h6>
