@@ -56,7 +56,7 @@ class AppController extends Controller
                         $log->cos = (count($lockedData) == 0) ? $this->getCurrentTimeZoneTime($timeZone) : $lockedData->end_time;
                         $log->user_id = $request->header('from');
                         $log->from_state = ($lastLog->to_state == 'New Session') ? 'active' : $lastLog->to_state;
-                        $log->to_state = 'OFFLINE';
+                        $log->to_state = 'offline';
                         $log->ip_addr = $lastLog->ip_addr;
                         $log->save();
                     }
