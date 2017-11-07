@@ -26,8 +26,8 @@
                 <span ion-text color="text-lighter">{{ "end_time" | translate }}</span>
             </div>
             <div class="day-detail__total-time detail-cols mobile-hide">
-                <h5 *ngIf = "day_data[0] && day_data[0].total_time != 0 && day_data[0].total_time != null " m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{getDayDate(day_data[0].total_time,5)}} <span class="xx-small">hr</span></h5>
-                <h5 *ngIf = "day_data[0] && day_data[0].total_time == 0 " m-t-0 m-b-8 ion-text color="primary" font-weight-5> 00:00 <span class="xx-small">hr</span></h5>
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time != 0 && day_data[0].total_time != null " m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{getDayDate(day_data[0].total_time,5)}} <span class="xx-small">{{'hr' | translate }}</span></h5>
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time == 0 " m-t-0 m-b-8 ion-text color="primary" font-weight-5> 00:00 <span class="xx-small">{{'hr' | translate }}</span></h5>
 
                 <span ion-text color="text-lighter">{{ "total_time" | translate }}</span>
             </div>
