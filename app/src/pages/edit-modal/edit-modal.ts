@@ -106,7 +106,6 @@ export class EditModalPage {
   }
 
   changeLogs(){
-    this.viewCtrl.dismiss();
 
     let start = moment(this.start_time, "hh:mm");
     let end = moment(this.end_time, "hh:mm");
@@ -157,8 +156,10 @@ export class EditModalPage {
     //   data.mark_as_leave = true;
     // }
    
-    this.events.publish("changed:log", data);
-
+    this.events.publish("changed:log", data); // subscribed in summary content
+    console.log('event published');
+    this.viewCtrl.dismiss();
+    
   }
 
 

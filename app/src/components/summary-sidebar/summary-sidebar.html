@@ -104,7 +104,7 @@
                             </div>
 
                              <div style="display: flex;" *ngIf = "date.leave_status == 'Leave due to violation' " class="leave__title">
-                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{Leave | translate }}</p>
+                                <p class="day-title" ion-text color="darken" m-t-0 m-b-8 font-weight-4>{{'Leave' | translate }}</p>
                                 &nbsp; &nbsp; &nbsp; &nbsp;
                                 <ion-icon name="alert" color="danger" class="icon-size mini" *ngIf = "date.violations.length != 0"></ion-icon>
                                 

@@ -33,7 +33,7 @@ export class AppGlobalsProvider {
   private semVersion: any = {
     major: 1,
     minor: 1,
-    patch: 1
+    patch: 3
   };
 
   appVersion : string = '' ;
@@ -76,6 +76,7 @@ private activeTabsList: any = {
       }
 
       this.appVersion = this.appVersion.substr(0, this.appVersion.length -1);
+      console.log(this.appVersion);
   }
 
   getApiUrl(){

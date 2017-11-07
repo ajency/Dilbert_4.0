@@ -17,7 +17,7 @@ export class FooterComponent {
 
   constructor(public appglobals : AppGlobalsProvider ) {
     this.version = this.appglobals.getAppVersion();
-
+    console.log(this.version);
   }
 
 }
