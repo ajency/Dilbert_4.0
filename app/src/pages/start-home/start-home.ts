@@ -83,7 +83,7 @@ import { Storage } from '@ionic/storage';
 }
 
 ngOnInit(){
-
+    this.events.publish("app:localize",this.appGlobalsProvider.lang);
     this.events.publish('app:updatehistory','dashboard');
 
   

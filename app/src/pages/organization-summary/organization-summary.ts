@@ -85,6 +85,8 @@ export class OrganizationSummaryPage {
  //    	console.log(response.json());
  //    	this.weekBucket = response.json();
  //    })
+    this.events.publish("app:localize",this.appGlobalsProvider.lang);
+ 
     this.events.publish('app:updatehistory','summary');
 
     this.param1 = this.appGlobalsProvider.summary_params.param1;
