@@ -4,7 +4,8 @@
         <!-- Days details -->
         <div class="day-detail flex-row" >
             <div class="day-detail__current detail-cols desk-hide">
-                <h5 *ngIf = "day_data[0] && day_data[0].total_time != '' " m-t-0 m-b-8 class="currentime">{{getDayDate(day_data[0].total_time,5)}} hr</h5>
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time != '' " m-t-0 m-b-8 class="currentime">{{getDayDate(day_data[0].total_time,5)}} 
+                    {{ 'hr' | translate }} </h5>
                 <span ion-text color="text-lighter" no-margin m-b-5 class="day-title" *ngIf = "today"> {{today.day | translate}} {{today.date}}, {{today.month | translate}} </span>
             </div>
             <div class="day-detail__day detail-cols mobile-hide">

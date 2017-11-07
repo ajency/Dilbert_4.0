@@ -93,7 +93,7 @@
                             <div *ngIf = "date.leave_status == 'Present' || date.leave_status == 'Worked' || date.leave_status == 'Worked on weekend' || date.leave_status == 'Worked on holiday' " class="week-list__time flex-row">
                                 <ion-icon name="alert" color="danger" class="icon-size mini" *ngIf = "date.violations.length != 0"></ion-icon>
 
-                                <h6 class="total-time" p-h-12 ion-text color="text-darker">{{getDayDate(date.total_time,5)}}<span class="xx-small" p-l-2 font-weight-4>hr</span></h6>
+                                <h6 class="total-time" p-h-12 ion-text color="text-darker">{{getDayDate(date.total_time,5)}}<span class="xx-small" p-l-2 font-weight-4>{{ 'hr' | translate }}</span></h6>
                                 <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size mini"></ion-icon>
                             </div>
 
