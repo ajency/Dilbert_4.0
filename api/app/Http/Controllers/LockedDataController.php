@@ -320,7 +320,7 @@ class LockedDataController extends Controller
                     $endDate = new \DateTime();
 
                 // get all the users in the organisation
-                $orgUsers = User::join('user_details','user_details.user_id','=','users.id')->orderBy('name','asc')->get();
+                $orgUsers = User::join('user_details','user_details.user_id','=','users.id')->orderBy('name','asc')->where('org_id',$orgId)->get();
                 $data = [];
                 foreach($orgUsers as $oUser) {
                     // check if user is active
