@@ -89,7 +89,7 @@
                                 "hr"
                               ],
                               "bcc_list": [],
-							  "subject_line" : "Late alert"
+							  "subject_line" : "Dilbert 4 - Late alert"
                             },
 							"rule_operator" : "and",
                             "rules": [
@@ -112,7 +112,7 @@
 								"hr"
                               ],
                               "bcc_list": [],
-							  "subject_line" : "Minimum daily hours alert"
+							  "subject_line" : "Dilbert 4 - Minimum daily hours alert"
                             },
 							"rule_operator" : "and",
                             "rules": [
@@ -135,7 +135,7 @@
   								  "hr"
                               ],
                               "bcc_list": [],
-							  "subject_line" : "Minimum weekly hours alert"
+							  "subject_line" : "Dilbert 4 - Minimum weekly hours alert"
                             },
 							"rule_operator" : "and",
                             "rules": [
@@ -158,7 +158,7 @@
   								  "hr"
                               ],
                               "bcc_list": [],
-							  "subject_line" : "Minimum monthly hours alert"
+							  "subject_line" : "Dilbert 4 - Minimum monthly hours alert"
                             },
 							"rule_operator" : "and",
                             "rules": [
