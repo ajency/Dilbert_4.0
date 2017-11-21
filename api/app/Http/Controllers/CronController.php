@@ -119,7 +119,8 @@ class CronController extends Controller
             echo "min hours".$minHours;
             //minimum workhours for a week is 45
             if($minHours > 45)
-                $minHours = 45;
+                $minHours = (int)45;
+                echo "min hours".$minHours;
             // total time in minutes
             $totalHours = 0;
             foreach($userHours as $uh) {
@@ -128,14 +129,24 @@ class CronController extends Controller
                     $totalHours = $totalHours + (int)$time[0]*60 + (int)$time[1];
                 }
             }
+
+            // calculate the time difference between rhs and rule_key_fields if key < rhs
+            if((int)$totalHours < (int)$minHours)
+            $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
+
             // getting the total hours
             $totalHours = (int)($totalHours/60).':'.($totalHours%60);
             echo "total hours".$totalHours;
+
             // check for violation
             $keyFields = ['total_hrs_in_week' => $totalHours];
             $rhsFields = ['total_week_hours' => $minHours];
             $mailList = ['hr','owner1','owner2'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
+
+            // add the meta data to $data
+            $data['meta']['time_difference'] = $timeDiff;
+
             (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
         }
     }
@@ -164,6 +175,11 @@ class CronController extends Controller
                     $totalHours = $totalHours + (int)$time[0]*60 + (int)$time[1];
                 }
             }
+
+            // calculate the time difference between rhs and rule_key_fields if key < rhs
+            if((int)$totalHours < (int)$minHours)
+            $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
+
             // getting the total hours
             $totalHours = (int)($totalHours/60).':'.($totalHours%60);
             // check for violation
@@ -171,6 +187,10 @@ class CronController extends Controller
             $rhsFields = ['total_month_hours' => $minHours];
             $mailList = ['hr','owner1','owner2'];
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
+
+            // add the meta data to $data
+            $data['meta']['time_difference'] = $timeDiff;
+
             (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data,false,true);
         }
     }
