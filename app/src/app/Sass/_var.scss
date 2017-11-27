@@ -1,0 +1,87 @@
+// ---------------------------
+// VARIABLE CALLS -----------
+// ---------------------------
+
+
+// Primary Color
+
+$accent-primary: #6943bf;
+
+// Secondary Color
+
+$accent-secondary: #facf21;
+
+// ---------------------------
+// SHADOW VARIANTS -----------
+// ---------------------------
+
+// Box Shadow 
+
+$shadow-1: 0px 0px 30px -4px rgba(0, 0, 0, 0.12);
+
+// Right sided shadow
+
+$shadow-2: 5px 0 20px -1px rgba(6, 6, 6, 0.06);
+
+// Smaller blur shadow
+
+$shadow-3: 0px 0px 8px 0px rgba(0, 0, 0, 0.13);
+
+// ---------------------------
+// DEFAULT CONTAINER AND MEDIA SETUP -----------
+// ---------------------------
+
+$mobile: 768px;
+$screen-xs-min: 767px;
+$screen-sm-min: 768px;
+$screen-md-min: 992px;
+$screen-lg-min: 1200px;
+$screen-lg-max: 1400px;
+$grid-gutter-width: 30px;
+
+// ---------------------------
+// HOVER CSS VARIABLES -----------
+// ---------------------------
+
+// Prefix for Hover class names
+
+$nameSpace: 'hvr' !default;
+
+// Browser Prefixes - Which CSS prefixes should be used?
+
+$webkit: true !default;
+$moz: false !default;
+$ms: false !default;
+$o: false !default;
+
+// Compile with or without classes
+
+$includeClasses: true !default;
+
+// Durations
+
+$fastDuration: .1s !default;
+$mediumDuration: .3s !default;
+$slowDuration: .5s !default;
+
+
+// ---------------------------
+// CONTAINER WIDTH AND MEDIA VARIABLES -----------
+// ---------------------------
+
+// // Small screen / tablet
+// $container-tablet: (720px + $grid-gutter-width);
+// //** For `@screen-sm-min` and up.
+// $container-sm: $container-tablet;
+// // Medium screen / desktop
+// $container-desktop: (940px + $grid-gutter-width);
+// //** For `@screen-md-min` and up.
+// $container-md: $container-desktop;
+// // Large screen / wide desktop
+// $container-large-desktop: (1140px + $grid-gutter-width);
+// //** For `@screen-lg-min` and up.
+// $container-lg: $container-large-desktop;
+// // Large screen / wide desktop
+// $container-large-xl-desktop: (1300px + $grid-gutter-width);
+// //** For `@screen-lg-min` and up.
+// $container-lg-max: $container-large-xl-desktop;

@@ -1,0 +1,187 @@
+// ---------------------------
+// HELPERS STYLES -----------
+// ---------------------------
+
+
+// ---------------------------
+// MISCELLANEOUS STYLES IMPORT -----------
+// ---------------------------
+
+@import "misc";
+
+
+.text-primary {
+    color: $accent-primary;
+}
+
+.text-secondary {
+    color: $accent-secondary;
+}
+
+
+// Click cursor
+
+.click {
+    cursor: pointer;
+}
+
+// Display's
+
+.dis-block {
+    display: block;
+}
+
+.dis-inline {
+    display: inline-block;
+}
+
+// Visibility class
+
+.visible {
+    visibility: hidden;
+}
+
+.icon-size{
+    &.full{
+        font-size: 1.6em;
+    }
+    &.mini{
+        font-size: 1.1em;
+    }
+}
+
+
+.flex-row{
+    display: flex;
+    align-items: center;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
+.align-top{
+    align-items: flex-start;
+}
+
+
+.flex{
+    flex: 1;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.desk-hide{
+    @media screen and (min-width: 769px){
+        display: none !important;
+    }
+}
+
+.mobile-hide{
+    @media screen and (max-width: $mobile) {
+        display: none !important;
+    }
+}
+
+
+.direction-col{
+    flex-direction: column;
+}
+
+.relative{
+    position: relative;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
+
+.alert-error{
+    width: auto;
+    padding: 0.8em;
+    background-color: color($colors,'error');
+    .card-header{
+        font-size: 1em;
+        padding: 0.3em;
+        color: #fff;
+    }
+}
+
+.white{
+    background-color: #fff;
+}
+
+
+
+
+
+
+
+// ---------------------------
+// MARGIN & PADDING LOOP -----------
+// ---------------------------
+
+$i: 0;
+@while $i <=50 {
+    /*want loop to extend change this value*/
+    // Margin-all
+    ion-app.app-root [m-t-#{$i}] {
+        margin-top: 1px * $i;
+    }
+    ion-app.app-root [m-b-#{$i}] {
+        margin-bottom: 1px * $i;
+    }
+    ion-app.app-root [m-l-#{$i}] {
+        margin-left: 1px * $i;
+    }
+    ion-app.app-root [m-r-#{$i}] {
+        margin-right: 1px * $i;
+    }
+    // Padding-all
+    ion-app.app-root [p-t-#{$i}] {
+        padding-top: 1px * $i;
+    }
+    ion-app.app-root [p-b-#{$i}] {
+        padding-bottom: 1px * $i;
+    }
+    ion-app.app-root [p-l-#{$i}] {
+        padding-left: 1px * $i;
+    }
+    ion-app.app-root [p-r-#{$i}] {
+        padding-right: 1px * $i;
+    }
+    // Margin-vertical
+    ion-app.app-root [m-v-#{$i}] {
+        margin-top: 1px * $i;
+        margin-bottom: 1px * $i;
+    }
+    // Padding vertical
+    ion-app.app-root [p-v-#{$i}] {
+        padding-top: 1px * $i;
+        padding-bottom: 1px * $i;
+    }
+    // Margin horizontal
+    ion-app.app-root [m-h-#{$i}] {
+        margin-left: 1px * $i;
+        margin-right: 1px * $i;
+    }
+    // Padding horizontal
+    ion-app.app-root [p-h-#{$i}] {
+        padding-left: 1px * $i;
+        padding-right: 1px * $i;
+    }
+    $i: $i + 1;
+}
+
+.app-is-offline{
+    overflow-y: visible;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);  
+}

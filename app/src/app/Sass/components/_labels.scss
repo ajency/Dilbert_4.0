@@ -1,0 +1,31 @@
+
+// ---------------------------
+// STATUS/TEXT LABEL STYLES -----------
+// ---------------------------
+
+
+// Status labels
+
+.db-status{
+	border-radius: 0;
+}
+
+.planned{
+	background-color: lighten(color($colors, success),50%);
+	color: color($colors,success);
+}
+
+.planning{
+	background-color: lighten(color($colors, secondary),38%);
+	color: darken(color($colors,secondary),15%);
+}
+
+.un-planned{
+	background-color: lighten(color($colors, danger),30%);
+	color: color($colors,danger);
+}
+
+.active{
+	background-color: lighten(color($colors, primary),35%);
+	color: darken(color($colors,primary),20%);
+}

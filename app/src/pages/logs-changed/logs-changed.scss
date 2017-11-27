@@ -1,0 +1,21 @@
+
+
+.popover-md {
+	.popover-content.logs-changed-popover {
+	     top: 300px !important;
+        @media (min-width: 767px) {
+            width: 600px;
+        }
+        @media (max-width: 767px) {
+            width: 90%;
+        }
+	}
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}

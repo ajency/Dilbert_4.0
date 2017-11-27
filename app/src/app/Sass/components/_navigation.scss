@@ -1,0 +1,90 @@
+// ---------------------------
+// NAVIGATION STYLES -----------
+// ---------------------------
+
+
+// Main navigation
+
+.dilbert-nav {
+    // hamburger menu
+    .ham {
+        min-width: inherit;
+    }
+    // Which holds icon and title
+    .toolbar-content {
+        display: flex; //To hold-up contents horizontally and center to each other
+        justify-content: space-between;
+    }
+    .brand-name {
+        flex: initial; //To take space only as much as required
+    }
+    .nav-cols {
+        display: flex;
+        align-items: center;
+    }
+    @media screen and (max-width: $mobile){
+        &__left{
+            flex: 1;
+            justify-content: space-between;
+        }
+    }
+}
+
+// User profile avatar and dropdown
+
+.user-profile {
+    .label {
+        margin: 0;
+    }
+    .icon {
+        vertical-align: middle;
+        &:before {
+            font-size: 0.85em;
+        }
+    }
+}
+
+.profile-dropdown {
+    .item {
+        padding: 0;
+    }
+    .label {
+        padding: 0 15px;
+        font-size: 0.9em;
+    }
+}
+
+.lang-container{
+    top: 1px;
+}
+
+.select-lang{
+    max-width: 100%;
+    color: color($colors,'gray-link');
+}
+
+.popover-md .popover-content{
+    overflow: inherit;
+    /*width: 180px;*/
+    .item-radio.item-md ion-label{
+        font-size: 0.85em;
+    }
+}
+
+// Notification indicator
+
+.notify {
+    .icon {
+        position: relative;
+        &:after {
+            content: '';
+            position: absolute;
+            height: 7px;
+            width: 7px;
+            border-radius: 50%;
+            background-color: $accent-primary;
+            top: -7px;
+            right: 7px;
+        }
+    }
+}

@@ -1,0 +1,89 @@
+<!-- Site header goes here -->
+
+<ion-header>
+    <logged-in-header> </logged-in-header>
+</ion-header>
+
+<!-- Site header ends -->
+
+
+<!-- Body starts -->
+
+<ion-content padding>
+    <div class="container" p-h-20>
+
+        <ion-grid class="grid dashboard" m-t-15 p-h-30>
+            <ion-row class="row dashboard__row">
+                <ion-col class="col mobile-hide" col-12 m-b-20>
+                    <!-- Heading -->
+                    <div class="section-title">
+                        <i class="custom-icon summary" m-r-10></i>
+                        <h5 *ngIf="sideBarData && sideBarData.data.user.self" class="page-title">{{ "my_summary" | translate }}</h5>
+                        <h5 *ngIf="sideBarData && !sideBarData.data.user.self" class="page-title"> {{sideBarData.data.user.name}}'s {{ "summary" | translate }}</h5>
+
+                    </div>
+                </ion-col>
+                <ion-col class="col dashboard__summary" col-12 col-md-12 col-lg-8 p-h-0 p-v-0>
+                    <!-- Summary section -->
+                    <div class="summary">
+                        <!-- Summary sidebar <section></section>ion (From component-sidebar)-->
+                        <summary-sidebar *ngIf="sideBarData && summaryContentData" [test]="sideBarData" [day_data]="summaryContentData" class="summary__sidebar" p-h-20 ></summary-sidebar>
+                        <!-- Summary sidebar ends -->
+                        <!-- Summary content -->
+                        <summary-content *ngIf="sideBarData && summaryContentData" [test]="summaryContentData.day_data" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
+                        <!-- Summary content ends -->
+                        <div *ngIf = "failed" align="center"> {{message}} </div>
+                    </div>
+                </ion-col>
+                <ion-col class="col dashboard__leaves mobile-hide" col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
+                  
+                    <!-- <div text-center m-t-20><button ion-button >Style Guide</button></div> -->
+
+                    <div padding *ngIf = "view_log_history_btn && summaryContentData && sideBarData">
+                       <h5> {{ "changed_logs" | translate }} </h5>
+                        <hr>
+
+                        <div *ngFor = "let item of changedLogs">
+                            <ul style="list-style: none;">
+                               <li>{{ "modified" | translate }} {{item.name | translate}}  {{ "from" | translate}} : 
+                                    <strong *ngIf = "item.name == 'start_time' || item.name == 'end_time' "> 
+                                        <span *ngIf = "item.from != null"> {{getDayDate(item.from,3)}} </span> 
+                                        <span *ngIf = "item.from == null"> 00:00 </span>  {{ "to" | translate}} 
+                                        <span *ngIf = "item.to != null">{{getDayDate(item.to,3)}}</span>
+                                        <span *ngIf = "item.to == null"> 00:00 </span> 
+                                    </strong> 
+
+                                    <strong *ngIf = "item.name == 'status' "> 
+                                        <span > {{item.from | translate}} </span> {{ "to" | translate}} 
+                                        <span > {{item.to | translate}} </span> 
+                                    </strong> 
+
+                                    <strong *ngIf = "item.name == 'total_time' "> 
+                                        <span *ngIf = "item.from != null"> {{getDayDate(item.from,4)}} </span> 
+                                        <span *ngIf = "item.from == null"> 00:00 </span> {{ "to" | translate}} 
+                                        <span *ngIf = "item.to != null">{{getDayDate(item.to,4)}}</span>
+                                        <span *ngIf = "item.to == null"> 00:00 </span> 
+                                    </strong> 
+                                </li>
+                                <div style="color: grey;">
+                                   <li>{{ "on" | translate}}  {{getDayDate(item.modified_on,1) | translate}} {{ "at" | translate}}  {{getDayDate(item.modified_on,2)}}</li>
+                                   <li *ngIf = "!item.modified_by_self">{{ "by" | translate}}  {{item.modified_by}}</li>
+                                </div>
+                           </ul>
+                           <hr style="border: 0.1px dashed; color: grey">
+                        </div>
+                        
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+    </div>
+</ion-content>
+
+<!-- Body Ends -->
+
+
+<ion-footer>
+ <footer-element></footer-element>
+</ion-footer>

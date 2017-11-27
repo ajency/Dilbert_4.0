@@ -1,0 +1,176 @@
+// ---------------------------
+// CUSTOM CSS FOR THIS PAGE -----------
+// ---------------------------
+page-start-home {}
+
+// ---------------------------
+// GLOBAL ONE'S -----------
+// ---------------------------
+// Heading title
+.section-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+}
+
+// Dashboard columns
+.dashboard {
+    &__summary {
+        @media screen and (min-width: 769px){
+            box-shadow: $shadow-1;    
+        }
+    }
+}
+
+@media screen and (min-width: 920px) and (max-width: 1400px) {
+    .dashboard__summary{
+        flex: 0 0 75%;
+        width: 75%;
+        max-width: 75%;
+    }
+    .dashboard__leaves{
+        flex: 0 0 25%;
+        width: 25%;
+        max-width: 25%;
+    }
+}
+
+
+
+// main title heading
+.main-title {
+    font-size: 1.25em;
+}
+
+// Summary section
+.summary {
+    display: flex;
+    &__sidebar {
+        flex: 1;
+        box-shadow: $shadow-2;
+    }
+    &__content {
+        flex: 1.7;
+        @media screen and (min-width: 1400px) {
+            flex: 2;
+        }
+        @media screen and (min-width: 1601px) {
+            flex: 2.3;
+        }
+    }
+}
+
+
+@media screen and (min-width: 1280px) and (max-width: 1400px) {
+    .summary__sidebar{
+        flex: 0.8;
+    }     
+}
+
+@media screen and (max-width: 600px) {
+    .section-title {
+        margin: -8px 0;
+        padding-left: 1em;
+    }
+    .page-title {
+        font-size: 1.2em;
+    }
+    ion-app.app-root .dashboard {
+        margin: 0 -20px;
+        width: calc(100% + 40px); //Full width div
+        padding: 5px;
+    }
+    .summary {
+        flex-direction: column;
+        &__sidebar{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            left: 0;
+            top: 0;
+            z-index: 9;
+            transition: all 0.5s cubic-bezier(0.44, -0.25, 0.75, 1);
+            transform: translateX(100%);
+        }
+    }
+    .timeline-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 -20px;
+        padding: 0 20px;
+        box-shadow: 0px 1px 16px 0px rgba(0, 0, 0, 0.13);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .xl-no-show {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    ion-app.app-root .dashboard {
+        padding: 0;
+    }
+}
+
+
+@media screen and (max-width: $mobile){
+    .dashboard__summary{
+        .summary{
+            // padding: 0 1.5em;
+        }    
+    }
+}
+
+
+// Common flexbox call
+.flex-row {
+    display: flex;
+    align-items: center;
+}
+
+// Custom icon
+.custom-icon {
+    display: inline-block;
+    height: 28px;
+    width: 24px;
+    background-image: url('../assets/img/sprite.png');
+    background-repeat: no-repeat;
+    background-size: 240%;
+    vertical-align: middle;
+    &.indoor {
+        background-position: -27px -96px;
+    }
+    &.outdoor {
+        background-position: -32px -125px;
+    }
+    &.summary {
+        width: 28px;
+        background-position: -24px -55px;
+        background-size: 180%;
+    }
+    &.flower {
+        background-position: 0px 0;
+        width: 26px;
+        background-size: 200%;
+    }
+}
+
+// View More
+.view-more {
+    .button {
+        height: inherit;
+        width: 100%;
+    }
+    .button-inner {
+        flex-direction: column;
+    }
+    .icon {
+        font-size: 1.6em;
+    }
+}
+
+
+
+

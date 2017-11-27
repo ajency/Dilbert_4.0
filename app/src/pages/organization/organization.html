@@ -1,0 +1,97 @@
+<!--
+  Generated template for the OrganizationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- Site header goes here -->
+
+<ion-header>
+    <logged-in-header> </logged-in-header>
+</ion-header>
+
+<!-- Site header ends -->
+
+
+<ion-content padding>
+
+ <div class="container organization" p-h-20>
+
+    <ion-grid class="grid" m-t-15 p-h-30>
+        <ion-row class="row dashboard__row">
+            <ion-col class="col" col-12 m-b-20>
+                <!-- Heading -->
+                <ion-row>
+	                <ion-col>
+	                <div class="organization__title">
+	                	<h5>Join <b>an Organisation</b></h5>
+	                	<span color="text" class="dis-block" ion-text no-margin font-weight-5 m-t-5>Here’s a match for you</span>
+	                </div>
+	                </ion-col>
+                </ion-row>
+                <ion-row>
+				    <ion-col class="col" col-md-8>
+				    	<div class="organization__container">
+			                <div class="organization__match" m-v-30>
+			                	<p color="gray" ion-text>We found an organisation that matches your domain name. Would you like to join?</p>
+			                </div>
+			                <div class="domain-name flex-row direction-col" p-t-10>
+			                	<div class="entries flex-row">
+			                		<p ion-text color="gray" class="row-title" m-v-10>Name</p>
+			                		<p ion-text font-weight-5 m-v-10>Ajency.in</p>
+			                	</div>
+			                	<div class="entries flex-row">
+			                		<p ion-text color="gray" class="row-title" m-v-10>Domain</p>
+			                		<p ion-text font-weight-5 m-v-10>@ ajency.in</p>
+			                	</div>
+			                	<div class="entries flex-row">
+			                		<p ion-text color="gray" class="row-title" m-v-10>Time Zone</p>
+			                		<div class="select-time">
+									    <ion-select interface="popover">
+									      <ion-option value="i" selected='true'>India (GMT+05:30)</ion-option>
+									      <ion-option value="u">United Kingdom(GMT)</ion-option>
+									      <ion-option value="us">United States of America (GMT-05:00)</ion-option>
+									    </ion-select>
+									  </div>
+			                	</div>
+			                </div>
+			                <div class="organization-change flex-row space-between" m-t-30>
+			                	<button ion-button color="primary" clear p-l-0 class="no-organization">Not the organisation you were looking for?</button>
+			                	<button ion-button color="primary" text-capitalize>Join Organisation</button>
+			                </div>
+				    	</div>
+				    </ion-col>
+				    <ion-col class="col" col-md-4>
+					    <div class="organization__info-container" text-center>
+					    	<div class="organization__info">
+					    		<img src="../../assets/img/company-icon.png">		
+					    		<h6 p-v-10>Organisation</h6>
+					    	</div>
+					      	<div class="organization__points">
+					      		<span ion-text class="dis-block" color="text-lighter" p-v-10>Create an organisation to manage your employees and projects in one place</span>
+					    		<span ion-text class="dis-block" color="text-lighter" p-v-10>Choose a unique domain name for each organisation you create</span>
+					    		<span ion-text class="dis-block" color="text-lighter" p-v-10>Generate reports for your entire organisation automatically</span>
+					      	</div>
+					    </div>
+				    </ion-col>
+				 </ion-row>
+                
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+ </div>
+
+
+</ion-content>
+
+
+
+
+
+
+
+
+
+
+

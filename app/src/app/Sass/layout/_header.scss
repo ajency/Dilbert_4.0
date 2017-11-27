@@ -1,0 +1,49 @@
+// ---------------------------
+// HEADER STYLES -----------
+// ---------------------------
+
+
+// Overwriting default header box shadow image
+.main-header {
+    &:after {
+        background-image: none;
+    }
+    @media screen and (max-width: $mobile){
+    	.toolbar-background-md{
+    		background: color($colors,'brand');
+    	}
+    	.brand-name{
+    		p{
+    			color: #fff;
+    			font-weight: 400;	
+    		}
+    	}
+    	.user-profile{
+    		ion-item{
+    			background-color: color($colors,'brand');
+    		}
+    	}
+    }
+}
+
+
+// Main header before shadow
+
+@media screen and (max-width: $mobile){
+    .main-header{
+        box-shadow: none;
+    }
+    .header{
+        &:after{
+            bottom: -105px;
+            height: 105px;
+            background-image: none;
+            background-color: color($colors,'brand');
+            background-position: bottom;
+            z-index: -1;
+        }
+    }
+    .scroll-content{
+        z-index: 99
+    } 
+}

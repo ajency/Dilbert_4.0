@@ -1,0 +1,138 @@
+<div>
+   <p font-weight-5 m-v-20 class="contentitle flex-row space-between align-top">
+        {{ "the_summary" | translate }}  <button *ngIf = "edit_btn_pd" (click) = "editModal(day_data[0])" title="Edit logs" ion-button outline small m-t-0> {{ 'Edit log time' | translate}} </button> </p>
+        <!-- Days details -->
+        <div class="day-detail flex-row" >
+            <div class="day-detail__current detail-cols desk-hide">
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time != '' " m-t-0 m-b-8 class="currentime">{{getDayDate(day_data[0].total_time,5)}} 
+                    {{ 'hr' | translate }} </h5>
+                <span ion-text color="text-lighter" no-margin m-b-5 class="day-title" *ngIf = "today"> {{today.day | translate}} {{today.date}}, {{today.month | translate}} </span>
+            </div>
+            <div class="day-detail__day detail-cols mobile-hide">
+                <h5 m-t-0 m-b-8 *ngIf = "today" >{{today.day | translate }}</h5>
+                <span ion-text color="text-lighter">{{ "day" | translate }}</span>
+            </div>
+            <div class="day-detail__start-time detail-cols">
+                <p *ngIf = "day_data[0] && day_data[0].start_time != '' "m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].start_time,3)}}</p>
+                <p *ngIf = "day_data[0] && day_data[0].start_time == '' "m-t-0 font-weight-5 m-b-10>&nbsp;&nbsp;&nbsp;--:--</p>
+
+                <span ion-text color="text-lighter">{{ "start_time" | translate }}</span>
+            </div>
+
+            <div class="day-detail__end-time detail-cols">
+                <p *ngIf = "day_data[0] && day_data[0].end_time != '' " m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].end_time,3)}}</p>
+                <p *ngIf = "day_data[0] && day_data[0].end_time == '' " m-t-0 font-weight-5 m-b-10>&nbsp;&nbsp;&nbsp;--:--</p>
+
+                <span ion-text color="text-lighter">{{ "end_time" | translate }}</span>
+            </div>
+            <div class="day-detail__total-time detail-cols mobile-hide">
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time != 0 && day_data[0].total_time != null " m-t-0 m-b-8 ion-text color="primary" font-weight-5>{{getDayDate(day_data[0].total_time,5)}} <span class="xx-small">{{'hr' | translate }}</span></h5>
+                <h5 *ngIf = "day_data[0] && day_data[0].total_time == 0 " m-t-0 m-b-8 ion-text color="primary" font-weight-5> 00:00 <span class="xx-small">{{'hr' | translate }}</span></h5>
+
+                <span ion-text color="text-lighter">{{ "total_time" | translate }}</span>
+            </div>
+
+            <!--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <ion-icon *ngIf = "day_data[0].changes != 0 && view_log_history_btn" name="md-list-box" p-r-5></ion-icon> -->
+
+        </div>
+
+
+</div>
+    <!-- Detail view -->
+
+    <div class="detail-view" p-t-35>
+        <ul *ngIf = "logs.length != 0" class="detail-view__container violated-row" p-h-20 m-h-10>
+
+
+            <!-- Removed condition from above element to check for server errors -->
+<!--              && (day_data[0].leave_status == 'Present' || day_data[0].leave_status == 'Worked' || day_data[0].leave_status == 'Worked on weekend' || day_data[0].leave_status == 'Worked on holiday' || day_data[0].leave_status == 'Leave due to violation') -->
+
+
+            <!-- <li class="detail-view__cols violated"> -->
+            <!-- violation and chat box -->
+           <!--  <div class="violated-data">
+                <h6 ion-text font-weight-3 color="dark">You started your day at <h6 ion-text font-weight-4 color="danger" class="dis-inline started-time">11:50 am</h6></h6>
+                <p class="x-small message" m-v-0 ion-text color="text-lighter">We start our day between 9:30am to 11:00 am. Any reason for being late?</p>
+                <div class="comment-box mobile-hide">
+                    <div class="commentor flex-row">
+                        <div class="commentor__profile">
+                             <ion-icon name="contact" color="text"></ion-icon>
+                        </div>
+                        <div class="commentor__name">
+                            <div class="flex-row space-between">
+                                <p class="x-small author-name" m-v-0 ion-text color="text">Anuj Khurana <span class="xx-small" ion-text color="text-lighter">2 min ago</span></p>
+                                <button class="close-box" ion-button icon-only clear color="dark">
+                                    <ion-icon name="close"></ion-icon>
+                                </button>
+                            </div>
+                            <p class="x-small" m-v-0 ion-text color="dark" font-weight-5 m-t-5>Past few days you are coming late any reason?</p>
+                        </div>
+                    </div>
+                    <div class="commentor flex-row">
+                        <div class="commentor__profile">
+                             <ion-icon name="contact" color="text"></ion-icon>
+                        </div>
+                        <div class="commentor__name">
+                            <div class="flex-row space-between">
+                                <p class="x-small author-name" m-v-0 ion-text color="text">Amit Adav <span class="xx-small" ion-text color="text-lighter">10 min ago</span></p>
+                                <button class="close-box" ion-button icon-only clear color="dark">
+                                    <ion-icon name="close"></ion-icon>
+                                </button>
+                            </div>
+                            <p class="x-small" m-v-0 ion-text color="dark" font-weight-5 m-t-5>Sorry personal issue will cover the remaining hours in this week</p>
+                        </div>
+                    </div>
+
+                    <div class="reply">
+                        <ion-input type="text" placeholder="Reply..." value="" class="reply-text"></ion-input>
+                    </div>
+                </div>
+            </div> -->
+            <!-- chat trigger -->
+
+            <!-- <div class="relative mobile-hide">
+                <button class="violated__comment" ion-button icon-only clear color="dark">
+                    <ion-icon name="chatboxes"></ion-icon>
+                </button>
+                <span class="comment-notifier" ion-text color="danger">2</span>
+            </div> -->
+            <!-- resolved toggle -->
+
+            <!-- <div class="mobile-hide">
+                <p class="x-small" m-v-0 ion-text color="text">Not Resolved</p>
+                <ion-toggle checked="false" class="resolve-toggle"></ion-toggle>
+            </div>
+        -->
+        <!--  </li> -->
+        <li class="detail-view__cols completed" >
+            <h6 ion-text font-weight-3 color="dark">{{ "u started day at" | translate }} <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">{{getDayDate(day_data[0].start_time, 3)}}</h6></h6>
+        </li>
+
+        <div *ngFor = "let obj of logs">
+            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " class="detail-view__cols idle">
+                <h6  ion-text font-weight-3 color="dark">{{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
+            </li>
+            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " class="detail-view__cols offline">
+                <h6  ion-text font-weight-3 color="dark">{{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
+            </li>
+            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " class="detail-view__cols online">
+                <h6  ion-text font-weight-3 color="dark">{{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
+            </li>
+
+            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " class="detail-view__cols online">
+                <h6  ion-text font-weight-3 color="dark">{{ "online" | translate }} </h6>
+            </li>
+
+        </div>
+        <li *ngIf = "day_data[0].status == '' " class="detail-view__cols completed total direction-col">
+            <h6 ion-text font-weight-3 color="dark">{{ "u ended day at" | translate }} 
+                <h6 *ngIf = "day_data[0].end_time != '' && day_data[0].end_time != undefined " ion-text font-weight-4 color="primary" class="dis-inline started-time">{{getDayDate(day_data[0].end_time,3)}}</h6>
+                 <h6 *ngIf = "day_data[0].end_time == '' || day_data[0].end_time == undefined " ion-text font-weight-4 color="primary" class="dis-inline started-time">n/a</h6>
+            </h6>
+            <p class="x-small message" m-v-0 ion-text color="text-lighter"><ion-icon name="time"></ion-icon> {{ "you_completed" | translate }} {{getDayDate(day_data[0].total_time,5)}} {{ "hours_today" | translate }}</p>
+        </li>
+    </ul>
+
+    <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
+</div>

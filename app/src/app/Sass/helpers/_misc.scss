@@ -1,0 +1,41 @@
+
+// ---------------------------
+// MISCELLANEOUS STYLES GOES HERE -----------
+// ---------------------------
+
+
+// People list group
+
+.avatar-group{
+	display: flex;
+	align-items: center;
+	&__list{
+		position:relative;
+		margin-right: -5px;
+		.avatar-img{
+			width: 38px;
+    		height: 38px;
+    		border-radius: 50%;
+    		box-shadow: 0px 0px 0px 3px color($colors,cloud);
+		}
+		$var: 4;
+		@for $i from 1 through 4 {
+			&:nth-child(#{$i}) {
+				z-index: #{$var};
+				$var: $var - 1;
+			}
+		}
+	}
+	.plus-more{
+		font-size: 1.1em;
+	}
+}
+
+
+
+
+
+
+
+
+

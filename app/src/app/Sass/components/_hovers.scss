@@ -1,0 +1,189 @@
+/*!
+ * Hover.css (http://ianlunn.github.io/Hover/)
+ * Version: 2.2.0
+ * Author: Ian Lunn @IanLunn
+ * Author URL: http://ianlunn.co.uk/
+ * Github: https://github.com/IanLunn/Hover
+
+ * Hover.css Copyright Ian Lunn 2017. Generated with Sass.
+ */
+
+// As is often the case, some devices/browsers need additional code to get CSS to work
+// in the most desired way. These mixins are used to quickly drop in hacks for each element
+// Find out more here: https://github.com/IanLunn/Hover/wiki/Hacks-Explained
+
+@mixin hardwareAccel() {
+    // Improve performance on mobile/tablet devices
+    // Perspective reduces blurryness of text in Chrome
+    @include prefixed(transform, perspective(1px) translateZ(0));
+}
+
+@mixin improveAntiAlias() {
+    // Improve aliasing on mobile/tablet devices
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+
+@mixin forceBlockLevel() {
+    // Transforms need to be block-level to work
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@mixin hacks() {
+    @include forceBlockLevel();
+    @include hardwareAccel();
+    @include improveAntiAlias();
+}
+
+// prefix keyframes
+
+@mixin keyframes($name) {
+    @if $webkit==true {
+        @-webkit-keyframes #{$name} {
+            @content;
+        }
+    }
+    @if $moz==true {
+        @-moz-keyframes #{$name} {
+            @content;
+        }
+    }
+    @if $ms==true {
+        @-ms-keyframes #{$name} {
+            @content;
+        }
+    }
+    @if $o==true {
+        @-o-keyframes #{$name} {
+            @content;
+        }
+    }
+    @keyframes #{$name} {
+        @content;
+    }
+}
+
+// prefix declarations
+@mixin prefixed($property, $value) {
+    @if $webkit==true {
+        -webkit-#{$property}: #{$value};
+    }
+    @if $moz==true {
+        -moz-#{$property}: #{$value};
+    }
+    @if $ms==true {
+        -ms-#{$property}: #{$value};
+    }
+    @if $o==true {
+        -o-#{$property}: #{$value};
+    }
+    #{$property}: #{$value};
+}
+
+// ---------------------------
+// HOVER EFFECTS CALL -----------
+// ---------------------------
+
+
+// ---------------------------
+// BUZZ OUT -----------
+// ---------------------------
+
+@include keyframes(#{$nameSpace}-buzz-out) {
+    10% {
+        @include prefixed(transform, translateX(3px) rotate(2deg));
+    }
+    20% {
+        @include prefixed(transform, translateX(-3px) rotate(-2deg));
+    }
+    30% {
+        @include prefixed(transform, translateX(3px) rotate(2deg));
+    }
+    40% {
+        @include prefixed(transform, translateX(-3px) rotate(-2deg));
+    }
+    50% {
+        @include prefixed(transform, translateX(2px) rotate(1deg));
+    }
+    60% {
+        @include prefixed(transform, translateX(-2px) rotate(-1deg));
+    }
+    70% {
+        @include prefixed(transform, translateX(2px) rotate(1deg));
+    }
+    80% {
+        @include prefixed(transform, translateX(-2px) rotate(-1deg));
+    }
+    90% {
+        @include prefixed(transform, translateX(1px) rotate(0));
+    }
+    100% {
+        @include prefixed(transform, translateX(-1px) rotate(0));
+    }
+}
+
+@mixin buzz-out {
+    @include hacks();
+    &:hover,
+    &:focus,
+    &:active {
+        @include prefixed(animation-name, #{$nameSpace}-buzz-out);
+        @include prefixed(animation-duration, .75s);
+        @include prefixed(animation-timing-function, linear);
+        @include prefixed(animation-iteration-count, 1);
+    }
+}
+
+@if $includeClasses {
+    .#{$nameSpace}-buzz-out {
+        @include buzz-out();
+    }
+}
+
+// ---------------------------
+// BOUNCE IN -----------
+// ---------------------------
+
+@mixin bounce-in {
+    @include hacks();
+    @include prefixed(transition-duration, $slowDuration);
+    &:hover,
+    &:focus,
+    &:active {
+        @include prefixed(transform, scale(1.2));
+        @include prefixed(transition-timing-function, cubic-bezier(.47, 2.02, .31, -0.36));
+    }
+}
+
+@if $includeClasses {
+    .#{$nameSpace}-bounce-in {
+        @include bounce-in();
+    }
+}
+
+// ---------------------------
+// PULSE GROW -----------
+// ---------------------------
+
+@include keyframes(#{$nameSpace}-pulse-grow) {
+    to {
+        @include prefixed(transform, scale(1.1));
+    }
+}
+
+@mixin pulse-grow {
+    @include hacks();
+    &:hover {
+        @include prefixed(animation-name, #{$nameSpace}-pulse-grow);
+        @include prefixed(animation-duration, $mediumDuration);
+        @include prefixed(animation-timing-function, linear);
+        @include prefixed(animation-iteration-count, infinite);
+        @include prefixed(animation-direction, alternate);
+    }
+}
+
+@if $includeClasses {
+    .#{$nameSpace}-pulse-grow {
+        @include pulse-grow();
+    }
+}

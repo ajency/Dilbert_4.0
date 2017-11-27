@@ -1,0 +1,64 @@
+<!--
+  Generated template for the BuyPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+	<ion-navbar>
+		<ion-title>Modify Sujit's log</ion-title>
+	</ion-navbar>
+</ion-header>
+
+
+<ion-content padding class =  "scroll">
+
+</ion-content>
+
+<ion-footer>
+	<ion-toolbar>
+		<ion-buttons >
+			<button ion-button color="danger">
+				Cancel
+			</button>
+		</ion-buttons>
+		<ion-buttons end>
+			<button ion-button color="dark">
+				Save changes
+			</button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-footer> -->
+
+<ion-content>
+
+<div class="my-popup">
+
+	<div align="center">
+		<h3> {{ 'Modify_logs' | translate}} </h3>
+	</div>
+<hr>
+	<div padding>
+		<label>{{ "start_time" | translate }}:</label> <input type="time"   [(ngModel)]="start_time"> <br />
+		<label>{{ "end_time" | translate }}:</label>  <input type="time"   [(ngModel)]="end_time"> <br />
+		<!-- <ion-datetime class = "relative" displayFormat="hh:mm:a" pickerFormat="hh/mm/a"></ion-datetime> -->
+		<div *ngIf = "leave_marking_dropdown">
+			<label>{{'Leave_status' | translate}}:</label>
+			<ion-select style = "display: inline-flex;" [(ngModel)]="status" class = "relative">
+		      <ion-option *ngFor = 'let option of leave_status_values' >{{option | translate}}</ion-option>
+		      <!-- <ion-option  value= "Leave" >Leave</ion-option> -->
+			</ion-select>
+		</div>
+	</div>
+
+	<div class="footer">
+	
+	<button ion-button color="dark" (click) = "changeLogs()" [disabled] = "((start_time > end_time || start_time == '' || end_time == '') && (status == 'Present' || status == 'Worked' || status == 'Worked on weekend' || status == 'Worked on holiday' || status == 'Leave due to violation') ) "  > {{'Save_changes' | translate}}</button> 
+	<button style="float: right;" ion-button color="danger" (click) = "close()" > {{'Cancel' | translate}}</button>	
+
+
+	</div>
+
+</div>
+
+</ion-content>
