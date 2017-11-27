@@ -176,6 +176,7 @@ export class AppServiceProvider {
 		          // 	this.events.publish('app:navroot', 'login');
 		          // }
               this.events.publish('user:signedIn', 'navigateTo');
+              console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
 
 
             } 
@@ -196,7 +197,9 @@ export class AppServiceProvider {
           }
         }
 
-        signIn(): any{
+  
+
+  signIn(): any{
 
        //   Sign in the user upon button click.
        return new Promise((resolve,reject) => {
@@ -217,10 +220,12 @@ export class AppServiceProvider {
       });
 
 
-     }
+  }
 
 
-     public request(url: string,type: string, body: object, optionalHeaders: object = {},overrideheaders: boolean = false, returntype: string = 'promise', disableurlupdate: string = '', updateurl: object, appendurl : boolean = false): any{
+  
+  public request(url: string,type: string, body: object, optionalHeaders: object = {},overrideheaders: boolean = false, 
+                  returntype: string = 'promise', disableurlupdate: string = '', updateurl: object, appendurl : boolean = false): any{
       let locationpath = this.location.path(true);
 
       let headers = new Headers({'Content-Type': 'application/json','Accept': 'application/json, text/plain, */*'});

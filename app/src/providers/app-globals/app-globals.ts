@@ -13,8 +13,9 @@ export class AppGlobalsProvider {
 
 
   private historyStack: Array<any> = [];
-	lang : any;
+	lang : any ;
   period_unit: string = 'week';
+  org_name : any;
   cos_offset : string = '0';
   view_log_history_btn : boolean = true;
 
@@ -25,10 +26,14 @@ export class AppGlobalsProvider {
     param2 : ''
   };
 
+  summary_params : any = {
+    param1 : ''
+  }
+
   private semVersion: any = {
     major: 1,
     minor: 1,
-    patch: 1
+    patch: 3
   };
 
   appVersion : string = '' ;
@@ -52,7 +57,13 @@ private activeTabsList: any = {
       deeplink: 'join-organisation',
       placeholder: 'JoinOrganisation',
       active: false
-    }
+    },
+    summary:{
+      component: 'OrganizationSummaryPage',
+      deeplink: 'summary',
+      placeholder: 'Summary',
+      active: true
+    },
   };
 
 
@@ -65,6 +76,7 @@ private activeTabsList: any = {
       }
 
       this.appVersion = this.appVersion.substr(0, this.appVersion.length -1);
+      console.log(this.appVersion);
   }
 
   getApiUrl(){

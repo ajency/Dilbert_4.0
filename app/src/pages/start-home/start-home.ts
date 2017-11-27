@@ -5,6 +5,7 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import * as moment from 'moment';
+import * as $ from 'jquery';
 
 
 import { CookieService } from 'ngx-cookie';
@@ -77,10 +78,14 @@ import { Storage } from '@ionic/storage';
     this.changedLogs = data;
 
   });
+
   
 }
 
 ngOnInit(){
+    this.events.publish("app:localize",this.appGlobalsProvider.lang);
+    this.events.publish('app:updatehistory','dashboard');
+
   
     this.param1 = this.appGlobalsProvider.dashboard_params.param1;
     this.param2 = this.appGlobalsProvider.dashboard_params.param2;
@@ -163,11 +168,11 @@ ngOnInit(){
 
  openStyle(){
 
-  var navOption = {
-    animation: "ios-transition"
-  }
+  // var navOption = {
+  //   animation: "ios-transition"
+  // }
   
-  this.navCtrl.push('StyleGuidePage',{},navOption);
+  // this.navCtrl.push('StyleGuidePage',{},navOption);
 }
 
 
@@ -181,7 +186,7 @@ ionViewDidLoad() {
     console.log('ion view will leave dashboard');
     this.appGlobalsProvider.dashboard_params.param1 = '';
     this.appGlobalsProvider.dashboard_params.param2 = '';
-    this.authguard.user_id = '';
+    this.authguard.user_id = this.authguard.userData.user_id;
 
   }
 
@@ -237,7 +242,7 @@ ionViewDidLoad() {
     let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
     // console.log(url);
     let filter1 = {
-        user_id:this.userId,
+        user_id:this.authguard.user_id,
         start_date:this.currentDate,
         period_unit:this.period_unit
       };
@@ -250,19 +255,45 @@ ionViewDidLoad() {
 
 
     let body = {
-      user_id:this.userId,
+      user_id:this.authguard.user_id,
       filters : filters
     };
     
 
 
 
-    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','', filter1, false).subscribe( (response) => {
+    this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', filter1, false).subscribe( (response) => {
       // console.log(response);
       if(response.status == 200){
 
         this.sideBarData = response;
+        if(this.sideBarData.data.periodData.length != 0){
+            console.log(this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date)
+            if(this.sideBarData.data.periodData[0].work_date < this.sideBarData.data.user.joining_date){
+              this.sideBarData.data.periodData = [];
+              console.log(this.sideBarData);
+            }
+
+            else if(this.sideBarData.data.periodData[0].work_date > this.sideBarData.data.user.joining_date && 
+                      this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date < this.sideBarData.data.user.joining_date ){
+
+                  for(var i = 0; i < this.sideBarData.data.periodData.length; i++ ){
+                    if(this.sideBarData.data.periodData[i].work_date < this.sideBarData.data.user.joining_date && this.sideBarData.data.periodData[i].leave_status == 'Leave')
+                        this.sideBarData.data.periodData[i].leave_status = 'Not joined';
+                  }
+
+            }
+        }
+
+        
+
+
+
         this.zone.run(() => {});
+        // this.events.publish('app:updatehistory','dashboard');
+      
+        let serializedquery =  `?${$.param(filter1)}`;
+        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` , replace : true});
         
 
         // Call for day summary (RHS or logs data) 
@@ -282,10 +313,13 @@ ionViewDidLoad() {
        }
 
 
-        this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
+        this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable', filter2, true).subscribe( (response) => {
         // console.log(response);
         this.summaryContentData = response;
         this.zone.run(() => {});
+
+        serializedquery = `?${$.param(filter2)}`;
+        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true, replace : true });
 
         this.checkPermissions();
 

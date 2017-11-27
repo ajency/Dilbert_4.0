@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
 
 import { CookieService } from 'ngx-cookie';
+import { AuthguardProvider } from '../../providers/authguard/authguard';
+import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+
 /**
  * Generated class for the PopoverPage page.
  *
@@ -23,6 +26,8 @@ export class PopoverPage {
 			  public navParams: NavParams, 
 			  private viewCtrl: ViewController,
 			  public cookieservice : CookieService,
+        public authguard : AuthguardProvider,
+        public appglobals : AppGlobalsProvider,
 			  public events : Events) {
   	this.handleClientLoad();
   }
@@ -77,6 +82,23 @@ export class PopoverPage {
 
   	 
 
+  }
+
+  viewSummary(){
+    this.viewCtrl.dismiss();
+    this.appglobals.summary_params.param1 = '';
+    this.events.publish('app:navroot', 'summary');   
+    console.log('navigating to summary page');
+
+  }
+
+  viewDashboard(){
+      this.viewCtrl.dismiss();
+      this.authguard.user_id = this.authguard.userData.user_id;
+      this.appglobals.dashboard_params.param1 = '';
+      this.appglobals.dashboard_params.param2 = '';
+    this.events.publish('app:navroot', 'dashboard');   
+    console.log('navigating to dashboard page');
   }
 
 

@@ -2,6 +2,7 @@ import { Component, NgZone, Input } from '@angular/core';
 import * as moment from 'moment';
 import { Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import * as $ from 'jquery';
 
 
 import {IMyDpOptions} from 'mydatepicker';
@@ -24,6 +25,8 @@ export class SummarySidebarComponent {
 
   apiURL :any;
   userId : any;
+  todays_date : any;
+  lang_for_date_placeholder : any;
   // summaryContentData : any;
   btnActive : boolean = false;
   private myDatePickerOptions: IMyDpOptions = {
@@ -34,7 +37,7 @@ export class SummarySidebarComponent {
         // disableUntil: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:new Date().getDate }
     };
 
-  private model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth()+1, day: new Date().getDate() } };
+  // private model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth()+1, day: new Date().getDate() } };
 
 
   @Input('test') sideBarData : any ;
@@ -58,6 +61,11 @@ export class SummarySidebarComponent {
               public appGlobalsProvider : AppGlobalsProvider,
               public authguard : AuthguardProvider
               ) {
+
+    this.lang_for_date_placeholder = this.appGlobalsProvider.lang;
+
+    this.todays_date = moment().format('YYYY-MM-DD');
+   console.log(this.todays_date);
     
     this.apiURL = this.appGlobalsProvider.getApiUrl(); 
     // console.log(this.apiURL);
@@ -134,7 +142,7 @@ export class SummarySidebarComponent {
 
    requestData(ev){
 
-
+    console.log("inside requestData function", ev);
     if(ev.date.year != 0 && ev.date.month != 0){
     
       let date_range = {
@@ -174,10 +182,30 @@ export class SummarySidebarComponent {
       'From' : data.user_id,
     };
 
-      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', '' , filter1,  false).subscribe( (response) => {
+      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', 'disable' , filter1,  false).subscribe( (response) => {
       // console.log(response);
       this.sideBarData = response;
 
+          if(this.sideBarData.data.periodData.length != 0){
+            console.log(this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date)
+            if(this.sideBarData.data.periodData[0].work_date < this.sideBarData.data.user.joining_date){
+             this.sideBarData.data.periodData = [];
+             console.log(this.sideBarData);
+          }
+
+            else if(this.sideBarData.data.periodData[0].work_date > this.sideBarData.data.user.joining_date && 
+                      this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date < this.sideBarData.data.user.joining_date ){
+
+                  for(var i = 0; i < this.sideBarData.data.periodData.length; i++ ){
+                    if(this.sideBarData.data.periodData[i].work_date < this.sideBarData.data.user.joining_date && this.sideBarData.data.periodData[i].leave_status == 'Leave')
+                        this.sideBarData.data.periodData[i].leave_status = 'Not joined';
+                  }
+
+            }
+        }
+
+       let serializedquery =  `?${$.param(filter1)}`;
+       this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` });
 
       url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
       console.log(url);
@@ -192,9 +220,13 @@ export class SummarySidebarComponent {
       // cos_offset : this.appGlobalsProvider.cos_offset
     }
 
-      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '', filter2, true).subscribe( (response) => {
+      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable', filter2, true).subscribe( (response) => {
       // console.log(response);
       this.summaryContentData = response;
+
+      serializedquery = `?${$.param(filter2)}`;
+      this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true , replace : true});
+
       this.calculateWeekTotal();
 
       let data1 = {
@@ -290,7 +322,8 @@ export class SummarySidebarComponent {
            // console.log('inside if ', this.sideBarData.data.periodData[i]);
 
         }
-        if(this.sideBarData.data.periodData[i].leave_status == "Present")
+        if(this.sideBarData.data.periodData[i].leave_status == "Present" || this.sideBarData.data.periodData[i].leave_status =="Worked" || 
+          this.sideBarData.data.periodData[i].leave_status == "Worked on holiday" || this.sideBarData.data.periodData[i].leave_status == "Worked on weekend")
         {
           let temp = this.sideBarData.data.periodData[i].total_time.split(":");
           minutes +=  (parseInt(temp[0]) * 60) + (parseInt(temp[1])) ;
@@ -303,20 +336,38 @@ export class SummarySidebarComponent {
         //    this.sideBarData.data.periodData.splice(0,1);
         //   console.log(this.sideBarData.data.periodData);
         // }
+        // if(this.sideBarData.data.periodData[i].work_date == this.todays_date && this.sideBarData.data.periodData[i].leave_status == '' ){
+        //   console.log(this.sideBarData.data.periodData[i])
+        //   this.sideBarData.data.periodData.splice(i,1);
+        //   console.log("After removal : ",this.sideBarData.data)
+        //   i = i-1; 
+        // }
+
       
       }
-      this.zone.run(() => {});
+
+     
 
       this.minHours = no_of_days * 9;
 
-      this.loader_percentage =  minutes/(this.minHours*60)*100;
-      if(this.loader_percentage>100){
-        this.loader_percentage = 100;
+       if(this.sideBarData.data.periodData.length == 0){
+        minutes = 0;
+        this.loader_percentage = 0;
       }
+      else{
+        this.loader_percentage =  minutes/(this.minHours*60)*100;
+        if(this.loader_percentage>100){
+         this.loader_percentage = 100;
+        }
+      }
+      
 
       console.log(this.minHours);
 
       this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+
+      this.zone.run(() => {});
+
     }
 
 
@@ -363,10 +414,15 @@ export class SummarySidebarComponent {
       'From' : data.user_id
       };
 
-    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', '' , filters, true).subscribe( (response) => {
+    this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable' , filters, true).subscribe( (response) => {
       // console.log(response);
       this.summaryContentData = response;
       this.zone.run(() => {});
+
+
+      let serializedquery = `?${$.param(filters)}`;
+      this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true });
+
 
       let data1 = {
         date : date,

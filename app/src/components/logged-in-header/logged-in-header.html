@@ -1,8 +1,8 @@
 <!-- Generated template for the LoggedInHeaderComponent component -->
-<div class="main-header shadow-1">
+<div class="main-header shadow-1 white">
     <div class="container">
         <!-- Navbar Start-->
-        <ion-navbar class="dilbert-nav">
+        <ion-navbar hideBackButton class="dilbert-nav">
             <div class="dilbert-nav__left nav-cols">
                <!--  <div>
                 <button class="ham" icon-only color="text"  ion-button="" m-h-0="" menutoggle="" clear="">
@@ -22,23 +22,20 @@
                 <div>
                   <div *ngIf="header == 'loggedin' " class="brand-name" font-weight-4="" start="">
                       <p color="secondary" ion-text="" no-margin="">
-                          Ajency.in
+                          {{org_name}}
                       </p>
                   </div>
                   <div *ngIf="header == 'notloggedin' || header == 'new' " class="brand-name" font-weight-4="" start="">
                       <p color="secondary" ion-text="" no-margin="" p-h-10>
-                          DILBERT
+                         {{ 'DILBERT' | translate }}
                       </p>
                   </div>
                 </div>
-                <div class="relative lang-container">
+                <div *ngIf="header == 'notloggedin' || header == 'new' " class="relative lang-container">
                     <ion-select [(ngModel)]="lang" (ionChange)="setLocale()" class="select-lang mobile-hide" color="gray-link" interface="popover">
-                        <ion-option selected = "{{langSelect}}"  value="en">
-                            English
-                        </ion-option>
-                        <ion-option selected = "{{!langSelect}}" value="fr">
-                            French
-                        </ion-option>
+                        <ion-option>English</ion-option>
+                        <ion-option>French</ion-option>
+                         <ion-option>Hindi</ion-option>
                     </ion-select>
                 </div>
                  

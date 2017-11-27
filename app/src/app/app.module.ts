@@ -65,6 +65,7 @@ export function createTranslateLoader(http: Http) {
       mode: 'md',
       preloadModules : false,
       locationStrategy: window.location.hostname == 'localhost' ? 'hash' : 'path' 
+      // locationStrategy : 'path'
     }),
    
   ],

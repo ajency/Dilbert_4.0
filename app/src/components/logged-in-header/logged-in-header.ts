@@ -20,6 +20,7 @@ import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 export class LoggedInHeaderComponent {
 
   header : any;
+  org_name : any;
   langSelect : boolean = true;
   image : any;
   param = {
@@ -54,6 +55,8 @@ export class LoggedInHeaderComponent {
   }
 
   ngOnInit(){
+
+    this.org_name = this.appglobals.org_name;
      if(this.cookieservice.get("keepLoggedIn")== 'yes'){
        this.header = "loggedin";
        if(this.appservice.image){
@@ -83,10 +86,21 @@ export class LoggedInHeaderComponent {
   }
 
 
-  private lang;
+  private lang = 'English';
   private setLocale(){
     console.log(this.lang);
-    this.events.publish("app:localize",this.lang);
+    if(this.lang == "English"){
+      this.events.publish("app:localize",'en');
+      console.log('en')
+    }
+    else if( this.lang == "French"){
+      this.events.publish("app:localize",'fr');
+      console.log('fr')
+    }
+    else{
+      this.events.publish("app:localize",'hi');
+      console.log('hi')
+    }
 
   }
 

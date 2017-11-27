@@ -9,6 +9,7 @@ import { UserDataProvider } from '../../providers/user-data/user-data';
 import { Storage } from '@ionic/storage';
 import { EnvVariables } from '../../config/env.token';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
+import { AuthguardProvider } from '../../providers/authguard/authguard';
 
 
 /**
@@ -46,9 +47,10 @@ export class SignInCardComponent {
 			   public toastCtrl : ToastController,
 			   public zone : NgZone,
 			   public storage : Storage,
-         public userDataProvider : UserDataProvider,
-         private location : Location,
-         @Inject(EnvVariables) private environment) {
+			   public authguard : AuthguardProvider,
+	           public userDataProvider : UserDataProvider,
+		       private location : Location,
+	          @Inject(EnvVariables) private environment) {
 
     console.log('Hello SignInCardComponent Component');
 
@@ -87,7 +89,7 @@ export class SignInCardComponent {
   }
 
   ionViewDidLoad() {
-    
+    console.log("ionViewDidLoad SignInCardComponent")
 
  	 this.zone.run(() => {});
      // this.cookieservice.remove("domainError");
@@ -137,6 +139,8 @@ export class SignInCardComponent {
 		// let options = new RequestOptions({ headers: headers });
 
 		let url = `${this.environment.dilbertApi}/login/google/${this.appglobals.lang}?token=${this.token}`;
+		// let url = `${this.environment.dilbertApi}/login/google/fr?token=${this.token}`;
+		
 		console.log(url);
 		// let postParams = {
 		// token : this.token
@@ -144,10 +148,20 @@ export class SignInCardComponent {
 
 		this.appServiceProvider.request(url,'get',{},{},false,'observable', '', {}, false ).subscribe(data =>{
 			this.loginResponse = data;
-			// console.log(this.loginResponse);
+			 console.log(this.loginResponse);
 			this.status = this.loginResponse.status;
 			this.next_url = this.loginResponse.next_url;
+			this.authguard.userData = this.loginResponse.data;
+			this.authguard.retrievedUserData = true;
+
+			this.appglobals.lang = this.loginResponse.data.user_lang;
+            this.appglobals.period_unit = this.loginResponse.data.default_period_unit;
+            this.appglobals.org_name = this.loginResponse.data.org_name;
+            this.events.publish("app:localize",this.loginResponse.data.user_lang);
+
+
 			this.storage.set('userData', this.loginResponse.data).then( () => {
+				console.log('User information stored');
 		      });
 
 		if(this.status == "200"){

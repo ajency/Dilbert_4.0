@@ -1,5 +1,6 @@
 {
 
+	  "DILBERT" : "DILBERT",
 	  "login" : "Login",
 	  "register" : "Register",
 	  "contact us" : "Contact Us",
@@ -44,8 +45,24 @@
 	  "online" : "Online",
 	  "no logs found" : "No logs found",
 	  "no data found" : "No data found",
-	  "leave" : "Leave",
-	  "holiday" : "Holiday",
+	  "Leave" : "Leave",
+	  "Holiday" : "Holiday",
+	  "Weekend" : "Weekend",
+	  "Not joined" : "Not joined",
+	  "active" : "Active",
+	  "offline" : "Offline",
+	  "idle" : "Idle",
+	  "Jump to date" : "Jump to date",
+	  "Edit log time" : "Edit log time",
+	  "Modify_logs" : "Modify logs",
+	  "Leave_status" : "Leave status",
+	  "Save_changes" : "Save Changes",
+	  "Cancel" : "Cancel",
+	  "Worked" : "Worked",
+	  "Worked on weekend" : "Worked on weekend",
+	  "Worked on holiday" : "Worked on holiday",
+	  "Leave due to violation" : "Leave due to violation", 
+
 
 
 
@@ -99,8 +116,7 @@
 	  "status" : "Status",
 	  "from" : "from",
 	  "on" : "On",
-	  "at" : "at",
-	  "by" : "By"
+	  "at" : "at"
 
 
 

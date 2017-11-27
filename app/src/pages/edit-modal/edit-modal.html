@@ -35,26 +35,26 @@
 <div class="my-popup">
 
 	<div align="center">
-		<h3> Modify logs </h3>
+		<h3> {{ 'Modify_logs' | translate}} </h3>
 	</div>
 <hr>
 	<div padding>
-		<label>Start time:</label> <input type="time"   [(ngModel)]="start_time"> <br />
-		<label>End_time:</label>  <input type="time"   [(ngModel)]="end_time"> <br />
+		<label>{{ "start_time" | translate }}:</label> <input type="time"   [(ngModel)]="start_time"> <br />
+		<label>{{ "end_time" | translate }}:</label>  <input type="time"   [(ngModel)]="end_time"> <br />
 		<!-- <ion-datetime class = "relative" displayFormat="hh:mm:a" pickerFormat="hh/mm/a"></ion-datetime> -->
 		<div *ngIf = "leave_marking_dropdown">
-			<label>Leave status:</label>
+			<label>{{'Leave_status' | translate}}:</label>
 			<ion-select style = "display: inline-flex;" [(ngModel)]="status" class = "relative">
-		      <ion-option selected = "{{leave_status}}" value= "Present" >Present</ion-option>
-		      <ion-option selected = "{{!leave_status}}" value= "Leave" >Leave</ion-option>
+		      <ion-option *ngFor = 'let option of leave_status_values' >{{option | translate}}</ion-option>
+		      <!-- <ion-option  value= "Leave" >Leave</ion-option> -->
 			</ion-select>
 		</div>
 	</div>
 
 	<div class="footer">
 	
-	<button ion-button color="dark" (click) = "changeLogs()" [disabled] = "((start_time > end_time || start_time == '' || end_time == '') && status == 'Present') "  > Save Changes</button> 
-	<button style="float: right;" ion-button color="danger" (click) = "close()" > Cancel</button>	
+	<button ion-button color="dark" (click) = "changeLogs()" [disabled] = "((start_time > end_time || start_time == '' || end_time == '') && (status == 'Present' || status == 'Worked' || status == 'Worked on weekend' || status == 'Worked on holiday' || status == 'Leave due to violation') ) "  > {{'Save_changes' | translate}}</button> 
+	<button style="float: right;" ion-button color="danger" (click) = "close()" > {{'Cancel' | translate}}</button>	
 
 
 	</div>
