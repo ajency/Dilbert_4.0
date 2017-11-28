@@ -321,8 +321,8 @@ ionViewDidLoad() {
         this.summaryContentData = response;
         this.zone.run(() => {});
 
-        Object.assign(filter1,filter2);
-        let serializedquery = `?${$.param(filter1)}`;
+        // Object.assign(filter1,filter2);
+        let serializedquery = `?${$.param(filter1)}?${$.param(filter2)}`;
         
         // serializedquery = `?${$.param(filter2)}`;
         // this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true, replace : true });
