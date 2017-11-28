@@ -57,3 +57,29 @@ Route::group(['prefix' => 'cron'], function() {
 // Desktop App
 Route::get('/ping','AppController@periodicalPing');
 Route::get('/state-update','CronController@stateUpdate');  // cron runs every 5 minutes
+
+// slots api
+Route::post('/edit-slots',function() {
+    return response()->json([
+        "status" => 200,
+        "message" => "Success",
+        "data" => [
+            "slots" => [
+                [
+                    "type" => "lunch",
+                    "date" => "2017-11-28",
+                    "start_time" => "13:30",
+                    "end_time" => "14:15",
+                    "total_time" => "00:45"
+                ]
+            ],
+            "period_meta" => [
+                "period_unit" => "week",
+                "worked_total" => "46:10",
+                "worked_expected" => "45:00",
+                "lunch_total" => "03:00",
+                "lunch_expected" => "03:45"
+            ]
+        ]
+    ]);
+});
