@@ -426,6 +426,14 @@ export class AppServiceProvider {
         return navigator.onLine;
   } //end updateOnlineStatus
 
+  public presentLoader(): any{
+    let loader = this.loadingctrl.create({
+      spinner: "hide",
+      content: 'Please wait...',
+      showBackdrop: true
+    });
 
+    loader.present();
+  }
   
 }

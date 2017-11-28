@@ -11,6 +11,11 @@ summary-content {
             // text-align: center;
         }
     }
+
+    .selected-log{
+        background: rgba(0,0,200,0.5);
+    }
+
     @media screen and (min-width: 600px) and (max-width: 768px) {
         .day-detail {
             .detail-cols {
