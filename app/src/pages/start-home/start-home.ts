@@ -95,11 +95,12 @@ ngOnInit(){
     this.userId = this.authguard.user_id;
     this.key = this.authguard.userData.x_api_key;
 
-    if((this.param1 == '' && this.param2 == '') || (this.param1 == undefined && this.param2 == undefined) ){
-    this.period_unit = this.appGlobalsProvider.period_unit;
-    this.cos_offset = this.appGlobalsProvider.cos_offset;
-    this.getUserDate();
-    console.log('no params passed');
+    // if((this.param1 == '' && this.param2 == '') || (this.param1 == undefined && this.param2 == undefined) ){
+    if(!this.param1){
+      this.period_unit = this.appGlobalsProvider.period_unit;
+      this.cos_offset = this.appGlobalsProvider.cos_offset;
+      this.getUserDate();
+      console.log('no params passed');
     }
 
     else {
@@ -260,7 +261,9 @@ ionViewDidLoad() {
     };
     
 
-
+    if(this.authguard.user_id == this.authguard.userData.user_id){
+      console.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!! REQUESTING USER DATA OF CURRENT USER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    } 
 
     this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', filter1, false).subscribe( (response) => {
       // console.log(response);
@@ -291,9 +294,9 @@ ionViewDidLoad() {
 
         this.zone.run(() => {});
         // this.events.publish('app:updatehistory','dashboard');
-      
-        let serializedquery =  `?${$.param(filter1)}`;
-        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` , replace : true});
+
+        // let serializedquery =  `?${$.param(filter1)}`;
+        // this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` , replace : true});
         
 
         // Call for day summary (RHS or logs data) 
@@ -318,8 +321,12 @@ ionViewDidLoad() {
         this.summaryContentData = response;
         this.zone.run(() => {});
 
-        serializedquery = `?${$.param(filter2)}`;
-        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true, replace : true });
+        Object.assign(filter1,filter2);
+        let serializedquery = `?${$.param(filter1)}`;
+        
+        // serializedquery = `?${$.param(filter2)}`;
+        // this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true, replace : true });
+        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, replace : true });
 
         this.checkPermissions();
 
