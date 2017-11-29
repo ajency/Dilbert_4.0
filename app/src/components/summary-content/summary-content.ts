@@ -36,6 +36,7 @@ export class SummaryContentComponent {
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
+  private naText: string;
   constructor( public events : Events,
                public elementref: ElementRef,
                public zone : NgZone,
@@ -53,10 +54,12 @@ export class SummaryContentComponent {
      this.day_data = data.summaryContentData.data.day_data;
      this.logs = data.summaryContentData.data.logs;
      this.leave_status_values = data.summaryContentData.data.leave_status_values;
-
+      
      this.summaryContentData = data.summaryContentData;
      console.log(this.leave_status_values);
      this.setToday();
+
+     this.naText = this.appGlobalsProvider.naText;
     });
 
     
@@ -201,7 +204,7 @@ export class SummaryContentComponent {
 
 
   setToday(){
-
+    console.log(this.day_data);
      let d = new Date();
      let temp;
      if(this.day_data.length != 0 ){ 
@@ -210,9 +213,12 @@ export class SummaryContentComponent {
      this.today = {
       day : this.days[d.getDay()],
       date : d.getDate(),
-      month : this.monthNames[d.getMonth()]
+      month : this.monthNames[d.getMonth()],
+      workdate: this.day_data[0].work_date
      }
    }
+
+   console.log("today:", this.today);
 
   }
 
@@ -308,41 +314,104 @@ export class SummaryContentComponent {
 
   private mouseKeyPressed: boolean = false;
   private mouseDragStart: boolean = false;
+  private mouseDrag: boolean = false;
   // @HostListener('document:click',['$event'])
-  onMouseMove(event){
+  onMouseMove(event, index = null){
     if(this.mouseKeyPressed){
-      // console.log("vent",event.currentTarget)
+      this.mouseDrag = true;
       if(event.currentTarget && event.currentTarget.classList){
-        this.highlightSelected(event);
+        this.highlightSelected(event,'',index);
       }
+      this.mouseDragStart = false;
     }
-    this.mouseDragStart = false;
   }
 
   onMouseDown(event){
+    // this.selectedSlots = [];
     this.mouseKeyPressed = true;
     this.mouseDragStart = true;
   }
 
+  private selectedSlots: Array<any> = [];
+
   onMouseUp(event){
     this.mouseKeyPressed = false;
+
+    if(this.mouseDrag){
+      this.getSelectedLogs();
+    }
+
+    this.mouseDrag = false;
+    // console.log("start index: " + this.markerStartIndex + " end index: " + this.markerEndIndex);
+  }
+
+  getSelectedLogs(){
+    let slogs = this.logListNative.querySelectorAll(".selected-log");
+    
+    this.selectedSlots = [];
+    for(let i = 0; i < slogs.length; i++){
+      // console.log(slogs[i].getAttribute("data_index"));
+      let sindex = slogs[i].getAttribute("data_index") || -1;
+      sindex = Number(sindex);
+      // this.selectedSlots.push(sindex);
+      this.selectedSlots.push(this.logs[sindex]);
+    }
+
+    console.log("selected logs: ", this.selectedSlots);
+  }
+
+  updateLogData(){
+    let url  = `${this.appGlobalsProvider.getApiUrl()}/edit-slots`;
+    
+    console.log(url);
+    let optionalHeaders = {
+      'X-API-KEY' : this.authguard.userData.x_api_key,
+      'From' : this.authguard.userData.user_id,
+    };
+
+    let body = {
+      "user_id" : this.authguard.user_id,
+      "date" : this.today.workdate,
+      "slot_data" : [
+        {
+          "slot_type" : "lunch",        // lunch
+          "logs" : this.selectedSlots
+        }
+      ]
+    }
+
+  let subscription = this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+      this.undoSelection();
+      this.appServiceProvider.presentToast("slot update success");
+      subscription.unsubscribe();
+    }, (err) => {
+      console.warn(err);
+      this.appServiceProvider.presentToast("slot update failure","warn")
+      subscription.unsubscribe();
+    });
   }
 
   private hideMarkerUpdate: boolean = true;
   private markerOffsetTop: number;
 
-  highlightSelected(event,type: string = ''){
+  // private markerStartIndex: number;
+  // private markerEndIndex: number;
+
+  highlightSelected(event,type: string = '',index = null){
     if(type === 'click'){
-      // console.dir(event.currentTarget.offsetTop);
       this.getTopOffset(event);
       this.deselectAllMarkers(event.currentTarget);
       event.currentTarget.classList.toggle("selected-log");
       event.currentTarget.classList.contains("selected-log") === true ? this.hideMarkerUpdate = false : this.hideMarkerUpdate = true;
-      // console.log("click toggle class");
+      this.getSelectedLogs();
+      console.log("click toggle class");
     }
     else{
       if(this.mouseDragStart){
         this.deselectAllMarkers();
+      }
+
+      if(this.mouseDrag){
         this.getTopOffset(event);
       }
       event.currentTarget.classList.add("selected-log");
