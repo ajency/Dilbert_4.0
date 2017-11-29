@@ -107,6 +107,16 @@ class LockedDataController extends Controller
                     $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->orderBy($sortCol, $sortOrder)->get();
                     $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),$sortOrder);
                     $data['periodData'] = $periodData;
+
+                    // adding dummy period_meta attribute for now
+                    $data["period_meta"] = [
+                        "period_unit" => "week",
+                        "worked_total" => "46:10",
+                        "worked_expected" => "45:00",
+                        "lunch_total" => "03:00",
+                        "lunch_expected" => "03:45"
+                    ];
+
                     return response()->json(['status' => 200, 'message' => __('api_messages.user_periodic_data'), 'data' => $data]);
                 // }
                 // else {
