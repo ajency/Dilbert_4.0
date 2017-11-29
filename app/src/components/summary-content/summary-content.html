@@ -38,11 +38,42 @@
         </div>
 
 
+        <div [hidden]="hideMarkerUpdate" class="day-detail flex-row" >
+                <div class="detail-cols">
+                    <select>
+                        <option value="lunch">Lunch Break</option>
+                        <option value="task">Task</option>
+                    </select>
+                </div>
+
+
+                <!-- <div class="detail-cols">
+                    test 2
+                </div>
+                <div class="detail-cols">
+                   test 3
+                </div> -->
+    
+                <div class="detail-cols">
+                    <button (click)="undoSelection()" title="Add lunch" ion-button outline small m-t-0> {{ 'Deselect' | translate}} </button> 
+                </div>
+
+
+                <div class="detail-cols">
+                     <button title="Add lunch" ion-button outline small m-t-0> {{ 'Update' | translate}} </button> 
+                </div>
+    
+                <!--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <ion-icon *ngIf = "day_data[0].changes != 0 && view_log_history_btn" name="md-list-box" p-r-5></ion-icon> -->
+    
+            </div>
+
 </div>
     <!-- Detail view -->
 
-    <div class="detail-view" p-t-35>
-        <ul *ngIf = "logs.length != 0" class="detail-view__container violated-row" p-h-20 m-h-10>
+    <div #logList class="detail-view" p-t-35>
+
+        <ul (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" *ngIf = "logs.length != 0" class="detail-view__container violated-row" p-h-20 m-h-10>
 
 
             <!-- Removed condition from above element to check for server errors -->
@@ -106,10 +137,15 @@
         -->
         <!--  </li> -->
         <li class="detail-view__cols completed" >
-            <h6 ion-text font-weight-3 color="dark">{{ "u started day at" | translate }} <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">{{getDayDate(day_data[0].start_time, 3)}}</h6></h6>
+            <h6 ion-text font-weight-3 color="dark">{{ "u started day at" | translate }} 
+                <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">
+                    {{getDayDate(day_data[0].start_time, 3)}}
+                </h6>
+            </h6>
+            <!-- <button title="Add lunch" ion-button outline small m-t-0 style="position:absolute; right: 0;"> {{ 'Mark lunch time' | translate}} </button>  -->
         </li>
 
-        <div *ngFor = "let obj of logs">
+        <div *ngFor = "let obj of logs" (mousemove)="onMouseMove($event)" (click)="highlightSelected($event,'click')">
             <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " class="detail-view__cols idle">
                 <h6  ion-text font-weight-3 color="dark">{{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
             </li>

@@ -1,5 +1,5 @@
 import { Events, ModalController, PopoverController } from 'ionic-angular';
-import { Component, NgZone, Input } from '@angular/core';
+import { Component, NgZone, Input, HostListener, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import { AuthguardProvider } from '../../providers/authguard/authguard';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
@@ -19,8 +19,10 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'summary-content.html'
 })
 export class SummaryContentComponent {
+  @ViewChild("logList") logList: ElementRef;
+  private logListNative: any;
 
-  
+
   @Input('test') currentData : any ;
   @Input('logs') summaryContentData : any;
   // changedLogs : any;
@@ -112,7 +114,9 @@ export class SummaryContentComponent {
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
     this.checkPermissions();
-    
+   
+    console.log("loglist", this.logList);
+    this.logListNative = this.logList.nativeElement;
   }
 
   checkPermissions(){
@@ -293,6 +297,56 @@ export class SummaryContentComponent {
     // });
       
 
+  }
+
+  private mouseKeyPressed: boolean = false;
+  private mouseDragStart: boolean = false;
+  // @HostListener('document:click',['$event'])
+  onMouseMove(event){
+    if(this.mouseKeyPressed){
+      // console.log("vent",event.currentTarget)
+      if(event.currentTarget && event.currentTarget.classList){
+        this.highlightSelected(event);
+      }
+    }
+    this.mouseDragStart = false;
+  }
+
+  onMouseDown(event){
+    this.mouseKeyPressed = true;
+    this.mouseDragStart = true;
+  }
+
+  onMouseUp(event){
+    this.mouseKeyPressed = false;
+  }
+
+  private hideMarkerUpdate: boolean = true;
+  highlightSelected(event,type: string = ''){
+    // console.log("event",event.currentTarget)
+    if(type === 'click' || this.mouseDragStart){
+      // console.log(this.logListNative.querySelectorAll(".selected-log"));
+
+      this.deselectAllMarkers();
+    }
+
+    event.currentTarget.classList.add("selected-log");
+    this.hideMarkerUpdate = false;
+  }
+
+  undoSelection(){
+    this.deselectAllMarkers();
+    this.hideMarkerUpdate = true;
+  }
+
+  deselectAllMarkers(){
+    let prev_selections = this.logListNative.querySelectorAll(".selected-log");
+    
+    if(prev_selections.length > 0){
+      for(var i = 0; i < prev_selections.length; i++){
+        prev_selections[i].classList.remove("selected-log");
+      }
+    }
   }
 
 

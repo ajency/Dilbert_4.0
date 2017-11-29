@@ -312,6 +312,7 @@ ionViewDidLoad() {
         // cos_offset : this.cos_offset
        }
 
+        // this.appServiceProvider.presentLoader();
 
         this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable', filter2, true).subscribe( (response) => {
         // console.log(response);
