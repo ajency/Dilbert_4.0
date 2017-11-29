@@ -22,7 +22,7 @@ import { AuthguardProvider } from '../../providers/authguard/authguard';
   templateUrl: 'summary-sidebar.html'
 })
 export class SummarySidebarComponent {
-
+  private naText: string = '--';
   apiURL :any;
   userId : any;
   todays_date : any;
@@ -348,7 +348,8 @@ export class SummarySidebarComponent {
 
      
 
-      this.minHours = no_of_days * 9;
+      // this.minHours = no_of_days * 9;
+      this.minHours = this.sideBarData.data.period_meta.worked_expected;
 
        if(this.sideBarData.data.periodData.length == 0){
         minutes = 0;
@@ -364,7 +365,8 @@ export class SummarySidebarComponent {
 
       console.log(this.minHours);
 
-      this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+      // this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
+      this.weekTotal = this.sideBarData.data.period_meta.worked_total;
 
       this.zone.run(() => {});
 

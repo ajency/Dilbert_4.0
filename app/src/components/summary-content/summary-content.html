@@ -38,7 +38,7 @@
         </div>
 
 
-        <div [hidden]="hideMarkerUpdate" class="day-detail flex-row" >
+        <!-- <div [hidden]="hideMarkerUpdate" class="day-detail flex-row" >
                 <div class="detail-cols">
                     <select>
                         <option value="lunch">Lunch Break</option>
@@ -47,26 +47,20 @@
                 </div>
 
 
-                <!-- <div class="detail-cols">
-                    test 2
+                <div class="day-detail__start-time detail-cols">
+                    <p m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].start_time,3)}}</p>
+                    <span ion-text color="text-lighter">{{ "start_time" | translate }}</span>
                 </div>
-                <div class="detail-cols">
-                   test 3
-                </div> -->
+                <div class="day-detail__end-time detail-cols">
+                    <p m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].total_time,3)}}</p>
+                    <span ion-text color="text-lighter">{{ "end_time" | translate }}</span>
+                </div>
     
-                <div class="detail-cols">
-                    <button (click)="undoSelection()" title="Add lunch" ion-button outline small m-t-0> {{ 'Deselect' | translate}} </button> 
-                </div>
-
-
                 <div class="detail-cols">
                      <button title="Add lunch" ion-button outline small m-t-0> {{ 'Update' | translate}} </button> 
                 </div>
     
-                <!--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                 <ion-icon *ngIf = "day_data[0].changes != 0 && view_log_history_btn" name="md-list-box" p-r-5></ion-icon> -->
-    
-            </div>
+        </div> -->
 
 </div>
     <!-- Detail view -->
@@ -171,4 +165,35 @@
     </ul>
 
     <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
+
+    <div [hidden]="hideMarkerUpdate" class="selected-marker-edit" [ngStyle]="{'top': markerOffsetTop + 'px', 'left': contentLeftOffset + 'px' }">
+                    <div class="detail-cols">
+                        <select>
+                            <option value="lunch">Lunch Break</option>
+                            <option value="task">Task</option>
+                        </select>
+                    </div>
+    
+    
+                    <div class="day-detail__start-time detail-cols">
+                        <p m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].start_time,3)}}</p>
+                        <span ion-text color="text-lighter">{{ "start_time" | translate }}</span>
+                    </div>
+                    <div class="day-detail__end-time detail-cols">
+                        <p m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].total_time,3)}}</p>
+                        <span ion-text color="text-lighter">{{ "end_time" | translate }}</span>
+                    </div>
+        
+                    <!-- <div class="detail-cols">
+                        <button (click)="undoSelection()" title="Add lunch" ion-button outline small m-t-0> {{ 'Deselect' | translate}} </button> 
+                    </div> -->
+    
+    
+                    <div class="detail-cols">
+                         <button title="Add lunch" ion-button outline small m-t-0> {{ 'Update' | translate}} </button> 
+                    </div>
+        
+                    <!--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <ion-icon *ngIf = "day_data[0].changes != 0 && view_log_history_btn" name="md-list-box" p-r-5></ion-icon> -->
+    </div>
 </div>

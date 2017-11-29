@@ -16,6 +16,14 @@ summary-content {
         background: rgba(0,0,200,0.5);
     }
 
+    .selected-marker-edit{
+        position: fixed; 
+        z-index: 50;
+        padding: 10px 30px;
+        background: #fff;
+        box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+    }
+
     @media screen and (min-width: 600px) and (max-width: 768px) {
         .day-detail {
             .detail-cols {

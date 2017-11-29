@@ -21,7 +21,8 @@ import { Storage } from '@ionic/storage';
 export class SummaryContentComponent {
   @ViewChild("logList") logList: ElementRef;
   private logListNative: any;
-
+  private contentDimensions: any;
+  private contentLeftOffset: number;
 
   @Input('test') currentData : any ;
   @Input('logs') summaryContentData : any;
@@ -36,6 +37,7 @@ export class SummaryContentComponent {
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
   constructor( public events : Events,
+               public elementref: ElementRef,
                public zone : NgZone,
                public modalCtrl : ModalController,
                public popoverCtrl : PopoverController,
@@ -115,7 +117,12 @@ export class SummaryContentComponent {
     this.logs = this.summaryContentData.data.logs;
     this.checkPermissions();
    
-    console.log("loglist", this.logList);
+    // console.log("elementref width", this.elementref.nativeElement.clientWidth);
+    // console.log("elementref get bound width", this.elementref.nativeElement.getBoundingClientRect());
+    this.contentDimensions = this.elementref.nativeElement.getBoundingClientRect()
+    this.contentLeftOffset = this.contentDimensions.left + this.contentDimensions.width;
+    // console.log("content left offset", this.contentLeftOffset);
+    
     this.logListNative = this.logList.nativeElement;
   }
 
@@ -322,28 +329,45 @@ export class SummaryContentComponent {
   }
 
   private hideMarkerUpdate: boolean = true;
+  private markerOffsetTop: number;
+
   highlightSelected(event,type: string = ''){
-    // console.log("event",event.currentTarget)
-    if(type === 'click' || this.mouseDragStart){
-      // console.log(this.logListNative.querySelectorAll(".selected-log"));
-
-      this.deselectAllMarkers();
+    if(type === 'click'){
+      // console.dir(event.currentTarget.offsetTop);
+      this.getTopOffset(event);
+      this.deselectAllMarkers(event.currentTarget);
+      event.currentTarget.classList.toggle("selected-log");
+      event.currentTarget.classList.contains("selected-log") === true ? this.hideMarkerUpdate = false : this.hideMarkerUpdate = true;
+      // console.log("click toggle class");
     }
-
-    event.currentTarget.classList.add("selected-log");
-    this.hideMarkerUpdate = false;
+    else{
+      if(this.mouseDragStart){
+        this.deselectAllMarkers();
+        this.getTopOffset(event);
+      }
+      event.currentTarget.classList.add("selected-log");
+      this.hideMarkerUpdate = false;
+      // console.log("drag toggle class")
+    }
   }
+
+  getTopOffset(event){
+    let bclient = event.currentTarget.getBoundingClientRect();
+    this.markerOffsetTop = bclient.top;
+  }
+
 
   undoSelection(){
     this.deselectAllMarkers();
     this.hideMarkerUpdate = true;
   }
 
-  deselectAllMarkers(){
+  deselectAllMarkers(curtarget = null){
     let prev_selections = this.logListNative.querySelectorAll(".selected-log");
     
     if(prev_selections.length > 0){
       for(var i = 0; i < prev_selections.length; i++){
+        if(curtarget === prev_selections[i]) continue;
         prev_selections[i].classList.remove("selected-log");
       }
     }
