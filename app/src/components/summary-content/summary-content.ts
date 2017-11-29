@@ -354,7 +354,10 @@ export class SummaryContentComponent {
       let sindex = slogs[i].getAttribute("data_index") || -1;
       sindex = Number(sindex);
       // this.selectedSlots.push(sindex);
-      this.selectedSlots.push(this.logs[sindex]);
+      let log = Object.assign({},this.logs[sindex]);
+      log['index'] = sindex;
+
+      this.selectedSlots.push(log);
     }
 
     console.log("selected logs: ", this.selectedSlots);
@@ -382,6 +385,18 @@ export class SummaryContentComponent {
 
   let subscription = this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
       this.undoSelection();
+      this.events.publish("summary-sidebar:slotupdate",response.data);
+
+
+        this.selectedSlots.map((slot,sindex) => {
+          this.logs.map((log,lindex) => {
+            if(slot['index'] == lindex){
+              log['slot'] = 'lunch';
+            }
+          });
+        });
+
+
       this.appServiceProvider.presentToast("slot update success");
       subscription.unsubscribe();
     }, (err) => {

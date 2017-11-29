@@ -44,6 +44,7 @@ export class SummarySidebarComponent {
   @Input('day_data') summaryContentData : any ;
   today : any;
   weekTotal :any;
+  lunchTime: any;
   minHours : any;
   loader_percentage : any;
   // changedLogs : any;
@@ -91,6 +92,10 @@ export class SummarySidebarComponent {
           console.log("todays logs changed");
         }
         this.calculateWeekTotal();
+    })
+
+    this.events.subscribe("summary-sidebar:slotupdate",(data) => {
+      this.slotsUpdateEvent(data);
     })
 
       
@@ -348,8 +353,8 @@ export class SummarySidebarComponent {
 
      
 
-      // this.minHours = no_of_days * 9;
-      this.minHours = this.sideBarData.data.period_meta.worked_expected;
+      this.minHours = no_of_days * 9;
+      
 
        if(this.sideBarData.data.periodData.length == 0){
         minutes = 0;
@@ -361,15 +366,27 @@ export class SummarySidebarComponent {
          this.loader_percentage = 100;
         }
       }
+
+      this.minHours = this.sideBarData.data.period_meta.worked_expected;
       
 
       console.log(this.minHours);
 
       // this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
       this.weekTotal = this.sideBarData.data.period_meta.worked_total;
+      this.lunchTime = this.sideBarData.data.period_meta.lunch_total;
 
       this.zone.run(() => {});
 
+    }
+
+    
+    slotsUpdateEvent(data){
+      this.minHours = data.period_meta.worked_expected;
+      this.weekTotal =data.period_meta.worked_total;
+      this.lunchTime = data.period_meta.lunch_total;
+
+      console.log("slot data updated")
     }
 
 

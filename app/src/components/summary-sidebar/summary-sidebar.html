@@ -14,7 +14,7 @@
         </div>
         <div class="current-card__header flex-row">    
                 <p ion-text color="primary" no-margin>{{ "lunch_time" | translate }}</p>
-                <p ion-text no-margin color="text"> {{ sideBarData.data.period_meta.lunch_total || naText }} {{ "hr" | translate }} </p>
+                <p ion-text no-margin color="text"> {{ lunchTime || naText }} {{ "hr" | translate }} </p>
     
                 <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}"></div>
             </div>
