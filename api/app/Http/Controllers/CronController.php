@@ -132,7 +132,7 @@ class CronController extends Controller
 
             // calculate the time difference between rhs and rule_key_fields if key < rhs
             if((int)$totalHours < (int)$minHours)
-            $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
+                $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
 
             // getting the total hours
             $totalHours = (int)($totalHours/60).':'.($totalHours%60);
@@ -145,7 +145,8 @@ class CronController extends Controller
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
 
             // add the meta data to $data
-            $data['meta']['time_difference'] = $timeDiff;
+            if(isset($timeDiff))  // if time difference exists
+                $data['meta']['time_difference'] = $timeDiff;
 
             (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
         }
@@ -178,7 +179,7 @@ class CronController extends Controller
 
             // calculate the time difference between rhs and rule_key_fields if key < rhs
             if((int)$totalHours < (int)$minHours)
-            $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
+                $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
 
             // getting the total hours
             $totalHours = (int)($totalHours/60).':'.($totalHours%60);
@@ -189,7 +190,8 @@ class CronController extends Controller
             $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
 
             // add the meta data to $data
-            $data['meta']['time_difference'] = $timeDiff;
+            if(isset($timeDiff))  // if time difference exists
+                $data['meta']['time_difference'] = $timeDiff;
 
             (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data,false,true);
         }

@@ -139,7 +139,7 @@
             <!-- <button title="Add lunch" ion-button outline small m-t-0 style="position:absolute; right: 0;"> {{ 'Mark lunch time' | translate}} </button>  -->
         </li>
 
-        <div *ngFor = "let obj of logs; let i = index;" (mousemove)="onMouseMove($event,i)" (click)="highlightSelected($event,'click',i)" [attr.data_index]="i">
+        <div *ngFor = "let obj of logs; let i = index;" (mousemove)="onMouseMove($event,i)" (click)="highlightSelected($event,'click',i)" [attr.data_index]="i" class="click">
             
             <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " class="detail-view__cols idle">
                 <h6  ion-text font-weight-3 color="dark">{{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ion-icon [hidden]="obj.slot != 'lunch'" name="pizza" style="color: red;"></ion-icon></h6>
@@ -167,36 +167,31 @@
 
     <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
 
-    <div [hidden]="hideMarkerUpdate" class="selected-marker-edit" [ngStyle]="{'top': markerOffsetTop + 'px', 'left': contentLeftOffset + 'px' }">
-                    <div class="detail-cols">
-                        <select>
-                            <option value="lunch">Lunch Break</option>
-                            <option value="task">Task</option>
-                        </select>
-                    </div>
-    
-    
-                    <div class="day-detail__start-time detail-cols">
-                        <!-- <p m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].start_time,3)}}</p> -->
-                        <p m-t-0 font-weight-5 m-b-10>{{ selectedSlots.length > 0 ? getDayDate(selectedSlots[0].start_time,3) : naText }}</p>
-                        <span ion-text color="text-lighter">{{ "start_time" | translate }}</span>
-                    </div>
-                    <div class="day-detail__end-time detail-cols">
-                        <!-- <p m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].total_time,3)}}</p> -->
-                        <p m-t-0 font-weight-5 m-b-10>{{ selectedSlots.length > 0 ? getDayDate(selectedSlots[selectedSlots.length - 1].end_time,3) : naText }}</p>
-                        <span ion-text color="text-lighter">{{ "end_time" | translate }}</span>
-                    </div>
-        
-                    <!-- <div class="detail-cols">
-                        <button (click)="undoSelection()" title="Add lunch" ion-button outline small m-t-0> {{ 'Deselect' | translate}} </button> 
-                    </div> -->
-    
-    
-                    <div class="detail-cols">
-                         <button (click)="updateLogData()" title="Add lunch" ion-button outline small m-t-0> {{ 'Update' | translate}} </button> 
-                    </div>
-        
-                    <!--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     <ion-icon *ngIf = "day_data[0].changes != 0 && view_log_history_btn" name="md-list-box" p-r-5></ion-icon> -->
-    </div>
+
+    <ion-card [hidden]="hideMarkerUpdate" class="selected-marker-edit" [ngStyle]="{'top': markerOffsetTop + 'px', 'left': contentLeftOffset + 'px' }" p-t-0>
+    <p class="reason-label" ion-text text-left text-uppercase>Duration</p>
+      <ion-list class="reason-list">
+        <button ion-item p-l-0 class="first-item">
+          <ion-icon name="clock" p-t-5 item-start color="secondary"></ion-icon>
+          <span class="Timeslot-label x-small" ion-text>Start Time</span> - <span class="Timeslot-value x-small" ion-text color="text-lighter" font-weight-5>{{ selectedSlots.length > 0 ? getDayDate(selectedSlots[0].start_time,3) : naText }}</span>
+        </button>
+
+        <button ion-item p-l-0>
+          <ion-icon name="clock" item-start p-t-5 color="secondary"></ion-icon>
+          <span class="Timeslot-label" ion-text>End Time</span> - <span class="Timeslot-value x-small" ion-text color="text-lighter" font-weight-5>{{ selectedSlots.length > 0 ? getDayDate(selectedSlots[selectedSlots.length - 1].end_time,3) : naText }}</span>
+        </button>
+
+      </ion-list>
+
+      <p class="reason-label" ion-text text-left text-uppercase>Reason</p>
+
+      <select class="custom-select">
+            <option value="lunch">Lunch Break</option>
+            <option value="task">Task</option>
+        </select>
+
+        <button (click)="updateLogData()" title="Add lunch" ion-button outline small m-t-10> {{ 'Update' | translate}} </button> 
+
+    </ion-card>
+
 </div>
