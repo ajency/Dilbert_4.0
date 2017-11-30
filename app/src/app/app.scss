@@ -23,3 +23,13 @@
 
 
 @import "Sass/main";
+
+.custom-loading-content{
+    .loading-wrapper{
+        background: rgba(0,0,0,0);
+        box-shadow: none;
+        color: #fff;
+        width: 150px;
+        text-align: center;
+    }
+}

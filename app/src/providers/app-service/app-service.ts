@@ -63,8 +63,8 @@ export class AppServiceProvider {
     console.log('AppServiceProvider Provider');
 
     this.handleError = (error: any): Promise<any> => {
-      console.warn('error in request fetch',error)
-
+                      console.warn('error in request fetch',error)
+                      this.hideLoader();
                       // let errMsg: string;
                       // if (error instanceof Response) {
                       //   const body: any = error.json() || '';
@@ -278,6 +278,7 @@ export class AppServiceProvider {
     //    this.updateQueryParams(serializedquery,locationpath,disableurlupdate);
     // },250);
 
+    this.presentLoader(url);
     if(returntype == 'promise'){
       return httpEvent
       .toPromise()
@@ -301,6 +302,7 @@ export class AppServiceProvider {
 
 
   private updateQueryParams(query,locationpath, disableupdate,appendurl){
+    this.hideLoader();
     // if(locationpath !== this.location.path(true)) return;
     if(disableupdate) return;
 
@@ -309,6 +311,8 @@ export class AppServiceProvider {
     if(serializedquery){
       this.events.publish('app:updatehistory',{page: serializedquery, state: {query: serializedquery}, replace: true, appendurl});
     }
+
+
   }
 
   public parseRejectedError(error: any): any{
@@ -426,14 +430,38 @@ export class AppServiceProvider {
         return navigator.onLine;
   } //end updateOnlineStatus
 
-  public presentLoader(): any{
-    let loader = this.loadingctrl.create({
-      spinner: "hide",
-      content: 'Please wait...',
-      showBackdrop: true
-    });
+  private loader: any = null;
+  private pendingRequests: Array<any> = [];
+  public presentLoader(url: string = ''): any{
+    this.pendingRequests.push(url);
 
-    loader.present();
+    console.log("@@@@@@@@@@@ presenting loader:", this.pendingRequests)
+    if(this.loader === null){
+      this.loader = this.loadingctrl.create({
+        spinner: "hide",
+        content: "<div><img src='./assets/img/dilbert.jpg' /> <div>loading</div></div>",
+        cssClass: "custom-loading-content",
+        showBackdrop: true,
+        dismissOnPageChange: true
+      });
+  
+      this.loader.present();
+    }
+  }
+
+  public hideLoader(){
+    let url = this.pendingRequests.pop();
+
+    console.log("@@@@@@@@@@ pending requests", this.pendingRequests)
+    setTimeout(() => {
+      if(this.pendingRequests.length === 0){
+        if(this.loader){
+          this.loader.dismiss();
+          this.loader = null;
+        }
+      }
+    },500);
+
   }
   
 }
