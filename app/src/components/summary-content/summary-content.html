@@ -141,14 +141,14 @@
 
         <div *ngFor = "let obj of logs; let i = index;" (mousemove)="onMouseMove($event,i)" (click)="highlightSelected($event,'click',i)" [attr.data_index]="i" class="click">
             
-            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " class="detail-view__cols idle">
-                <h6  ion-text font-weight-3 color="dark">{{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ion-icon [hidden]="obj.slot != 'lunch'" name="pizza" style="color: red;"></ion-icon></h6>
+            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch'}" class="detail-view__cols idle">
+                <h6  ion-text font-weight-3 color="dark"> {{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
             </li>
-            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " class="detail-view__cols offline">
-                <h6  ion-text font-weight-3 color="dark">{{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ion-icon [hidden]="obj.slot != 'lunch'" name="pizza" style="color: red;"></ion-icon></h6>
+            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch'}" class="detail-view__cols offline">
+                <h6  ion-text font-weight-3 color="dark"> {{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
             </li>
-            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " class="detail-view__cols online">
-                <h6  ion-text font-weight-3 color="dark">{{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ion-icon [hidden]="obj.slot != 'lunch'" name="pizza" style="color: red;"></ion-icon></h6>
+            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch'}" class="detail-view__cols online">
+                <h6  ion-text font-weight-3 color="dark"> {{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
             </li>
 
             <li *ngIf = "obj.state == 'active' && obj.end_time == '' " class="detail-view__cols online">
