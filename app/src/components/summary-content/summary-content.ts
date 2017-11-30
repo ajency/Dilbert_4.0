@@ -23,6 +23,7 @@ export class SummaryContentComponent {
   private logListNative: any;
   private contentDimensions: any;
   private contentLeftOffset: number;
+  private allLogs: Array<any>;
 
   @Input('test') currentData : any ;
   @Input('logs') summaryContentData : any;
@@ -51,58 +52,6 @@ export class SummaryContentComponent {
               public appGlobalsProvider : AppGlobalsProvider,
               public storage : Storage) {
     // console.log('SummaryContentComponent Component');
-
-    this.events.subscribe('update:content',(data) => {
-     // this.currentData = data.date;
-     this.undoSelection();
-     console.log('inside update content');
-     this.day_data = data.summaryContentData.data.day_data;
-     this.logs = data.summaryContentData.data.logs;
-     this.leave_status_values = data.summaryContentData.data.leave_status_values;
-      
-     this.summaryContentData = data.summaryContentData;
-     console.log(this.leave_status_values);
-     this.setToday();
-
-    });
-
-    
-    this.events.subscribe("changed:log", (data) => {
-
-          let object = data;
-
-       console.log(object);
-
-       let url  = `${this.appGlobalsProvider.getApiUrl()}/period-data/edit/${this.authguard.user_id}/${this.appGlobalsProvider.lang}`;
-
-       console.log(url);
-       let optionalHeaders = {
-          'X-API-KEY' : this.authguard.userData.x_api_key,
-          'From' : this.authguard.userData.user_id,
-        };
-
-      this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
-
-
-          console.log(response);
-
-          if(response.status == 200){
-            this.day_data[0] = response.data[0];
-            this.events.publish("summary-sidebar:log", response.data[0]);
-            this.appGlobalsProvider.view_log_history_btn = true;
-            this.logsChanged();
-          }
-
-          else{
-            this.appServiceProvider.presentToast(response.message, 'error');
-            
-          }
-
-
-       });
-
-      });
-
       this.translate.get("toast_messages").subscribe((res: any) => {
        // this.errorString = res;
        this.toastMessages = res;
@@ -137,6 +86,57 @@ export class SummaryContentComponent {
     // console.log("content left offset", this.contentLeftOffset);
     
     this.logListNative = this.logList.nativeElement;
+
+    this.events.subscribe('update:content',(data) => {
+      // this.currentData = data.date;
+      this.undoSelection();
+      console.log('inside update content');
+      this.day_data = data.summaryContentData.data.day_data;
+      this.logs = data.summaryContentData.data.logs;
+      this.leave_status_values = data.summaryContentData.data.leave_status_values;
+       
+      this.summaryContentData = data.summaryContentData;
+      console.log(this.leave_status_values);
+      this.setToday();
+
+    });
+ 
+     
+    this.events.subscribe("changed:log", (data) => {
+ 
+        let object = data;
+ 
+        console.log(object);
+ 
+        let url  = `${this.appGlobalsProvider.getApiUrl()}/period-data/edit/${this.authguard.user_id}/${this.appGlobalsProvider.lang}`;
+ 
+        console.log(url);
+        let optionalHeaders = {
+           'X-API-KEY' : this.authguard.userData.x_api_key,
+           'From' : this.authguard.userData.user_id,
+         };
+ 
+       this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+ 
+ 
+           console.log(response);
+ 
+           if(response.status == 200){
+             this.day_data[0] = response.data[0];
+             this.events.publish("summary-sidebar:log", response.data[0]);
+             this.appGlobalsProvider.view_log_history_btn = true;
+             this.logsChanged();
+           }
+ 
+           else{
+             this.appServiceProvider.presentToast(response.message, 'error');
+             
+           }
+ 
+ 
+        });
+ 
+    });
   }
 
   checkPermissions(){
@@ -352,25 +352,51 @@ export class SummaryContentComponent {
     }
 
     this.mouseDrag = false;
+
     // console.log("start index: " + this.markerStartIndex + " end index: " + this.markerEndIndex);
   }
 
   getSelectedLogs(){
     let slogs = this.logListNative.querySelectorAll(".selected-log");
-    
-    this.selectedSlots = [];
-    for(let i = 0; i < slogs.length; i++){
-      // console.log(slogs[i].getAttribute("data_index"));
-      let sindex = slogs[i].getAttribute("data_index") || -1;
-      sindex = Number(sindex);
-      // this.selectedSlots.push(sindex);
-      let log = Object.assign({},this.logs[sindex]);
-      log['index'] = sindex;
 
-      this.selectedSlots.push(log);
+    if(slogs.length){
+      this.allLogs = this.logListNative.querySelectorAll("div[data_index]");
+      console.log("this.alllogs",this.allLogs)
+      // compensate for missing highlights on fast drags
+      let first_s_index = slogs[0].getAttribute("data_index");
+      let last_s_index = slogs[slogs.length - 1].getAttribute("data_index");
+  
+      console.log("fs:" + first_s_index + " ls:" + last_s_index);
+  
+      for(let i = 0; i < this.allLogs.length; i++){
+        let log = this.allLogs[i];
+        let lindex = log.getAttribute("data_index");
+      
+        if(lindex >= first_s_index && lindex <= last_s_index){
+          log.classList.add("selected-log");
+        }
+      
+      }
+      slogs = this.logListNative.querySelectorAll(".selected-log");
+
+
+      // get the selected logs object
+      this.selectedSlots = [];
+      for(let i = 0; i < slogs.length; i++){
+        // console.log(slogs[i].getAttribute("data_index"));
+        let sindex = slogs[i].getAttribute("data_index") || -1;
+        sindex = Number(sindex);
+        // this.selectedSlots.push(sindex);
+        let log = Object.assign({},this.logs[sindex]);
+        log['index'] = sindex;
+  
+        this.selectedSlots.push(log);
+      }
+  
+      console.log("selected logs: ", this.selectedSlots);
     }
 
-    console.log("selected logs: ", this.selectedSlots);
+
   }
 
   updateLogData(){
@@ -399,7 +425,10 @@ export class SummaryContentComponent {
         this.undoSelection();
         this.events.publish("summary-sidebar:slotupdate",response.data);
   
-  
+          this.logs.map((val) => {
+            delete val['slot'];
+          })
+
           this.selectedSlots.map((slot,sindex) => {
             this.logs.map((log,lindex) => {
               if(slot['index'] == lindex){
@@ -431,6 +460,7 @@ export class SummaryContentComponent {
 
   highlightSelected(event,type: string = '',index = null){
     if(type === 'click'){
+      console.log("selected click");
       this.getTopOffset(event);
       this.deselectAllMarkers(event.currentTarget);
       event.currentTarget.classList.toggle("selected-log");
