@@ -117,10 +117,15 @@
 	  "status" : "Status",
 	  "from" : "from",
 	  "on" : "On",
-	  "at" : "at"
+	  "at" : "at",
 
 
-
+	"toast_messages": {
+		"success": "Update success",
+		"error": "Update failed",
+		"slot_update_success": "Slot updated successfully",
+		"slot_update_failure": "Slot update has failed"
+	}
 
 
 
