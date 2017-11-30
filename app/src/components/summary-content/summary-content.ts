@@ -5,7 +5,7 @@ import { AuthguardProvider } from '../../providers/authguard/authguard';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 import { Storage } from '@ionic/storage';
-
+import { TranslateService } from '@ngx-translate/core';
 
 
 /**
@@ -37,19 +37,24 @@ export class SummaryContentComponent {
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
   private naText: string;
-  constructor( public events : Events,
-               public elementref: ElementRef,
-               public zone : NgZone,
-               public modalCtrl : ModalController,
-               public popoverCtrl : PopoverController,
-               public authguard : AuthguardProvider,
-               public appServiceProvider : AppServiceProvider,
-               public appGlobalsProvider : AppGlobalsProvider,
-               public storage : Storage) {
+  private toastMessages: any;
+
+  constructor(
+              public translate: TranslateService, 
+              public events : Events,
+              public elementref: ElementRef,
+              public zone : NgZone,
+              public modalCtrl : ModalController,
+              public popoverCtrl : PopoverController,
+              public authguard : AuthguardProvider,
+              public appServiceProvider : AppServiceProvider,
+              public appGlobalsProvider : AppGlobalsProvider,
+              public storage : Storage) {
     // console.log('SummaryContentComponent Component');
 
     this.events.subscribe('update:content',(data) => {
-	   // this.currentData = data.date;
+     // this.currentData = data.date;
+     this.undoSelection();
      console.log('inside update content');
      this.day_data = data.summaryContentData.data.day_data;
      this.logs = data.summaryContentData.data.logs;
@@ -59,11 +64,10 @@ export class SummaryContentComponent {
      console.log(this.leave_status_values);
      this.setToday();
 
-     this.naText = this.appGlobalsProvider.naText;
     });
 
     
-    this.events.subscribe("changed:log", (data) =>{
+    this.events.subscribe("changed:log", (data) => {
 
           let object = data;
 
@@ -97,7 +101,13 @@ export class SummaryContentComponent {
 
        });
 
-      })
+      });
+
+      this.translate.get("toast_messages").subscribe((res: any) => {
+       // this.errorString = res;
+       this.toastMessages = res;
+      });
+      this.naText = this.appGlobalsProvider.naText;
   
 
   }
@@ -384,24 +394,31 @@ export class SummaryContentComponent {
     }
 
   let subscription = this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
-      this.undoSelection();
-      this.events.publish("summary-sidebar:slotupdate",response.data);
-
-
-        this.selectedSlots.map((slot,sindex) => {
-          this.logs.map((log,lindex) => {
-            if(slot['index'] == lindex){
-              log['slot'] = 'lunch';
-            }
+      
+      if(response.status == 200){
+        this.undoSelection();
+        this.events.publish("summary-sidebar:slotupdate",response.data);
+  
+  
+          this.selectedSlots.map((slot,sindex) => {
+            this.logs.map((log,lindex) => {
+              if(slot['index'] == lindex){
+                log['slot'] = 'lunch';
+              }
+            });
           });
-        });
+  
+  
+        this.appServiceProvider.presentToast(this.toastMessages.slot_update_success);
+      }
+      else{
+        this.appServiceProvider.presentToast(response.message || this.toastMessages.slot_update_failure,'warn');
+      }
 
-
-      this.appServiceProvider.presentToast("slot update success");
       subscription.unsubscribe();
     }, (err) => {
       console.warn(err);
-      this.appServiceProvider.presentToast("slot update failure","warn")
+      this.appServiceProvider.presentToast(this.toastMessages.slot_update_failure,"warn");
       subscription.unsubscribe();
     });
   }

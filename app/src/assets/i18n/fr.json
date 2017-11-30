@@ -117,10 +117,15 @@
 	  "status" : "statut",
 	  "from" : "de",
 	  "on" : "sur",
-	  "at" : "à"
+	  "at" : "à",
 
 
-
+	"toast_messages": {
+		"success": "Mise à jour",
+		"error": "Mise à jour a échoué",
+		"slot_update_success": "Emplacement mis à jour avec succès",
+		"slot_update_failure": "La mise à jour de l'emplacement a échoué"
+	}
 
 
 
