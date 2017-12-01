@@ -1,6 +1,7 @@
 // import { SummarySidebarService } from './../components/summary-sidebar/summary-sidebar.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
+// import { HttpModule, Http, BrowserXhr } from '@angular/http';
 import { HttpModule, Http } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -21,6 +22,7 @@ import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 // import { TimePickerComponent } from '../components/time-picker/time-picker';
+// import { NgProgressModule, NgProgressCustomBrowserXhr } from 'ng2-progressbar';
 import { NgProgressModule } from 'ng2-progressbar';
 
 // import { TranslateModule} from '@ngx-translate/core';
@@ -75,6 +77,7 @@ export function createTranslateLoader(http: Http) {
     MyApp,
   ],
   providers: [
+    // {provide: BrowserXhr, useClass: NgProgressCustomBrowserXhr},
     StatusBar,
     SplashScreen,
     TitleCasePipe,

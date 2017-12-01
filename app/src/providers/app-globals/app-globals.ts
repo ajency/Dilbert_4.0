@@ -34,7 +34,7 @@ export class AppGlobalsProvider {
   private semVersion: any = {
     major: 1,
     minor: 1,
-    patch: 3
+    patch: 5
   };
 
   appVersion : string = '' ;

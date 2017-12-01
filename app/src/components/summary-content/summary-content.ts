@@ -6,6 +6,7 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
+import { setTimeout } from 'timers';
 
 
 /**
@@ -20,7 +21,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SummaryContentComponent {
   @ViewChild("logList") logList: ElementRef;
+  @ViewChild("markerEdit") markerEdit: ElementRef;
+
   private logListNative: any;
+  private markerEditNative: any;
+
   private contentDimensions: any;
   // private contentLeftOffset: number;
   private allLogs: Array<any>;
@@ -39,6 +44,7 @@ export class SummaryContentComponent {
   
   private naText: string;
   private toastMessages: any;
+  private relaventWinHeight: number;
 
   constructor(
               public translate: TranslateService, 
@@ -86,6 +92,7 @@ export class SummaryContentComponent {
     // console.log("content left offset", this.contentLeftOffset);
     
     this.logListNative = this.logList.nativeElement;
+    this.markerEditNative = this.markerEdit.nativeElement;
 
     this.events.subscribe('update:content',(data) => {
       // this.currentData = data.date;
@@ -137,6 +144,8 @@ export class SummaryContentComponent {
         });
  
     });
+
+    this.relaventWinHeight = (window.innerHeight - 40); // 40 pixels for the footer
   }
 
   checkPermissions(){
@@ -358,19 +367,19 @@ export class SummaryContentComponent {
 
   getSelectedLogs(){
     let slogs = this.logListNative.querySelectorAll(".selected-log");
-
+    console.log("slogs before update", slogs)
     if(slogs.length){
       this.allLogs = this.logListNative.querySelectorAll("div[data_index]");
 
       // compensate for missing highlights on fast drags
-      let first_s_index = slogs[0].getAttribute("data_index");
-      let last_s_index = slogs[slogs.length - 1].getAttribute("data_index");
+      let first_s_index = Number( slogs[0].getAttribute("data_index") );
+      let last_s_index = Number( slogs[slogs.length - 1].getAttribute("data_index") );
   
       console.log("fs:" + first_s_index + " ls:" + last_s_index);
   
       for(let i = 0; i < this.allLogs.length; i++){
         let log = this.allLogs[i];
-        let lindex = log.getAttribute("data_index");
+        let lindex = Number( log.getAttribute("data_index") );
       
         if(lindex >= first_s_index && lindex <= last_s_index){
           log.classList.add("selected-log");
@@ -507,17 +516,19 @@ export class SummaryContentComponent {
   }
 
   getTopOffset(event){
-    // let bclient = event.currentTarget.getBoundingClientRect();
-    console.log("blcient",event.currentTarget.offsetTop)
+    this.markerOffsetTop = event.currentTarget.offsetTop; //relative to parent
 
-    // if(bclient.top > (0.5 * window.innerHeight)){
-    //   this.markerOffsetTop = (window.innerHeight / 2);
-    // }
-    // else{
-    //   this.markerOffsetTop = bclient.top;
-    // }
+    setTimeout(() => {
+      let marker_edit_bottom = this.markerEditNative.getBoundingClientRect().bottom;
+      // console.log("markeredit bottom:", marker_edit_bottom, " window height", (window.innerHeight - 40) );
 
-    this.markerOffsetTop = event.currentTarget.offsetTop;
+      if( marker_edit_bottom > this.relaventWinHeight ){
+        let newoffset = this.markerOffsetTop - (marker_edit_bottom -  this.relaventWinHeight);
+        // console.log("newoffset:", newoffset);
+        this.markerOffsetTop = newoffset > 0 ? newoffset : 0;
+      }
+    },50);
+
   }
 
 
