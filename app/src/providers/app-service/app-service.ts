@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Location, PlatformLocation } from '@angular/common';
 import { ToastController, Events, LoadingController } from 'ionic-angular';
-
+import { NgProgressService } from "ng2-progressbar";
 
 import * as $ from 'jquery';
 
@@ -49,7 +49,9 @@ export class AppServiceProvider {
 
   
 
-  constructor(public http: Http,
+  constructor(
+    public progress: NgProgressService,
+    public http: Http,
    public events: Events,
    private cookieservice: CookieService,
    public platformlocation: PlatformLocation,
@@ -437,30 +439,34 @@ export class AppServiceProvider {
 
     console.log("@@@@@@@@@@@ presenting loader:", this.pendingRequests)
     if(this.loader === null){
-      this.loader = this.loadingctrl.create({
-        spinner: "hide",
-        content: "<div><img src='./assets/img/dilbert.jpg' /> <div>loading</div></div>",
-        cssClass: "custom-loading-content",
-        showBackdrop: true,
-        dismissOnPageChange: true
-      });
+      // this.loader = this.loadingctrl.create({
+      //   spinner: "hide",
+      //   content: "<div><img src='./assets/img/dilbert.jpg' /> <div>loading</div></div>",
+      //   cssClass: "custom-loading-content",
+      //   showBackdrop: true,
+      //   dismissOnPageChange: true
+      // });
   
-      this.loader.present();
+      // this.loader.present();
+      
+      this.loader = true;
+      this.progress.start();
     }
   }
 
   public hideLoader(){
     let url = this.pendingRequests.pop();
 
-    console.log("@@@@@@@@@@ pending requests", this.pendingRequests)
     setTimeout(() => {
+      console.log("@@@@@@@@@@ pending requests", this.pendingRequests)
       if(this.pendingRequests.length === 0){
         if(this.loader){
-          this.loader.dismiss();
+          // this.loader.dismiss();
           this.loader = null;
+          this.progress.done();
         }
       }
-    },500);
+    },100);
 
   }
   
