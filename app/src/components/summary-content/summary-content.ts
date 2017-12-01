@@ -22,7 +22,7 @@ export class SummaryContentComponent {
   @ViewChild("logList") logList: ElementRef;
   private logListNative: any;
   private contentDimensions: any;
-  private contentLeftOffset: number;
+  // private contentLeftOffset: number;
   private allLogs: Array<any>;
 
   @Input('test') currentData : any ;
@@ -81,8 +81,8 @@ export class SummaryContentComponent {
    
     // console.log("elementref width", this.elementref.nativeElement.clientWidth);
     // console.log("elementref get bound width", this.elementref.nativeElement.getBoundingClientRect());
-    this.contentDimensions = this.elementref.nativeElement.getBoundingClientRect()
-    this.contentLeftOffset = this.contentDimensions.left + this.contentDimensions.width;
+    // this.contentDimensions = this.elementref.nativeElement.getBoundingClientRect()
+    // this.contentLeftOffset = this.contentDimensions.left + this.contentDimensions.width;
     // console.log("content left offset", this.contentLeftOffset);
     
     this.logListNative = this.logList.nativeElement;
@@ -476,6 +476,7 @@ export class SummaryContentComponent {
       if(this.mouseDrag){
         this.getTopOffset(event);
       }
+
       event.currentTarget.classList.add("selected-log");
       this.hideMarkerUpdate = false;
       // console.log("drag toggle class")
@@ -484,7 +485,16 @@ export class SummaryContentComponent {
 
   getTopOffset(event){
     let bclient = event.currentTarget.getBoundingClientRect();
-    this.markerOffsetTop = bclient.top;
+    console.log("blcient",event.currentTarget.offsetTop)
+
+    // if(bclient.top > (0.5 * window.innerHeight)){
+    //   this.markerOffsetTop = (window.innerHeight / 2);
+    // }
+    // else{
+    //   this.markerOffsetTop = bclient.top;
+    // }
+
+    this.markerOffsetTop = event.currentTarget.offsetTop;
   }
 
 

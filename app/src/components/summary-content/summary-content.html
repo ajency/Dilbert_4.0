@@ -168,7 +168,8 @@
     <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
 
 
-    <ion-card [hidden]="hideMarkerUpdate" class="selected-marker-edit" [ngStyle]="{'top': markerOffsetTop + 'px', 'left': contentLeftOffset + 'px' }" p-t-0>
+    <!-- <ion-card [hidden]="hideMarkerUpdate" class="selected-marker-edit" [ngStyle]="{'top': markerOffsetTop + 'px', 'left': contentLeftOffset + 'px' }" p-t-0> -->
+    <ion-card [hidden]="hideMarkerUpdate" [ngStyle]="{'top': markerOffsetTop + 'px'}" class="selected-marker-edit" p-t-0>    
     <p class="reason-label" ion-text text-left text-uppercase>Duration</p>
       <ion-list class="reason-list">
         <button ion-item p-l-0 class="first-item">
