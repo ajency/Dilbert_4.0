@@ -24,6 +24,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 // import { TimePickerComponent } from '../components/time-picker/time-picker';
 // import { NgProgressModule, NgProgressCustomBrowserXhr } from 'ng2-progressbar';
 import { NgProgressModule } from 'ng2-progressbar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // import { TranslateModule} from '@ngx-translate/core';
 // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -54,6 +55,7 @@ export function createTranslateLoader(http: Http) {
     HttpModule,
     EnvironmentsModule,
     HttpModule,
+    BrowserAnimationsModule,
     CookieModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
