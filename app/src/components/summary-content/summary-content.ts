@@ -361,7 +361,7 @@ export class SummaryContentComponent {
 
     if(slogs.length){
       this.allLogs = this.logListNative.querySelectorAll("div[data_index]");
-      console.log("this.alllogs",this.allLogs)
+
       // compensate for missing highlights on fast drags
       let first_s_index = slogs[0].getAttribute("data_index");
       let last_s_index = slogs[slogs.length - 1].getAttribute("data_index");
@@ -377,6 +377,7 @@ export class SummaryContentComponent {
         }
       
       }
+
       slogs = this.logListNative.querySelectorAll(".selected-log");
 
 
@@ -395,6 +396,27 @@ export class SummaryContentComponent {
   
       console.log("selected logs: ", this.selectedSlots);
     }
+
+
+  }
+
+  updateMarkerRange(){
+    if(this.hideMarkerUpdate) return;
+
+    this.allLogs = this.logListNative.querySelectorAll("div[data_index]");
+
+    let updated_lunch_markers = []
+    for(let i = 0; i < this.allLogs.length; i++){
+      let ulunch = this.allLogs[i].querySelector(".marker-lunch");
+      
+      if(ulunch){
+        updated_lunch_markers.push( this.allLogs[i].getAttribute("data_index") );
+        this.allLogs[i].classList.add("selected-log");
+        console.log(i)
+      }
+    }
+    console.log("prev lunches",updated_lunch_markers);
+
 
 
   }
@@ -464,7 +486,8 @@ export class SummaryContentComponent {
       this.getTopOffset(event);
       this.deselectAllMarkers(event.currentTarget);
       event.currentTarget.classList.toggle("selected-log");
-      event.currentTarget.classList.contains("selected-log") === true ? this.hideMarkerUpdate = false : this.hideMarkerUpdate = true;
+      this.hideMarkerUpdate = event.currentTarget.classList.contains("selected-log") === true ? false : true;
+      this.updateMarkerRange();
       this.getSelectedLogs();
       console.log("click toggle class");
     }
@@ -484,7 +507,7 @@ export class SummaryContentComponent {
   }
 
   getTopOffset(event){
-    let bclient = event.currentTarget.getBoundingClientRect();
+    // let bclient = event.currentTarget.getBoundingClientRect();
     console.log("blcient",event.currentTarget.offsetTop)
 
     // if(bclient.top > (0.5 * window.innerHeight)){
