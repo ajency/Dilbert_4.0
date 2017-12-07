@@ -47,6 +47,8 @@ class SlotsController extends Controller
             if($continue)
                 continue;
 
+            $totalTime = (new Log)->timeDifferenceInMins($slotStart, $slotEnd);
+
             // make an entry to the slots table
             $slotEntry = new Slots;
             $slotEntry->user_id = $request->user_id;
@@ -54,7 +56,7 @@ class SlotsController extends Controller
             $slotEntry->work_date = $request->work_date;
             $slotEntry->start_time = $request->work_date.' '.$slotStart;
             $slotEntry->end_time = $request->work_date.' '.$slotEnd;
-            $slotEntry->total_time = (new Log)->timeDifferenceInMins($slotStart, $slotEnd);
+            $slotEntry->total_time = ((int)($totalTime/60)).':'.$totalTime%60;
             $slotEntry->save();
         }
 
