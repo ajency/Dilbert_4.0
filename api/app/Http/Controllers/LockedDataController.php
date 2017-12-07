@@ -14,6 +14,7 @@ use App\Role;
 use App\Permission;
 use App\Data_Changes;
 use App\OrganisationMeta;
+use App\Slots;
 use DateTime;
 use Ajency\User\Ajency\userauth\UserAuth;
 
@@ -103,18 +104,18 @@ class LockedDataController extends Controller
                         $sortOrder = $request->sort_order;
                     else
                         $sortOrder = 'desc';
+
                     // user's data for the particular period
                     $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->orderBy($sortCol, $sortOrder)->get();
-                    $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),$sortOrder);
-                    $data['periodData'] = $periodData;
+                    $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),$sortOrder,true);
+                    $data['periodData'] = $periodData['data'];
 
                     // adding dummy period_meta attribute for now
                     $data["period_meta"] = [
-                        "period_unit" => "week",
-                        "worked_total" => "46:10",
-                        "worked_expected" => "45:00",
-                        "lunch_total" => "03:00",
-                        "lunch_expected" => "03:45"
+                        "period_unit" => $request->input('filters.period_unit'),
+                        "worked_total" => $periodData['total_period_hours'],
+                        "worked_expected" => (count($lockedData)*((int)(new OrganisationMeta)->getParamValue('default_day_hours',$user->org_id,0)).':00'),  // default day hours - group independent
+                        "lunch_total" => (new Slots)->getTotalSlotTime($request->user_id,'lunch',$startDate->format('Y-m-d'),$endDate->format('Y-m-d'))
                     ];
 
                     return response()->json(['status' => 200, 'message' => __('api_messages.user_periodic_data'), 'data' => $data]);

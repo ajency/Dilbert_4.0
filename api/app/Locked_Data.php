@@ -19,10 +19,17 @@ class Locked_Data extends Model
      * violation data
      * @param  $user_id
      * @param  [type] $lockedData Eloquent object
-     * @param  start  start_date of
+     * @param  start  start_date of period
+     * @param  end    end_date of period
+     * @param  sortOrder  order of period data | default 'asc'
+     * @param  sendPeriodMeta  flag to send period_meta object in the returned data | default false
      * @return array containing the formatted data
      */
-    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "asc") {
+    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "asc", $sendPeriodMeta = false) {
+        // if period_meta needs to be sent
+        if($sendPeriodMeta)
+            $totalPeriodHours = 0;
+
         $data = [];
         // user details to be used later
         $udet = (new UserAuth)->getUserData($user_id,true);
@@ -56,6 +63,10 @@ class Locked_Data extends Model
             return $data;
         }
         foreach ($lockedData as $ld) {
+            if($sendPeriodMeta) {
+                $totalTime = explode(':', $ld->total_time);
+                $totalPeriodHours = $totalPeriodHours + ($totalTime[0]*60 + $totalTime[1]);
+            }
             // $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
             while($dateCounter->format('Y-m-d') != $ld->work_date && $dateCounter != $end) {
                 // add an empty item
@@ -141,7 +152,17 @@ class Locked_Data extends Model
             // to handle comparing datecounter and end based on the order
             $dateCounter->modify($dateModifyString);
         }
-        return $data;
+
+        // format the totalPeriodHours to hh:mm format
+        if($sendPeriodMeta) {
+            $totalPeriodMinutes = $totalPeriodHours%60;
+            if($totalPeriodMinutes < 10)
+                $totalPeriodMinutes = '0'.$totalPeriodMinutes;
+            $totalPeriodHours = ((int)($totalPeriodHours/60)).':'.$totalPeriodMinutes;
+            return ['data' => $data, 'total_period_hours' => $totalPeriodHours];
+        }
+        else
+            return $data;
     }
 
     /**
