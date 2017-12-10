@@ -42,6 +42,9 @@ class Slots extends Model
             $slotEnd = new DateTime($slot['end_time']);
             $count = 0;
             foreach($logs as $log) {
+                // ignore the last log which has the end_time as ''
+                if($log['end_time'] == '')
+                    break;
                 $logStart = new DateTime($log['start_time']);
                 $logEnd = new DateTime($log['end_time']);
                 if($slotStart <= $logStart && $slotEnd >= $logEnd) {  // slot is exact or log lies completely inside a log
