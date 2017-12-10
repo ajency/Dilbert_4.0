@@ -131,7 +131,7 @@ class CronController extends Controller
             }
 
             // calculate the time difference between rhs and rule_key_fields if key < rhs
-            if((int)$totalHours < (int)$minHours)
+            if((int)$totalHours < ((int)$minHours * 60))
                 $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
 
             // getting the total hours
@@ -178,7 +178,7 @@ class CronController extends Controller
             }
 
             // calculate the time difference between rhs and rule_key_fields if key < rhs
-            if((int)$totalHours < (int)$minHours)
+            if((int)$totalHours < ((int)$minHours * 60))
                 $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
 
             // getting the total hours
