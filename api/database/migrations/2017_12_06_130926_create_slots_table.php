@@ -18,8 +18,8 @@ class CreateSlotsTable extends Migration
             $table->unsignedInteger('user_id')->nullable();
             $table->string('type')->nullable();
             $table->date('work_date')->nullable();
-            $table->timestamp('start_time')->nullable();
-            $table->timestamp('end_time')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->string('total_time')->nullable();
             $table->timestamps();
         });

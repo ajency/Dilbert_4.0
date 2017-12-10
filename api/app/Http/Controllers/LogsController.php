@@ -11,6 +11,7 @@ use App\UserDetail;
 use App\Organisation;
 use App\Log;
 use App\Locked_Data;
+use App\Slots;
 
 class LogsController extends Controller
 {
@@ -58,7 +59,10 @@ class LogsController extends Controller
                     // Organisation's ip list
                     $ip_list = unserialize(Organisation::find(UserDetail::where(['user_id' => $request->user_id])->first()->org_id)->ip_lists);
                     $logs = (new Log)->getDaySummary($ip_list, $userLogs, $cosOffset);
-                    $data['logs'] = $logs;
+                    // add slots to the logs
+                    $slots = Slots::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
+                    $slottedLogs = (new Slots)->addSlotsToLogs($logs, $slots);
+                    $data['logs'] = $slottedLogs;
                     $data['leave_status_values'] = ['Holiday', 'Weekend', 'Worked', 'Worked on weekend', 'Worked on holiday', 'Leave', 'Leave due to violation'];
                     return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
                 // }

@@ -54,8 +54,8 @@ class SlotsController extends Controller
             $slotEntry->user_id = $request->user_id;
             $slotEntry->type = $slotData['type'];
             $slotEntry->work_date = $request->work_date;
-            $slotEntry->start_time = $request->work_date.' '.$slotStart;
-            $slotEntry->end_time = $request->work_date.' '.$slotEnd;
+            $slotEntry->start_time = $slotStart;
+            $slotEntry->end_time = $slotEnd;
             $slotEntry->total_time = ((int)($totalTime/60)).':'.$totalTime%60;
             $slotEntry->save();
         }
