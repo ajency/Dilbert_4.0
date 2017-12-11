@@ -108,7 +108,7 @@ class AppController extends Controller
                     } else {
                         // just update the end time and total time
                         $lockedEntry = $lockedEntry->first();
-                        if($this->getCurrentTimeZoneTime($timeZone) >= (new DateTime("09:30"))) {
+                        if((new DateTime($this->getCurrentTimeZoneTime($timeZone))) >= (new DateTime("09:30"))) {
                             $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
                             $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
                             $lockedEntry->save();
