@@ -213,6 +213,7 @@ export class SummarySidebarComponent {
 
       if(ev.noDaySummary){
         console.warn("################# NOT UPDATING DAYSUMMARY DATA #####################");
+        this.calculateWeekTotal();
         return;
       }
 
