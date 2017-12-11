@@ -110,7 +110,7 @@ ngOnInit(){
         this.period_unit = this.param1.period_unit;
         this.authguard.user_id = this.param1.user_id
         this.userId = this.authguard.user_id;
-        // this.cos_offset = this.param2.cos_offset;
+        this.cos_offset = this.appGlobalsProvider.cos_offset;;
         // console.log(this.cos_offset);
         // console.log(this.currentDate);
 

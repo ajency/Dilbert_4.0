@@ -106,6 +106,7 @@ export class SummarySidebarComponent {
     // console.log(this.summaryContentData);
     this.calculateWeekTotal();
  
+    this.events.subscribe("app:updatedata",this.requestData.bind(this));
   }
 
 
@@ -149,7 +150,8 @@ export class SummarySidebarComponent {
 
     console.log("inside requestData function", ev);
     if(ev.date.year != 0 && ev.date.month != 0){
-    
+      this.appGlobalsProvider.requestDate = ev;
+
       let date_range = {
       // start : date;
       start : ev.formatted
@@ -208,6 +210,11 @@ export class SummarySidebarComponent {
 
             }
         }
+
+      if(ev.noDaySummary){
+        console.warn("################# NOT UPDATING DAYSUMMARY DATA #####################");
+        return;
+      }
 
        let serializedquery =  `?${$.param(filter1)}`;
        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` });
@@ -308,6 +315,17 @@ export class SummarySidebarComponent {
    
 
 
+    } // end if check for event from calendar plugin
+    else{ // construct own data object here
+      this.appGlobalsProvider.requestDate = {
+        date: {
+          year: Number(moment(new Date()).format("YYYY")),
+          month: Number(moment(new Date()).format("MM"))
+        },
+        formatted: moment(new Date()).format("YYYY-MM-DD")
+      }
+
+      console.log("CONSTRUCT REQUESTDATE",this.appGlobalsProvider.requestDate);
     }
   }
 

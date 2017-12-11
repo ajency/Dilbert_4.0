@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AppGlobalsProvider {
 
+  public requestDate: any;
   public naText: string = '--';
 
   private historyStack: Array<any> = [];

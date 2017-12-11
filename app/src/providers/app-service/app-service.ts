@@ -100,6 +100,8 @@ export class AppServiceProvider {
                       }
 
                       let prerror = this.parseRejectedError(error);
+
+                      this.presentToast(error.message || 'A request error has occured!','error');
                       return Promise.reject(prerror);
                     }
 

@@ -441,10 +441,10 @@ export class SummaryContentComponent {
 
     let body = {
       "user_id" : this.authguard.user_id,
-      "date" : this.today.workdate,
+      "work_date" : this.today.workdate,
       "slot_data" : [
         {
-          "slot_type" : "lunch",        // lunch
+          "type" : "lunch",        // lunch
           "logs" : this.selectedSlots
         }
       ]
@@ -454,7 +454,7 @@ export class SummaryContentComponent {
       
       if(response.status == 200){
         this.undoSelection();
-        this.events.publish("summary-sidebar:slotupdate",response.data);
+        // this.events.publish("summary-sidebar:slotupdate",response.data);
   
           this.logs.map((val) => {
             delete val['slot'];
@@ -467,9 +467,12 @@ export class SummaryContentComponent {
               }
             });
           });
-  
-  
+        
+        this.appGlobalsProvider.requestDate.noDaySummary = true;
+        this.events.publish("app:updatedata",this.appGlobalsProvider.requestDate);
+          
         this.appServiceProvider.presentToast(this.toastMessages.slot_update_success);
+
       }
       else{
         this.appServiceProvider.presentToast(response.message || this.toastMessages.slot_update_failure,'warn');
