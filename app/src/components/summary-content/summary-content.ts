@@ -29,6 +29,7 @@ export class SummaryContentComponent {
   private contentDimensions: any;
   // private contentLeftOffset: number;
   private allLogs: Array<any>;
+  private slotTypes: Array<any>;
 
   @Input('test') currentData : any ;
   @Input('logs') summaryContentData : any;
@@ -153,6 +154,8 @@ export class SummaryContentComponent {
     this.relaventWinHeight = (window.innerHeight - 40); // 40 pixels for the footer
 
     this.events.subscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
+  
+    this.slotTypes = this.authguard.userData.slots;
   } // end ngOnInit
 
   ngOnDestroy(){
