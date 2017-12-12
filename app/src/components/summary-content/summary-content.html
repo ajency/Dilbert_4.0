@@ -193,7 +193,7 @@
         <p class="reason-label" ion-text text-left text-uppercase>Mark as</p>
 
         <select class="custom-select" [disabled]="false">
-                <option *ngFor="let slot of slotTypes" value="{{slot}}">{{slot}}</option>
+                <option *ngFor="let slot of slotTypes" value="{{slot}}">{{titleCase(slot)}}</option>
         </select>
 
         <button (click)="updateLogData()" title="Add lunch" ion-button outline small m-t-10> {{ 'Update' | translate}} </button> 

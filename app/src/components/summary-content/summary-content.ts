@@ -7,7 +7,7 @@ import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
 import { setTimeout } from 'timers';
-
+import { TitleCasePipe } from '../../pipes/title-case/title-case';
 
 /**
  * Generated class for the SummaryContentComponent component.
@@ -48,6 +48,7 @@ export class SummaryContentComponent {
   private naText: string;
   private toastMessages: any;
   private relaventWinHeight: number;
+  private titleCasePipe: TitleCasePipe;
 
   constructor(
               public translate: TranslateService, 
@@ -67,7 +68,11 @@ export class SummaryContentComponent {
       });
       this.naText = this.appGlobalsProvider.naText;
   
+      this.titleCasePipe = new TitleCasePipe();
+  }
 
+  titleCase(val: string){
+    return this.titleCasePipe.transform(val);
   }
 
   ngOnInit(){
