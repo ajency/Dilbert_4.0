@@ -131,8 +131,20 @@ class CronController extends Controller
             }
 
             // calculate the time difference between rhs and rule_key_fields if key < rhs
-            if((int)$totalHours < ((int)$minHours * 60))
-                $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
+            if((int)$totalHours < ((int)$minHours * 60)) {
+                $tdHours = ($totalHours%60 == 0) ? ($minHours - (int)($totalHours/60)) : ($minHours - (int)($totalHours/60) - 1);
+                $tdMinutes = 60 - ($totalHours%60);
+
+                // getting the hours and minutes in 00:00 format
+                if($tdHours < 10)
+                    $tdHours = '0'.$tdHours;
+                if($tdMinutes < 10)
+                    $tdMinutes = '0'.$tdMinutes;
+                else if($tdMinutes == 60)
+                    $tdMinutes = '00';
+
+                $timeDiff = $tdHours.':'.$tdMinutes;
+            }
 
             // getting the total hours
             $totalHours = (int)($totalHours/60).':'.($totalHours%60);
@@ -178,8 +190,20 @@ class CronController extends Controller
             }
 
             // calculate the time difference between rhs and rule_key_fields if key < rhs
-            if((int)$totalHours < ((int)$minHours * 60))
-                $timeDiff = ($minHours - (int)($totalHours/60)).':'.((60 - ($totalHours%60)) == 60 ? '00' : (60 - ($totalHours%60)));
+            if((int)$totalHours < ((int)$minHours * 60)) {
+                $tdHours = ($totalHours%60 == 0) ? ($minHours - (int)($totalHours/60)) : ($minHours - (int)($totalHours/60) - 1);
+                $tdMinutes = 60 - ($totalHours%60);
+
+                // getting the hours and minutes in 00:00 format
+                if($tdHours < 10)
+                    $tdHours = '0'.$tdHours;
+                if($tdMinutes < 10)
+                    $tdMinutes = '0'.$tdMinutes;
+                else if($tdMinutes == 60)
+                    $tdMinutes = '00';
+
+                $timeDiff = $tdHours.':'.$tdMinutes;
+            }
 
             // getting the total hours
             $totalHours = (int)($totalHours/60).':'.($totalHours%60);
