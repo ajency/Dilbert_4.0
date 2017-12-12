@@ -170,7 +170,7 @@ export class MyApp {
   });
 
      platformlocation.onPopState((event: any) => {
-      // console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
+      console.warn('pressed back location ' + document.location + ", state: " + JSON.stringify(event.state));
       let history = this.appglobals.getHistory();
       console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
       console.log(event);
@@ -383,7 +383,8 @@ private updateNav(data) : any{
 
     console.log("############################## updating nav ##############", data);
     this.currentPage = data;
-    this.nav.setRoot(data);
+    // this.nav.setRoot(data);
+    this.nav.push(data);
     this.updateTitle(data);
 
      
