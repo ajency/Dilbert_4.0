@@ -78,7 +78,10 @@ class Organisation extends Model
                     'org_id' => $orgDetails['id'],
                     'org_name' => $orgDetails['name'],
                     'user_lang' => $user_resp['user_details']->lang,
-                    'default_period_unit' => $orgDetails['period_unit']
+                    'default_period_unit' => $orgDetails['period_unit'],
+                    'slots' => [
+                        'lunch'
+                    ]
                 ];
                 return $response;
             }
