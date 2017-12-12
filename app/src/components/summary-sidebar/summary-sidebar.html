@@ -4,20 +4,15 @@
     <!-- Current week -->
     <div class="week__current current-card">
         <div class="current-card__header flex-row">
-
             <p *ngIf = "sideBarData.data.periodData.length <= 7" ion-text color="primary" no-margin>{{ "week_total" | translate }}</p>
             <p *ngIf = "sideBarData.data.periodData.length > 7" ion-text color="primary" no-margin>{{ "month_total" | translate }}</p>
-
             <p ion-text no-margin color="text">{{weekTotal || naText}} {{ "hr" | translate }}/{{minHours || naText}} {{ "hr" | translate }}</p>
-
-            <!-- <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}"></div> -->
+            <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}"></div>
         </div>
         <div class="current-card__header flex-row">    
-                <p ion-text color="primary" no-margin>{{ "lunch_time" | translate }}</p>
-                <p ion-text no-margin color="text"> {{ lunchTime || naText }} {{ "hr" | translate }} </p>
-    
-                <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}"></div>
-            </div>
+            <p ion-text color="primary" no-margin>{{ "lunch_time" | translate }}</p>
+            <p ion-text no-margin color="text"> {{ lunchTime || naText }} {{ "hr" | translate }} </p>
+        </div>
         <div class="timeline-container">
             <div class="current-card__body flex-row" p-v-25>
                 <h2 *ngIf = "sideBarData.data.current[0].total_time != '' " class="time" m-t-0 p-r-40>{{getDayDate(sideBarData.data.current[0].total_time, 5)}}<span class="xxx-small">{{ "hr" | translate }}</span></h2>

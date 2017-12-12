@@ -32,6 +32,8 @@ export class SummaryContentComponent {
 
   @Input('test') currentData : any ;
   @Input('logs') summaryContentData : any;
+  @Input('is_current_user') isCurrentUser: boolean;
+
   // changedLogs : any;
   today : any;
   logs : any;
@@ -68,6 +70,8 @@ export class SummaryContentComponent {
   }
 
   ngOnInit(){
+    console.log("current user:", this.isCurrentUser)
+    console.log("summary content", this.summaryContentData);
   	// let dummy = new Date();
    //  this.today = {
    //    day : this.days[dummy.getDay()],
@@ -103,6 +107,7 @@ export class SummaryContentComponent {
       this.leave_status_values = data.summaryContentData.data.leave_status_values;
        
       this.summaryContentData = data.summaryContentData;
+      this.isCurrentUser = data.summaryContentData.data.user.self;
       console.log(this.leave_status_values);
       this.setToday();
 
@@ -146,11 +151,16 @@ export class SummaryContentComponent {
     });
 
     this.relaventWinHeight = (window.innerHeight - 40); // 40 pixels for the footer
+
+    this.events.subscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
+  } // end ngOnInit
+
+  ngOnDestroy(){
+    this.events.unsubscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
   }
 
   checkPermissions(){
     console.log('inside checkPermissions');
-
 
     if(!this.summaryContentData.data.user.self){
 
@@ -187,6 +197,8 @@ export class SummaryContentComponent {
          
          
     }
+
+    this.isCurrentUser = this.summaryContentData.data.user.self;
   }
 
  ionViewDidLoad() {
@@ -493,6 +505,8 @@ export class SummaryContentComponent {
   // private markerEndIndex: number;
 
   highlightSelected(event,type: string = '',index = null){
+    if(!this.isCurrentUser) return;
+    event.stopPropagation();
     if(type === 'click'){
       console.log("selected click");
       this.getTopOffset(event);
@@ -551,5 +565,12 @@ export class SummaryContentComponent {
     }
   }
 
+  listClick(event): void{
+    event.stopPropagation();
+  }
+
+  editBoxClick(event): void{
+    event.stopPropagation();
+  }
 
 }

@@ -177,12 +177,15 @@ ngOnInit(){
 
 
 ionViewDidLoad() {
+  console.log("################## entering start home page ###################", this.firstPageLoad);
   this.zone.run(() => {});
     // console.log('ionViewDidLoad dashboard')
   }
 
-
+  private firstPageLoad: boolean = true;
   ionViewWillLeave(){
+    this.firstPageLoad = false;
+    console.log("################## leaving start home page #####################", this.firstPageLoad);
     console.log('ion view will leave dashboard');
     this.appGlobalsProvider.dashboard_params.param1 = '';
     this.appGlobalsProvider.dashboard_params.param2 = '';
@@ -469,6 +472,12 @@ ionViewDidLoad() {
     return false;
   }
 }
+
+deselectSlotSelection(): void{
+  this.events.publish("app:deselect_slot_selection");
+}
+
+
 
 
 
