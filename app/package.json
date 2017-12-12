@@ -8,6 +8,8 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
+    "build:dev": "NODE_ENV='development' ionic cordova build browser --prod",
+    "build:prod": "NODE_ENV='production' ionic cordova build browser --prod",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
   },
