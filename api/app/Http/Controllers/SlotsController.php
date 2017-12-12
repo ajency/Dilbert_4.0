@@ -14,13 +14,7 @@ class SlotsController extends Controller
         $message = '';
         foreach($request->slot_data as $slotData) {
             // check if that slot exists for that user on that day
-            $slot = Slots::where(['user_id' => $request->user_id, 'work_date' => $request->work_date, 'type' => $slotData['type']]);
-
-            // return an error
-            if($slot->exists()) {
-                $message = $message.'Slot \''.$slotData['type'].'\' already exists. ';
-                continue;
-            }
+            $slotEntry = Slots::where(['user_id' => $request->user_id, 'work_date' => $request->work_date, 'type' => $slotData['type']]);
 
             // check to see if the logs sent are continuous and take the start and end time
             $continue = false;  // to detect if any error occurred while going through the logs
@@ -49,8 +43,13 @@ class SlotsController extends Controller
 
             $totalTime = (new Log)->timeDifferenceInMins($slotStart, $slotEnd);
 
+            // create a slots object if it does not exist
+            if($slotEntry->exists())
+                $slotEntry = $slotEntry->first();
+            else
+                $slotEntry = new Slots;
+
             // make an entry to the slots table
-            $slotEntry = new Slots;
             $slotEntry->user_id = $request->user_id;
             $slotEntry->type = $slotData['type'];
             $slotEntry->work_date = $request->work_date;
