@@ -349,8 +349,12 @@ class LockedDataController extends Controller
                     // user's data for the particular period
                     // $output->writeln($startDate->format('Y-m-d')." ".$endDate->format('Y-m-d'));
                     $summaryData = Locked_Data::where('user_id',$oUser->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->get();
-                    $periodData = (new Locked_Data)->formattedLockedData($oUser->user_id,$summaryData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'));
-                    $userObj['summary'] = $periodData;
+                    $periodData = (new Locked_Data)->formattedLockedData($oUser->user_id,$summaryData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),'asc',true);
+                    $userObj['summary'] = $periodData['data'];
+
+                    // period meta
+                    $userObj['period_meta']['worked_total'] = $periodData['total_period_hours'];
+                    $userObj['period_meta']['lunch_total'] = (new Slots)->getTotalSlotTime($oUser->user_id, 'lunch', $startDate->format('Y-m-d'),$endDate->format('Y-m-d'));
 
                     array_push($data,$userObj);
                 }

@@ -28,7 +28,13 @@ class Slots extends Model
         }
 
         // convert the minutes in the hh::mm format
-        return (int)($totalSlotTime/60).':'.$totalSlotTime%60;
+        $sHours = (int)($totalSlotTime/60);
+        $sMinutes = $totalSlotTime%60;
+        if($sHours < 10)
+            $sHours = '0'.$sHours;
+        if($sMinutes < 10)
+            $sMinutes = '0'.$sMinutes;
+        return $sHours.':'.$sMinutes;
     }
 
     /**

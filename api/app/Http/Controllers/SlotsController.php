@@ -10,6 +10,11 @@ use App\Log;
 
 class SlotsController extends Controller
 {
+    /**
+     * adds slots information for a particular user
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function editSlots(Request $request) {
         $message = '';
         foreach($request->slot_data as $slotData) {

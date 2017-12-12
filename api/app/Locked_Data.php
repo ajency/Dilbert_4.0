@@ -58,7 +58,10 @@ class Locked_Data extends Model
                 "end_time" => "",
                 "total_time" => "00:00",
                 "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
-                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
+                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true),
+                "slots" => [
+                    "lunch" => (new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))
+                ]
             ]);
             return $data;
         }
@@ -79,7 +82,10 @@ class Locked_Data extends Model
                     "end_time" => "",
                     "total_time" => "00:00",
                     "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
-                    "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
+                    "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true),
+                    "slots" => [
+                        "lunch" => (new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))
+                    ]
                 ]);
                 // to handle comparing datecounter and end based on the order
                 $dateCounter->modify($dateModifyString);
@@ -102,6 +108,7 @@ class Locked_Data extends Model
                 $dayData['total_time'] = "00:00";
                 $dayData['violations'] = (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
                 $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
+                $dayData['slots']['lunch'] = (new Slots)->getTotalSlotTime($user_id, 'lunch', $ld->work_date, $ld->work_date);
                 array_push($data,$dayData);
                 continue;
             }
@@ -134,6 +141,7 @@ class Locked_Data extends Model
             //violation status - for now dummy
             $dayData['violations'] = (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
             $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
+            $dayData['slots']['lunch'] = (new Slots)->getTotalSlotTime($user_id, 'lunch', $ld->work_date, $ld->work_date);
             array_push($data,$dayData);
         }
         // so that the last entry is not excluded if empty
@@ -147,7 +155,10 @@ class Locked_Data extends Model
                 "end_time" => "",
                 "total_time" => "00:00",
                 "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
-                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)
+                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true),
+                "slots" => [
+                    "lunch" => (new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))
+                ]
             ]);
             // to handle comparing datecounter and end based on the order
             $dateCounter->modify($dateModifyString);
