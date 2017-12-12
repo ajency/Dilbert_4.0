@@ -30,6 +30,7 @@ export class SummaryContentComponent {
   // private contentLeftOffset: number;
   private allLogs: Array<any>;
   private slotTypes: Array<any>;
+  private selectedSlotType: string = '';
 
   @Input('test') currentData : any ;
   @Input('logs') summaryContentData : any;
@@ -93,6 +94,10 @@ export class SummaryContentComponent {
 
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
+
+    this.slotTypes = this.summaryContentData.data.slot_values;
+    this.selectedSlotType = this.slotTypes[0];
+
     this.checkPermissions();
    
     // console.log("elementref width", this.elementref.nativeElement.clientWidth);
@@ -114,6 +119,10 @@ export class SummaryContentComponent {
        
       this.summaryContentData = data.summaryContentData;
       this.isCurrentUser = data.summaryContentData.data.user.self;
+      
+      this.slotTypes = data.summaryContentData.data.slot_values;
+      this.selectedSlotType = this.slotTypes[0];
+
       console.log(this.leave_status_values);
       this.setToday();
 
@@ -160,7 +169,6 @@ export class SummaryContentComponent {
 
     this.events.subscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
   
-    this.slotTypes = this.authguard.userData.slots;
   } // end ngOnInit
 
   ngOnDestroy(){
@@ -464,7 +472,7 @@ export class SummaryContentComponent {
       "work_date" : this.today.workdate,
       "slot_data" : [
         {
-          "type" : "lunch",        // lunch
+          "type" : this.selectedSlotType,        // lunch
           "logs" : this.selectedSlots
         }
       ]
