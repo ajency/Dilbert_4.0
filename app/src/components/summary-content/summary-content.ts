@@ -165,6 +165,7 @@ export class SummaryContentComponent {
     this.relaventWinHeight = (window.innerHeight - 40); // 40 pixels for the footer
 
     this.events.subscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
+    this.events.subscribe("app:slot_selection_mouse_up",this.onMouseUp.bind(this));
 
     this.slotTypes = this.appServiceProvider.objectToArray(this.summaryContentData.data.slot_values);
     this.selectedSlotType = this.slotTypes[0]['slug'];
@@ -173,6 +174,7 @@ export class SummaryContentComponent {
 
   ngOnDestroy(){
     this.events.unsubscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
+    this.events.unsubscribe("app:slot_selection_mouse_up",this.onMouseUp.bind(this));
   }
 
   checkPermissions(){

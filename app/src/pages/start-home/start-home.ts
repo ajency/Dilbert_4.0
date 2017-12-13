@@ -473,12 +473,4 @@ ionViewDidLoad() {
   }
 }
 
-deselectSlotSelection(): void{
-  this.events.publish("app:deselect_slot_selection");
-}
-
-
-
-
-
 }
