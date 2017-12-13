@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 import { Location, PlatformLocation } from '@angular/common';
 import { ToastController, Events, LoadingController } from 'ionic-angular';
 import { NgProgressService } from "ng2-progressbar";
+import { KeysPipe } from '../../pipes/keys/keys';
 
 import * as $ from 'jquery';
 
@@ -473,6 +474,21 @@ export class AppServiceProvider {
       }
     },100);
 
+  }
+
+  public objectToArray(val: any){
+    let keys = new KeysPipe().transform(val);
+
+    let array = [];
+
+    keys.map((key) => {
+      array.push({
+        slug: key,
+        label: val[key]
+      });
+    });
+
+    return array;
   }
   
 }

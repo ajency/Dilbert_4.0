@@ -139,24 +139,24 @@
             <!-- <button title="Add lunch" ion-button outline small m-t-0 style="position:absolute; right: 0;"> {{ 'Mark lunch time' | translate}} </button>  -->
         </li>
 
-        <div *ngFor = "let obj of logs; let i = index;" (mousemove)="onMouseMove($event,i)" (click)="highlightSelected($event,'click',i)" [attr.data_index]="i" [ngClass]="{'click': isCurrentUser}">
+        <div *ngFor = "let obj of logs; let i = index;" (mousemove)="onMouseMove($event,i)" (click)="highlightSelected($event,'click',i)" [attr.data_index]="i" [ngClass]="{'click': allowSlotUpdate}">
             
-            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': isCurrentUser}" class="detail-view__cols idle">
+            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols idle">
                 <h6  ion-text font-weight-3 color="dark"> {{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
-                <span [hidden]="!isCurrentUser" class="tooltiptext">Click or hold and drag to mark a slot</span>
+                <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
-            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': isCurrentUser}" class="detail-view__cols offline">
+            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols offline">
                 <h6  ion-text font-weight-3 color="dark"> {{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
-                <span [hidden]="!isCurrentUser" class="tooltiptext">Click or hold and drag to mark a slot</span>
+                <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
-            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': isCurrentUser}" class="detail-view__cols online">
+            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols online">
                 <h6  ion-text font-weight-3 color="dark"> {{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
-                <span [hidden]="!isCurrentUser" class="tooltiptext">Click or hold and drag to mark a slot</span>
+                <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
 
-            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': isCurrentUser}" class="detail-view__cols online">
+            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols online">
                 <h6  ion-text font-weight-3 color="dark">{{ "online" | translate }} </h6>
-                <span [hidden]="!isCurrentUser" class="tooltiptext">Click or hold and drag to mark a slot</span>
+                <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
 
 
@@ -193,7 +193,7 @@
         <p class="reason-label" ion-text text-left text-uppercase>Mark as</p>
 
         <select class="custom-select" [disabled]="false" [(ngModel)]="selectedSlotType">
-                <option *ngFor="let slot of slotTypes" value="{{slot}}">{{titleCase(slot)}}</option>
+                <option *ngFor="let slot of slotTypes" value="{{slot.slug}}">{{titleCase(slot.label)}}</option>
         </select>
 
         <button (click)="updateLogData()" title="Add lunch" ion-button outline small m-t-10> {{ 'Update' | translate}} </button> 

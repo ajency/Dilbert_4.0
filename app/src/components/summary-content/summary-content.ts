@@ -34,8 +34,9 @@ export class SummaryContentComponent {
 
   @Input('test') currentData : any ;
   @Input('logs') summaryContentData : any;
-  @Input('is_current_user') isCurrentUser: boolean;
+  @Input('is_current_user') allowSlotUpdate: boolean;
 
+  private hasGlobalSlotPerm: boolean = false;
   // changedLogs : any;
   today : any;
   logs : any;
@@ -77,7 +78,7 @@ export class SummaryContentComponent {
   }
 
   ngOnInit(){
-    console.log("current user:", this.isCurrentUser)
+    console.log("current user:", this.allowSlotUpdate)
     console.log("summary content", this.summaryContentData);
   	// let dummy = new Date();
    //  this.today = {
@@ -94,9 +95,6 @@ export class SummaryContentComponent {
 
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
-
-    this.slotTypes = this.summaryContentData.data.slot_values;
-    this.selectedSlotType = this.slotTypes[0];
 
     this.checkPermissions();
    
@@ -118,14 +116,13 @@ export class SummaryContentComponent {
       this.leave_status_values = data.summaryContentData.data.leave_status_values;
        
       this.summaryContentData = data.summaryContentData;
-      this.isCurrentUser = data.summaryContentData.data.user.self;
+      this.allowSlotUpdate = this.hasGlobalSlotPerm || data.summaryContentData.data.user.self;
       
-      this.slotTypes = data.summaryContentData.data.slot_values;
-      this.selectedSlotType = this.slotTypes[0];
-
       console.log(this.leave_status_values);
       this.setToday();
 
+      this.slotTypes = this.appServiceProvider.objectToArray(data.summaryContentData.data.slot_values);
+      this.selectedSlotType = this.slotTypes[0]['slug'];
     });
  
      
@@ -168,6 +165,9 @@ export class SummaryContentComponent {
     this.relaventWinHeight = (window.innerHeight - 40); // 40 pixels for the footer
 
     this.events.subscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
+
+    this.slotTypes = this.appServiceProvider.objectToArray(this.summaryContentData.data.slot_values);
+    this.selectedSlotType = this.slotTypes[0]['slug'];
   
   } // end ngOnInit
 
@@ -214,7 +214,16 @@ export class SummaryContentComponent {
          
     }
 
-    this.isCurrentUser = this.summaryContentData.data.user.self;
+    let permissions = this.authguard.userData.permissions;
+    let slotclass = this.authguard.userData.class_permissions && this.authguard.userData.class_permissions.slot_marker ? this.authguard.userData.class_permissions.slot_marker : 'no_slot_permission';
+    permissions.map((val) => {
+      if(val === slotclass){
+        this.hasGlobalSlotPerm = true;
+      }
+    })
+    
+
+    this.allowSlotUpdate = this.hasGlobalSlotPerm || this.summaryContentData.data.user.self;
   }
 
  ionViewDidLoad() {
@@ -491,7 +500,7 @@ export class SummaryContentComponent {
           this.selectedSlots.map((slot,sindex) => {
             this.logs.map((log,lindex) => {
               if(slot['index'] == lindex){
-                log['slot'] = 'lunch';
+                log['slot'] = this.selectedSlotType;
               }
             });
           });
@@ -521,7 +530,7 @@ export class SummaryContentComponent {
   // private markerEndIndex: number;
 
   highlightSelected(event,type: string = '',index = null){
-    if(!this.isCurrentUser) return;
+    if(!this.allowSlotUpdate) return;
     event.stopPropagation();
     if(type === 'click'){
       console.log("selected click");
