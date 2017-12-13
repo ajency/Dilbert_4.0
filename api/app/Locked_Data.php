@@ -69,6 +69,10 @@ class Locked_Data extends Model
             return $data;
         }
         foreach ($lockedData as $ld) {
+            // if status is null calculate the status
+            if($ld->status == null && $ld->start_time != null)
+                $ld->status = (new CronController)->getUserStatus('present',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$ld->work_date);
+
             // increment the expectedCounter
             if(in_array($ld->status, ['Present', 'Worked', 'Leave due to violation']))
                 $expectedCounter = $expectedCounter + 1;
