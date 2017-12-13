@@ -64,7 +64,10 @@ class LogsController extends Controller
                     $slottedLogs = (new Slots)->addSlotsToLogs($logs, $slots);
                     $data['logs'] = $slottedLogs;
                     $data['leave_status_values'] = ['Holiday', 'Weekend', 'Worked', 'Worked on weekend', 'Worked on holiday', 'Leave', 'Leave due to violation'];
-                    $data['slot_values'] = ['lunch'];
+                    $data['slot_values'] = [
+                        'no_slot' => 'No slot',
+                        'lunch' => 'Lunch',
+                    ];
                     return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
                 // }
                 // else {
