@@ -47,6 +47,7 @@ export class OrganizationSummaryPage {
   private flag2 : any;
   private flag3 : boolean;
   future_date : boolean = false;
+  private naText: string = "n/a";
 
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,

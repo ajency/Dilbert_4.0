@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Location, PlatformLocation } from '@angular/common';
 import { ToastController, Events, LoadingController } from 'ionic-angular';
@@ -50,6 +50,7 @@ export class AppServiceProvider {
   
 
   constructor(
+    public zone: NgZone,
     public progress: NgProgressService,
     public http: Http,
    public events: Events,
@@ -466,6 +467,8 @@ export class AppServiceProvider {
           // this.loader.dismiss();
           this.loader = null;
           this.progress.done();
+
+          this.zone.run(() => {});
         }
       }
     },100);
