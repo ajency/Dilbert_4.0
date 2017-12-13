@@ -30,6 +30,9 @@ class Locked_Data extends Model
         if($sendPeriodMeta)
             $totalPeriodHours = 0;
 
+        // expected no of hours
+        $expectedCounter = 0;
+
         $data = [];
         // user details to be used later
         $udet = (new UserAuth)->getUserData($user_id,true);
@@ -66,9 +69,17 @@ class Locked_Data extends Model
             return $data;
         }
         foreach ($lockedData as $ld) {
+            // increment the expectedCounter
+            if(in_array($ld->status, ['Present', 'Worked', 'Leave due to violation']))
+                $expectedCounter = $expectedCounter + 1;
+
             if($sendPeriodMeta) {
-                $totalTime = explode(':', $ld->total_time);
-                $totalPeriodHours = $totalPeriodHours + ($totalTime[0]*60 + $totalTime[1]);
+                if($ld->total_time != null) {
+                    $totalTime = explode(':', $ld->total_time);
+                    $totalPeriodHours = $totalPeriodHours + ($totalTime[0]*60 + $totalTime[1]);
+                }
+                else
+                    $totalTime = 0;
             }
             // $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
             while($dateCounter->format('Y-m-d') != $ld->work_date && $dateCounter != $end) {
@@ -167,10 +178,20 @@ class Locked_Data extends Model
         // format the totalPeriodHours to hh:mm format
         if($sendPeriodMeta) {
             $totalPeriodMinutes = $totalPeriodHours%60;
+            $tpHours = (int)($totalPeriodHours/60);
+            if($tpHours < 10)
+                $tpHours = '0'.$tpHours;
             if($totalPeriodMinutes < 10)
                 $totalPeriodMinutes = '0'.$totalPeriodMinutes;
-            $totalPeriodHours = ((int)($totalPeriodHours/60)).':'.$totalPeriodMinutes;
-            return ['data' => $data, 'total_period_hours' => $totalPeriodHours];
+            $totalPeriodHours = $tpHours.':'.$totalPeriodMinutes;
+            $expectedPeriodHours = $expectedCounter * (int) (new OrganisationMeta)->getParamValue('default_day_hours',$udet['user_details'][0]['org_id'],0);
+            if($expectedPeriodHours < 10)
+                $expectedPeriodHours = '0'.$expectedPeriodHours;
+            return [
+                'data' => $data,
+                'total_period_hours' => $totalPeriodHours,
+                'expected_period_hours' => $expectedPeriodHours.':00'
+            ];
         }
         else
             return $data;

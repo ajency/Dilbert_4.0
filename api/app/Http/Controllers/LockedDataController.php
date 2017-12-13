@@ -114,7 +114,7 @@ class LockedDataController extends Controller
                     $data["period_meta"] = [
                         "period_unit" => $request->input('filters.period_unit'),
                         "worked_total" => $periodData['total_period_hours'],
-                        "worked_expected" => (count($lockedData)*((int)(new OrganisationMeta)->getParamValue('default_day_hours',$user->org_id,0)).':00'),  // default day hours - group independent
+                        "worked_expected" => $periodData['expected_period_hours'],
                         "lunch_total" => (new Slots)->getTotalSlotTime($request->user_id,'lunch',$startDate->format('Y-m-d'),$endDate->format('Y-m-d'))
                     ];
 
