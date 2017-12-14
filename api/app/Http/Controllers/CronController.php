@@ -24,10 +24,12 @@ class CronController extends Controller
      * @return [type] [description]
      */
     public function daily() {
+        $logger = new ConsoleOutput;
         // get all the users
         $users = User::select('id','violation_grp_id')->where('status','active')->get();
         echo "got users\n";
         foreach($users as $user) {
+            $logger->writeln("user: ".$user->id);
             $org = UserDetail::select('org_id')->where('user_id',$user->id)->first();
             echo $user->id."\n";
             // get the Locked Data
@@ -64,6 +66,7 @@ class CronController extends Controller
                     $userLockedData->save();
                 }
             }
+            $logger->writeln($userLockedData->status);
         }
     }
 
