@@ -196,7 +196,7 @@
                 <option *ngFor="let slot of slotTypes" value="{{slot.slug}}">{{titleCase(slot.label)}}</option>
         </select>
 
-        <button (click)="updateLogData()" title="Add lunch" ion-button outline small m-t-10> {{ 'Update' | translate}} </button> 
+        <button [disabled]="postSlotUpdateData.inprogess" (click)="updateLogData()" title="Add lunch" ion-button outline small m-t-10> {{ 'Update' | translate}} </button> 
 
         
         </ion-card>

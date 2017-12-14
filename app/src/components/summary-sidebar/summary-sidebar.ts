@@ -146,7 +146,7 @@ export class SummarySidebarComponent {
     return text;
   }
 
-   requestData(ev){
+   requestData(ev,toastmessage: string = ''){
 
     console.log("inside requestData function", ev);
     if(ev.date.year != 0 && ev.date.month != 0){
@@ -211,11 +211,11 @@ export class SummarySidebarComponent {
             }
         }
 
-      if(ev.noDaySummary){
-        console.warn("################# NOT UPDATING DAYSUMMARY DATA #####################");
-        this.calculateWeekTotal();
-        return;
-      }
+      // if(ev.noDaySummary){
+      //   console.warn("################# NOT UPDATING DAYSUMMARY DATA #####################");
+      //   this.calculateWeekTotal();
+      //   return;
+      // }
 
        let serializedquery =  `?${$.param(filter1)}`;
        this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` });
@@ -295,7 +295,10 @@ export class SummarySidebarComponent {
             this.appServiceProvider.presentToast(response.message, 'error');
           }
 
+          this.finalizeSlotUpdate(toastmessage);
 
+      },(err) => {
+        this.finalizeSlotUpdate(toastmessage);
       });
      }
      else{
@@ -303,7 +306,11 @@ export class SummarySidebarComponent {
       data = {};
       this.events.publish("start-home:changedLogs", data);
 
+      this.finalizeSlotUpdate(toastmessage);
+
      }
+
+
 
     });
 
@@ -327,6 +334,12 @@ export class SummarySidebarComponent {
       }
 
       console.log("CONSTRUCT REQUESTDATE",this.appGlobalsProvider.requestDate);
+    }
+  } // end requestData
+
+  finalizeSlotUpdate(toastmessage){
+    if(toastmessage){
+      this.events.publish("app:deselect_slot_selection",toastmessage);
     }
   }
 

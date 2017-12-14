@@ -51,6 +51,7 @@ export class SummaryContentComponent {
   private toastMessages: any;
   private relaventWinHeight: number;
   private titleCasePipe: TitleCasePipe;
+  private postSlotUpdateData: any = {};
 
   constructor(
               public translate: TranslateService, 
@@ -71,6 +72,7 @@ export class SummaryContentComponent {
       this.naText = this.appGlobalsProvider.naText;
   
       this.titleCasePipe = new TitleCasePipe();
+
   }
 
   titleCase(val: string){
@@ -471,7 +473,9 @@ export class SummaryContentComponent {
 
   updateLogData(){
     let url  = `${this.appGlobalsProvider.getApiUrl()}/edit-slots`;
-    
+    this.postSlotUpdateData = this.appGlobalsProvider.requestDate;
+
+    this.postSlotUpdateData.inprogess = true;
     console.log(url);
     let optionalHeaders = {
       'X-API-KEY' : this.authguard.userData.x_api_key,
@@ -492,35 +496,36 @@ export class SummaryContentComponent {
   let subscription = this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
       
       if(response.status == 200){
-        this.undoSelection();
+        // this.undoSelection();
         // this.events.publish("summary-sidebar:slotupdate",response.data);
   
-          this.logs.map((val) => {
-            delete val['slot'];
-          })
+          // this.logs.map((val) => {
+          //   delete val['slot'];
+          // })
 
-          this.selectedSlots.map((slot,sindex) => {
-            this.logs.map((log,lindex) => {
-              if(slot['index'] == lindex){
-                log['slot'] = this.selectedSlotType;
-              }
-            });
-          });
+          // this.selectedSlots.map((slot,sindex) => {
+          //   this.logs.map((log,lindex) => {
+          //     if(slot['index'] == lindex){
+          //       log['slot'] = this.selectedSlotType;
+          //     }
+          //   });
+          // });
         
-        this.appGlobalsProvider.requestDate.noDaySummary = true;
-        this.events.publish("app:updatedata",this.appGlobalsProvider.requestDate);
+        this.events.publish("app:updatedata",this.postSlotUpdateData,this.toastMessages.slot_update_success);
           
-        this.appServiceProvider.presentToast(this.toastMessages.slot_update_success);
+        // this.appServiceProvider.presentToast(this.toastMessages.slot_update_success);
 
       }
       else{
         this.appServiceProvider.presentToast(response.message || this.toastMessages.slot_update_failure,'warn');
+        this.postSlotUpdateData.inprogess = false;
       }
 
       subscription.unsubscribe();
     }, (err) => {
       console.warn(err);
       this.appServiceProvider.presentToast(this.toastMessages.slot_update_failure,"warn");
+      this.postSlotUpdateData.inprogess = false;
       subscription.unsubscribe();
     });
   }
@@ -576,9 +581,13 @@ export class SummaryContentComponent {
   }
 
 
-  undoSelection(){
+  undoSelection(toast: string = ''){
     this.deselectAllMarkers();
     this.hideMarkerUpdate = true;
+
+    if(toast)
+      this.appServiceProvider.presentToast(toast);
+      this.postSlotUpdateData.inprogess = false;
   }
 
   deselectAllMarkers(curtarget = null){
