@@ -73,11 +73,105 @@ export class SummaryContentComponent {
   
       this.titleCasePipe = new TitleCasePipe();
 
-  }
+      this.updateContentCB = (data) => {
+        // this.currentData = data.date;
+        this.undoSelection();
+        console.log('inside update content');
+        this.day_data = data.summaryContentData.data.day_data;
+        this.logs = data.summaryContentData.data.logs;
+        this.leave_status_values = data.summaryContentData.data.leave_status_values;
+         
+        this.summaryContentData = data.summaryContentData;
+        this.allowSlotUpdate = this.hasGlobalSlotPerm || data.summaryContentData.data.user.self;
+        
+        console.log(this.leave_status_values);
+        this.setToday();
+  
+        this.slotTypes = this.appServiceProvider.objectToArray(data.summaryContentData.data.slot_values);
+        this.selectedSlotType = this.slotTypes[0]['slug'];
+      }
+   
+      this.changelogCB = (data) => {
+        
+               let object = data;
+        
+               console.log(object);
+        
+               let url  = `${this.appGlobalsProvider.getApiUrl()}/period-data/edit/${this.authguard.user_id}/${this.appGlobalsProvider.lang}`;
+        
+               console.log(url);
+               let optionalHeaders = {
+                  'X-API-KEY' : this.authguard.userData.x_api_key,
+                  'From' : this.authguard.userData.user_id,
+                };
+        
+              this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+        
+        
+                  console.log(response);
+        
+                  if(response.status == 200){
+                    this.day_data[0] = response.data[0];
+                    this.events.publish("summary-sidebar:log", response.data[0]);
+                    this.appGlobalsProvider.view_log_history_btn = true;
+                    this.logsChanged();
+                  }
+        
+                  else{
+                    this.appServiceProvider.presentToast(response.message, 'error');
+                    
+                  }
+        
+        
+               });
+        
+           }
+      
+      this.undoSelection = (toast: string = '') => {
+        console.log("undonig selecetion")
+        this.deselectAllMarkers();
+        this.hideMarkerUpdate = true;
+    
+        if(toast)
+          this.appServiceProvider.presentToast(toast);
+          this.postSlotUpdateData.inprogess = false;
+      }
+      
+      this.onMouseUp = (event) => {
+        this.mouseKeyPressed = false;
+        if(this.mouseDrag){
+          this.getSelectedLogs();
+        }
+        this.mouseDrag = false;
+        // console.log("start index: " + this.markerStartIndex + " end index: " + this.markerEndIndex);
+      }
+  
+      this.removeAllListeners = () => {
+        console.log("removing contnet listeners");
+        this.events.unsubscribe('update:content',this.updateContentCB);
+        this.events.unsubscribe("changed:log", this.changelogCB);
+        this.events.unsubscribe("app:deselect_slot_selection",this.undoSelection);
+        this.events.unsubscribe("app:slot_selection_mouse_up",this.onMouseUp);
+        this.events.unsubscribe("app:removeContentCompListeners", this.removeAllListeners);  
+      }
+  
+      this.events.subscribe('update:content',this.updateContentCB);
+      this.events.subscribe("changed:log", this.changelogCB);
+      this.events.subscribe("app:deselect_slot_selection",this.undoSelection);
+      this.events.subscribe("app:slot_selection_mouse_up",this.onMouseUp);
+      this.events.subscribe("app:removeContentCompListeners", this.removeAllListeners);  
+
+  } // end contructor
 
   titleCase(val: string){
     return this.titleCasePipe.transform(val);
   }
+
+  private updateContentCB: Function;
+  private changelogCB: Function;
+  private undoSelection: Function;
+  private onMouseUp: Function;
+  private removeAllListeners: Function;
 
   ngOnInit(){
     console.log("current user:", this.allowSlotUpdate)
@@ -109,74 +203,14 @@ export class SummaryContentComponent {
     this.logListNative = this.logList.nativeElement;
     this.markerEditNative = this.markerEdit.nativeElement;
 
-    this.events.subscribe('update:content',(data) => {
-      // this.currentData = data.date;
-      this.undoSelection();
-      console.log('inside update content');
-      this.day_data = data.summaryContentData.data.day_data;
-      this.logs = data.summaryContentData.data.logs;
-      this.leave_status_values = data.summaryContentData.data.leave_status_values;
-       
-      this.summaryContentData = data.summaryContentData;
-      this.allowSlotUpdate = this.hasGlobalSlotPerm || data.summaryContentData.data.user.self;
-      
-      console.log(this.leave_status_values);
-      this.setToday();
-
-      this.slotTypes = this.appServiceProvider.objectToArray(data.summaryContentData.data.slot_values);
-      this.selectedSlotType = this.slotTypes[0]['slug'];
-    });
- 
-     
-    this.events.subscribe("changed:log", (data) => {
- 
-        let object = data;
- 
-        console.log(object);
- 
-        let url  = `${this.appGlobalsProvider.getApiUrl()}/period-data/edit/${this.authguard.user_id}/${this.appGlobalsProvider.lang}`;
- 
-        console.log(url);
-        let optionalHeaders = {
-           'X-API-KEY' : this.authguard.userData.x_api_key,
-           'From' : this.authguard.userData.user_id,
-         };
- 
-       this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
- 
- 
-           console.log(response);
- 
-           if(response.status == 200){
-             this.day_data[0] = response.data[0];
-             this.events.publish("summary-sidebar:log", response.data[0]);
-             this.appGlobalsProvider.view_log_history_btn = true;
-             this.logsChanged();
-           }
- 
-           else{
-             this.appServiceProvider.presentToast(response.message, 'error');
-             
-           }
- 
- 
-        });
- 
-    });
-
-    this.relaventWinHeight = (window.innerHeight - 40); // 40 pixels for the footer
-
-    this.events.subscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
-    this.events.subscribe("app:slot_selection_mouse_up",this.onMouseUp.bind(this));
-
     this.slotTypes = this.appServiceProvider.objectToArray(this.summaryContentData.data.slot_values);
     this.selectedSlotType = this.slotTypes[0]['slug'];
   
+    this.relaventWinHeight = (window.innerHeight - 40); // 40 pixels for the footer
   } // end ngOnInit
 
   ngOnDestroy(){
-    this.events.unsubscribe("app:deselect_slot_selection",this.undoSelection.bind(this));
-    this.events.unsubscribe("app:slot_selection_mouse_up",this.onMouseUp.bind(this));
+    this.removeAllListeners();
   }
 
   checkPermissions(){
@@ -394,17 +428,14 @@ export class SummaryContentComponent {
 
   private selectedSlots: Array<any> = [];
 
-  onMouseUp(event){
-    this.mouseKeyPressed = false;
-
-    if(this.mouseDrag){
-      this.getSelectedLogs();
-    }
-
-    this.mouseDrag = false;
-
-    // console.log("start index: " + this.markerStartIndex + " end index: " + this.markerEndIndex);
-  }
+  // onMouseUp(event){
+  //   this.mouseKeyPressed = false;
+  //   if(this.mouseDrag){
+  //     this.getSelectedLogs();
+  //   }
+  //   this.mouseDrag = false;
+  //   // console.log("start index: " + this.markerStartIndex + " end index: " + this.markerEndIndex);
+  // }
 
   getSelectedLogs(){
     let slogs = this.logListNative.querySelectorAll(".selected-log");
@@ -497,7 +528,6 @@ export class SummaryContentComponent {
       
       if(response.status == 200){
         // this.undoSelection();
-        // this.events.publish("summary-sidebar:slotupdate",response.data);
   
           // this.logs.map((val) => {
           //   delete val['slot'];
@@ -581,14 +611,15 @@ export class SummaryContentComponent {
   }
 
 
-  undoSelection(toast: string = ''){
-    this.deselectAllMarkers();
-    this.hideMarkerUpdate = true;
+  // undoSelection(toast: string = ''){
+  //   console.log("undonig selecetion")
+  //   this.deselectAllMarkers();
+  //   this.hideMarkerUpdate = true;
 
-    if(toast)
-      this.appServiceProvider.presentToast(toast);
-      this.postSlotUpdateData.inprogess = false;
-  }
+  //   if(toast)
+  //     this.appServiceProvider.presentToast(toast);
+  //     this.postSlotUpdateData.inprogess = false;
+  // }
 
   deselectAllMarkers(curtarget = null){
     let prev_selections = this.logListNative.querySelectorAll(".selected-log");
