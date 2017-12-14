@@ -325,17 +325,21 @@ export class SummarySidebarComponent {
 
     } // end if check for event from calendar plugin
     else{ // construct own data object here
-      this.appGlobalsProvider.requestDate = {
-        date: {
-          year: Number(moment(new Date()).format("YYYY")),
-          month: Number(moment(new Date()).format("MM"))
-        },
-        formatted: moment(new Date()).format("YYYY-MM-DD")
-      }
-
-      console.log("CONSTRUCT REQUESTDATE",this.appGlobalsProvider.requestDate);
+      this.setRequestDate();
     }
   } // end requestData
+
+  setRequestDate(workdate: string = null){
+    this.appGlobalsProvider.requestDate = {
+      date: {
+        year: workdate ? Number(moment(workdate,'YYYY-MM-DD').format("YYYY")) : Number(moment(new Date()).format("YYYY")),
+        month: workdate ? Number(moment(workdate,'YYYY-MM-DD').format("MM")) : Number(moment(new Date()).format("MM")) 
+      },
+      formatted: workdate ? workdate : moment(new Date()).format("YYYY-MM-DD")
+    }
+
+    console.log("CONSTRUCT REQUESTDATE",this.appGlobalsProvider.requestDate);
+  }
 
   finalizeSlotUpdate(toastmessage){
     if(toastmessage){
@@ -426,8 +430,9 @@ export class SummarySidebarComponent {
     updateSummaryContent(date : any, key : any){
 
     // this.sideBarData.data.periodData.btnActive = true;
-    // console.log(date,key);
-    
+    console.log(date,key);
+    this.setRequestDate(date.work_date);
+
     this.sideBarData.data.periodData[key].btnActive = true;
 
     for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
