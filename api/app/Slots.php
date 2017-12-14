@@ -128,4 +128,20 @@ class Slots extends Model
         }
         return $logs;
     }
+
+    /**
+     * get time in hh:mm format from minutes
+     * @param  int     $total total number of minutes
+     * @return string         time in hh:mm format
+     */
+    public function getTimeFromMinutes($total) {
+        $hours = (int)($total/60);
+        $minutes = $total%60;
+        if($hours < 10)
+            $hours = '0'.$hours;
+        if($minutes < 10)
+            $minutes = '0'.$minutes;
+
+        return $hours.':'.$minutes;
+    }
 }

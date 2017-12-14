@@ -62,7 +62,7 @@ class SlotsController extends Controller
                 $slotEntry->work_date = $request->work_date;
                 $slotEntry->start_time = $slotStart;
                 $slotEntry->end_time = $slotEnd;
-                $slotEntry->total_time = ((int)($totalTime/60)).':'.$totalTime%60;
+                $slotEntry->total_time = (new Slots)->getTimeFromMinutes($totalTime);
                 $slotEntry->save();
             }
             else {
@@ -78,12 +78,22 @@ class SlotsController extends Controller
                     if($slotStart <= $markedSlotStart && $markedSlotStart <= $slotEnd && $slotEnd <= $markedSlotEnd) {
                         // start of this slot needs to be changed
                         $markedSlot->start_time = $slotEnd->format('H:i');
-                        $markedSlot->save();
+                        $newTotalTime = (new Log)->timeDifferenceInMins($markedSlot->start_time, $markedSlot->end_time);
+                        $markedSlot->total_time = (new Slots)->getTimeFromMinutes($newTotalTime);
+                        if($markedSlot->total_time == '00:00')
+                            $markedSlot->delete();
+                        else
+                            $markedSlot->save();
                     }
                     else if($markedSlotStart <= $slotStart && $slotStart <= $markedSlotEnd && $markedSlotEnd <= $slotEnd) {
                         // end of this slot needs to be modified
                         $markedSlot->end_time = $slotStart->format('H:i');
-                        $markedSlot->save();
+                        $newTotalTime = (new Log)->timeDifferenceInMins($markedSlot->start_time, $markedSlot->end_time);
+                        $markedSlot->total_time = (new Slots)->getTimeFromMinutes($newTotalTime);
+                        if($markedSlot->total_time == '00:00')
+                            $markedSlot->delete();
+                        else
+                            $markedSlot->save();
                     }
                     else if($slotStart <= $markedSlotStart && $markedSlotStart <= $markedSlotEnd && $markedSlotEnd <= $slotEnd) {
                         // marked slot lies completely inside no_slot | delete this slot
