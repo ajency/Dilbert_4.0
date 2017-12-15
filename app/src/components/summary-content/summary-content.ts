@@ -567,6 +567,7 @@ export class SummaryContentComponent {
   // private markerEndIndex: number;
 
   highlightSelected(event,type: string = '',index = null){
+    if( event.currentTarget.querySelector(".online.only-online") ) return;
     if(!this.allowSlotUpdate) return;
     event.stopPropagation();
     if(type === 'click'){
