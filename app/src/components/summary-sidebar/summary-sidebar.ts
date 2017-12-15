@@ -54,6 +54,10 @@ export class SummarySidebarComponent {
 
   days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+  private summarySideBatLogCB: Function;
+  private removeAllListeners: Function;
+  private requestData: Function;
+
   constructor(public zone : NgZone,
               public userDataProvider : UserDataProvider,
               public events: Events,
@@ -77,36 +81,225 @@ export class SummarySidebarComponent {
       month : this.monthNames[dummy.getMonth()]
     };
 
-    this.events.subscribe("summary-sidebar:log", (data) =>{
-       for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
-        {
-          if(this.sideBarData.data.periodData[i].btnActive == true){
-             
-            this.sideBarData.data.periodData[i] = data;
-            this.sideBarData.data.periodData[i].btnActive = true;
-          }
+    this.summarySideBatLogCB = (data) =>{
+      for(var i = 0; i < this.sideBarData.data.periodData.length; i++ )
+       {
+         if(this.sideBarData.data.periodData[i].btnActive == true){
+            
+           this.sideBarData.data.periodData[i] = data;
+           this.sideBarData.data.periodData[i].btnActive = true;
+         }
+       
+       }
+       if(data.work_date == this.sideBarData.data.current[0].work_date){
+         this.sideBarData.data.current[0] = data;
+         console.log("todays logs changed");
+       }
+       this.calculateWeekTotal();
+   }
+
+   this.requestData = (ev,toastmessage: string = '') => {
+    
+        console.log("inside requestData function", ev);
+        if(ev.date.year != 0 && ev.date.month != 0){
+          this.appGlobalsProvider.requestDate = ev;
+    
+          let date_range = {
+          // start : date;
+          start : ev.formatted
+          };
+          this.storage.get('userData').then((data) => {
+            
+        //   this.userDataProvider.getUserData(data.user_id, date_range, data.x_api_key).subscribe( (response) => {
+        //   console.log(response, 'response');
+        //   this.sideBarData = response;
+        //   this.calculateWeekTotal()
+        // });
+        let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
+        console.log(url);
+    
+    
+        let filter1 = {
+            user_id:this.authguard.user_id,
+            start_date:ev.formatted,
+            period_unit:this.appGlobalsProvider.period_unit
+          };
+    
+    
+        let filters = {
+          date_range : date_range,
+          period_unit : this.appGlobalsProvider.period_unit
+        }
         
+        let body = {
+        user_id : this.authguard.user_id,
+        filters : filters
+        };
+     
+        let optionalHeaders = {
+          'X-API-KEY' : data.x_api_key,
+          'From' : data.user_id,
+        };
+    
+          this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', 'disable' , filter1,  false).subscribe( (response) => {
+          // console.log(response);
+          this.sideBarData = response;
+    
+              if(this.sideBarData.data.periodData.length != 0){
+                console.log(this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date)
+                if(this.sideBarData.data.periodData[0].work_date < this.sideBarData.data.user.joining_date){
+                 this.sideBarData.data.periodData = [];
+                 console.log(this.sideBarData);
+              }
+    
+                else if(this.sideBarData.data.periodData[0].work_date > this.sideBarData.data.user.joining_date && 
+                          this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date < this.sideBarData.data.user.joining_date ){
+    
+                      for(var i = 0; i < this.sideBarData.data.periodData.length; i++ ){
+                        if(this.sideBarData.data.periodData[i].work_date < this.sideBarData.data.user.joining_date && this.sideBarData.data.periodData[i].leave_status == 'Leave')
+                            this.sideBarData.data.periodData[i].leave_status = 'Not joined';
+                      }
+    
+                }
+            }
+    
+          // if(ev.noDaySummary){
+          //   console.warn("################# NOT UPDATING DAYSUMMARY DATA #####################");
+          //   this.calculateWeekTotal();
+          //   return;
+          // }
+    
+           let serializedquery =  `?${$.param(filter1)}`;
+           this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` });
+    
+          url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
+          console.log(url);
+          let body2 = {
+          user_id : this.authguard.user_id,
+          date : ev.formatted,
+          cos_offset : this.appGlobalsProvider.cos_offset
         }
-        if(data.work_date == this.sideBarData.data.current[0].work_date){
-          this.sideBarData.data.current[0] = data;
-          console.log("todays logs changed");
+    
+        let filter2 = {
+          summary_date : ev.formatted,
+          // cos_offset : this.appGlobalsProvider.cos_offset
         }
-        this.calculateWeekTotal();
-    })
+    
+          this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable', filter2, true).subscribe( (response) => {
+          // console.log(response);
+          this.summaryContentData = response;
+    
+          serializedquery = `?${$.param(filter2)}`;
+          this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true , replace : true});
+    
+          this.calculateWeekTotal();
+    
+          let data1 = {
+            date : ev.formatted,
+            summaryContentData : this.summaryContentData
+          }
+    
+           this.events.publish('update:content', data1);
+    
+           this.checkPermissions();
+    
+           // Call for changed logs
+           let data = this.summaryContentData.data.day_data[0];
+           console.log(data);
+    
+    
+    
+          if(data.changes>0 && this.view_log_history_btn){
+    
+          let object = {
+              user_id : [this.authguard.user_id],   
+    
+              filters : {
+                work_date_range : {
+                  start : data.work_date,
+                  end : ''  
+                }
+                
+              }
+           }
+           console.log(object);
+    
+           url  = `${this.apiURL}/log-history/${this.appGlobalsProvider.lang}`;
+    
+    
+           this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+    
+    
+              console.log(response);
+    
+              if(response.status == 200){
+               
+                // let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:response.data[0].history});
+                // popover.present();
+                // this.changedLogs = response.data[0].history;
+               this.appGlobalsProvider.view_log_history_btn =true;
+    
+               this.events.publish("start-home:changedLogs",response.data[0].history);
+    
+              }
+    
+              else{
+                this.appServiceProvider.presentToast(response.message, 'error');
+              }
+    
+              this.finalizeSlotUpdate(toastmessage);
+    
+          },(err) => {
+            this.finalizeSlotUpdate(toastmessage);
+          });
+         }
+         else{
+          this.appGlobalsProvider.view_log_history_btn = false;
+          data = {};
+          this.events.publish("start-home:changedLogs", data);
+    
+          this.finalizeSlotUpdate(toastmessage);
+    
+         }
+    
+    
+    
+        });
+    
+    
+        });
+    
+    
+        });
+    
+       
+    
+    
+        } // end if check for event from calendar plugin
+        else{ // construct own data object here
+          this.setRequestDate();
+        }
+      } // end requestData
 
-    this.events.subscribe("summary-sidebar:slotupdate",(data) => {
-      this.slotsUpdateEvent(data);
-    })
+   this.removeAllListeners = () =>{
+      console.log("removing sidebar listeners");
+      this.events.unsubscribe("summary-sidebar:log", this.summarySideBatLogCB)
+      this.events.unsubscribe("app:updatedata",this.requestData);
+      this.events.unsubscribe("app:removeSidebarCompListeners", this.removeAllListeners);
+    }
 
-      
+    this.events.subscribe("summary-sidebar:log", this.summarySideBatLogCB)
+    this.events.subscribe("app:updatedata",this.requestData);
+    this.events.subscribe("app:removeSidebarCompListeners", this.removeAllListeners);      
   }
+
+
 
   ngOnInit(){
   	this.zone.run(() => {});
     // console.log(this.summaryContentData);
     this.calculateWeekTotal();
  
-    this.events.subscribe("app:updatedata",this.requestData.bind(this));
   }
 
 
@@ -145,189 +338,6 @@ export class SummarySidebarComponent {
     }
     return text;
   }
-
-   requestData(ev,toastmessage: string = ''){
-
-    console.log("inside requestData function", ev);
-    if(ev.date.year != 0 && ev.date.month != 0){
-      this.appGlobalsProvider.requestDate = ev;
-
-      let date_range = {
-      // start : date;
-      start : ev.formatted
-      };
-      this.storage.get('userData').then((data) => {
-        
-    //   this.userDataProvider.getUserData(data.user_id, date_range, data.x_api_key).subscribe( (response) => {
-    //   console.log(response, 'response');
-    //   this.sideBarData = response;
-    //   this.calculateWeekTotal()
-    // });
-    let url =  `${this.apiURL}/period-data/${this.appGlobalsProvider.lang}`;
-    console.log(url);
-
-
-    let filter1 = {
-        user_id:this.authguard.user_id,
-        start_date:ev.formatted,
-        period_unit:this.appGlobalsProvider.period_unit
-      };
-
-
-    let filters = {
-      date_range : date_range,
-      period_unit : this.appGlobalsProvider.period_unit
-    }
-    
-    let body = {
-    user_id : this.authguard.user_id,
-    filters : filters
-    };
- 
-    let optionalHeaders = {
-      'X-API-KEY' : data.x_api_key,
-      'From' : data.user_id,
-    };
-
-      this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable', 'disable' , filter1,  false).subscribe( (response) => {
-      // console.log(response);
-      this.sideBarData = response;
-
-          if(this.sideBarData.data.periodData.length != 0){
-            console.log(this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date)
-            if(this.sideBarData.data.periodData[0].work_date < this.sideBarData.data.user.joining_date){
-             this.sideBarData.data.periodData = [];
-             console.log(this.sideBarData);
-          }
-
-            else if(this.sideBarData.data.periodData[0].work_date > this.sideBarData.data.user.joining_date && 
-                      this.sideBarData.data.periodData[this.sideBarData.data.periodData.length - 1].work_date < this.sideBarData.data.user.joining_date ){
-
-                  for(var i = 0; i < this.sideBarData.data.periodData.length; i++ ){
-                    if(this.sideBarData.data.periodData[i].work_date < this.sideBarData.data.user.joining_date && this.sideBarData.data.periodData[i].leave_status == 'Leave')
-                        this.sideBarData.data.periodData[i].leave_status = 'Not joined';
-                  }
-
-            }
-        }
-
-      // if(ev.noDaySummary){
-      //   console.warn("################# NOT UPDATING DAYSUMMARY DATA #####################");
-      //   this.calculateWeekTotal();
-      //   return;
-      // }
-
-       let serializedquery =  `?${$.param(filter1)}`;
-       this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard` });
-
-      url = `${this.apiURL}/day-summary/${this.appGlobalsProvider.lang}`;
-      console.log(url);
-      let body2 = {
-      user_id : this.authguard.user_id,
-      date : ev.formatted,
-      cos_offset : this.appGlobalsProvider.cos_offset
-    }
-
-    let filter2 = {
-      summary_date : ev.formatted,
-      // cos_offset : this.appGlobalsProvider.cos_offset
-    }
-
-      this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable', filter2, true).subscribe( (response) => {
-      // console.log(response);
-      this.summaryContentData = response;
-
-      serializedquery = `?${$.param(filter2)}`;
-      this.events.publish('app:updatehistory',{page: 'dashboard', state: {query: serializedquery},  frompath: `/dashboard`, appendurl : true , replace : true});
-
-      this.calculateWeekTotal();
-
-      let data1 = {
-        date : ev.formatted,
-        summaryContentData : this.summaryContentData
-      }
-
-       this.events.publish('update:content', data1);
-
-       this.checkPermissions();
-
-       // Call for changed logs
-       let data = this.summaryContentData.data.day_data[0];
-       console.log(data);
-
-
-
-      if(data.changes>0 && this.view_log_history_btn){
-
-      let object = {
-          user_id : [this.authguard.user_id],   
-
-          filters : {
-            work_date_range : {
-              start : data.work_date,
-              end : ''  
-            }
-            
-          }
-       }
-       console.log(object);
-
-       url  = `${this.apiURL}/log-history/${this.appGlobalsProvider.lang}`;
-
-
-       this.appServiceProvider.request(url, 'post', object, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
-
-
-          console.log(response);
-
-          if(response.status == 200){
-           
-            // let popover = this.popoverCtrl.create( 'LogsChangedPage', {data1:response.data[0].history});
-            // popover.present();
-            // this.changedLogs = response.data[0].history;
-           this.appGlobalsProvider.view_log_history_btn =true;
-
-           this.events.publish("start-home:changedLogs",response.data[0].history);
-
-          }
-
-          else{
-            this.appServiceProvider.presentToast(response.message, 'error');
-          }
-
-          this.finalizeSlotUpdate(toastmessage);
-
-      },(err) => {
-        this.finalizeSlotUpdate(toastmessage);
-      });
-     }
-     else{
-      this.appGlobalsProvider.view_log_history_btn = false;
-      data = {};
-      this.events.publish("start-home:changedLogs", data);
-
-      this.finalizeSlotUpdate(toastmessage);
-
-     }
-
-
-
-    });
-
-
-    });
-
-
-    });
-
-   
-
-
-    } // end if check for event from calendar plugin
-    else{ // construct own data object here
-      this.setRequestDate();
-    }
-  } // end requestData
 
   setRequestDate(workdate: string = null){
     this.appGlobalsProvider.requestDate = {
@@ -417,16 +427,6 @@ export class SummarySidebarComponent {
     }
 
     
-    slotsUpdateEvent(data){
-      this.minHours = data.period_meta.worked_expected;
-      this.weekTotal =data.period_meta.worked_total;
-      this.lunchTime = data.period_meta.lunch_total;
-
-      console.log("slot data updated")
-    }
-
-
-
     updateSummaryContent(date : any, key : any){
 
     // this.sideBarData.data.periodData.btnActive = true;

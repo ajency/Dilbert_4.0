@@ -50,6 +50,8 @@ import { Storage } from '@ionic/storage';
  view_log_history_btn : boolean = true;
  changedLogs : any;
 
+ private chageLogCB: Function;
+
  constructor(public navCtrl: NavController, 
   public navParams: NavParams,
   public popoverCtrl: PopoverController, 
@@ -72,12 +74,14 @@ import { Storage } from '@ionic/storage';
   //   console.log(this.param1,this.param2);
   // });
   // console.log(this.param1, this.param2);
-  this.events.subscribe("start-home:changedLogs", (data) =>{
+  this.chageLogCB = (data) =>{
     console.log('inside publish changedLogs');
     this.view_log_history_btn = this.appGlobalsProvider.view_log_history_btn;
     this.changedLogs = data;
 
-  });
+  }
+
+  this.events.subscribe("start-home:changedLogs", this.chageLogCB);
 
   
 }
@@ -191,6 +195,9 @@ ionViewDidLoad() {
     this.appGlobalsProvider.dashboard_params.param2 = '';
     this.authguard.user_id = this.authguard.userData.user_id;
 
+    this.events.unsubscribe("start-home:changedLogs", this.chageLogCB);
+    this.events.publish("app:removeSidebarCompListeners");
+    this.events.publish("app:removeContentCompListeners");
   }
 
 
