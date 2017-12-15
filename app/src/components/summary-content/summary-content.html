@@ -154,9 +154,9 @@
                 <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
 
-            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols online">
+            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " class="detail-view__cols online only-online">
                 <h6  ion-text font-weight-3 color="dark">{{ "online" | translate }} </h6>
-                <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
+                <!-- <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span> -->
             </li>
 
 
