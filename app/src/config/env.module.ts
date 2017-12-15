@@ -6,7 +6,16 @@ import { prodVariables } from './prod';
 declare const process: any; // Typescript compiler will complain without this
 
 export function environmentFactory() {
-  return process.env.IONIC_ENV === 'prod' ? prodVariables : devVariables;
+
+  if(process.env.NODE_ENV === 'production'){
+    return prodVariables;
+  }
+  else if(process.env.NODE_ENV === 'development'){
+    return devVariables;
+  }
+
+  // return process.env.IONIC_ENV === 'prod' ? prodVariables : devVariables;
+  return devVariables;
 }
 
 @NgModule({

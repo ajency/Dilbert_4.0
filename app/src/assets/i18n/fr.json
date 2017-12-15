@@ -26,6 +26,7 @@
 	  "this_week" : "Cette semaine",
 	  "week_total" : "Total de la semaine",
 	  "month_total" : "Total du mois",
+	  "lunch_time": "Total déjeuner",
 	  "today" : "Aujourd'hui",
 	  "the_summary" : "Le résumé",
 	  "summary" : "résumé",
@@ -116,10 +117,15 @@
 	  "status" : "statut",
 	  "from" : "de",
 	  "on" : "sur",
-	  "at" : "à"
+	  "at" : "à",
 
 
-
+	"toast_messages": {
+		"success": "Mise à jour",
+		"error": "Mise à jour a échoué",
+		"slot_update_success": "Emplacement mis à jour avec succès",
+		"slot_update_failure": "La mise à jour de l'emplacement a échoué"
+	}
 
 
 

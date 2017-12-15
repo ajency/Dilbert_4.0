@@ -11,6 +11,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AppGlobalsProvider {
 
+  public requestDate: any;
+  public naText: string = '--';
 
   private historyStack: Array<any> = [];
 	lang : any ;
@@ -32,8 +34,8 @@ export class AppGlobalsProvider {
 
   private semVersion: any = {
     major: 1,
-    minor: 1,
-    patch: 4
+    minor: 2,
+    patch: 6
   };
 
   appVersion : string = '' ;

@@ -23,3 +23,80 @@
 
 
 @import "Sass/main";
+
+.custom-loading-content{
+    .loading-wrapper{
+        background: rgba(0,0,0,0);
+        box-shadow: none;
+        color: #fff;
+        width: 150px;
+        text-align: center;
+    }
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    min-width: 200px;
+    background-color: #000;
+    color: #fff;
+    // font-weight: bold;
+    font-size: 1em;
+    text-align: center;
+    padding: 5px 10px;
+    // border-radius: 6px;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    top: 100%;
+    left: 0px;
+    // box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.2);
+    z-index: 1;
+
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 20%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #000 transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+// NG-progressbar loader
+
+.ng-progress{
+    .bar{
+        background-color: color($colors, primary) !important;
+        &-shadow{
+            box-shadow: color($colors, primary) 0px 0px 10px, color($colors, primary) 0px 0px 5px !important;
+        }
+    }
+    .spinner-icon{
+        border-top-color: color($colors, primary) !important;
+        border-left-color: color($colors, primary) !important;
+    }
+}
+
+
+
+
