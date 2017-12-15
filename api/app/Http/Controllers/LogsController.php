@@ -11,6 +11,7 @@ use App\UserDetail;
 use App\Organisation;
 use App\Log;
 use App\Locked_Data;
+use App\Slots;
 
 class LogsController extends Controller
 {
@@ -54,82 +55,19 @@ class LogsController extends Controller
                     $daysData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
                     $data['day_data'] = (new Locked_Data)->formattedLockedData($request->user_id,$daysData,$request->date,$request->date);  // formatted locked data
                     // get the user's day logs
-                    $logs = [];
                     $userLogs = Log::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get(); // all logs
-                    $state = null;
-                    $start = null;
-                    $end = null;
                     // Organisation's ip list
                     $ip_list = unserialize(Organisation::find(UserDetail::where(['user_id' => $request->user_id])->first()->org_id)->ip_lists);
-                    foreach($userLogs as $log) {
-                        // check if the logs ip belongs to organisation's ip_lists
-                        // if not skip the log
-                        if(!in_array($log->ip_addr,$ip_list))
-                            continue;
-                        // if this is the start of the startDate
-                        if($start == null && $log->to_state == 'New Session') {   // New Session = active
-                                $state = 'active';
-                                $start = $log->cos;
-                                continue;
-                        }
-                        // signifying the end of the offline state
-                        else if($state == 'offline' && $log->to_state == 'New Session') {
-                            $end = $log->cos;
-                            if((new Log)->timeDifferenceInMins($start,$end) >= $cosOffset) {
-                                array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => (new Log)->timeDifferenceInMins($start,$end)]);
-                                $state = 'active';
-                                $start = $log->cos;
-                                $end = null;
-                                continue;
-                            }
-                            else {
-                                // edit the end time of the previous record
-                                $lastRecord = array_pop($logs);
-                                if($lastRecord == null) {
-                                    // if this the first entry to the logs array
-                                    $end = null;
-                                }
-                                else {
-                                    // ignore the current record and use the previous one
-                                    $state = $lastRecord['state'];
-                                    $start = $lastRecord['start_time'];
-                                    $end = null;
-                                }
-                            }
-                        }
-                        // detects the end of the state and also curbs multiple
-                        // offline entries from being reported
-                        if(($log->from_state == $state || $log->to_state == 'offline') && $state != 'offline') {
-                            $end = $log->cos;
-                            // check if this change of state is to be passed
-                            if((new Log)->timeDifferenceInMins($start,$end) >= $cosOffset) {
-                                array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => (new Log)->timeDifferenceInMins($start,$end)]);
-                                $state = $log->to_state;
-                                $start = $log->cos;
-                                $end = null;
-                            }
-                            else {
-                                // edit the end time of the previous record
-                                $lastRecord = array_pop($logs);
-                                if($lastRecord == null) {
-                                    // if this the first entry to the logs array
-                                    $end = null;
-                                }
-                                else {
-                                    // ignore the current record and use the previous one
-                                    $state = $lastRecord['state'];
-                                    $start = $lastRecord['start_time'];
-                                    $end = null;
-                                }
-                            }
-                        }
-                        else
-                            continue;
-                    }
-                    if($state != null)
-                        array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => null]);
-                    $data['logs'] = $logs;
+                    $logs = (new Log)->getDaySummary($ip_list, $userLogs, $cosOffset);
+                    // add slots to the logs
+                    $slots = Slots::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
+                    $slottedLogs = (new Slots)->addSlotsToLogs($logs, $slots);
+                    $data['logs'] = $slottedLogs;
                     $data['leave_status_values'] = ['Holiday', 'Weekend', 'Worked', 'Worked on weekend', 'Worked on holiday', 'Leave', 'Leave due to violation'];
+                    $data['slot_values'] = [
+                        'no_slot' => 'No slot',
+                        'lunch' => 'Lunch',
+                    ];
                     return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
                 // }
                 // else {

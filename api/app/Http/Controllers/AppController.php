@@ -108,14 +108,11 @@ class AppController extends Controller
                     } else {
                         // just update the end time and total time
                         $lockedEntry = $lockedEntry->first();
-                        $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
-                        $output = new ConsoleOutput;
-                        $output->writeln('start '.$lockedEntry->start_time);
-                        $output->writeln('start '.$lockedEntry->end_time);
-                        $output->writeln(date('Y-m-d H:i'));
-                        $output->writeln($this->getTimeDifference($lockedEntry->start_time, date('Y-m-d H:i')));
-                        $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
-                        $lockedEntry->save();
+                        if((new DateTime($this->getCurrentTimeZoneTime($timeZone))) >= (new DateTime("09:30"))) {
+                            $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
+                            $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
+                            $lockedEntry->save();
+                        }
                     }
                 }
                 // return the start, end and total time from the locked_data
