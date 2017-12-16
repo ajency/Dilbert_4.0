@@ -66,7 +66,7 @@ class CronController extends Controller
                     $userLockedData->save();
                 }
             }
-            $logger->writeln($userLockedData->status);
+            $logger->writeln(isset($userLockedData->status) ? $userLockedData->status : '');
         }
     }
 
