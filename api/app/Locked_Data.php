@@ -66,7 +66,15 @@ class Locked_Data extends Model
                     "lunch" => (new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))
                 ]
             ]);
-            return $data;
+            if($sendPeriodMeta) {
+                return [
+                    'data' => $data,
+                    'total_period_hours' => '00:00',
+                    'expected_period_hours' => '00:00'
+                ];
+            }
+            else
+                return $data;
         }
         foreach ($lockedData as $ld) {
             // if status is null calculate the status
