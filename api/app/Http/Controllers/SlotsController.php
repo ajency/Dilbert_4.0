@@ -26,7 +26,17 @@ class SlotsController extends Controller
             $continue = false;  // to detect if any error occurred while going through the logs
             $slotStart = '';
             $slotEnd = '';
+            // calculate the start and end time
             foreach($slotData['logs'] as $log) {
+                // handle case when active log is selected
+                if($log['end_time'] == null) {
+                    if($slotStart == '') {
+                        // if that is the only log selected
+                        $message = $message."'Active' log selected. ";
+                        $continue = true;
+                    }
+                    break;
+                }
                 // if its the first log
                 if($slotStart == '' && $slotEnd == '') {
                     $slotStart = $log['start_time'];
