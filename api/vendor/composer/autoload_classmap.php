@@ -39,6 +39,7 @@ return array(
     'App\\Http\\Controllers\\LogsController' => $baseDir . '/app/Http/Controllers/LogsController.php',
     'App\\Http\\Controllers\\OrganisationController' => $baseDir . '/app/Http/Controllers/OrganisationController.php',
     'App\\Http\\Controllers\\RoleController' => $baseDir . '/app/Http/Controllers/RoleController.php',
+    'App\\Http\\Controllers\\SlotsController' => $baseDir . '/app/Http/Controllers/SlotsController.php',
     'App\\Http\\Controllers\\UserController' => $baseDir . '/app/Http/Controllers/UserController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\CheckPermissions' => $baseDir . '/app/Http/Middleware/CheckPermissions.php',
