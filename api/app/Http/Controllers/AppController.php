@@ -117,6 +117,11 @@ class AppController extends Controller
                             $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
                             $lockedEntry->save();
                         }
+                        else {
+                            // needs to be done because the cron uses the updated_at to determine offline state
+                            $lockedEntry->updated_at = (new DateTime)->format('Y-m-d H:i:s');
+                            $lockedEntry->save();
+                        }
                     }
                 }
                 // return the start, end and total time from the locked_data
