@@ -29,14 +29,16 @@ class AppController extends Controller
             if ($user['user_details']['api_token'] == $request->header('X-API-KEY')) {
 
                 // testing purpose
-                $testUsers = config('testing.ping_users');
-                if(in_array($request->header('from'), $testUsers)) {
-                    $pingLogs = new PingLogs;
-                    $pingLogs->user_id = $request->header('from');
-                    $pingLogs->from_state = $request->from_state;
-                    $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
-                    $pingLogs->ip_addr = $request->ip();
-                    $pingLogs->save();
+                if(env('APP_ENV') == 'dev') {
+                    $testUsers = config('testing.ping_users');
+                    if(in_array($request->header('from'), $testUsers)) {
+                        $pingLogs = new PingLogs;
+                        $pingLogs->user_id = $request->header('from');
+                        $pingLogs->from_state = $request->from_state;
+                        $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
+                        $pingLogs->ip_addr = $request->ip();
+                        $pingLogs->save();
+                    }
                 }
 
                 // first make an entry into the logs table
