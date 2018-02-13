@@ -1,10 +1,12 @@
+@extends('layouts.email')	
+@section('content') 
 	 <!-- Email Body : BEGIN -->
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="700" style="margin: auto;  background-color: white;" class="email-container">
 
             <!-- Dilbert Image : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" align="center">
-                    <img src="D:\work email dilbert\Dilbert_4.0\api\public\img\dilbert.png"  alt="dilbert" border="0" align="center"  class="g-img">
+                    <img src="<?php echo $message->embed($dilbert); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
                 </td>
             </tr>
             <!--  Dilbert Image : END -->
@@ -17,7 +19,7 @@
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> 11:08.</span> <br/>
+                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> {{$start}}</span> <br/>
                     It may be a one-off day, but just a small note to let you know what we think,<br/>
                     as also laid out in the Ajency.in Handbook.</p>
                 </td>
@@ -29,7 +31,7 @@
 	                    <tr>
 	                        <td class="stack-column-center">
                                 <a href="Ajency.inAtoZ.pdf" download="Ajency.inAtoZ.pdf">
-                                    <img border="0" src="D:\work email dilbert\Dilbert_4.0\api\public\img\ajency-email.png" style="width: 100%;">
+                                    <img border="0" src="<?php echo $message->embed($email); ?>" style="width: 100%;">
                                 </a>
 	                        </td>
 	                    </tr>
@@ -70,3 +72,4 @@
 			</tr>
 		</table>
     <!-- Email Body : END -->
+@endsection

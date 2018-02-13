@@ -10,6 +10,7 @@ use App\User;
 use App\UserDetail;
 use App\Organisation;
 use App\SpecialDays;
+use Illuminate\Support\Facades\Mail;
 
 use Ajency\User\Ajency\userauth\UserAuth;
 use Ajency\Violations\Ajency\ViolationRules;
@@ -289,5 +290,12 @@ class CronController extends Controller
         $end = new DateTime($end);
         $dateDiff = date_diff($start,$end);
         return (((int)$dateDiff->h * 60) + (int)($dateDiff->i));
+    }
+
+    public function test($start){
+         Mail::send('dilbert_mails/email_late_alert', ['logo'=>'public/img/ajency-logo.png','dilbert'=>'public/img/dilbert.png','email'=>'public/img/ajency-email.png','start'=>$start],function($message) {
+                $message->from('shreya@ajency.in');
+                $message->to('shreya@ajency.in');
+            });
     }
 }
