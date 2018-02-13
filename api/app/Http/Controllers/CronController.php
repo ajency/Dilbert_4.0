@@ -58,8 +58,8 @@ class CronController extends Controller
                 $mailList = ['hr','owner1','owner2'];
                 $data = (new ViolationApp)->createFormattedViolationData($userData,$keyFields,$rhsFields,$mailList);
                 $data['logo']= 'public/img/ajency-logo.png';
-                $data['dilbert']=>'public/img/dilbert.png';
-                $data['email']=>'public/img/ajency-email.png';
+                $data['dilbert']='public/img/dilbert.png';
+                $data['email']='public/img/ajency-email.png';
                 $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data,false,true);
                 if($vioResponse['status'] == 'violation') {
                     $userLockedData->status = "Leave due to violation";
@@ -169,8 +169,8 @@ class CronController extends Controller
 
 
                 $data['logo']= 'public/img/ajency-logo.png';
-                $data['dilbert']=>'public/img/dilbert.png';
-                $data['email']=>'public/img/ajency-email.png';
+                $data['dilbert']='public/img/dilbert.png';
+                $data['email']='public/img/ajency-email.png';
             (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
         }
     }
@@ -230,8 +230,8 @@ class CronController extends Controller
 
 
                 $data['logo']= 'public/img/ajency-logo.png';
-                $data['dilbert']=>'public/img/dilbert.png';
-                $data['email']=>'public/img/ajency-email.png';
+                $data['dilbert']='public/img/dilbert.png';
+                $data['email']='public/img/ajency-email.png';
 
             (new ViolationRules)->checkForViolation('minimum_hrs_of_month',$data,false,true);
         }
@@ -304,8 +304,8 @@ class CronController extends Controller
         return (((int)$dateDiff->h * 60) + (int)($dateDiff->i));
     }
 
- /*   public function test($start,$name){
-         Mail::send('violations/late_alert', ['logo'=>'public/img/ajency-logo.png','dilbert'=>'public/img/dilbert.png','email'=>'public/img/ajency-email.png','start'=>$start,'name'=>$name],function($message) {
+   /* public function test($data['start'],$name){
+         Mail::send('violations/late_alert', ['logo'=>'public/img/ajency-logo.png','dilbert'=>'public/img/dilbert.png','email'=>'public/img/ajency-email.png','start'=>$data['start'],'name'=>$name],function($message) {
                 $message->from('shreya@ajency.in');
                 $message->to('shreya@ajency.in');
             });
