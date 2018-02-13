@@ -2,15 +2,6 @@
 @section('content') 
 	 <!-- Email Body : BEGIN -->
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="700" style="margin: auto;  background-color: white;" class="email-container">
-
-            <!-- Dilbert Image : BEGIN -->
-            <tr>
-                <td bgcolor="#ffffff" align="center">
-                    <img src="<?php echo $message->embed($dilbert); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
-                </td>
-            </tr>
-            <!--  Dilbert Image : END -->
-
             <!-- Main Content1 : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" style="padding: 40px 40px 20px; text-align: center;">

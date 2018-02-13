@@ -14,6 +14,13 @@
 					</a>
 				</td>
 			</tr>
+			  <!-- Dilbert Image : BEGIN -->
+            <tr>
+                <td bgcolor="#ffffff" align="center">
+                    <img src="<?php echo $message->embed($dilbert); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
+                </td>
+            </tr>
+            <!--  Dilbert Image : END -->
 		</table>
 		<!-- Header End -->
  
