@@ -1,7 +1,7 @@
 @extends('layouts.email')	
 @section('content') 
 	 <!-- Email Body : BEGIN -->
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="700" style="margin: auto;  background-color: white;" class="email-container">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;  background-color: white;" class="email-container">
             <!-- Main Content1 : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" style="padding: 40px 40px 20px; text-align: center;">
@@ -55,7 +55,7 @@
 
     	</table>
 
-		<table style="background-color: white; width: 700px;">
+		<table style="background-color: white; width: 600px;">
 			<tr>
 				<td>
 					<hr style="border: 1px solid #eee; margin-left: 10px; margin-right: 10px; ">
