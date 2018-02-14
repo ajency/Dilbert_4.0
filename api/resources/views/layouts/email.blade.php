@@ -10,14 +10,14 @@
 			<tr>
 				<td style="padding-top:30px;padding-left: 30px; padding-bottom: 30px;  text-align: left">
 					<a href="https://ajency.in" target="_blank">
-						<img src="<?php echo $message->embed($data['logo']); ?>" style="max-width: 80%;padding-top: 20px;">
+						<img src="<?php echo $message->embed($violation_data['logo']); ?>" style="max-width: 80%;padding-top: 20px;">
 					</a>
 				</td>
 			</tr>
 			  <!-- Dilbert Image : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" align="center">
-                    <img src="<?php echo $message->embed($data['dilbert']); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
+                    <img src="<?php echo $message->embed($violation_data['dilbert']); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
                 </td>
             </tr>
             <!--  Dilbert Image : END -->
