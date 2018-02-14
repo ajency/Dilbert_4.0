@@ -12,7 +12,7 @@
 					<a href="https://ajency.in" target="_blank">
 						<img src="<?php echo $message->embed($violation_data['logo']); ?>" style="max-width: 80%;padding-top: 20px;">
 					</a>
-				</td>
+				</td>	
 			</tr>
 			  <!-- Dilbert Image : BEGIN -->
             <tr>

@@ -21,7 +21,7 @@
 	                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="padding-right: 20px; padding-left: 20px;">
 	                    <tr>
 	                        <td class="stack-column-center">
-                                <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE" download="Ajency.inAtoZ.pdf">
+                                <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">
                                     <img border="0" src="<?php echo $message->embed($violation_data['documentation']); ?>" style="width: 100%;">
                                 </a>
 	                        </td>
