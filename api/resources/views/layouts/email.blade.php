@@ -33,7 +33,7 @@
 	            	<a href="https://ajency.in" style="text-decoration: none; color:grey;" target="_blank">
                     	<h1>Ajency.in</h1>
                 	</a>
-                    <span>(C) 2017 Digital Dwarves Pvt Ltd. All Rights Reserved</span>
+                    <span>(C) 2018 Digital Dwarves Pvt Ltd. All Rights Reserved</span>
 	            </td>
 	        </tr>
 	    </table>
