@@ -304,4 +304,84 @@ class CronController extends Controller
         return (((int)$dateDiff->h * 60) + (int)($dateDiff->i));
     }
 
+    //weekly cron for hours completed
+    public function weekly_test()
+   {
+    $date = new DateTime(date('Y-m-d'));
+    $start_date= $date->modify('-6 days')->format('Y-m-d');
+    $end_date=$date->modify('+6 days')->format('Y-m-d');
+        //check for each user who violates the minimum work hours
+        //get all the active users
+        $users = User::where(['status' => 'active'])->get(); // Get users that are active
+        foreach($users as $user) {
+            $u = (new UserAuth)->getUserData($user);
+            echo "start : ".$start_date." end : ".$end_date."\n";
+            $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->whereNotNull('start_time')->get();    //number of days present
+
+            $minHours = count($userHours) * 9;
+            echo " min hours: ".$minHours;
+            //minimum workhours for a week is 45
+            if($minHours > 45)
+                $minHours = (int)45;
+                echo " min hours : ".$minHours;
+            // total time in minutes
+            $totalHours = 0;
+            $time_count=0;
+            foreach($userHours as $uh) {
+                //getting total hours of week
+                if($uh['total_time'] != null && $uh['total_time'] != '') {
+                    $time = explode(':',$uh['total_time']);
+                    $totalHours = $totalHours + (int)$time[0]*60 + (int)$time[1];
+                }
+                //getting total hours of day
+               $totalTime[$time_count]=$uh['total_time'];
+               $weekDate[$time_count]=$uh['work_date'];
+               $weekStatus[$time_count]=$uh['status'];
+               $time_count=$time_count+1;
+            }
+            for($i=0;$i<$time_count;$i++)
+            {
+                echo " total time : ".$totalTime[$i];
+                echo " work date : ".$weekDate[$i];
+                 echo " week status : ".$weekStatus[$i];
+            }
+
+            // calculate the time difference between rhs and rule_key_fields if key < rhs
+            if((int)$totalHours < ((int)$minHours * 60)) {
+                $tdHours = ($totalHours%60 == 0) ? ($minHours - (int)($totalHours/60)) : ($minHours - (int)($totalHours/60) - 1);
+                $tdMinutes = 60 - ($totalHours%60);
+
+                // getting the hours and minutes in 00:00 format
+                if($tdHours < 10)
+                    $tdHours = '0'.$tdHours;
+                if($tdMinutes < 10)
+                    $tdMinutes = '0'.$tdMinutes;
+                else if($tdMinutes == 60)
+                    $tdMinutes = '00';
+
+                $timeDiff = $tdHours.':'.$tdMinutes;
+            }
+
+            // getting the total hours
+            $totalHours = (int)($totalHours/60).':'.($totalHours%60);
+            echo " total hours : ".$totalHours;
+
+            // check for violation
+            $keyFields = ['total_hrs_in_week' => $totalHours];
+            $rhsFields = ['total_week_hours' => $minHours];
+            $mailList = ['hr','owner1','owner2'];
+           // $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
+
+            // add the meta data to $data
+            if(isset($timeDiff))  // if time difference exists
+                $data['meta']['time_difference'] = $timeDiff;
+
+
+                $data['logo']= public_path().'/img/ajency-logo.png';
+                $data['dilbert']=public_path().'/img/dilbert.png';
+                $data['documentation']=public_path().'/img/ajency-email.png';
+            //(new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
+              echo "email address : ".$user['email'];  
+        }
+   }
 }
