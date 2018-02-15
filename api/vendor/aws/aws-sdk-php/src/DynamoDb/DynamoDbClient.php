@@ -1,13 +1,11 @@
 <?php
 namespace Aws\DynamoDb;
-
 use Aws\Api\Parser\Crc32ValidatingParser;
 use Aws\AwsClient;
 use Aws\ClientResolver;
 use Aws\HandlerList;
 use Aws\Middleware;
 use Aws\RetryMiddleware;
-
 /**
  * This client is used to interact with the **Amazon DynamoDB** service.
  *
@@ -58,10 +56,8 @@ class DynamoDbClient extends AwsClient
         $args['retries']['default'] = 10;
         $args['retries']['fn'] = [__CLASS__, '_applyRetryConfig'];
         $args['api_provider']['fn'] = [__CLASS__, '_applyApiProvider'];
-
         return $args;
     }
-
     /**
      * Convenience method for instantiating and registering the DynamoDB
      * Session handler with this DynamoDB client object.
@@ -74,17 +70,14 @@ class DynamoDbClient extends AwsClient
     {
         $handler = SessionHandler::fromClient($this, $config);
         $handler->register();
-
         return $handler;
     }
-
     /** @internal */
     public static function _applyRetryConfig($value, array &$args, HandlerList $list)
     {
         if (!$value) {
             return;
         }
-
         $list->appendSign(
             Middleware::retry(
                 RetryMiddleware::createDefaultDecider($value),
@@ -100,7 +93,6 @@ class DynamoDbClient extends AwsClient
             'retry'
         );
     }
-
     /** @internal */
     public static function _applyApiProvider($value, array &$args, HandlerList $list)
     {

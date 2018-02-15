@@ -304,10 +304,4 @@ class CronController extends Controller
         return (((int)$dateDiff->h * 60) + (int)($dateDiff->i));
     }
 
-   /* public function test($data['start'],$name){
-         Mail::send('violations/late_alert', ['logo'=>'public/img/ajency-logo.png','dilbert'=>'public/img/dilbert.png','email'=>'public/img/ajency-email.png','start'=>$data['start'],'name'=>$name],function($message) {
-                $message->from('shreya@ajency.in');
-                $message->to('shreya@ajency.in');
-            });
-    }*/
 }
