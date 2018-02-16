@@ -3,6 +3,13 @@
 	 <!-- Email Body : BEGIN -->
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;  background-color: white;" class="email-container">
             <!-- Main Content1 : BEGIN -->
+            <!-- Dilbert Image : BEGIN -->
+            <tr>
+                <td bgcolor="#ffffff" align="center">
+                    <img src="<?php echo $message->embed($violation_data['dilbert']); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
+                </td>
+            </tr>
+            <!--  Dilbert Image : END -->
             <tr>
                 <td bgcolor="#ffffff" style="padding: 40px 40px 20px; text-align: center;">
                     <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;">Hi Nutan</h1>
