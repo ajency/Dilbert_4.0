@@ -27,11 +27,11 @@
 		                    <tr>
 		                        <td style="text-align: center;">
 		                           <span style="font-size:20px;">Your Total work Hours</span>
-		                           @if($user_data['totalHours']>$user_data['minHrs'])
-		                            <span style="color: blue; font-size:50px;">{{$user_data['totalHours']}}<span>hr</span></span>
-		                            @else
+		                          @if($user_data['totalHours'] < $user_data['minHrs'])
 		                            <span style="color: red; font-size:50px;">{{$user_data['totalHours']}} <span>hr</span></span>
-		                            @endif
+		                          @else
+		                            <span style="color: blue; font-size:50px;">{{$user_data['totalHours']}}<span>hr</span></span>
+		                          @endif
 		                        </td>
 		                    </tr>
 		                </table>

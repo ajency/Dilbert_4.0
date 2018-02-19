@@ -317,16 +317,16 @@ class CronController extends Controller
     //start and end date to get weeks data
     $start_date= $date->modify('-6 days')->format('Y-m-d');
     $end_date=$date->modify('+6 days')->format('Y-m-d');
-    //check for each user who violates the minimum work hours
     //get all the active users
     $users = User::where(['status' => 'active'])->get(); // Get users that are active
     foreach($users as $user) 
         {
         $u = (new UserAuth)->getUserData($user);
         echo "start : ".$start_date." end : ".$end_date."\n";
+         $userHoursCount = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->whereNotNull('start_time')->get();
         $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->orderBy('work_date', 'asc')->get();    //number of days present
 
-        $minHours = count($userHours) * 9;
+        $minHours = count($userHoursCount) * 9;
         echo " min hours: ".$minHours;
         //minimum workhours for a week is 45
         if($minHours > 45)
