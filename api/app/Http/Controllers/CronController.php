@@ -175,6 +175,9 @@ class CronController extends Controller
                 $data['dilbert']=public_path().'/img/dilbert.png';
                 $data['documentation']=public_path().'/img/ajency-email.png';
             (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
+
+            //call weekly test
+            $this->weekly_test();            
         }
     }
 
@@ -321,7 +324,7 @@ class CronController extends Controller
         {
         $u = (new UserAuth)->getUserData($user);
         echo "start : ".$start_date." end : ".$end_date."\n";
-        $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->get();    //number of days present
+        $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->orderBy('work_date', 'asc')->get();    //number of days present
 
         $minHours = count($userHours) * 9;
         echo " min hours: ".$minHours;
@@ -421,14 +424,15 @@ class CronController extends Controller
             echo "email : ".$mlEmail[$mail];
             $mail++;
             }
+            $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$user['org_id'],0);
+            $data['default_hours']=$default_hours;
 
         //mail the weekly summary
         Mail::send('dilbert_mails/email_weekly_work_summary_hour', ['user_data' => $data], function($message) use($comm,$mlEmail){
-        $message->from('shreya@ajency.in');
         $message->to($comm['value'])
-        // ->cc($mlEmail[0])
-        // ->bcc($mlEmail[1])
-        // ->bcc($mlEmail[2])
+         ->cc($mlEmail[0])
+         ->bcc($mlEmail[1])
+         ->bcc($mlEmail[2])
         ->subject('Dilbert 4 : weekly update');
         });
         }

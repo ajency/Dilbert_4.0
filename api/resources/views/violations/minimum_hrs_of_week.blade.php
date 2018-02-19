@@ -17,7 +17,7 @@
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                    <p style="margin: 0;">We see that Dilbert has logged your total hours today as: <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_week']}}/ {{$violation_data['rule_rhs']['total_week_hours']}}</span> - i.e. <b>{{isset($violation_data['meta']['time_difference']) ? $violation_data['meta']['time_difference'] : ' ' }} short</b> of the required time <br/>
+                    <p style="margin: 0;">We see that Dilbert has logged your total hours this week as: <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_week']}}/ {{$violation_data['rule_rhs']['total_week_hours']}}</span> - i.e. <b>{{isset($violation_data['meta']['time_difference']) ? $violation_data['meta']['time_difference'] : ' ' }} short</b> of the required time <br/>
                     It may be a one-off week, but just a small note to let you know what we think,
                     as also laid out in the <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook</a>.</p>
                 </td>

@@ -67,16 +67,33 @@
 				<th>Lunch</th>
 			</tr>
 			@for($i = 0; $i < 7; $i++)
-			<tr style="height:50px;font-family: sans-serif;color: grey;background-color: #eeeeee30">
-				<td style="border: 1px solid #eee;">{{ date('D.d.F', strtotime($user_data['weekDate'][$i]))}}</td>
-				<td style="border: 1px solid #eee;">
-					@if($user_data['totalTime'][$i]==NULL)
-						{{$user_data['weekStatus'][$i]}}
+				@if($user_data['totalHours'] < $user_data['minHrs'] AND $user_data['totalTime'][$i]!=NULL)
+					<!-- if total time for day is grater than required time -->
+					@if((int)$user_data['totalTime'][$i] >= $user_data['default_hours'])
+						<tr style="height:50px;font-family: sans-serif;color: grey;background-color: #eeeeee30">
 					@else
-						{{$user_data['totalTime'][$i]}}
-						<span>hr</span>
+						<tr style="height:50px;font-family: sans-serif;color: grey;background-color: #eeeeee30; color:red;">
 					@endif
-				</td>
+				@else
+					<tr style="height:50px;font-family: sans-serif;color: grey;background-color: #eeeeee30">
+				@endif
+
+				<!-- date and day -->
+				<td style="border: 1px solid #eee;">{{ date('D.d.F', strtotime($user_data['weekDate'][$i]))}}</td>
+				<!-- if there is no total time display status -->
+					@if($user_data['totalTime'][$i]==NULL)
+						<td style="border: 1px solid #eee;">
+						{{$user_data['weekStatus'][$i]}}
+						</td>
+					@else
+						<td style="border: 1px solid #eee;">
+							{{$user_data['totalTime'][$i]}}
+							<span>hr</span>	
+						</td>			
+					@endif
+
+				<!-- Lunch slot -->
+
 				<td style="border: 1px solid #eee;">
 					@if(empty($user_data['lunchSlot'][date('D', strtotime($user_data['weekDate'][$i]))]))
 						0
