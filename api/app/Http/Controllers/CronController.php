@@ -177,7 +177,7 @@ class CronController extends Controller
             (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
 
             //call weekly test
-            $this->weekly_test();            
+            $this->weekly_summary_mail($user);            
         }
     }
 
@@ -311,19 +311,15 @@ class CronController extends Controller
     }
 
     //weekly cron for hours completed
-    public function weekly_test()
+    public function weekly_summary_mail($user)
     {
-    $date = new DateTime(date('Y-m-d'));
-    //start and end date to get weeks data
-    $start_date= $date->modify('-6 days')->format('Y-m-d');
-    $end_date=$date->modify('+6 days')->format('Y-m-d');
-    //get all the active users
-    $users = User::where(['status' => 'active'])->get(); // Get users that are active
-    foreach($users as $user) 
-        {
+        $date = new DateTime(date('Y-m-d'));
+        //start and end date to get weeks data
+        $start_date= $date->modify('-6 days')->format('Y-m-d');
+        $end_date=$date->modify('+6 days')->format('Y-m-d');
         $u = (new UserAuth)->getUserData($user);
         echo "start : ".$start_date." end : ".$end_date."\n";
-         $userHoursCount = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->whereNotNull('start_time')->get();
+        $userHoursCount = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->whereNotNull('start_time')->get();
         $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->orderBy('work_date', 'asc')->get();    //number of days present
 
         $minHours = count($userHoursCount) * 9;
@@ -336,34 +332,34 @@ class CronController extends Controller
         $totalHours = 0;
         $time_count=0;
         foreach($userHours as $uh) 
-            {
+        {
             //getting total hours of week
             if($uh['total_time'] != null && $uh['total_time'] != '') {
-            $time = explode(':',$uh['total_time']);
-            $totalHours = $totalHours + (int)$time[0]*60 + (int)$time[1];
+                $time = explode(':',$uh['total_time']);
+                $totalHours = $totalHours + (int)$time[0]*60 + (int)$time[1];
             }
             //getting total hours of day,date,status
             $totalTime[$time_count]=$uh['total_time'];
             $weekDate[$time_count]=$uh['work_date'];
             $weekStatus[$time_count]=$uh['status'];
             $time_count=$time_count+1;
-            }
+        }
         //saving all in array
         $data['totalTime']=$totalTime;
         $data['weekDate']=$weekDate;
         $data['weekStatus']=$weekStatus;
         for($i=0;$i<$time_count;$i++)
-            {
+        {
             echo "\n";
             echo " total time : ".$totalTime[$i];
             echo " work date : ".$weekDate[$i];
             echo " week status : ".$weekStatus[$i];
             echo "\n";
-            }
+        }
 
         // calculate the time difference between rhs and rule_key_fields if key < rhs
         if((int)$totalHours < ((int)$minHours * 60)) 
-            {
+        {
             $tdHours = ($totalHours%60 == 0) ? ($minHours - (int)($totalHours/60)) : ($minHours - (int)($totalHours/60) - 1);
             $tdMinutes = 60 - ($totalHours%60);
 
@@ -376,7 +372,7 @@ class CronController extends Controller
             $tdMinutes = '00';
 
             $timeDiff = $tdHours.':'.$tdMinutes;
-            }
+        }
 
         // getting the total hours
         $totalHours = (int)($totalHours/60).':'.($totalHours%60);
@@ -402,6 +398,9 @@ class CronController extends Controller
         $name=$user['name'];
         $name = explode(' ',$user['name']);
         $data['name']= $name[0];
+
+        $data['user_id']=$user['ID'];
+
         //lunch time slot
         $lunch_total= (new Slots)->getTotalSlotTime($user['id'],'lunch',$start_date,$end_date);
         $data['lunch_total']=$lunch_total;
@@ -419,22 +418,26 @@ class CronController extends Controller
         echo "comm ".$comm['value'];
         $mail=0;
         foreach ($mailList as $ml) 
-            {
+        {
             $mlEmail[$mail] = (new OrganisationMeta)->getParamValue($ml,$user['org_id'],0);
             echo "email : ".$mlEmail[$mail];
             $mail++;
-            }
-            $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$user['org_id'],0);
-            $data['default_hours']=$default_hours;
+        }
+        $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$user['org_id'],0);
+        $data['default_hours']=$default_hours;
+
+
+        // url for  View you full logs here
+        $data['url']='dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
+        echo "\n\n this is url : ".$data['url'];
 
         //mail the weekly summary
         Mail::send('dilbert_mails/email_weekly_work_summary_hour', ['user_data' => $data], function($message) use($comm,$mlEmail){
-        $message->to($comm['value'])
-         ->cc($mlEmail[0])
-         ->bcc($mlEmail[1])
-         ->bcc($mlEmail[2])
-        ->subject('Dilbert 4 : weekly update');
+                $message->to($comm['value'])
+                ->cc($mlEmail[0])
+                ->bcc($mlEmail[1])
+                ->bcc($mlEmail[2])
+                ->subject('Dilbert 4 : Weekly update-'.date('F jS, Y'));
         });
-        }
-}
+    }
 }

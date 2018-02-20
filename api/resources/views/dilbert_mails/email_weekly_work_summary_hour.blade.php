@@ -14,7 +14,7 @@
 	<tr>
 		<td bgcolor="#ffffff" style="padding-top: 10px;padding-bottom: 40px; text-align: center;">
 			<h3 style="margin: 0; font-family: sans-serif;  line-height: 125%; color: #333333; font-weight: normal;">Your total hours for the week ending on 
-				<span>{{date('F.d', strtotime($user_data['endDate']))}} are</span></h3>
+				<span>{{date('F jS, Y', strtotime($user_data['endDate']))}} are</span></h3>
 		</td>
 	</tr>
 		<!-- 2 Even Columns : BEGIN -->
@@ -79,7 +79,7 @@
 				@endif
 
 				<!-- date and day -->
-				<td style="border: 1px solid #eee;">{{ date('D.d.F', strtotime($user_data['weekDate'][$i]))}}</td>
+				<td style="border: 1px solid #eee;">{{ date('D, jS F', strtotime($user_data['weekDate'][$i]))}}</td>
 				<!-- if there is no total time display status -->
 					@if($user_data['totalTime'][$i]==NULL)
 						<td style="border: 1px solid #eee;">
@@ -105,6 +105,11 @@
 			@endfor
 
 			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="{{$user_data['url']}}"> View you full logs here </a>
 		</td>
 	</tr>
 	<tr>
