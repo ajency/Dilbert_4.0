@@ -153,11 +153,11 @@ class CronController extends Controller
                 else if($tdMinutes == 60)
                     $tdMinutes = '00';
 
-                $timeDiff = $tdHours.':'.$tdMinutes;
+                $timeDiff = $tdHours.'h '.$tdMinutes.'m ';
             }
 
             // getting the total hours
-            $totalHours = (int)($totalHours/60).':'.($totalHours%60);
+            $totalHours = (int)($totalHours/60).'h '.($totalHours%60).'m ';
             echo "total hours".$totalHours;
 
             // check for violation
@@ -219,11 +219,11 @@ class CronController extends Controller
                 else if($tdMinutes == 60)
                     $tdMinutes = '00';
 
-                $timeDiff = $tdHours.':'.$tdMinutes;
+                $timeDiff = $tdHours.'h '.$tdMinutes.'m ';
             }
 
             // getting the total hours
-            $totalHours = (int)($totalHours/60).':'.($totalHours%60);
+            $totalHours = (int)($totalHours/60).'h '.($totalHours%60).'m';
             // check for violation
             $keyFields = ['total_hrs_in_month' => $totalHours];
             $rhsFields = ['total_month_hours' => $minHours];
@@ -424,7 +424,7 @@ class CronController extends Controller
 
 
         // url for  View you full logs here
-        $data['url']='dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
+        $data['url']='https://dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
         echo "\n\n this is url : ".$data['url'];
 
         //mail the weekly summary
@@ -433,7 +433,7 @@ class CronController extends Controller
                 ->cc($mlEmail[0])
                 ->bcc($mlEmail[1])
                 ->bcc($mlEmail[2])
-                ->subject('Dilbert 4 : Weekly update-'.date('F jS, Y'));
+                ->subject('Dilbert 4 : Weekly update - '.date('F jS, Y'));
         });
     }
 }
