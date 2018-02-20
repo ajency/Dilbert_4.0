@@ -108,7 +108,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td style="padding-top:20px;">
 			<a href="{{$user_data['url']}}"> View you full logs here </a>
 		</td>
 	</tr>

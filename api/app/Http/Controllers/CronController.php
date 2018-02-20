@@ -390,10 +390,6 @@ class CronController extends Controller
             $data['meta']['time_difference'] = $timeDiff;
 
         $data['minHrs']=$minHours;
-
-        $data['logo']= public_path().'/img/ajency-logo.png';
-        $data['dilbert']=public_path().'/img/dilbert.png';
-        $data['documentation']=public_path().'/img/ajency-email.png';
         //(new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
         $name=$user['name'];
         $name = explode(' ',$user['name']);
