@@ -153,11 +153,11 @@ class CronController extends Controller
                 else if($tdMinutes == 60)
                     $tdMinutes = '00';
 
-                $timeDiff = $tdHours.':'.$tdMinutes;
+                 $timeDiff = $tdHours.'h '.$tdMinutes.'m ';
             }
 
             // getting the total hours
-            $totalHours = (int)($totalHours/60).':'.($totalHours%60);
+            $totalHours = (int)($totalHours/60).'h '.($totalHours%60).'m ';
             echo "total hours".$totalHours;
 
             // check for violation
@@ -219,11 +219,11 @@ class CronController extends Controller
                 else if($tdMinutes == 60)
                     $tdMinutes = '00';
 
-                $timeDiff = $tdHours.':'.$tdMinutes;
+                 $timeDiff = $tdHours.'h '.$tdMinutes.'m ';
             }
 
             // getting the total hours
-            $totalHours = (int)($totalHours/60).':'.($totalHours%60);
+             $totalHours = (int)($totalHours/60).'h '.($totalHours%60).'m';
             // check for violation
             $keyFields = ['total_hrs_in_month' => $totalHours];
             $rhsFields = ['total_month_hours' => $minHours];
@@ -318,12 +318,12 @@ class CronController extends Controller
         $start_date= $date->modify('-6 days')->format('Y-m-d');
         $end_date=$date->modify('+6 days')->format('Y-m-d');
         $u = (new UserAuth)->getUserData($user);
-        echo "start : ".$start_date." end : ".$end_date."\n";
+        //total hours worked
         $userHoursCount = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->whereNotNull('start_time')->get();
+        //getting hours of worked
         $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->orderBy('work_date', 'asc')->get();    //number of days present
 
         $minHours = count($userHoursCount) * 9;
-        echo " min hours: ".$minHours;
         //minimum workhours for a week is 45
         if($minHours > 45)
             $minHours = (int)45;
@@ -348,15 +348,6 @@ class CronController extends Controller
         $data['totalTime']=$totalTime;
         $data['weekDate']=$weekDate;
         $data['weekStatus']=$weekStatus;
-        for($i=0;$i<$time_count;$i++)
-        {
-            echo "\n";
-            echo " total time : ".$totalTime[$i];
-            echo " work date : ".$weekDate[$i];
-            echo " week status : ".$weekStatus[$i];
-            echo "\n";
-        }
-
         // calculate the time difference between rhs and rule_key_fields if key < rhs
         if((int)$totalHours < ((int)$minHours * 60)) 
         {
@@ -378,19 +369,12 @@ class CronController extends Controller
         $totalHours = (int)($totalHours/60).':'.($totalHours%60);
         echo " total hours : ".$totalHours;
 
-        // check for violation
-        $keyFields = ['total_hrs_in_week' => $totalHours];
-        $rhsFields = ['total_week_hours' => $minHours];
-        $mailList = ['hr','owner1','owner2'];
         $data['totalHours']=$totalHours;
-        // $data = (new ViolationApp)->createFormattedViolationData($u,$keyFields,$rhsFields,$mailList);
-
         // add the meta data to $data
         if(isset($timeDiff))  // if time difference exists
             $data['meta']['time_difference'] = $timeDiff;
 
         $data['minHrs']=$minHours;
-        //(new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
         $name=$user['name'];
         $name = explode(' ',$user['name']);
         $data['name']= $name[0];
@@ -412,28 +396,27 @@ class CronController extends Controller
         //getting email id
         $comm=UserCommunication::where('object_id','=',$user['id'])->where('object_type','App\\User')->first();
         echo "comm ".$comm['value'];
-        $mail=0;
-        foreach ($mailList as $ml) 
+         $cc_list = ['hr'];
+         $bcc_list = ['owner1','owner2'];
+        foreach ($cc_list as $cc_l) 
         {
-            $mlEmail[$mail] = (new OrganisationMeta)->getParamValue($ml,$user['org_id'],0);
-            echo "email : ".$mlEmail[$mail];
+            $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$user['org_id'],0);
+        }
+        $mail=0;
+        foreach ($bcc_list as $bcc_l) {
+            $bcc_mail[$mail] = (new OrganisationMeta)->getParamValue($bcc_l,$user['org_id'],0);
             $mail++;
         }
         $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$user['org_id'],0);
         $data['default_hours']=$default_hours;
 
-
         // url for  View you full logs here
-        $data['url']='dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
-        echo "\n\n this is url : ".$data['url'];
+        $data['url']='https://dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
 
-        //mail the weekly summary
-        Mail::send('dilbert_mails/email_weekly_work_summary_hour', ['user_data' => $data], function($message) use($comm,$mlEmail){
-                $message->to($comm['value'])
-                ->cc($mlEmail[0])
-                ->bcc($mlEmail[1])
-                ->bcc($mlEmail[2])
-                ->subject('Dilbert 4 : Weekly update-'.date('F jS, Y'));
-        });
+        //function sendmail
+        $data['redirect_url']='dilbert_mails/email_weekly_work_summary_hour';
+        $subject='Dilbert 4 : Weekly update-'.date('F jS, Y');
+        $to_list=$comm['value'];
+        send_mails($data,$subject,$to_list,$cc_mail,$bcc_mail);
     }
 }
