@@ -9,83 +9,146 @@
     <div class="week__current current-card">
   		<ion-searchbar></ion-searchbar>
     </div>
+    onkeyup="mySearch();"
 </div> -->
+
 <div >
-	<ion-icon p-l-10 name="search" class="icon-size full" ion-txt class="text text-md text-md-text-lighter"></ion-icon><input type="search" name="" style="border: 0px; padding: 10px; padding-bottom: 10px;" placeholder="Filter By Name" id="searchemployee" >
-	<div p-t-10 p-b-10 p-l-10 p-r-10 style="background-color: #eeeeee4d;"> This week <span style="float: right;"><ion-icon name="calendar" class="icon-size full "></ion-icon></span>
-	</div>
+	<ion-icon p-l-10 name="search" class="icon-size full" ion-txt class="text text-md text-md-text-lighter"></ion-icon><input type="search" name="" style="border: 0px; padding: 10px; padding-bottom: 10px; width: 90%;" placeholder="Filter By Name" id="searchemployee"  (keyup)="searchByName()">
+	<!-- <div>This week <span style="float: right;">
+		<my-date-picker required placeholder = "Jump to date" style="width:10%;display: none;">
+		</my-date-picker></span>
+	</div> -->
+	<div style="background-color: #eeeeee4d;">
+		<ion-grid style="padding: 0 !important">
+		  <ion-row>
+		    <ion-col col-6 p-t-15 p-l-15 >
+		    	This week
+		    </ion-col >
+		    <ion-col col-6 p-r-10>
+		    	 <div class="flex" style="float: right">
+		    	<my-date-picker required placeholder = "Jump to date" (dateChanged)="requestData1($event)"  [options]="myDatePickerOptions">
+				</my-date-picker>
+			</div>
+		    </ion-col>
+		  </ion-row>
+		</ion-grid>
+	</div>	
+	
+<!-- 	<div p-t-10 p-b-10 p-l-10 p-r-10 style="background-color: #eeeeee4d;"> This week <span style="float: right;"><ion-icon name="calendar" class="icon-size full "></ion-icon></span>
+	</div> -->
 
 
-	<ion-list no-lines>
+	<ion-list no-lines id="datalist">
 		
-	   <a class="dataitem" >
-	   <ion-item class="btnclicked" style="background-color: #f2f2f2;">
+	 <a class="dataitem" id="test1">
+
+	   <ion-item class="btnclicked ">
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
 	    <h2>Ajaj Rajguru</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span ion-button clear item-end>  <h3>43:04<span> &nbsp; hr &nbsp;&nbsp;</span></h3>  <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size full "></ion-icon></span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
 	</a>
 
 	   <a class="dataitem">
-	   <ion-item>
+	   <ion-item class="btnclicked ">
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
 	    <h2>Amit Adav</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span ion-button clear item-end>  <h3>43:04<span> &nbsp; hr &nbsp;&nbsp;</span></h3>  <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size full "></ion-icon></span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
 	</a>
 
 	   <a class="dataitem">
-	   <ion-item>
+	   <ion-item class="btnclicked ">
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
 	    <h2>Antonio Furtado</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span ion-button clear item-end>  <h3>43:04<span> &nbsp; hr &nbsp;&nbsp;</span></h3>  <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size full "></ion-icon></span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
 	</a>
 
 	 <a class="dataitem">
-	   <ion-item>
+	   <ion-item class="btnclicked ">
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
 	    <h2>Anuj Khurana</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span ion-button clear item-end>  <h3>43:04<span> &nbsp; hr &nbsp;&nbsp;</span></h3>  <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size full "></ion-icon></span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
 	</a>
 	<a class="dataitem">
-	   <ion-item>
+	   <ion-item class="btnclicked ">
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
 	    <h2>Ashika Pednekar</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span ion-button clear item-end>  <h3>43:04<span> &nbsp; hr &nbsp;&nbsp;</span></h3>  <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size full "></ion-icon></span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
 	</a>
 	  <a class="dataitem">
-	   <ion-item>
+	   <ion-item class="btnclicked ">
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
 	    <h2>Cryrus Furtado</h2>
 	    <span ion-text="" class="text text-md text-md-danger">Offline</span>
-	    <span ion-button clear item-end>  <h3>43:04<span> &nbsp; hr &nbsp;&nbsp;</span></h3>  <ion-icon ion-text color="text-darker" name="ios-arrow-forward-outline" class="icon-size full "></ion-icon></span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
+	  </ion-item>
+	</a>
+	<a class="dataitem dbt hidden">
+	   <ion-item class="btnclicked ">
+	    <ion-avatar item-start>
+	      <img src="../assets/img/128X128.png">
+	    </ion-avatar>
+	    <h2>Ashika Pednekar</h2>
+	    <span ion-text="" class="text text-md text-md-success">Online</span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
+	  </ion-item>
+	</a>
+	<a class="dataitem dbt hidden">
+	   <ion-item class="btnclicked ">
+	    <ion-avatar item-start>
+	      <img src="../assets/img/128X128.png">
+	    </ion-avatar>
+	    <h2>Ashika Pednekar</h2>
+	    <span ion-text="" class="text text-md text-md-success">Online</span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
+	  </ion-item>
+	</a>
+	<a class="dataitem dbt hidden">
+	   <ion-item class="btnclicked ">
+	    <ion-avatar item-start>
+	      <img src="../assets/img/128X128.png">
+	    </ion-avatar>
+	    <h2>Ashika Pednekar</h2>
+	    <span ion-text="" class="text text-md text-md-success">Online</span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
+	  </ion-item>
+	</a>
+	<a class="dataitem dbt hidden">
+	   <ion-item class="btnclicked ">
+	    <ion-avatar item-start>
+	      <img src="../assets/img/128X128.png">
+	    </ion-avatar>
+	    <h2>Ashika Pednekar</h2>
+	    <span ion-text="" class="text text-md text-md-success">Online</span>
+	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
 	</a>
 
 	</ion-list>
 
-	<div align="center" class="text-center">
-		<p>View More <br> <ion-icon name="ios-arrow-down-outline" class="icon-size full"></ion-icon></p>
+	<div align="center" class="text-center" id="showMore" style="cursor: pointer;">
+		<p id="text-change">View More <br> <ion-icon name="ios-arrow-down-outline" class="icon-size full"></ion-icon></p>
 	</div>
 
 </div>

@@ -29,6 +29,9 @@ export class AppGlobalsProvider {
   summary_params : any = {
     param1 : ''
   }
+  // newsummary_params : any = {
+  //   param1 : ''
+  // }
 
   private semVersion: any = {
     major: 1,
@@ -64,6 +67,12 @@ private activeTabsList: any = {
       placeholder: 'Summary',
       active: true
     },
+    //  newsummary:{
+    //   component: 'NewSummaryPage',
+    //   deeplink: 'newsummary',
+    //   placeholder: 'newSummary',
+    //   active: true
+    // },
   };
 
 
