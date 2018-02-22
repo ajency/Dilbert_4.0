@@ -14,6 +14,7 @@ use App\Role;
 use App\Permission;
 use App\Data_Changes;
 use App\OrganisationMeta;
+use App\UserCommunication;
 use App\Slots;
 use DateTime;
 use Ajency\User\Ajency\userauth\UserAuth;
@@ -141,6 +142,9 @@ class LockedDataController extends Controller
      */
     public function editPeriodData(Request $request, $userCode, $locale = "default") {
         $output = new ConsoleOutput();
+        //adding a variable for mailing data
+        $dataToMail=array();
+
         // set the preferred locale
         if($locale == "default") {
             $userDets = UserDetail::where('user_id',$request->input('from'))->first();
@@ -188,6 +192,7 @@ class LockedDataController extends Controller
                             $dataChanges->old_value = $lockedEntry->$ckey;
                             $dataChanges->new_value = $cvalue;
                             $dataChanges->save();
+                            
                         }
                         $lockedEntry->start_time = NULL;
                         $lockedEntry->end_time = NULL;
@@ -224,6 +229,7 @@ class LockedDataController extends Controller
                             $dataChanges->work_date = $request->work_date;
                             $dataChanges->old_value = $lockedEntry->$ckey;
                             $dataChanges->new_value = $cvalue;
+                            array_push($dataToMail, $dataChanges);
                             $dataChanges->save();
                             // reflect this change in the locked__datas table
                             $lockedEntry->$ckey = $cvalue;
@@ -241,7 +247,9 @@ class LockedDataController extends Controller
                                     $dataChanges->old_value = $lockedEntry->total_time;
                                     $dataChanges->new_value = date_diff($st,$et)->format("%H:%I");
                                     $dataChanges->save();
+
                                     $lockedEntry->total_time = date_diff($st,$et)->format("%H:%I");
+                                    array_push($dataToMail, $dataChanges);
                                 }
                             }
                             $lockedEntry->save();
@@ -268,6 +276,9 @@ class LockedDataController extends Controller
                         $lockedEntry->status = $request->status;
                         $lockedEntry->save();
                     }
+                    //send mail to configured users about the edit log
+                    $this->edit_log_email($dataToMail);
+
                     return response()->json(['status' => 200, 'message' => __('api_messages.changes_made_success'), 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                 }
                 catch(Exception $e) {
@@ -366,6 +377,62 @@ class LockedDataController extends Controller
         }
         else {
             return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
+        }
+    }
+
+    function edit_log_email($dataToMails)
+    {
+        $data=array();
+        $data['values']=array();
+        $flag=0;
+        foreach ($dataToMails as $dataToMail) {
+            // getting name for subject
+            $data['user_id']=$dataToMail['user_id'];
+            $user = User::where(['id' => $data['user_id']])->first();
+            $name=$user['name'];
+            $name = explode(' ',$user['name']);
+            $data['name']= $name[0];
+            $data['org_id']=$user['org_id'];
+
+            //getting data for mailing
+            $modifier = User::where(['id' => $dataToMail['modified_by']])->first();
+            $name = explode(' ',$modifier['name']);
+            $data['modified_by']= $name[0];
+
+
+            $data['modified_on']= $dataToMail['modified_on'];
+            $data['work_date']= $dataToMail['work_date'];
+            $dataEdit['column_modified']= $dataToMail['column_modified'];
+            $dataEdit['old_value']= $dataToMail['old_value'];
+            $dataEdit['new_value']= $dataToMail['new_value'];
+            array_push($data['values'], $dataEdit);
+
+            // getting subject
+            $subject=' Dilbert 4 - '.$data['name'].'\'s Log edited';
+            //getting email id of user
+            $comm=UserCommunication::where('object_id','=', $data['user_id'])->where('object_type','App\\User')->first();
+
+            // getting CC and BCC list for mails
+            $cc_list = ['hr'];
+            $bcc_list = ['owner1','owner2'];
+            foreach ($cc_list as $cc_l) 
+            {
+                $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$data['org_id'],0);
+            }
+            $mail=0;
+            foreach ($bcc_list as $bcc_l) {
+                $bcc_mail[$mail] = (new OrganisationMeta)->getParamValue($bcc_l,$data['org_id'],0);
+                $mail++;
+            }
+            $flag=1;
+        }
+        echo "\nTHIS IS IT\n";
+        print_r($data);
+        echo "\nTHIS IS IT\n";
+        echo "datatttatatatat";
+        if ($flag==1) {
+            $data['redirect_url']='dilbert_mails/email_log_edit';
+            send_mails($data,$subject,$comm['value'],$cc_mail,$bcc_mail);
         }
     }
 }
