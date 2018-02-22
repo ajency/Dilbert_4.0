@@ -1,23 +1,8 @@
 <!-- Generated template for the UserSummarySidebarComponent component -->
-<!-- <div>
-  {{text}}
-  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
-</div> -->
-
-<!-- <div class="week">
-   
-    <div class="week__current current-card">
-  		<ion-searchbar></ion-searchbar>
-    </div>
-    onkeyup="mySearch();"
-</div> -->
 
 <div >
 	<ion-icon p-l-10 name="search" class="icon-size full" ion-txt class="text text-md text-md-text-lighter"></ion-icon><input type="search" name="" style="border: 0px; padding: 10px; padding-bottom: 10px; width: 90%;" placeholder="Filter By Name" id="searchemployee"  (keyup)="searchByName()">
-	<!-- <div>This week <span style="float: right;">
-		<my-date-picker required placeholder = "Jump to date" style="width:10%;display: none;">
-		</my-date-picker></span>
-	</div> -->
+
 	<div style="background-color: #eeeeee4d;">
 		<ion-grid style="padding: 0 !important">
 		  <ion-row>
@@ -26,7 +11,7 @@
 		    </ion-col >
 		    <ion-col col-6 p-r-10>
 		    	 <div class="flex" style="float: right">
-		    	<my-date-picker required placeholder = "Jump to date" (dateChanged)="requestData1($event)"  [options]="myDatePickerOptions">
+		    	<my-date-picker  (dateChanged)="requestData1($event)"  [options]="myDatePickerOptions" [(ngModel)]="model" >
 				</my-date-picker>
 			</div>
 		    </ion-col>
@@ -34,17 +19,14 @@
 		</ion-grid>
 	</div>	
 	
-<!-- 	<div p-t-10 p-b-10 p-l-10 p-r-10 style="background-color: #eeeeee4d;"> This week <span style="float: right;"><ion-icon name="calendar" class="icon-size full "></ion-icon></span>
-	</div> -->
-
 
 	<ion-list no-lines id="datalist">
 		
 	 <a class="dataitem" id="test1">
 
-	   <ion-item class="btnclicked ">
+	   <ion-item class="btnclicked selecteddataitem">
 	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
+	      <img src="../assets/img/img1.jpg">
 	    </ion-avatar>
 	    <h2>Ajaj Rajguru</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
@@ -55,7 +37,7 @@
 	   <a class="dataitem">
 	   <ion-item class="btnclicked ">
 	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
+	      <img src="../assets/img/img2.jpg">
 	    </ion-avatar>
 	    <h2>Amit Adav</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
@@ -109,7 +91,7 @@
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
-	    <h2>Ashika Pednekar</h2>
+	    <h2>Ashika Pednekar 2</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
 	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
@@ -119,7 +101,7 @@
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
-	    <h2>Ashika Pednekar</h2>
+	    <h2>Ashika Pednekar 3</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
 	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
@@ -129,7 +111,7 @@
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
-	    <h2>Ashika Pednekar</h2>
+	    <h2>Ashika Pednekar 4</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
 	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
@@ -139,7 +121,7 @@
 	    <ion-avatar item-start>
 	      <img src="../assets/img/128X128.png">
 	    </ion-avatar>
-	    <h2>Ashika Pednekar</h2>
+	    <h2>Ashika Pednekar 5</h2>
 	    <span ion-text="" class="text text-md text-md-success">Online</span>
 	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	  </ion-item>
@@ -147,8 +129,8 @@
 
 	</ion-list>
 
-	<div align="center" class="text-center" id="showMore" style="cursor: pointer;">
-		<p id="text-change">View More <br> <ion-icon name="ios-arrow-down-outline" class="icon-size full"></ion-icon></p>
+	<div align="center" class="text-center" id="showMore" style="cursor: pointer;" (click)="showmore()">
+		<p id="text-change"><span id="innertxt">View More</span><br><span id="arrow"> <ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> </span></p>
 	</div>
 
 </div>

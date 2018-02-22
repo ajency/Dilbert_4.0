@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as moment from 'moment';
 import * as $ from 'jquery';
 import {IMyDpOptions} from 'mydatepicker';
 /**
@@ -18,9 +19,7 @@ export class UserSummarySidebarComponent {
         // other options...
         dateFormat: 'yyyy-mm-dd',
         inline:false,
-        // height:'5px;',
-        // width:'10px',
-        // showInputField : false,
+
         showClearDateBtn:false,
         disableUntil: {year: 2017, month: 1, day: 1},
         disableSince: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:  new Date().getDate()+1 } 
@@ -42,9 +41,9 @@ export class UserSummarySidebarComponent {
 
     $('#showMore').click(function(){
         let hidden1 = 'hidden';
-        console.log("showMore");
         if($('.dbt').hasClass(hidden1)){
              $('.dbt').removeClass(hidden1);
+
         }
        else{
          $('.dbt').addClass(hidden1);
@@ -52,27 +51,26 @@ export class UserSummarySidebarComponent {
        
     });
 
- // $('#datalist .btnclicked1:lt(4)').removeClass('hidden');
- //    // $('#showLess').hide();
- //    var items =  20;
- //    var shown =  4;
- //    $('#showMore').click(function () {
- //        console.log("show more");
- //        // $('#showLess').show();
- //        shown = 4+5;
- //        console.log(shown);
- //        if(shown< items) {$('#datalist .btnclicked:lt('+shown+')').removeClass('hidden');}
- //        else {$('#datalist .btnclicked:lt('+items+')').show();
- //             $('#showMore').hide();
- //             }
- //    });
-
-
-
+ 
    });
 
   }
 
+  showmore() {
+  
+   if(document.getElementById("innertxt").innerHTML=="Show Less"){
+    document.getElementById("innertxt").innerHTML="Show More";
+
+   } 
+   else
+   {
+
+    document.getElementById("innertxt").innerHTML="Show Less";
+     
+   }
+   
+  
+}
 
    searchByName(){
            var input, filter, ul, li, a, i;
@@ -91,13 +89,6 @@ export class UserSummarySidebarComponent {
          }
     }
 
-    // showmore(){
-    //     document.getElementsByClassName("dataitem").style.display = "block";
-    // }
-
-// onDateChanged(event: IMyDateModel) {
-//   console.log('onDateChanged(): ', event.date, ' - jsdate: ', new Date(event.jsdate).toLocaleDateString(), ' - formatted: ', event.formatted, ' - epoc timestamp: ', event.epoc);
-// }
 
   requestData1(ev){
 

@@ -1,6 +1,23 @@
 user-summary-sidebar {
+    .mydp{
+    border : none;
+    .btnclear{
+        display : none;
+    } 
+    .selection{
+            color: rgba(85, 85, 85, 0);
+        background: rgba(255, 255, 255, 0);
+    pointer-events: none;
+        
+    }
 
+    .btnpicker, .selectiongroup{
+        background: rgba(255, 255, 255, 0);
+    }
 }
+}
+
+
 .dataitem{
 	text-decoration:none;
 	cursor:pointer;
@@ -11,3 +28,4 @@ user-summary-sidebar {
 .btnclicked1{
 	display:none;
 }
+
