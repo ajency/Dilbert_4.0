@@ -287,6 +287,21 @@ export class MyApp {
 
               }
             }
+            else if(pathparts2[0] == 'user-summary'){
+            let obj4 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+            console.log(obj4);
+              if(obj4 != undefined && obj4.date && obj4.period_unit && obj4.period_unit == 'week' && obj4.org_id){
+                this.updateTitle('user-summary');
+                this.appglobals.newsummary_params.param1 = obj4;
+
+              }
+              else{
+                this.appglobals.newsummary_params.param1 = '';
+
+              }
+           }
+
+
             else{
               console.log('navigating to not-found page');
               this.updateNav('not-found');

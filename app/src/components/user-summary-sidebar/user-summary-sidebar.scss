@@ -15,8 +15,21 @@ user-summary-sidebar {
         background: rgba(255, 255, 255, 0);
     }
 }
+.selecteddataitem{
+    background-color:#f2f2f2;
 }
 
+.btnActivated{
+    background-color: #f1f1f1;
+}
+}
+
+.bgwhite{
+    background-color:white;
+}
+.bgselected{
+    background-color:#f2f2f2;
+}
 
 .dataitem{
 	text-decoration:none;
@@ -28,4 +41,17 @@ user-summary-sidebar {
 .btnclicked1{
 	display:none;
 }
+.btnclicked{
+    cursor:pointer;
+}
 
+.active {
+    background-color: #666;
+    color: white;
+}
+#datalist:first-child{
+    background-color:#f2f2f2;
+}
+.selected{
+    background-color:red;
+}

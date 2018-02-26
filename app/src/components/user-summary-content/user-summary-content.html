@@ -1,21 +1,33 @@
 <!-- Generated template for the UserSummaryContentComponent component -->
-
+<ng-container *ngIf=" user_summary_contentdata != null ">
 <div class="container p-t-20">
 	<div  p-t-20 b-b-20 >
 	  {{text}} : 
 	</div>
 	<div p-t-20>
+		  
+	     
 		<ion-list no-lines>	
 			<!-- <a href="#" style="text-decoration: none;"> -->
 			   <ion-item >
 			    <ion-avatar item-start>
-			      <img src="../assets/img/img1.jpg">
+			      <img src="{{user_summary_contentdata.newdata.user.avatar}}">
 			    </ion-avatar>
-			    <h2>Ajaj Rajguru</h2>
-			    <span ion-text="" class="text text-md text-md-success">Online</span>
+			    <!-- user_summary_contentdata.newdata.user.name -->
+			    <h2>{{user_summary_contentdata.newdata.user.name}}</h2>
+
+			       <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status == 'active' ">
+	       				<div ion-text="" class="text text-md text-md-success">{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
+	      				 </div> 
+	   			  </ng-container>
+	   			   <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status != 'active' ">
+	       				<div ion-text="" class="text text-md text-md-danger">{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
+	      				 </div> 
+	   			  </ng-container>
 			  </ion-item>
 			<!-- </a> -->
-		</ion-list>	
+		</ion-list>	 
+	
 	</div>
 	<ion-grid >
 	  <ion-row text-left class="datesrow">
@@ -76,3 +88,4 @@
 
 	
 </div>
+	 </ng-container>

@@ -11,6 +11,8 @@
 </ion-header>
 
 <!-- Site header ends -->
+<!-- <ng-container *ngIf=" userSummaryContentData != null "> -->
+	
 
 
 <ion-content padding>
@@ -22,8 +24,9 @@
 		</div>
 		<ion-grid>
 		  <ion-row>
-		    <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 style="box-shadow: 5px 0 20px -1px rgba(6,6,6,.06);">
-		    	<user-summary-sidebar>
+		    <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 style="box-shadow: 5px 0 20px -1px rgba(6,6,6,.06);" >
+
+		    	<user-summary-sidebar >
 				</user-summary-sidebar>
 		    		
 		    	
@@ -49,7 +52,7 @@
 
 </ion-content>
 
-
+<!--  </ng-container> -->
 <ion-footer>
  <footer-element></footer-element>
 </ion-footer>

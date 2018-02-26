@@ -1,5 +1,5 @@
 <!-- Generated template for the UserSummarySidebarComponent component -->
-
+<ng-container *ngIf=" userSummaryData != null ">
 <div >
 	<ion-icon p-l-10 name="search" class="icon-size full" ion-txt class="text text-md text-md-text-lighter"></ion-icon><input type="search" name="" style="border: 0px; padding: 10px; padding-bottom: 10px; width: 90%;" placeholder="Filter By Name" id="searchemployee"  (keyup)="searchByName()">
 
@@ -19,118 +19,36 @@
 		</ion-grid>
 	</div>	
 	
-
+<!-- userSummaryData -->
 	<ion-list no-lines id="datalist">
-		
-	 <a class="dataitem" id="test1">
+		   <button ion-item class="week-container" *ngFor=" let item of userSummaryData | slice:0:show; let i= index " (click) = "viewmoredetails(item,i)" [ngClass]="{'btnActivated': userSummaryData[i] && userSummaryData[i].btnActive == true}" >
+	   	
+	    <ion-avatar item-start>
+	      <img src="{{item.user.avatar}}">
+	    </ion-avatar>
+	    <h2>{{item.user.name}}</h2>
+	     <ng-container *ngIf="item.summary[item.summary.length-1].status == 'active' ">
+	       <div ion-text="" class="text text-md text-md-success">{{item.summary[item.summary.length-1].status}}
+	       </div> 
+	    </ng-container>
+	     <ng-container *ngIf="item.summary[item.summary.length-1].status != 'active' ">
+	       <div ion-text="" class="text text-md text-md-danger">{{item.summary[item.summary.length-1].status}}
+	       </div> 
 
-	   <ion-item class="btnclicked selecteddataitem">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/img1.jpg">
-	    </ion-avatar>
-	    <h2>Ajaj Rajguru</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
+	    </ng-container>
 
-	   <a class="dataitem">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/img2.jpg">
-	    </ion-avatar>
-	    <h2>Amit Adav</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
+	    <span clear item-end>  <h3>{{item.period_meta.worked_total}}<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
+	</button>
 
-	   <a class="dataitem">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
-	    </ion-avatar>
-	    <h2>Antonio Furtado</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
-
-	 <a class="dataitem">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
-	    </ion-avatar>
-	    <h2>Anuj Khurana</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
-	<a class="dataitem">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
-	    </ion-avatar>
-	    <h2>Ashika Pednekar</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
-	  <a class="dataitem">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
-	    </ion-avatar>
-	    <h2>Cryrus Furtado</h2>
-	    <span ion-text="" class="text text-md text-md-danger">Offline</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
-	<a class="dataitem dbt hidden">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
-	    </ion-avatar>
-	    <h2>Ashika Pednekar 2</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
-	<a class="dataitem dbt hidden">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
-	    </ion-avatar>
-	    <h2>Ashika Pednekar 3</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
-	<a class="dataitem dbt hidden">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
-	    </ion-avatar>
-	    <h2>Ashika Pednekar 4</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
-	<a class="dataitem dbt hidden">
-	   <ion-item class="btnclicked ">
-	    <ion-avatar item-start>
-	      <img src="../assets/img/128X128.png">
-	    </ion-avatar>
-	    <h2>Ashika Pednekar 5</h2>
-	    <span ion-text="" class="text text-md text-md-success">Online</span>
-	    <span clear item-end>  <h3>43:04<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-	  </ion-item>
-	</a>
-
+	
 	</ion-list>
-
-	<div align="center" class="text-center" id="showMore" style="cursor: pointer;" (click)="showmore()">
-		<p id="text-change"><span id="innertxt">View More</span><br><span id="arrow"> <ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> </span></p>
-	</div>
+	<div *ngIf=" show < datalength " (click)=" show = show + 10 " align="center" class="text-center" id="showMore" style="cursor: pointer;" >
+			<p id="text-change"><span id="innertxt">View More</span><br><span id="arrow"> <ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> </span></p>
+		</div>
 
 </div>
+</ng-container>
+<!-- <ng-container *ngIf=" userSummaryData == null ">
+		<div>loading</div>
+</ng-container> -->
+

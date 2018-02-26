@@ -93,8 +93,8 @@ export class PopoverPage {
   }
   viewNewSummary(){
     this.viewCtrl.dismiss();
-    this.appglobals.summary_params.param1 = '';
-    this.events.publish('app:navroot', 'new_summary');   
+    this.appglobals.newsummary_params.param1 = '';
+    this.events.publish('app:navroot', 'user-summary');   
     console.log('navigating to new summary page');
 
   }
