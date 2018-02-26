@@ -30,7 +30,7 @@
                         <summary-sidebar *ngIf="sideBarData && summaryContentData" [test]="sideBarData" [day_data]="summaryContentData" class="summary__sidebar" p-h-20 ></summary-sidebar>
                         <!-- Summary sidebar ends -->
                         <!-- Summary content -->
-                        <summary-content *ngIf="sideBarData && summaryContentData" [test]="summaryContentData.day_data" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
+                        <summary-content *ngIf="sideBarData && summaryContentData" [is_current_user]="false" [test]="summaryContentData.day_data" [logs]="summaryContentData" class="summary__content" p-h-20 ></summary-content>
                         <!-- Summary content ends -->
                         <div *ngIf = "failed" align="center"> {{message}} </div>
                     </div>

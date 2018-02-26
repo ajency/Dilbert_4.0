@@ -38,11 +38,36 @@
         </div>
 
 
+        <!-- <div [hidden]="hideMarkerUpdate" class="day-detail flex-row" >
+                <div class="detail-cols">
+                    <select>
+                        <option value="lunch">Lunch Break</option>
+                        <option value="task">Task</option>
+                    </select>
+                </div>
+
+
+                <div class="day-detail__start-time detail-cols">
+                    <p m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].start_time,3)}}</p>
+                    <span ion-text color="text-lighter">{{ "start_time" | translate }}</span>
+                </div>
+                <div class="day-detail__end-time detail-cols">
+                    <p m-t-0 font-weight-5 m-b-10>{{getDayDate(day_data[0].total_time,3)}}</p>
+                    <span ion-text color="text-lighter">{{ "end_time" | translate }}</span>
+                </div>
+    
+                <div class="detail-cols">
+                     <button title="Add lunch" ion-button outline small m-t-0> {{ 'Update' | translate}} </button> 
+                </div>
+    
+        </div> -->
+
 </div>
     <!-- Detail view -->
 
-    <div class="detail-view" p-t-35>
-        <ul *ngIf = "logs.length != 0" class="detail-view__container violated-row" p-h-20 m-h-10>
+    <div #logList class="detail-view" p-t-35>
+
+        <ul (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (click)="listClick($event)" *ngIf = "logs.length != 0" class="detail-view__container" p-h-20 m-h-10>
 
 
             <!-- Removed condition from above element to check for server errors -->
@@ -106,23 +131,34 @@
         -->
         <!--  </li> -->
         <li class="detail-view__cols completed" >
-            <h6 ion-text font-weight-3 color="dark">{{ "u started day at" | translate }} <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">{{getDayDate(day_data[0].start_time, 3)}}</h6></h6>
+            <h6 ion-text font-weight-3 color="dark">{{ "u started day at" | translate }} 
+                <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">
+                    {{getDayDate(day_data[0].start_time, 3)}}
+                </h6>
+            </h6>
+            <!-- <button title="Add lunch" ion-button outline small m-t-0 style="position:absolute; right: 0;"> {{ 'Mark lunch time' | translate}} </button>  -->
         </li>
 
-        <div *ngFor = "let obj of logs">
-            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " class="detail-view__cols idle">
-                <h6  ion-text font-weight-3 color="dark">{{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
+        <div *ngFor = "let obj of logs; let i = index;" (mousemove)="onMouseMove($event,i)" (click)="highlightSelected($event,'click',i)" [attr.data_index]="i" [ngClass]="{'click': allowSlotUpdate}">
+            
+            <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols idle">
+                <h6  ion-text font-weight-3 color="dark"> {{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
-            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " class="detail-view__cols offline">
-                <h6  ion-text font-weight-3 color="dark">{{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
+            <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols offline">
+                <h6  ion-text font-weight-3 color="dark"> {{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
-            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " class="detail-view__cols online">
-                <h6  ion-text font-weight-3 color="dark">{{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} </h6>
+            <li *ngIf = "obj.state == 'active' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols online">
+                <h6  ion-text font-weight-3 color="dark"> {{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
 
-            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " class="detail-view__cols online">
+            <li *ngIf = "obj.state == 'active' && obj.end_time == '' " class="detail-view__cols online only-online">
                 <h6  ion-text font-weight-3 color="dark">{{ "online" | translate }} </h6>
+                <!-- <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span> -->
             </li>
+
 
         </div>
         <li *ngIf = "day_data[0].status == '' " class="detail-view__cols completed total direction-col">
@@ -135,4 +171,34 @@
     </ul>
 
     <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
+
+
+    <!-- <ion-card [hidden]="hideMarkerUpdate" class="selected-marker-edit" [ngStyle]="{'top': markerOffsetTop + 'px', 'left': contentLeftOffset + 'px' }" p-t-0> -->
+    <div [hidden]="hideMarkerUpdate" (click)="editBoxClick($event)" [ngStyle]="{'top': markerOffsetTop + 'px'}" class="selected-marker-edit" #markerEdit p-t-0>
+        <ion-card style="width: 100%; height: 100%;" class="reason-card">    
+        <p class="reason-label" ion-text text-left text-uppercase>Duration</p>
+        <ion-list class="reason-list">
+            <button ion-item p-l-0 class="first-item">
+            <ion-icon name="clock" p-t-5 item-start color="secondary"></ion-icon>
+            <span class="Timeslot-label x-small" ion-text>Start Time</span> - <span class="Timeslot-value x-small" ion-text color="text-lighter" font-weight-5>{{ selectedSlots.length > 0 ? getDayDate(selectedSlots[0].start_time,3) : naText }}</span>
+            </button>
+
+            <button ion-item p-l-0>
+            <ion-icon name="clock" item-start p-t-5 color="secondary"></ion-icon>
+            <span class="Timeslot-label" ion-text>End Time</span> - <span class="Timeslot-value x-small" ion-text color="text-lighter" font-weight-5>{{ selectedSlots.length > 0 ? getDayDate(selectedSlots[selectedSlots.length - 1].end_time,3) : naText }}</span>
+            </button>
+
+        </ion-list>
+
+        <p class="reason-label" ion-text text-left text-uppercase>Mark as</p>
+
+        <select class="custom-select" [disabled]="false" [(ngModel)]="selectedSlotType">
+                <option *ngFor="let slot of slotTypes" value="{{slot.slug}}">{{titleCase(slot.label)}}</option>
+        </select>
+
+        <button [disabled]="postSlotUpdateData.inprogess" (click)="updateLogData()" title="Add lunch" ion-button outline small m-t-10> {{ 'Update' | translate}} </button> 
+
+        
+        </ion-card>
+    </div>
 </div>

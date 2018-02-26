@@ -50,6 +50,8 @@ import { Storage } from '@ionic/storage';
  view_log_history_btn : boolean = true;
  changedLogs : any;
 
+ private chageLogCB: Function;
+
  constructor(public navCtrl: NavController, 
   public navParams: NavParams,
   public popoverCtrl: PopoverController, 
@@ -72,12 +74,14 @@ import { Storage } from '@ionic/storage';
   //   console.log(this.param1,this.param2);
   // });
   // console.log(this.param1, this.param2);
-  this.events.subscribe("start-home:changedLogs", (data) =>{
+  this.chageLogCB = (data) =>{
     console.log('inside publish changedLogs');
     this.view_log_history_btn = this.appGlobalsProvider.view_log_history_btn;
     this.changedLogs = data;
 
-  });
+  }
+
+  this.events.subscribe("start-home:changedLogs", this.chageLogCB);
 
   
 }
@@ -111,7 +115,7 @@ ngOnInit(){
         this.period_unit = this.param1.period_unit;
         this.authguard.user_id = this.param1.user_id
         this.userId = this.authguard.user_id;
-        // this.cos_offset = this.param2.cos_offset;
+        this.cos_offset = this.appGlobalsProvider.cos_offset;;
         // console.log(this.cos_offset);
         // console.log(this.currentDate);
 
@@ -178,17 +182,23 @@ ngOnInit(){
 
 
 ionViewDidLoad() {
+  console.log("################## entering start home page ###################", this.firstPageLoad);
   this.zone.run(() => {});
     // console.log('ionViewDidLoad dashboard')
   }
 
-
+  private firstPageLoad: boolean = true;
   ionViewWillLeave(){
+    this.firstPageLoad = false;
+    console.log("################## leaving start home page #####################", this.firstPageLoad);
     console.log('ion view will leave dashboard');
     this.appGlobalsProvider.dashboard_params.param1 = '';
     this.appGlobalsProvider.dashboard_params.param2 = '';
     this.authguard.user_id = this.authguard.userData.user_id;
 
+    this.events.unsubscribe("start-home:changedLogs", this.chageLogCB);
+    this.events.publish("app:removeSidebarCompListeners");
+    this.events.publish("app:removeContentCompListeners");
   }
 
 
@@ -315,6 +325,7 @@ ionViewDidLoad() {
         // cos_offset : this.cos_offset
        }
 
+        // this.appServiceProvider.presentLoader();
 
         this.appServiceProvider.request(url, 'post', body2, optionalHeaders, false, 'observable', 'disable', filter2, true).subscribe( (response) => {
         // console.log(response);
@@ -475,7 +486,5 @@ ionViewDidLoad() {
     return false;
   }
 }
-
-
 
 }

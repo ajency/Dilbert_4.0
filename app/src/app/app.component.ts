@@ -486,5 +486,12 @@ checkNetwork() {
 
   }
 
+  deselectSlotSelection(): void{
+    this.events.publish("app:deselect_slot_selection");
+  }
+
+  fireUpEvent(event){
+    this.events.publish("app:slot_selection_mouse_up");
+  }
 
 }

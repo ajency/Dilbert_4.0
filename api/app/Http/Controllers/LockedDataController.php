@@ -14,6 +14,7 @@ use App\Role;
 use App\Permission;
 use App\Data_Changes;
 use App\OrganisationMeta;
+use App\Slots;
 use DateTime;
 use Ajency\User\Ajency\userauth\UserAuth;
 
@@ -103,10 +104,20 @@ class LockedDataController extends Controller
                         $sortOrder = $request->sort_order;
                     else
                         $sortOrder = 'desc';
+
                     // user's data for the particular period
                     $lockedData = Locked_Data::where('user_id',$request->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->orderBy($sortCol, $sortOrder)->get();
-                    $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),$sortOrder);
-                    $data['periodData'] = $periodData;
+                    $periodData = (new Locked_Data)->formattedLockedData($request->user_id,$lockedData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),$sortOrder,true);
+                    $data['periodData'] = $periodData['data'];
+
+                    // adding dummy period_meta attribute for now
+                    $data["period_meta"] = [
+                        "period_unit" => $request->input('filters.period_unit'),
+                        "worked_total" => $periodData['total_period_hours'],
+                        "worked_expected" => $periodData['expected_period_hours'],
+                        "lunch_total" => (new Slots)->getTotalSlotTime($request->user_id,'lunch',$startDate->format('Y-m-d'),$endDate->format('Y-m-d'))
+                    ];
+
                     return response()->json(['status' => 200, 'message' => __('api_messages.user_periodic_data'), 'data' => $data]);
                 // }
                 // else {
@@ -338,8 +349,12 @@ class LockedDataController extends Controller
                     // user's data for the particular period
                     // $output->writeln($startDate->format('Y-m-d')." ".$endDate->format('Y-m-d'));
                     $summaryData = Locked_Data::where('user_id',$oUser->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->get();
-                    $periodData = (new Locked_Data)->formattedLockedData($oUser->user_id,$summaryData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'));
-                    $userObj['summary'] = $periodData;
+                    $periodData = (new Locked_Data)->formattedLockedData($oUser->user_id,$summaryData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),'asc',true);
+                    $userObj['summary'] = $periodData['data'];
+
+                    // period meta
+                    $userObj['period_meta']['worked_total'] = $periodData['total_period_hours'];
+                    $userObj['period_meta']['lunch_total'] = (new Slots)->getTotalSlotTime($oUser->user_id, 'lunch', $startDate->format('Y-m-d'),$endDate->format('Y-m-d'));
 
                     array_push($data,$userObj);
                 }
