@@ -41,7 +41,7 @@ export class UserSummarySidebarComponent {
   apiURL : any;
   weekBucket: any [] = [];
   userSummaryData : any;
-  saveData : any;
+  saveData1 : any;
   date : any;
   text : any;
   dateSelected : any;
@@ -79,10 +79,11 @@ export class UserSummarySidebarComponent {
 
   //search data by  name
    searchByName(){
+    console.log("hi");
            var input, filter, ul, li, a, i;
         input = document.getElementById("searchemployee");
         filter = input.value.toUpperCase();
-        ul = document.getElementById("datalist");
+        ul = document.getElementById("datalist2");
         li = ul.getElementsByTagName("ion-item");
         for (i = 0; i < li.length; i++) {
             a = li[i].getElementsByTagName("h2")[0];
@@ -340,39 +341,39 @@ getData(date){
 
         // let serializedquery =  `?${$.param(filter1)}`;
         // this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
-        // this.saveData = response.data;
+         this.saveData1 = response.data;
 
-        this.userSummaryData.forEach( (user) => {
-
-
-        if(user.summary.length !== 0) { // Checks if summary has Length greater than 0, if so the week's data is present
-
-          if(user.summary[user.summary.length-1].work_date < user.user.joining_date ){
-            user.summary = [];
-          }
-
-          else if(user.summary[0].work_date < user.user.joining_date && user.summary[user.summary.length -1].work_date > user.user.joining_date){
-            for(i = 0; i < user.summary.length; i++){
-              if(user.summary[i].work_date < user.user.joining_date && user.summary[i].leave_status == 'Leave'){
-                user.summary[i].leave_status = 'Not joined';
-              }
-            }
-
-          }
+      //   this.userSummaryData.forEach( (user) => {
 
 
-          user.total_time = "00:00";
-          for ( i = 0; i < user.summary.length; i++) {
-            if(user.summary[i].leave_status == "Present" || user.summary[i].leave_status == "Worked" || user.summary[i].leave_status == "Worked on holiday" || 
-            user.summary[i].leave_status == "Worked on weekend"  ) // Check the status before calculating
-              user.total_time = this.getSumofTime(user.total_time, user.summary[i].total_time);
-          }
-        } else { // No summary data found related to that user
-          user.total_time = "00:00";
-        }
-      });
+      //   if(user.summary.length !== 0) { // Checks if summary has Length greater than 0, if so the week's data is present
 
-        this.saveData = this.userSummaryData;
+      //     if(user.summary[user.summary.length-1].work_date < user.user.joining_date ){
+      //       user.summary = [];
+      //     }
+
+      //     else if(user.summary[0].work_date < user.user.joining_date && user.summary[user.summary.length -1].work_date > user.user.joining_date){
+      //       for(i = 0; i < user.summary.length; i++){
+      //         if(user.summary[i].work_date < user.user.joining_date && user.summary[i].leave_status == 'Leave'){
+      //           user.summary[i].leave_status = 'Not joined';
+      //         }
+      //       }
+
+      //     }
+
+
+      //     user.total_time = "00:00";
+      //     for ( i = 0; i < user.summary.length; i++) {
+      //       if(user.summary[i].leave_status == "Present" || user.summary[i].leave_status == "Worked" || user.summary[i].leave_status == "Worked on holiday" || 
+      //       user.summary[i].leave_status == "Worked on weekend"  ) // Check the status before calculating
+      //         user.total_time = this.getSumofTime(user.total_time, user.summary[i].total_time);
+      //     }
+      //   } else { // No summary data found related to that user
+      //     user.total_time = "00:00";
+      //   }
+      // });
+
+        this.saveData1 = this.userSummaryData;
         console.log("summary data ----");
         console.log(this.userSummaryData.length);
         this.datalength=this.userSummaryData.length;
@@ -413,5 +414,9 @@ formatDate(date) {
     return sumTime;
   }
 
-
+ onTextChange(text) {
+    console.log(text, this.saveData1);
+    this.userSummaryData = this.saveData1.filter(item => item.user.name.toLowerCase().indexOf(text.toLowerCase()) !== -1); // LowerCase all the names & keyword so that it cover all the possibilities
+     this.zone.run(() => {}); 
+  }
 }

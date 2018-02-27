@@ -1,7 +1,7 @@
 <!-- Generated template for the UserSummarySidebarComponent component -->
 <ng-container *ngIf=" userSummaryData != null ">
 <div >
-	<ion-icon p-l-10 name="search" class="icon-size full" ion-txt class="text text-md text-md-text-lighter"></ion-icon><input type="search" name="" style="border: 0px; padding: 10px; padding-bottom: 10px; width: 90%;" placeholder="Filter By Name" id="searchemployee"  (keyup)="searchByName()">
+	<ion-icon p-l-10 name="search" class="icon-size full" ion-txt class="text text-md text-md-text-lighter"></ion-icon><input type="search" name="" style="border: 0px; padding: 10px; padding-bottom: 10px; width: 90%;" placeholder="Filter By Name" id="searchemployee"  (ngModel)="text" (keyup)="onTextChange($event.target.value)">
 
 	<div style="background-color: #eeeeee4d;">
 		<ion-grid style="padding: 0 !important">
@@ -21,7 +21,7 @@
 	
 <!-- userSummaryData -->
 	<ion-list no-lines id="datalist">
-		   <button ion-item class="week-container" *ngFor=" let item of userSummaryData | slice:0:show; let i= index " (click) = "viewmoredetails(item,i)" [ngClass]="{'btnActivated': userSummaryData[i] && userSummaryData[i].btnActive == true}" >
+		   <button id="datalist2" ion-item class="week-container" *ngFor=" let item of userSummaryData | slice:0:show; let i= index " (click) = "viewmoredetails(item,i)" [ngClass]="{'btnActivated': userSummaryData[i] && userSummaryData[i].btnActive == true}" >
 	   	
 	    <ion-avatar item-start>
 	      <img src="{{item.user.avatar}}">
@@ -47,6 +47,12 @@
 		</div>
 
 </div>
+<!--    <div *ngFor= " let item of weekBucket ; let key = index ">
+        <span class= "th-label small-title" >
+            <span class="th-date"> {{item | date : 'dd MMM'}}</span>
+            <span class="th-day">{{item | date: 'EEE'}}</span>
+        </span>
+    </div> -->
 </ng-container>
 <!-- <ng-container *ngIf=" userSummaryData == null ">
 		<div>loading</div>

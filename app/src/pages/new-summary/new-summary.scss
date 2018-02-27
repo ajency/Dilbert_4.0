@@ -1,3 +1,61 @@
 page-new-summary {
 
+// Dashboard columns
+.user_dashboard {
+    &__summary {
+        @media screen and (min-width: 769px){
+            box-shadow: $shadow-1;    
+        }
+    }
+}
+
+@media screen and (min-width: 920px) and (max-width: 1400px) {
+    .user_dashboard__summary{
+        flex: 0 0 75%;
+        width: 75%;
+        max-width: 75%;
+    }
+}
+
+
+// Summary section
+.user_summary {
+    display: flex;
+    &__sidebar {
+        flex: 1;
+        box-shadow: $shadow-2;
+    }
+    &__content {
+        flex: 1.7;
+        @media screen and (min-width: 1400px) {
+            flex: 2;
+        }
+        @media screen and (min-width: 1601px) {
+            flex: 2.3;
+        }
+    }
+}
+
+
+@media screen and (min-width: 1280px) and (max-width: 1400px) {
+    .user_summary__sidebar{
+        flex: 0.8;
+    }     
+}
+
+@media screen and (max-width: $mobile){
+    .user_dashboard__summary{
+        .user_summary{
+            // padding: 0 1.5em;
+        }    
+    }
+}
+
+
+// Common flexbox call
+.flex-row {
+    display: flex;
+    align-items: center;
+}
+
 }
