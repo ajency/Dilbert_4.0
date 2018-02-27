@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Location, PlatformLocation } from '@angular/common';
 import { ToastController, Events, LoadingController } from 'ionic-angular';
-
+import { NgProgressService } from "ng2-progressbar";
+import { KeysPipe } from '../../pipes/keys/keys';
 
 import * as $ from 'jquery';
 
@@ -49,7 +50,10 @@ export class AppServiceProvider {
 
   
 
-  constructor(public http: Http,
+  constructor(
+    public zone: NgZone,
+    public progress: NgProgressService,
+    public http: Http,
    public events: Events,
    private cookieservice: CookieService,
    public platformlocation: PlatformLocation,
@@ -63,8 +67,8 @@ export class AppServiceProvider {
     console.log('AppServiceProvider Provider');
 
     this.handleError = (error: any): Promise<any> => {
-      console.warn('error in request fetch',error)
-
+                      console.warn('error in request fetch',error)
+                      this.hideLoader();
                       // let errMsg: string;
                       // if (error instanceof Response) {
                       //   const body: any = error.json() || '';
@@ -98,6 +102,8 @@ export class AppServiceProvider {
                       }
 
                       let prerror = this.parseRejectedError(error);
+
+                      this.presentToast(error.message || 'A request error has occured!','error');
                       return Promise.reject(prerror);
                     }
 
@@ -278,6 +284,7 @@ export class AppServiceProvider {
     //    this.updateQueryParams(serializedquery,locationpath,disableurlupdate);
     // },250);
 
+    this.presentLoader(url);
     if(returntype == 'promise'){
       return httpEvent
       .toPromise()
@@ -301,6 +308,7 @@ export class AppServiceProvider {
 
 
   private updateQueryParams(query,locationpath, disableupdate,appendurl){
+    this.hideLoader();
     // if(locationpath !== this.location.path(true)) return;
     if(disableupdate) return;
 
@@ -309,6 +317,8 @@ export class AppServiceProvider {
     if(serializedquery){
       this.events.publish('app:updatehistory',{page: serializedquery, state: {query: serializedquery}, replace: true, appendurl});
     }
+
+
   }
 
   public parseRejectedError(error: any): any{
@@ -426,6 +436,59 @@ export class AppServiceProvider {
         return navigator.onLine;
   } //end updateOnlineStatus
 
+  private loader: any = null;
+  private pendingRequests: Array<any> = [];
+  public presentLoader(url: string = ''): any{
+    this.pendingRequests.push(url);
 
+    console.log("@@@@@@@@@@@ presenting loader:", this.pendingRequests)
+    if(this.loader === null){
+      // this.loader = this.loadingctrl.create({
+      //   spinner: "hide",
+      //   content: "<div><img src='./assets/img/dilbert.jpg' /> <div>loading</div></div>",
+      //   cssClass: "custom-loading-content",
+      //   showBackdrop: true,
+      //   dismissOnPageChange: true
+      // });
+  
+      // this.loader.present();
+      
+      this.loader = true;
+      this.progress.start();
+    }
+  }
+
+  public hideLoader(){
+    let url = this.pendingRequests.pop();
+
+    setTimeout(() => {
+      console.log("@@@@@@@@@@ pending requests", this.pendingRequests)
+      if(this.pendingRequests.length === 0){
+        if(this.loader){
+          // this.loader.dismiss();
+          this.loader = null;
+          this.progress.done();
+
+          this.zone.run(() => {});
+        }
+      }
+    },100);
+
+  }
+
+  public objectToArray(val: any){
+    let keys = new KeysPipe().transform(val);
+
+    let array = [];
+
+    keys.map((key) => {
+      array.push({
+        slug: key,
+        label: val[key]
+      });
+    });
+
+    return array;
+  }
   
 }

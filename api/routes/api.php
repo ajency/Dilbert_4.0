@@ -57,3 +57,6 @@ Route::group(['prefix' => 'cron'], function() {
 // Desktop App
 Route::get('/ping','AppController@periodicalPing');
 Route::get('/state-update','CronController@stateUpdate');  // cron runs every 5 minutes
+
+// slots api
+Route::post('/edit-slots', 'SlotsController@editSlots');

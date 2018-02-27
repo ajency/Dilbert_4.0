@@ -9,7 +9,7 @@ use Ajency\Violations\Ajency\ViolationRules;
 use App\Log;
 use App\Locked_Data;
 use App\Organisation;
-// use App\PingLogs;
+use App\PingLogs;
 use App\ViolationApp;
 use DateTime;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -29,11 +29,17 @@ class AppController extends Controller
             if ($user['user_details']['api_token'] == $request->header('X-API-KEY')) {
 
                 // testing purpose
-                // $pingLogs = new PingLogs;
-                // $pingLogs->user_id = $request->header('from');
-                // $pingLogs->from_state = $request->from_state;
-                // $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
-                // $pingLogs->save();
+                if(env('APP_ENV') == 'dev') {
+                    $testUsers = config('testing.ping_users');
+                    if(in_array($request->header('from'), $testUsers)) {
+                        $pingLogs = new PingLogs;
+                        $pingLogs->user_id = $request->header('from');
+                        $pingLogs->from_state = $request->from_state;
+                        $pingLogs->to_state = ($request->to_state == 'New%20Session') ? 'New Session' : $request->to_state;
+                        $pingLogs->ip_addr = $request->ip();
+                        $pingLogs->save();
+                    }
+                }
 
                 // first make an entry into the logs table
                 $orgDetails = Organisation::find($user['user_details']['org_id']);
@@ -108,14 +114,16 @@ class AppController extends Controller
                     } else {
                         // just update the end time and total time
                         $lockedEntry = $lockedEntry->first();
-                        $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
-                        $output = new ConsoleOutput;
-                        $output->writeln('start '.$lockedEntry->start_time);
-                        $output->writeln('start '.$lockedEntry->end_time);
-                        $output->writeln(date('Y-m-d H:i'));
-                        $output->writeln($this->getTimeDifference($lockedEntry->start_time, date('Y-m-d H:i')));
-                        $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
-                        $lockedEntry->save();
+                        if((new DateTime($this->getCurrentTimeZoneTime($timeZone))) >= (new DateTime("09:30"))) {
+                            $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
+                            $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
+                            $lockedEntry->save();
+                        }
+                        else {
+                            // needs to be done because the cron uses the updated_at to determine offline state
+                            $lockedEntry->updated_at = (new DateTime)->format('Y-m-d H:i:s');
+                            $lockedEntry->save();
+                        }
                     }
                 }
                 // return the start, end and total time from the locked_data
