@@ -192,6 +192,7 @@ class LockedDataController extends Controller
                             $dataChanges->old_value = $lockedEntry->$ckey;
                             $dataChanges->new_value = $cvalue;
                             $dataChanges->save();
+                            array_push($dataToMail, $dataChanges);
                             
                         }
                         $lockedEntry->start_time = NULL;
@@ -199,6 +200,7 @@ class LockedDataController extends Controller
                         $lockedEntry->total_time = "00:00";
                         $lockedEntry->status = "Leave";
                         $lockedEntry->save();
+                        $this->edit_log_email($dataToMail);
                         return response()->json(['status' => 200, 'message' => __('api_messages.marked_as_leave'), 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                     }
                     // for the other changes
@@ -229,8 +231,8 @@ class LockedDataController extends Controller
                             $dataChanges->work_date = $request->work_date;
                             $dataChanges->old_value = $lockedEntry->$ckey;
                             $dataChanges->new_value = $cvalue;
-                            array_push($dataToMail, $dataChanges);
                             $dataChanges->save();
+                            array_push($dataToMail, $dataChanges);
                             // reflect this change in the locked__datas table
                             $lockedEntry->$ckey = $cvalue;
                             if($ckey == 'start_time' || $ckey == 'end_time') {
@@ -271,13 +273,15 @@ class LockedDataController extends Controller
                             $lockedEntry->status = 'Leave due to violation';
 
                         $lockedEntry->save();
+                        $status=$lockedEntry->status;
                     }
                     else {
                         $lockedEntry->status = $request->status;
                         $lockedEntry->save();
+                        $status=$lockedEntry->status;
                     }
-                    //send mail to configured users about the edit log
-                    $this->edit_log_email($dataToMail);
+                    //formatting edit log to send a mail
+                    $this->edit_log_email($dataToMail,$status);
 
                     return response()->json(['status' => 200, 'message' => __('api_messages.changes_made_success'), 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                 }
@@ -380,13 +384,18 @@ class LockedDataController extends Controller
         }
     }
 
-    function edit_log_email($dataToMails)
+    function edit_log_email($dataToMails,$status=null)
     {
         $data=array();
         $data['values']=array();
+        $cc_mail=array();
+        $cc_mail_list=array();
         $flag=0;
+        echo "THIS";
+        print_r($dataToMails);
+        echo "THIS";
         foreach ($dataToMails as $dataToMail) {
-            // getting name for subject
+            // getting name for subject of the person whose data is modified
             $data['user_id']=$dataToMail['user_id'];
             $user = User::where(['id' => $data['user_id']])->first();
             $name=$user['name'];
@@ -398,23 +407,25 @@ class LockedDataController extends Controller
             $modifier = User::where(['id' => $dataToMail['modified_by']])->first();
             $name = explode(' ',$modifier['name']);
             $data['modified_by']= $name[0];
-
-
             $data['modified_on']= $dataToMail['modified_on'];
             $data['work_date']= $dataToMail['work_date'];
             $dataEdit['column_modified']= $dataToMail['column_modified'];
             $dataEdit['old_value']= $dataToMail['old_value'];
             $dataEdit['new_value']= $dataToMail['new_value'];
+            $data['status']=$status;
             array_push($data['values'], $dataEdit);
-
+ 
             // getting subject
             $subject=' Dilbert 4 - '.$data['name'].'\'s Log edited';
             //getting email id of user
             $comm=UserCommunication::where('object_id','=', $data['user_id'])->where('object_type','App\\User')->first();
 
             // getting CC and BCC list for mails
-            $cc_list = ['hr'];
-            $bcc_list = ['owner1','owner2'];
+            $recipients=config('log_edit_email');
+
+            /*$cc_list = $recipients['cc_list'];
+            $bcc_list = $recipients['bcc_list'];
+
             foreach ($cc_list as $cc_l) 
             {
                 $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$data['org_id'],0);
@@ -423,16 +434,29 @@ class LockedDataController extends Controller
             foreach ($bcc_list as $bcc_l) {
                 $bcc_mail[$mail] = (new OrganisationMeta)->getParamValue($bcc_l,$data['org_id'],0);
                 $mail++;
-            }
+            }*/
+
             $flag=1;
         }
-        echo "\nTHIS IS IT\n";
-        print_r($data);
-        echo "\nTHIS IS IT\n";
-        echo "datatttatatatat";
         if ($flag==1) {
+             //getting authorized users
+            $users=User::all();
+            foreach ($users as $user) {
+                if ($user->hasPermissionTo('edit_log_mails')) {
+                    $cc_list=UserCommunication::where('object_id','=', $user['id'])->where('object_type','App\\User')->first();  
+                    array_push($cc_mail, $cc_list);
+                }
+            }
+            $cc_mail=array_unique($cc_mail);
+            foreach ($cc_mail as $cc_m) {
+                    array_push($cc_mail_list,$cc_m['value']);
+            }
             $data['redirect_url']='dilbert_mails/email_log_edit';
-            send_mails($data,$subject,$comm['value'],$cc_mail,$bcc_mail);
+            $bcc_mail=array();
+            // echo "permissions ";
+            // print_r($cc_mail_list);
+            //print_r(User::role('admin')->get()->pluck('name'));
+            send_mails($data,$subject,$comm['value'],$cc_mail_list,$bcc_mail);
         }
     }
 }

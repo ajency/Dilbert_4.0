@@ -9,6 +9,7 @@
 
 function send_mails($data,$subject,$to_list,$cc_list=NULL,$bcc_list=NULL)
 {
+	
 	if (!empty($cc_list) && !empty($bcc_list)) 
 	 {
 	 	//if bcc cc list is given
