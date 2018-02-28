@@ -31,10 +31,9 @@ export class UserSummarySidebarComponent {
       disableSince: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:  new Date().getDate()+1 } 
   };
   newdata :any;
-  show = 10;
+  show = 7;
   nodata : any;
   maindata :any;
-  buttonColor: string = '#ffffff';
   userSideBarData: any;
   userSummaryContentData : any;
   user_id : any;
@@ -45,7 +44,9 @@ export class UserSummarySidebarComponent {
   date : any;
   text : any;
   dateSelected : any;
+  para :any;
   param1 : any;
+   param20 : any;
   org_id : any;
   period_unit : any;
   private flag : boolean;
@@ -74,131 +75,23 @@ export class UserSummarySidebarComponent {
     this.text = 'Hello user-summary-sidebar';
     this.apiURL = this.appGlobalsProvider.getApiUrl();
     this.counter=0;
-
+     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
   }
 
-  //search data by  name
-   searchByName(){
-    console.log("hi");
-           var input, filter, ul, li, a, i;
-        input = document.getElementById("searchemployee");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("datalist2");
-        li = ul.getElementsByTagName("ion-item");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("h2")[0];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-         }
-    }
-
-
-  requestData1(date1){
-
-    console.log("inside requestData function", date1);
-    var date =date1.formatted; 
-     if (date) {
-      this.dateSelected = new Date(date);
-      let dateObject = {
-          start: date
-          // end: this.formatDate(dates.end)
-        };
-      this.getData(dateObject);
-    }
-    console.log(date);
-}
-
-
-viewmoredetails(item,key){
-
-
- 
-    this.userSummaryData[key].btnActive = true;
-
-    for(var i = 0; i < this.userSummaryData.length; i++ )
-      {
-        if(i != key)
-        {
-
-        this.userSummaryData[i].btnActive = false;
-
-        }
-      
-      }
-
-
-  console.log(item);
-  console.log("this is view more details function");
-  // console.log(item.summary.length);
-  // console.log(item.summary[item.summary.length-1].work_date);
-  if(item != null || item == 'undefined' || item ==''){
-console.log(" param passed");
-
-   let new_summary_param = {
-       org_id :this.authguard.userData.org_id,
-       start_date : item.summary[item.summary.length-1].work_date, 
-       user_id : item.user.user_id,
-       period_unit : this.appGlobalsProvider.period_unit
-     }
-   
-    console.log(new_summary_param);
-    this.maindata=item;
-    console.log(this.maindata);
-    let data12={
-      newdata : this.maindata
-    } 
-        this.events.publish("update:summarydatanew", data12);
-    let serializedquery =  `?${$.param(new_summary_param)}`;
-    this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
-
-}
-else{
-  // ["0"].summary["0"].work_date
-  console.log("no param passed");
-  console.log(this.userSummaryData);
-     let new_summary_param = {
-       org_id :this.authguard.userData.org_id,
-       start_date : this.userSummaryData[0].summary[this.userSummaryData[0].summary.length-1].work_date,
-       user_id : this.userSummaryData[0].user.user_id,
-       period_unit : this.appGlobalsProvider.period_unit
-     }
-      
-      this.maindata=this.userSummaryData[0];
-    console.log(new_summary_param);
-        let data12={
-      newdata : this.maindata
-    } 
-    this.events.publish("update:summarydatanew", data12);
-    let serializedquery =  `?${$.param(new_summary_param)}`;
-    this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
-
-}
-   
-   
-    
-     
-}
-
-
-
   ngOnInit(){
-     this.param1 = this.appGlobalsProvider.summary_params.param1;
-     console.log("param1 passed ");
+
+
+    console.log(this.appGlobalsProvider.newsummary_params.param1);
+     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
+     console.log("this is the ngOninit ");
     console.log(this.param1);
 
     if((this.param1 == '') || (this.param1 == undefined) ){
-    
-    this.org_id = this.authguard.userData.org_id;
-    this.period_unit = this.appGlobalsProvider.period_unit ;
-    this.user_id=this.authguard.userData.user_id;
-    this.getUserDate(1, new Date());
-    console.log('no params passed');
-    console.log(this.user_id);
-    console.log(this.org_id);
-    console.log(this.period_unit);
+      console.log("empty");
+      this.org_id =this.authguard.userData.org_id;
+      this.period_unit = this.appGlobalsProvider.period_unit ;
+      this.user_id=this.authguard.userData.user_id;
+      this.getUserDate(1, new Date());
     }
      else {
       console.log('params passed');
@@ -207,7 +100,7 @@ else{
       this.period_unit = this.param1.period_unit;
 
      let dateObject = {
-          start: this.param1.date
+          start: this.param1.start_date
           // end: this.formatDate(dates.end)
         };
       this.getData(dateObject);
@@ -240,6 +133,159 @@ else{
     });
 
   }
+
+
+
+  requestData1(date1){
+
+    console.log("inside requestData function", date1);
+    var date =date1.formatted; 
+     if (date) {
+      this.dateSelected = new Date(date);
+      let dateObject = {
+          start: date
+          // end: this.formatDate(dates.end)
+        };
+      this.getData(dateObject);
+    }
+    console.log(date);
+}
+
+
+viewmoredetails(item,key){
+
+    console.log(item);
+    console.log("clicked on sidebar data to view users summary ");
+    this.param1 = this.appGlobalsProvider.newsummary_params.param1;
+    console.log(this.param1);
+
+    if(this.param1 !=''){
+      console.log("the data is as per the url params");
+      this.user_id=this.param1.user_id;
+      console.log(this.user_id);
+      let found =0;
+        for(var i=0;i<this.userSummaryData.length;i++){
+                if(this.userSummaryData[i].user.user_id==this.user_id){
+                  this.userSummaryData[i].btnActive=true;
+                  this.maindata=this.userSummaryData[i];
+                  console.log("match userid");
+                  console.log(this.maindata);
+                  let data12={
+                      newdata:this.maindata
+                  }
+                  let new_summary_param ={
+                     org_id :this.param1.org_id,
+                     start_date : this.param1.start_date, 
+                     user_id : this.param1.user_id,
+                     period_unit : this.param1.period_unit
+                  }
+               this.events.publish("update:summarydatanew", data12);
+               let serializedquery =  `?${$.param(new_summary_param)}`;
+               this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+              found=1;
+            }
+
+        } console.log("match found "+found);
+        if (found == 0) {
+           let data12={
+                      newdata:''
+                  }
+                  this.events.publish("update:summarydatanew", data12);
+        }
+
+
+          if(item !=''){
+            this.userSummaryData[key].btnActive = true;
+
+              for(var i = 0; i < this.userSummaryData.length; i++ )
+                {
+                  if(i != key)
+                  {
+
+                  this.userSummaryData[i].btnActive = false;
+
+                  }
+                
+                }
+
+
+         let new_summary_param = {
+             org_id :this.authguard.userData.org_id,
+             start_date : item.summary[item.summary.length-1].work_date, 
+             user_id : item.user.user_id,
+             period_unit : this.appGlobalsProvider.period_unit
+           }
+        
+          this.maindata=item;
+          let data12={
+            newdata : this.maindata
+          } 
+          this.events.publish("update:summarydatanew", data12);
+          let serializedquery =  `?${$.param(new_summary_param)}`;
+          this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+      }
+
+    }
+
+
+    else{
+        this.userSummaryData[key].btnActive = true;
+           for(var i = 0; i < this.userSummaryData.length; i++ )
+              {
+                if(i != key)
+                {
+
+                this.userSummaryData[i].btnActive = false;
+
+                }
+              
+              }
+
+      if(item !=''){
+         let new_summary_param = {
+             org_id :this.authguard.userData.org_id,
+             start_date : item.summary[item.summary.length-1].work_date, 
+             user_id : item.user.user_id,
+             period_unit : this.appGlobalsProvider.period_unit
+           }
+   
+        console.log(new_summary_param);
+        this.maindata=item;
+        let data12={
+          newdata : this.maindata
+        } 
+        this.events.publish("update:summarydatanew", data12);
+        let serializedquery =  `?${$.param(new_summary_param)}`;
+        this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+    }
+
+
+    else{
+         let new_summary_param = {
+           org_id :this.authguard.userData.org_id,
+           start_date : this.userSummaryData[0].summary[this.userSummaryData[0].summary.length-1].work_date,
+           user_id : this.userSummaryData[0].user.user_id,
+           period_unit : this.appGlobalsProvider.period_unit
+         }
+          
+          this.maindata=this.userSummaryData[0];
+          let data12={
+          newdata : this.maindata
+        } 
+        this.events.publish("update:summarydatanew", data12);
+        let serializedquery =  `?${$.param(new_summary_param)}`;
+        this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+
+      }
+       
+   }
+    
+     
+}
+
+
+
+  
  getUserDate(dropdownValue, dateswnt) {
 
         // let dates = this.getStartAndEndOfDate(new Date());
@@ -282,7 +328,10 @@ getData(date){
       firstDay = nextD;
       i++;
     }
-   
+    console.log("weekBucket");
+   console.log(this.weekBucket);
+   this.events.publish("update:weekBucketdata", this.weekBucket);
+
 
    let date_range = date;
 
@@ -300,7 +349,7 @@ getData(date){
     console.log(url);
     let filter1 = {
         org_id : this.org_id,
-        date:date.start,
+        date: date.start,
         user_id : this.user_id,
         period_unit:this.period_unit
       };
@@ -334,6 +383,7 @@ getData(date){
         this.userSummaryData = response.data;
         // this.showmoredata();
         let key=0;
+        this.nodata='';
 
        this.viewmoredetails(this.nodata,key);
        this.events.publish("update:summarydatausers", this.userSummaryData);

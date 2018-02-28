@@ -40,7 +40,6 @@ export class AppGlobalsProvider {
     minor: 2,
     patch: 6
   };
-
   appVersion : string = '' ;
 
 private activeTabsList: any = {
@@ -65,16 +64,16 @@ private activeTabsList: any = {
     },
     summary:{
       component: 'OrganizationSummaryPage',
+      deeplink: 'summary',
+      placeholder: 'Summary',
+      active: true
+    },
+     usersummary:{
+      component: 'NewSummaryPage',
       deeplink: 'user-summary',
       placeholder: 'user-summary',
       active: true
     },
-    //  newsummary:{
-    //   component: 'NewSummaryPage',
-    //   deeplink: 'newsummary',
-    //   placeholder: 'newSummary',
-    //   active: true
-    // },
   };
 
 

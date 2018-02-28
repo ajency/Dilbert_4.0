@@ -27,31 +27,31 @@
 	      <img src="{{item.user.avatar}}">
 	    </ion-avatar>
 	    <h2>{{item.user.name}}</h2>
-	     <ng-container *ngIf="item.summary[item.summary.length-1].status == 'active' ">
-	       <div ion-text="" class="text text-md text-md-success">{{item.summary[item.summary.length-1].status}}
-	       </div> 
-	    </ng-container>
-	     <ng-container *ngIf="item.summary[item.summary.length-1].status != 'active' ">
-	       <div ion-text="" class="text text-md text-md-danger">{{item.summary[item.summary.length-1].status}}
-	       </div> 
+		 <ng-container *ngIf="item.summary.length != 0 ">
+		     <ng-container *ngIf="item.summary[item.summary.length-1].status == 'active' ">
+		       <div ion-text="" class="text text-md text-md-success">{{item.summary[item.summary.length-1].status}}
+		       </div> 
+		    </ng-container>
+		     <ng-container *ngIf="item.summary[item.summary.length-1].status != 'active' ">
+		       <div ion-text="" class="text text-md text-md-danger">{{item.summary[item.summary.length-1].status}}
+		       </div> 
 
-	    </ng-container>
+		    </ng-container>
+		</ng-container>
 
 	    <span clear item-end>  <h3>{{item.period_meta.worked_total}}<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 	</button>
 
 	
 	</ion-list>
+	<div *ngIf=" show >= datalength " (click)=" show = 7" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
+			<p id="text-change"><span id="arrow"> <ion-icon  name="ios-arrow-up-outline" class="icon-size full"></ion-icon> </span><br><span id="innertxt">View Less</span></p>
+	</div>
 	<div *ngIf=" show < datalength " (click)=" show = show + 10 " align="center" class="text-center" id="showMore" style="cursor: pointer;" >
 			<p id="text-change"><span id="innertxt">View More</span><br><span id="arrow"> <ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> </span></p>
-		</div>
+	</div>
+		
 
 </div>
-<!--    <div *ngFor= " let item of weekBucket ; let key = index ">
-        <span class= "th-label small-title" >
-            <span class="th-date"> {{item | date : 'dd MMM'}}</span>
-            <span class="th-day">{{item | date: 'EEE'}}</span>
-        </span>
-    </div> -->
 </ng-container>
 

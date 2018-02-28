@@ -79,6 +79,30 @@ export class NewSummaryPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad NewSummaryPage');
   }
+     ionViewCanEnter(): Promise<boolean>{
+
+    return new Promise((resolve,reject) => {
+      this.authguard.verifyToken('new-summary')
+      .then(() => {
+
+        this.appServiceProvider.handleClientLoad(true).then( () =>{
+
+           console.log('can enter user new summary page') 
+          resolve(true);
+            
+          
+        })
+        .catch(() => {
+          reject(true)
+        });
+       
+      })
+      .catch(() => {
+        reject(true)
+      })
+    });
+
+  }
 
 //   ngOnInit(){
 //      this.param1 = this.appGlobalsProvider.summary_params.param1;

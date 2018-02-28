@@ -1,91 +1,137 @@
 <!-- Generated template for the UserSummaryContentComponent component -->
 <ng-container *ngIf=" user_summary_contentdata != null ">
-<div class="container p-t-20">
-	<div  p-t-20 b-b-20 >
-	  {{text}} : 
-	</div>
-	<div p-t-20>
-		  
-	     
-		<ion-list no-lines>	
-			<!-- <a href="#" style="text-decoration: none;"> -->
-			   <ion-item >
-			    <ion-avatar item-start>
-			      <img src="{{user_summary_contentdata.newdata.user.avatar}}">
-			    </ion-avatar>
-			    <!-- user_summary_contentdata.newdata.user.name -->
-			    <h2>{{user_summary_contentdata.newdata.user.name}}</h2>
 
-			       <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status == 'active' ">
-	       				<div ion-text="" class="text text-md text-md-success">{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
-	      				 </div> 
-	   			  </ng-container>
-	   			   <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status != 'active' ">
-	       				<div ion-text="" class="text text-md text-md-danger">{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
-	      				 </div> 
-	   			  </ng-container>
-			  </ion-item>
-			<!-- </a> -->
-		</ion-list>	 
-	
-	</div>
-	<ion-grid >
-	  <ion-row text-left class="datesrow">
-	    <ion-col>
-	      <div font-weight-5>15 Nov</div><span  ion-text="" class="text text-md text-md-text">Mon</span>
-	    </ion-col>
-	    <ion-col>
-	      <div  font-weight-5>16 Nov</div><span ion-text="" class="text text-md text-md-text">Tue</span>
-	    </ion-col>
-	    <ion-col>
-	      <div font-weight-5>17 Nov</div><span ion-text="" class="text text-md text-md-text">Wed</span>
-	    </ion-col>
-	    <ion-col>
-	      <div font-weight-5> 18 Nov</div><span ion-text="" class="text text-md text-md-text">Thu</span>
-	    </ion-col>
-	    <ion-col>
-	      <div font-weight-5>19 Nov</div><span ion-text="" class="text text-md text-md-text">Fri</span>
-	    </ion-col>
-	     <ion-col >
-	      <div font-weight-5>20 Nov</div><span ion-text="" class="text text-md text-md-text">Sat</span>
-	    </ion-col>
-	     <ion-col>
-	      <div font-weight-5>21 Nov</div><span ion-text="" class="text text-md text-md-text">Sun</span>
-	    </ion-col>
-	     <ion-col>
-	      <span ion-text="" class="text text-md text-md-text">Total<br>Time</span>
-	    </ion-col>
-	  </ion-row>
-	  
-	  <ion-row text-left p-t-10>
-	    <ion-col>
-	      <div font-weight-5>9:32</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
-	    </ion-col>
-	    <ion-col>
-	      <div font-weight-5>9:32</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
-	    </ion-col>
-	    <ion-col>
-	      <div font-weight-5>10:32</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
-	    </ion-col>
-	    <ion-col>
-	      <div font-weight-5>7:32</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
-	    </ion-col>
-	    <ion-col>
-	      <div font-weight-5>7:00</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
-	    </ion-col>
-	     <ion-col>
-	      <div></div><span ion-text="" class="text text-md text-md-text">--</span>
-	    </ion-col>
-	     <ion-col>
-	      <div></div><span ion-text="" class="text text-md text-md-text">--</span>
-	    </ion-col>
-	     <ion-col>
-	      <h5 align="center" p-t-5>43:03<span>hr</span></h5>
-	    </ion-col>
-	  </ion-row>
 
-	</ion-grid>
+ 	<ng-container *ngIf=" user_summary_contentdata.newdata.length == 0 ">
+	    <h4 p-l-20 p-t-20>User does not exist.</h4>
+	</ng-container>
 
-	
-</div>
+
+	<ng-container *ngIf=" user_summary_contentdata.newdata.length != 0 ">
+		<div class="container p-t-20">
+			<div  p-t-20 b-b-20 >
+			  {{text}} : 
+			</div>
+			<div p-t-20>
+			    
+			      
+				<ion-list no-lines>	
+					<!-- <a href="#" style="text-decoration: none;"> -->
+					   <ion-item >
+					    <ion-avatar item-start>
+					      <img src="{{user_summary_contentdata.newdata.user.avatar}}">
+					    </ion-avatar>
+					   
+					    <h2>{{user_summary_contentdata.newdata.user.name}}</h2>
+					     <ng-container *ngIf="user_summary_contentdata.newdata.summary.length != 0 ">
+
+					       <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status == 'active' ">
+			       				<div ion-text="" class="text text-md text-md-success">{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
+			      				 </div> 
+			   			  </ng-container>
+			   			   <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status != 'active' ">
+			       				<div ion-text="" class="text text-md text-md-danger">{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
+			      				 </div> 
+			   			  </ng-container>
+			   			</ng-container>  
+					  </ion-item>
+					<!-- </a> -->
+				</ion-list>	 
+
+
+			
+			</div>
+		<!-- yy -->
+			<!-- weekBucketdata -->
+			<ion-grid >
+			<!--  <ion-row text-left class="datesrow" m-b-10>
+			    <ion-col *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index ">
+			     	<div font-weight-5>{{item.work_date}} </div><span  ion-text="" class="text text-md text-md-text"> {{item.work_date}} </span>
+			    </ion-col>
+			</ion-row> -->
+			<!--  <ion-row text-left p-t-10>
+			    <ion-col  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index ">
+			      <div font-weight-5>{{item.start_time}}</div><span ion-text="" class="text text-md text-md-text"><span>{{item.end_time}}</span>-<span> {{item.total_time}}</span></span>
+			    </ion-col>
+			</ion-row> -->
+			<!-- 	<ion-row text-left class="datesrow">
+			    	<ion-col  *ngFor="let item of weekBucketdata ;let key = index ">
+			      		<div font-weight-5>{{item | date : 'dd MMM'}}</div><span  ion-text="" class="text text-md text-md-text">{{item | date : 'EEE'}}</span>
+			    	</ion-col>
+			    	<ion-col>
+			      <span ion-text="" class="text text-md text-md-text">Total<br>Time</span>
+			    </ion-col>
+
+				</ion-row>
+				 <ion-row text-left p-t-10>
+			    <ion-col  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index ">
+			      <div font-weight-5>{{item.start_time}}</div><span ion-text="" class="text text-md text-md-text"><span>{{item.end_time}}</span>-<span> {{item.total_time}}</span></span>
+			    </ion-col>
+			      <ion-col>
+			      <h5 align="center" p-t-5>{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></h5>
+			    </ion-col>
+
+			</ion-row>  -->
+
+
+
+			  <ion-row text-left class="datesrow" m-t-20>
+			    <ion-col >
+			      <div font-weight-5>15 Nov</div><span  ion-text="" class="text text-md text-md-text">Mon</span>
+			    </ion-col>
+			    <ion-col>
+			      <div  font-weight-5>16 Nov</div><span ion-text="" class="text text-md text-md-text">Tue</span>
+			    </ion-col>
+			    <ion-col>
+			      <div font-weight-5>17 Nov</div><span ion-text="" class="text text-md text-md-text">Wed</span>
+			    </ion-col>
+			    <ion-col>
+			      <div font-weight-5> 18 Nov</div><span ion-text="" class="text text-md text-md-text">Thu</span>
+			    </ion-col>
+			    <ion-col>
+			      <div font-weight-5>19 Nov</div><span ion-text="" class="text text-md text-md-text">Fri</span>
+			    </ion-col>
+			     <ion-col >
+			      <div font-weight-5>20 Nov</div><span ion-text="" class="text text-md text-md-text">Sat</span>
+			    </ion-col>
+			     <ion-col>
+			      <div font-weight-5>21 Nov</div><span ion-text="" class="text text-md text-md-text">Sun</span>
+			    </ion-col>
+			     <ion-col>
+			      <span ion-text="" class="text text-md text-md-text">Total<br>Time</span>
+			    </ion-col>
+			  </ion-row>
+			  
+			  <ion-row text-left p-t-10>
+			    <ion-col>
+			      <div font-weight-5>9:32</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
+			    </ion-col>
+			    <ion-col>
+			      <div font-weight-5>9:32</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
+			    </ion-col>
+			    <ion-col>
+			      <div font-weight-5>10:32</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
+			    </ion-col>
+			    <ion-col>
+			      <div font-weight-5>7:32</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
+			    </ion-col>
+			    <ion-col>
+			      <div font-weight-5>7:00</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
+			    </ion-col>
+			     <ion-col>
+			      <div></div><span ion-text="" class="text text-md text-md-text">--</span>
+			    </ion-col>
+			     <ion-col>
+			      <div></div><span ion-text="" class="text text-md text-md-text">--</span>
+			    </ion-col>
+			     <ion-col>
+			      <h6 align="center" p-t-5>{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></h6>
+			    </ion-col>
+			  </ion-row>
+
+			</ion-grid>
+
+			
+		</div>
+</ng-container>
 	 </ng-container>

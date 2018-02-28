@@ -22,6 +22,11 @@ export class UserSummaryContentComponent {
 
   text: string;
   user_summary_contentdata:any;
+    weekBucketdata:any;
+    userdata:any;
+    param1:any;
+    user_id:any;
+    temp:any;
 
   constructor( public events : Events,
                public zone : NgZone,
@@ -39,12 +44,26 @@ export class UserSummaryContentComponent {
 	
 	
 	this.user_summary_contentdata=data12;
-  console.log("here");
+  console.log("here------------------");
   console.log(this.user_summary_contentdata);
- console.log(this.user_summary_contentdata.newdata.user.name);
+    console.log(this.user_summary_contentdata.newdata.length);
+
+
+
 	  });
 
- //console.log(this.user_summary_contentdata.newdata.user.name +"user name");
+
+  this.events.subscribe("update:weekBucketdata",(weekBucketdata) => {
+
+  console.log(" week inside subscribe data---------------");
+  this.weekBucketdata=weekBucketdata;
+  console.log("this is  weekbucketdata");
+  console.log(this.weekBucketdata);
+ // console.log(this.user_summary_contentdata.newdata.user.name);
+    });
+
+
+
 
   }
 
