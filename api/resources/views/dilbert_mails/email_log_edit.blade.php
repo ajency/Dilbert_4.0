@@ -21,13 +21,13 @@
 	           					changed from {{$values['old_value']}} to {{$values['new_value']}}
 		                    @elseif($values['column_modified']=="start_time" || $values['column_modified']=="end_time")
 	                    		<!-- if value changed is start or end time -->
-	                    		@if($values['new_value']=="" && $values['old_value']=="" )
+	                    		@if($values['new_value']=="" && $values['old_value']=="" || $values['new_value']=="00:00" && $values['old_value']=="00:00")
 		                    		00:00 to 00:00
-			                    @elseif($values['new_value']=="")
+			                    @elseif($values['new_value']=="" || $values['new_value']=="00:00")
 			                    	{{date('h:i:s a m/d/Y', strtotime($values['old_value']))}}
 			                    	to
 			                    	00:00
-			                     @elseif($values['old_value']=="")
+			                     @elseif($values['old_value']=="" || $values['old_value']=="00:00")
 			                    	00:00
 			                    	to
 			                    	{{date('h:i:s a m/d/Y', strtotime($values['new_value']))}}
