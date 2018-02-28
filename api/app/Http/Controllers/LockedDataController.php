@@ -391,9 +391,6 @@ class LockedDataController extends Controller
         $cc_mail=array();
         $cc_mail_list=array();
         $flag=0;
-        echo "THIS";
-        print_r($dataToMails);
-        echo "THIS";
         foreach ($dataToMails as $dataToMail) {
             // getting name for subject of the person whose data is modified
             $data['user_id']=$dataToMail['user_id'];
