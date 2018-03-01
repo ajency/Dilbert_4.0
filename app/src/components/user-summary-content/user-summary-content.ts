@@ -37,7 +37,7 @@ export class UserSummaryContentComponent {
                public appGlobalsProvider : AppGlobalsProvider,
                public storage : Storage) {
     console.log('Hello UserSummaryContentComponent Component');
-    this.text = 'The Summary';
+    this.text = 'Summary';
 	this.events.subscribe("update:summarydatanew",(data12) => {
 
 	console.log("user-summary-content inside subscribe data---------------");

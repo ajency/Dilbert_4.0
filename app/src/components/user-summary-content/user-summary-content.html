@@ -1,13 +1,13 @@
 <!-- Generated template for the UserSummaryContentComponent component -->
 <ng-container *ngIf=" user_summary_contentdata != null ">
 
-
+<!-- 
  	<ng-container *ngIf=" user_summary_contentdata.newdata.length == 0 ">
 	    <h4 p-l-20 p-t-20>User does not exist.</h4>
 	</ng-container>
+ -->
 
-
-	<ng-container *ngIf=" user_summary_contentdata.newdata.length != 0 ">
+	<!-- <ng-container *ngIf=" user_summary_contentdata.newdata.length != 0 "> -->
 		<div class="container p-t-20">
 			<div  p-t-20 b-b-20 >
 			  {{text}} : 
@@ -44,16 +44,36 @@
 		<!-- yy -->
 			<!-- weekBucketdata -->
 			<ion-grid >
-			<!--  <ion-row text-left class="datesrow" m-b-10>
+			 <ion-row text-left class="datesrow" m-b-10>
 			    <ion-col *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index ">
-			     	<div font-weight-5>{{item.work_date}} </div><span  ion-text="" class="text text-md text-md-text"> {{item.work_date}} </span>
+			     	<div font-weight-5>{{item.work_date |date : 'dd MMM'}} </div><span  ion-text="" class="text text-md text-md-text"> {{item.work_date | date : 'EEE'}} </span>
 			    </ion-col>
-			</ion-row> -->
-			<!--  <ion-row text-left p-t-10>
+			    <ion-col>
+			      <span ion-text="" class="text text-md text-md-text">Total<br>Time</span>
+			    </ion-col>
+
+			</ion-row>
+			 <ion-row text-left p-t-10>
 			    <ion-col  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index ">
-			      <div font-weight-5>{{item.start_time}}</div><span ion-text="" class="text text-md text-md-text"><span>{{item.end_time}}</span>-<span> {{item.total_time}}</span></span>
+
+					<ng-container *ngIf=" item.leave_status == 'Worked' || item.leave_status=='Worked on weekend' ||  item.leave_status=='Worked on holiday' ">	
+			    	  <div font-weight-5>{{item.total_time}}</div><span ion-text="" class="text text-md text-md-text"><span>{{item.start_time}}</span>-<span> {{item.end_time}}</span></span>
+			    	</ng-container> 
+
+			    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  && item.leave_status == 'Weekend' || item.leave_status=='Holiday' ||  item.leave_status=='Leave' || item.leave_status=='Leave due to violation' ">		
+			    			 <div font-weight-5>{{item.leave_status}}</div>
+			    	</ng-container>	
+
+			    	<!-- 	<ng-container *ngIf=" item.work_date < user_summary_contentdata.newdata.user.joining_date && item.leave_status == 'Weekend' || item.leave_status=='Holiday' ||  item.leave_status=='Leave' || item.leave_status=='Leave due to violation' ">		
+			    			 <div font-weight-5>Not joined</div>
+			    	</ng-container>	  -->
+
+
 			    </ion-col>
-			</ion-row> -->
+			     <ion-col>
+			      <h6  p-t-5>{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></h6>
+			    </ion-col>
+			</ion-row>
 			<!-- 	<ion-row text-left class="datesrow">
 			    	<ion-col  *ngFor="let item of weekBucketdata ;let key = index ">
 			      		<div font-weight-5>{{item | date : 'dd MMM'}}</div><span  ion-text="" class="text text-md text-md-text">{{item | date : 'EEE'}}</span>
@@ -75,7 +95,7 @@
 
 
 
-			  <ion-row text-left class="datesrow" m-t-20>
+			 <!--  <ion-row text-left class="datesrow" m-t-20>
 			    <ion-col >
 			      <div font-weight-5>15 Nov</div><span  ion-text="" class="text text-md text-md-text">Mon</span>
 			    </ion-col>
@@ -119,19 +139,19 @@
 			      <div font-weight-5>7:00</div><span ion-text="" class="text text-md text-md-text"><span>9:43 </span>-<span> 19:15</span></span>
 			    </ion-col>
 			     <ion-col>
-			      <div></div><span ion-text="" class="text text-md text-md-text">--</span>
+			      <div></div><span ion-text="" class="text text-md text-md-text"></span>
 			    </ion-col>
 			     <ion-col>
-			      <div></div><span ion-text="" class="text text-md text-md-text">--</span>
+			      <div></div><span ion-text="" class="text text-md text-md-text"></span>
 			    </ion-col>
 			     <ion-col>
 			      <h6 align="center" p-t-5>{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></h6>
 			    </ion-col>
 			  </ion-row>
-
+ -->
 			</ion-grid>
 
 			
 		</div>
-</ng-container>
+<!-- </ng-container> -->
 	 </ng-container>
