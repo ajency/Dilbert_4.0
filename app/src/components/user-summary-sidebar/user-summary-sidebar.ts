@@ -31,6 +31,7 @@ export class UserSummarySidebarComponent {
       disableSince: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:  new Date().getDate()+1 } 
   };
   newdata :any;
+  newdate:any;
   show = 7;
   nodata : any;
   maindata :any;
@@ -54,6 +55,7 @@ export class UserSummarySidebarComponent {
   private flag3 : boolean;
   future_date : boolean = false;
  counter:number;
+ newuser_id:any;
  datalength:number;
    content:any[]=new Array();
    username :any;
@@ -75,7 +77,7 @@ export class UserSummarySidebarComponent {
     this.text = 'Hello user-summary-sidebar';
     this.apiURL = this.appGlobalsProvider.getApiUrl();
     this.counter=0;
-    this.param1 = this.appGlobalsProvider.newsummary_params.param1;
+     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
   }
 
   ngOnInit(){
@@ -137,10 +139,8 @@ export class UserSummarySidebarComponent {
 
 
   requestData1(date1){
-
     console.log("inside requestData function", date1);
     var date =date1.formatted; 
-    console.log(date);
      if (date) {
       this.dateSelected = new Date(date);
       let dateObject = {
@@ -150,6 +150,7 @@ export class UserSummarySidebarComponent {
       this.getData(dateObject);
     }
     console.log(date);
+    this.newdate=date;
 }
 
 
@@ -185,36 +186,40 @@ viewmoredetails(item,key){
                this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
               found=1;
             }
-        } 
-        console.log("match found "+found);
+
+        } console.log("match found "+found);//this.newdate
         if (found == 0) {
-          this.user_id= this.userSummaryData[0].user.user_id;
-          this.userSummaryData[0].btnActive=true;
+          this.param1.user_id=this.userSummaryData[0].user.user_id;
           let new_summary_param = {
-             org_id :this.authguard.userData.org_id,
-             start_date : this.userSummaryData[0].summary[this.userSummaryData[0].summary.length-1].work_date,
-             user_id : this.userSummaryData[0].user.user_id,
-             period_unit : this.appGlobalsProvider.period_unit
-            }
+           org_id :this.authguard.userData.org_id,
+           start_date : this.newdate,
+           user_id : this.userSummaryData[0].user.user_id,
+           period_unit : this.appGlobalsProvider.period_unit
+         }
           
           this.maindata=this.userSummaryData[0];
           let data12={
-              newdata : this.maindata
-             } 
+          newdata : this.maindata
+        } 
         this.events.publish("update:summarydatanew", data12);
         let serializedquery =  `?${$.param(new_summary_param)}`;
         this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+
         }
 
 
           if(item !=''){
-              this.userSummaryData[key].btnActive = true;
+            this.userSummaryData[key].btnActive = true;
+
               for(var i = 0; i < this.userSummaryData.length; i++ )
                 {
                   if(i != key)
                   {
+
                   this.userSummaryData[i].btnActive = false;
+
                   }
+                
                 }
 
 
@@ -228,7 +233,7 @@ viewmoredetails(item,key){
           this.maindata=item;
           let data12={
             newdata : this.maindata
-           } 
+          } 
           this.events.publish("update:summarydatanew", data12);
           let serializedquery =  `?${$.param(new_summary_param)}`;
           this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
@@ -243,46 +248,49 @@ viewmoredetails(item,key){
               {
                 if(i != key)
                 {
+
                 this.userSummaryData[i].btnActive = false;
+
                 }
+              
               }
 
-        if(item !=''){
-             let new_summary_param = {
-                 org_id :this.authguard.userData.org_id,
-                 start_date : item.summary[item.summary.length-1].work_date, 
-                 user_id : item.user.user_id,
-                 period_unit : this.appGlobalsProvider.period_unit
-               }
+      if(item !=''){
+         let new_summary_param = {
+             org_id :this.authguard.userData.org_id,
+             start_date : this.newdate, 
+             user_id : item.user.user_id,
+             period_unit : this.appGlobalsProvider.period_unit
+           }
    
-            console.log(new_summary_param);
-            this.maindata=item;
-            let data12={
-              newdata : this.maindata
-            } 
-            this.events.publish("update:summarydatanew", data12);
-            let serializedquery =  `?${$.param(new_summary_param)}`;
-            this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
-        }
+        console.log(new_summary_param);
+        this.maindata=item;
+        let data12={
+          newdata : this.maindata
+        } 
+        this.events.publish("update:summarydatanew", data12);
+        let serializedquery =  `?${$.param(new_summary_param)}`;
+        this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+    }
 
 
-        else{
-             let new_summary_param = {
-               org_id :this.authguard.userData.org_id,
-               start_date : this.userSummaryData[0].summary[this.userSummaryData[0].summary.length-1].work_date,
-               user_id : this.userSummaryData[0].user.user_id,
-               period_unit : this.appGlobalsProvider.period_unit
-             }
-              
-              this.maindata=this.userSummaryData[0];
-              let data12={
-              newdata : this.maindata
-            } 
-            this.events.publish("update:summarydatanew", data12);
-            let serializedquery =  `?${$.param(new_summary_param)}`;
-            this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+    else{
+         let new_summary_param = {
+           org_id :this.authguard.userData.org_id,
+           start_date : this.userSummaryData[0].summary[this.userSummaryData[0].summary.length-1].work_date,
+           user_id : this.userSummaryData[0].user.user_id,
+           period_unit : this.appGlobalsProvider.period_unit
+         }
+          
+          this.maindata=this.userSummaryData[0];
+          let data12={
+          newdata : this.maindata
+        } 
+        this.events.publish("update:summarydatanew", data12);
+        let serializedquery =  `?${$.param(new_summary_param)}`;
+        this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
 
-          }
+      }
        
    }
     
@@ -393,10 +401,28 @@ getData(date){
 
        this.viewmoredetails(this.nodata,key);
        this.events.publish("update:summarydatausers", this.userSummaryData);
+       console.log("param are here");
+       console.log(this.param1);
+       if(this.param1==''){
+        this.newuser_id=this.userSummaryData[0].user.user_id;
+         console.log(this.newuser_id+"new user id");
+       }
+       else
+       {
+         this.newuser_id=this.param1.user_id;
+         console.log(this.newuser_id+"new user id");
+       }
+        console.log(this.newuser_id+"new user id-----");
+        let urlparam1 = {
+        org_id : this.org_id,
+        start_date: date.start,
+        user_id :this.newuser_id,
+        period_unit:this.period_unit
+      };
 
 
-         let serializedquery =  `?${$.param(filter1)}`;
-        this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+          let serializedquery =  `?${$.param(urlparam1)}`;
+          this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
          this.saveData1 = response.data;
 
       //   this.userSummaryData.forEach( (user) => {
