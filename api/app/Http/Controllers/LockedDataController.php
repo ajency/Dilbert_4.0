@@ -179,9 +179,10 @@ class LockedDataController extends Controller
                         return response()->json(['status' => 400, 'message' => __api('api_messages.more_than_one_period_data_entry')]);
                     // if person has to be marked as leave
                     // if($request->mark_as_leave != NULL and $request->mark_as_leave) {
-                    if($request->status == 'Leave') {
+                    if($request->status == 'Leave' || $request->status == 'Holiday') {
+                        $current_status=$request->status;
                         // make an entry in the data changes table
-                        foreach(['start_time' => null, 'end_time' => null, 'total_time' => null, 'status' => 'Leave'] as $ckey => $cvalue){
+                        foreach(['start_time' => null, 'end_time' => null, 'total_time' => null, 'status' => $request->status] as $ckey => $cvalue){
                             $dataChanges = new Data_Changes;
                             $dataChanges->user_id = $userCode;
                             $dataChanges->modified_by = $request->header('from');
@@ -198,7 +199,7 @@ class LockedDataController extends Controller
                         $lockedEntry->start_time = NULL;
                         $lockedEntry->end_time = NULL;
                         $lockedEntry->total_time = "00:00";
-                        $lockedEntry->status = "Leave";
+                        $lockedEntry->status = $current_status;
                         $lockedEntry->save();
                         $this->edit_log_email($dataToMail);
                         return response()->json(['status' => 200, 'message' => __('api_messages.marked_as_leave'), 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
@@ -206,6 +207,8 @@ class LockedDataController extends Controller
                     // for the other changes
                     $roleMeta = (new OrganisationMeta)->getAllRoleMeta(UserDetail::where('user_id',$userCode)->first()->org_id,$userRole);
                     // $output->writeln(json_encode($roleMeta));
+                    $st=0;
+                    $et=0;                    
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // do the time check
                         $now = new DateTime();
@@ -235,10 +238,16 @@ class LockedDataController extends Controller
                             array_push($dataToMail, $dataChanges);
                             // reflect this change in the locked__datas table
                             $lockedEntry->$ckey = $cvalue;
-                            if($ckey == 'start_time' || $ckey == 'end_time') {
-                                if($lockedEntry->end_time != null) {
-                                    $st = new DateTime($lockedEntry->start_time);
-                                    $et = new DateTime($lockedEntry->end_time);
+                                
+                        }
+                        if ($ckey=="start_time") {
+                            $st=new DateTime($lockedEntry->start_time);
+                        }
+                        else if ($ckey=="end_time") {
+                            $et = new DateTime($lockedEntry->end_time);                                    
+                        }
+                    }
+                    if($lockedEntry->end_time != null) {
                                     $dataChanges = new Data_Changes;
                                     $dataChanges->user_id = $userCode;
                                     $dataChanges->modified_by = $request->header('from');
@@ -249,14 +258,10 @@ class LockedDataController extends Controller
                                     $dataChanges->old_value = $lockedEntry->total_time;
                                     $dataChanges->new_value = date_diff($st,$et)->format("%H:%I");
                                     $dataChanges->save();
-
                                     $lockedEntry->total_time = date_diff($st,$et)->format("%H:%I");
-                                    array_push($dataToMail, $dataChanges);
-                                }
-                            }
+                                }                            
                             $lockedEntry->save();
-                        }
-                    }
+                            array_push($dataToMail, $dataChanges);
                     // $data = $lockedEntry;
                     // $data['violation_count'] = 0;
                     //
@@ -420,19 +425,6 @@ class LockedDataController extends Controller
             // getting CC and BCC list for mails
             $recipients=config('log_edit_email');
 
-            /*$cc_list = $recipients['cc_list'];
-            $bcc_list = $recipients['bcc_list'];
-
-            foreach ($cc_list as $cc_l) 
-            {
-                $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$data['org_id'],0);
-            }
-            $mail=0;
-            foreach ($bcc_list as $bcc_l) {
-                $bcc_mail[$mail] = (new OrganisationMeta)->getParamValue($bcc_l,$data['org_id'],0);
-                $mail++;
-            }*/
-
             $flag=1;
         }
         if ($flag==1) {
@@ -450,9 +442,8 @@ class LockedDataController extends Controller
             }
             $data['redirect_url']='dilbert_mails/email_log_edit';
             $bcc_mail=array();
-            // echo "permissions ";
-            // print_r($cc_mail_list);
-            //print_r(User::role('admin')->get()->pluck('name'));
+            echo "DATA\n";
+            print_r($dataToMails);
             send_mails($data,$subject,$comm['value'],$cc_mail_list,$bcc_mail);
         }
     }
