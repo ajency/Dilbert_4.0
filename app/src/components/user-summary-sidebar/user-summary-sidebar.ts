@@ -75,7 +75,7 @@ export class UserSummarySidebarComponent {
     this.text = 'Hello user-summary-sidebar';
     this.apiURL = this.appGlobalsProvider.getApiUrl();
     this.counter=0;
-     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
+    this.param1 = this.appGlobalsProvider.newsummary_params.param1;
   }
 
   ngOnInit(){
@@ -140,6 +140,7 @@ export class UserSummarySidebarComponent {
 
     console.log("inside requestData function", date1);
     var date =date1.formatted; 
+    console.log(date);
      if (date) {
       this.dateSelected = new Date(date);
       let dateObject = {
@@ -242,11 +243,8 @@ viewmoredetails(item,key){
               {
                 if(i != key)
                 {
-
                 this.userSummaryData[i].btnActive = false;
-
                 }
-              
               }
 
         if(item !=''){
@@ -397,8 +395,8 @@ getData(date){
        this.events.publish("update:summarydatausers", this.userSummaryData);
 
 
-         // let serializedquery =  `?${$.param(filter1)}`;
-         // this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+         let serializedquery =  `?${$.param(filter1)}`;
+        this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
          this.saveData1 = response.data;
 
       //   this.userSummaryData.forEach( (user) => {
