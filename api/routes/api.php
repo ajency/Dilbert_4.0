@@ -60,3 +60,11 @@ Route::get('/state-update','CronController@stateUpdate');  // cron runs every 5 
 
 // slots api
 Route::post('/edit-slots', 'SlotsController@editSlots');
+
+//Leave management
+Route::group(['prefix' => 'leaves'], function() {
+    Route::post('/add','LeaveController@addLeave');
+    Route::post('/update','LeaveController@updateLeavesData');
+    Route::post('/view','LeaveController@viewLeaves');
+    Route::post('/delete','LeaveController@deleteLeaves');
+});
