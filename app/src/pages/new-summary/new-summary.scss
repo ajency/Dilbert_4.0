@@ -22,7 +22,7 @@ page-new-summary {
 .user_summary {
     display: flex;
     &__sidebar {
-        flex: 1;
+        flex: 0.8;
         box-shadow: $shadow-2;
     }
     &__content {

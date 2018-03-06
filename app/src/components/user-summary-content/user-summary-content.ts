@@ -27,6 +27,9 @@ export class UserSummaryContentComponent {
     param1:any;
     user_id:any;
     temp:any;
+    datalength:any;
+    datalength1:any;
+    dummyarray:any;
 
   constructor( public events : Events,
                public zone : NgZone,
@@ -46,9 +49,22 @@ export class UserSummaryContentComponent {
 	this.user_summary_contentdata=data12;
   console.log("here------------------");
   console.log(this.user_summary_contentdata);
-    console.log(this.user_summary_contentdata.newdata.length);
+  console.log(this.user_summary_contentdata.newdata.summary.length);
+  this.datalength=this.user_summary_contentdata.newdata.summary.length;
+
+// let i = 0;
+//   this.dummyarray = [];
+//   while (this.datalength !==7) {
+//       console.log(i);
+//       this.dummyarray.push(i);
+//       i++;
+//       this.datalength++;
+
+//     }
+//     console.log(this.dummyarray);
 
 
+ 
 
 	  });
 
@@ -67,4 +83,11 @@ export class UserSummaryContentComponent {
 
   }
 
+timeconvert(time,date){
+
+var tempdate=date+" "+time;
+var x= moment(tempdate).format('LT');
+
+return x;
+}
 }
