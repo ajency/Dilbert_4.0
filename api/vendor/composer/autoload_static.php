@@ -419,6 +419,18 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
     );
 
     public static $classMap = array (
+        'Ajency\\User\\Ajency\\socialaccount\\SocialAccountService' => __DIR__ . '/../..' . '/packages/ajency/user/src/Ajency/socialaccount/SocialAccountService.php',
+        'Ajency\\User\\Ajency\\userauth\\UserAuth' => __DIR__ . '/../..' . '/packages/ajency/user/src/Ajency/userauth/UserAuth.php',
+        'Ajency\\User\\Commands\\CustomMigrationsCommand' => __DIR__ . '/../..' . '/packages/ajency/user/src/Commands/CustomMigrationsCommand.php',
+        'Ajency\\User\\Commands\\GenerateRolesPermissionsCommand' => __DIR__ . '/../..' . '/packages/ajency/user/src/Commands/GenerateRolesPermissionsCommand.php',
+        'Ajency\\User\\LaravelAjUserServiceProvider' => __DIR__ . '/../..' . '/packages/ajency/user/src/LaravelAjUserServiceProvider.php',
+        'Ajency\\Violations\\Ajency\\Operator' => __DIR__ . '/../..' . '/packages/ajency/violations/src/Ajency/Operator.php',
+        'Ajency\\Violations\\Ajency\\ViolationEmail' => __DIR__ . '/../..' . '/packages/ajency/violations/src/Ajency/ViolationEmail.php',
+        'Ajency\\Violations\\Ajency\\ViolationRules' => __DIR__ . '/../..' . '/packages/ajency/violations/src/Ajency/ViolationRules.php',
+        'Ajency\\Violations\\Commands\\GenerateViolationEmailTemplates' => __DIR__ . '/../..' . '/packages/ajency/violations/src/Commands/GenerateViolationEmailTemplates.php',
+        'Ajency\\Violations\\Models\\Violation' => __DIR__ . '/../..' . '/packages/ajency/violations/src/models/Violation.php',
+        'Ajency\\Violations\\Models\\ViolationType' => __DIR__ . '/../..' . '/packages/ajency/violations/src/models/ViolationType.php',
+        'Ajency\\Violations\\ViolationsServiceProvider' => __DIR__ . '/../..' . '/packages/ajency/violations/src/ViolationsServiceProvider.php',
         'App\\Console\\Commands\\reset_api_tokens' => __DIR__ . '/../..' . '/app/Console/Commands/reset_api_tokens.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Data_Changes' => __DIR__ . '/../..' . '/app/Data_Changes.php',

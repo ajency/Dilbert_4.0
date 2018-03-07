@@ -168,6 +168,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         /*
          * Application Service Providers...
@@ -233,7 +234,8 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 
         'AjUser' => 'Ajency\User\LaravelAjUserServiceProvider',
-        'AjViolation' => 'Ajency\Violations\ViolationsServiceProvider'
+        'AjViolation' => 'Ajency\Violations\ViolationsServiceProvider',
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class, 
 
     ],
 

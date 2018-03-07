@@ -6,15 +6,15 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "aws/aws-sdk-php": "~3.0",
         "fideloper/proxy": "~3.3",
+        "google/apiclient": "^2.0",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
-        "spatie/laravel-permission": "^2.6",
-        "zizaco/entrust": "5.2.x-dev",
         "predis/predis": "^1.1",
-        "aws/aws-sdk-php": "~3.0",
-        "google/apiclient":"^2.0"
+        "spatie/laravel-permission": "^2.9",
+        "zizaco/entrust": "5.2.x-dev"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

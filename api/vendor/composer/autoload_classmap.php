@@ -6,6 +6,18 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Ajency\\User\\Ajency\\socialaccount\\SocialAccountService' => $baseDir . '/packages/ajency/user/src/Ajency/socialaccount/SocialAccountService.php',
+    'Ajency\\User\\Ajency\\userauth\\UserAuth' => $baseDir . '/packages/ajency/user/src/Ajency/userauth/UserAuth.php',
+    'Ajency\\User\\Commands\\CustomMigrationsCommand' => $baseDir . '/packages/ajency/user/src/Commands/CustomMigrationsCommand.php',
+    'Ajency\\User\\Commands\\GenerateRolesPermissionsCommand' => $baseDir . '/packages/ajency/user/src/Commands/GenerateRolesPermissionsCommand.php',
+    'Ajency\\User\\LaravelAjUserServiceProvider' => $baseDir . '/packages/ajency/user/src/LaravelAjUserServiceProvider.php',
+    'Ajency\\Violations\\Ajency\\Operator' => $baseDir . '/packages/ajency/violations/src/Ajency/Operator.php',
+    'Ajency\\Violations\\Ajency\\ViolationEmail' => $baseDir . '/packages/ajency/violations/src/Ajency/ViolationEmail.php',
+    'Ajency\\Violations\\Ajency\\ViolationRules' => $baseDir . '/packages/ajency/violations/src/Ajency/ViolationRules.php',
+    'Ajency\\Violations\\Commands\\GenerateViolationEmailTemplates' => $baseDir . '/packages/ajency/violations/src/Commands/GenerateViolationEmailTemplates.php',
+    'Ajency\\Violations\\Models\\Violation' => $baseDir . '/packages/ajency/violations/src/models/Violation.php',
+    'Ajency\\Violations\\Models\\ViolationType' => $baseDir . '/packages/ajency/violations/src/models/ViolationType.php',
+    'Ajency\\Violations\\ViolationsServiceProvider' => $baseDir . '/packages/ajency/violations/src/ViolationsServiceProvider.php',
     'App\\Console\\Commands\\reset_api_tokens' => $baseDir . '/app/Console/Commands/reset_api_tokens.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Data_Changes' => $baseDir . '/app/Data_Changes.php',
