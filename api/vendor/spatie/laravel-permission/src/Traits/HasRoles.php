@@ -15,6 +15,10 @@ trait HasRoles
     public static function bootHasRoles()
     {
         static::deleting(function ($model) {
+            if (method_exists($model, 'isForceDeleting') && ! $model->isForceDeleting()) {
+                return;
+            }
+
             $model->roles()->detach();
             $model->permissions()->detach();
         });
@@ -59,7 +63,7 @@ trait HasRoles
     public function scopeRole(Builder $query, $roles): Builder
     {
         if ($roles instanceof Collection) {
-            $roles = $roles->toArray();
+            $roles = $roles->all();
         }
 
         if (! is_array($roles)) {
@@ -91,7 +95,7 @@ trait HasRoles
     protected function convertToPermissionModels($permissions): array
     {
         if ($permissions instanceof Collection) {
-            $permissions = $permissions->toArray();
+            $permissions = $permissions->all();
         }
 
         $permissions = array_wrap($permissions);
@@ -283,6 +287,10 @@ trait HasRoles
             );
         }
 
+        if (is_int($permission)) {
+            $permission = app(Permission::class)->findById($permission, $this->getDefaultGuardName());
+        }
+
         return $this->hasDirectPermission($permission) || $this->hasPermissionViaRole($permission);
     }
 
@@ -331,7 +339,13 @@ trait HasRoles
     {
         if (is_string($permission)) {
             $permission = app(Permission::class)->findByName($permission, $this->getDefaultGuardName());
+            if (! $permission) {
+                return false;
+            }
+        }
 
+        if (is_int($permission)) {
+            $permission = app(Permission::class)->findById($permission, $this->getDefaultGuardName());
             if (! $permission) {
                 return false;
             }
@@ -377,6 +391,10 @@ trait HasRoles
 
     protected function getStoredRole($role): Role
     {
+        if (is_numeric($role)) {
+            return app(Role::class)->findById($role, $this->getDefaultGuardName());
+        }
+
         if (is_string($role)) {
             return app(Role::class)->findByName($role, $this->getDefaultGuardName());
         }

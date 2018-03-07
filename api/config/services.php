@@ -38,7 +38,7 @@ return [
     'google' => [
         'client_id' => '460485328187-u3um84ihtuq08aiu23er9d58e43269do.apps.googleusercontent.com',
         'client_secret' => '4jVU79DMjLs3pzkm94WVcfUh',
-        'redirect' => $_SERVER['APP_URL'].'/callback/google'
+        //'redirect' => $_SERVER['APP_URL'].'/callback/google'
     ]
 
 ];

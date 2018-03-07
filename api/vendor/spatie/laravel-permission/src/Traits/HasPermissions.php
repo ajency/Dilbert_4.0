@@ -2,6 +2,7 @@
 
 namespace Spatie\Permission\Traits;
 
+use Spatie\Permission\Guard;
 use Illuminate\Support\Collection;
 use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Contracts\Permission;
@@ -52,7 +53,7 @@ trait HasPermissions
     /**
      * Revoke the given permission.
      *
-     * @param \Spatie\Permission\Contracts\Permission|string $permission
+     * @param \Spatie\Permission\Contracts\Permission|\Spatie\Permission\Contracts\Permission[]|string|string[] $permission
      *
      * @return $this
      */
@@ -68,10 +69,14 @@ trait HasPermissions
     /**
      * @param string|array|\Spatie\Permission\Contracts\Permission|\Illuminate\Support\Collection $permissions
      *
-     * @return \Spatie\Permission\Contracts\Permission
+     * @return \Spatie\Permission\Contracts\Permission|\Spatie\Permission\Contracts\Permission[]|\Illuminate\Support\Collection
      */
-    protected function getStoredPermission($permissions): Permission
+    protected function getStoredPermission($permissions)
     {
+        if (is_numeric($permissions)) {
+            return app(Permission::class)->findById($permissions, $this->getDefaultGuardName());
+        }
+
         if (is_string($permissions)) {
             return app(Permission::class)->findByName($permissions, $this->getDefaultGuardName());
         }
@@ -79,7 +84,7 @@ trait HasPermissions
         if (is_array($permissions)) {
             return app(Permission::class)
                 ->whereIn('name', $permissions)
-                ->whereId('guard_name', $this->getGuardNames())
+                ->whereIn('guard_name', $this->getGuardNames())
                 ->get();
         }
 
@@ -100,25 +105,12 @@ trait HasPermissions
 
     protected function getGuardNames(): Collection
     {
-        if ($this->guard_name) {
-            return collect($this->guard_name);
-        }
-
-        return collect(config('auth.guards'))
-            ->map(function ($guard) {
-                return config("auth.providers.{$guard['provider']}.model");
-            })
-            ->filter(function ($model) {
-                return get_class($this) === $model;
-            })
-            ->keys();
+        return Guard::getNames($this);
     }
 
     protected function getDefaultGuardName(): string
     {
-        $default = config('auth.defaults.guard');
-
-        return $this->getGuardNames()->first() ?: $default;
+        return Guard::getDefaultName($this);
     }
 
     /**
