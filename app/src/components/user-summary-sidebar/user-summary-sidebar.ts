@@ -36,8 +36,6 @@ export class UserSummarySidebarComponent {
   show = 7;
   nodata : any;
   maindata :any;
-  userSideBarData: any;
-  userSummaryContentData : any;
   user_id : any;
   apiURL : any;
   weekBucket: any [] = [];
@@ -48,18 +46,16 @@ export class UserSummarySidebarComponent {
   dateSelected : any;
   para :any;
   param1 : any;
-   param20 : any;
   org_id : any;
   period_unit : any;
   private flag : boolean;
   private flag2 : any;
   private flag3 : boolean;
   future_date : boolean = false;
- counter:number;
- newuser_id:any;
- datalength:number;
-   content:any[]=new Array();
-   username :any;
+  counter:number;
+  newuser_id:any;
+  datalength:number;
+  content:any[]=new Array();
    // @Input('test') userSummaryData : any ;
 
 
@@ -256,11 +252,8 @@ viewmoredetails(item,key){
               {
                 if(i != key)
                 {
-
                 this.userSummaryData[i].btnActive = false;
-
                 }
-              
               }
 
       if(item !=''){
@@ -326,9 +319,6 @@ viewmoredetails(item,key){
 
         this.getData(date);
         this.newdate2=date;
-        // console.log("get date from here ");
-        // console.log(this.newdate2.start);
-
   };
 
 
@@ -341,13 +331,11 @@ getData(date){
       curr = new Date(date);
 
     console.log(curr);
-
     let first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
     console.log(first);
 
     let firstDay = new Date(curr.setDate(first));
     console.log(firstDay);
-
 
     this.weekBucket = [];
     let i = 0;
@@ -368,10 +356,10 @@ getData(date){
 
    let date_range = date;
 
-    console.log(date_range);
+   console.log(date_range);
   
 
-    let optionalHeaders = {
+   let optionalHeaders = {
       'X-API-KEY' : this.authguard.userData.x_api_key,
       'From' : this.authguard.userData.user_id
     };
@@ -380,14 +368,14 @@ getData(date){
     let url =  `${this.apiURL}/summary/${this.authguard.userData.org_id}/${this.appGlobalsProvider.lang}`;
     console.log("this is the url");
     console.log(url);
-    let filter1 = {
+      let filter1 = {
         org_id : this.org_id,
         start_date: date.start,
         user_id : this.user_id,
         period_unit:this.period_unit
       };
 
-     let filters = {
+      let filters = {
       date_range : date_range,
       period_unit : this.period_unit
 
@@ -420,18 +408,18 @@ getData(date){
 
        this.viewmoredetails(this.nodata,key);
        this.events.publish("update:summarydatausers", this.userSummaryData);
-       console.log("param are here");
-       console.log(this.param1);
+       // console.log("param are here");
+       // console.log(this.param1);
        if(this.param1==''){
         this.newuser_id=this.userSummaryData[0].user.user_id;
-         console.log(this.newuser_id+"new user id");
+         // console.log(this.newuser_id+"new user id");
        }
        else
        {
          this.newuser_id=this.param1.user_id;
-         console.log(this.newuser_id+"new user id");
+         // console.log(this.newuser_id+"new user id");
        }
-        console.log(this.newuser_id+"new user id-----");
+        // console.log(this.newuser_id+"new user id-----");
         let urlparam1 = {
         org_id : this.org_id,
         start_date: date.start,

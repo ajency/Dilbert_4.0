@@ -9,20 +9,13 @@ page-new-summary {
     }
 }
 
-@media screen and (min-width: 920px) and (max-width: 1400px) {
-    .user_dashboard__summary{
-        flex: 0 0 75%;
-        width: 75%;
-        max-width: 75%;
-    }
-}
 
 
 // Summary section
 .user_summary {
     display: flex;
     &__sidebar {
-        flex: 0.8;
+        flex: .7;
         box-shadow: $shadow-2;
     }
     &__content {
@@ -37,25 +30,26 @@ page-new-summary {
 }
 
 
-@media screen and (min-width: 1280px) and (max-width: 1400px) {
-    .user_summary__sidebar{
-        flex: 0.8;
-    }     
-}
-
-@media screen and (max-width: $mobile){
-    .user_dashboard__summary{
-        .user_summary{
-            // padding: 0 1.5em;
-        }    
-    }
-}
 
 
 // Common flexbox call
 .flex-row {
     display: flex;
     align-items: center;
+}
+
+
+ @media screen and (max-width: 950px){
+.user_summary {
+    display: block;
+     &__sidebar {
+        box-shadow: $shadow-2;
+    }
+        &__content {
+
+        }
+
+ }
 }
 
 }

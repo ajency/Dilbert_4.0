@@ -52,16 +52,17 @@ export class UserSummaryContentComponent {
   console.log(this.user_summary_contentdata.newdata.summary.length);
   this.datalength=this.user_summary_contentdata.newdata.summary.length;
 
+//   this.datalength1=this.user_summary_contentdata.newdata.summary.length;
 // let i = 0;
 //   this.dummyarray = [];
-//   while (this.datalength !==7) {
+//   while (this.datalength1 !==7) {
 //       console.log(i);
 //       this.dummyarray.push(i);
 //       i++;
-//       this.datalength++;
+//       this.datalength1++;
 
 //     }
-//     console.log(this.dummyarray);
+//     console.log(this.dummyarray.length);
 
 
  
