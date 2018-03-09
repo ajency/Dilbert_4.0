@@ -301,9 +301,10 @@ export class MyApp {
             console.log(obj4);
              console.log("this date is: "+moment(obj4.start_date).isValid());
             //  (moment(obj4.start_date).isValid())
-
-
-              if(obj4 != undefined && (moment(obj4.start_date).isValid()) && obj4.period_unit && obj4.period_unit == 'week' && obj4.org_id && obj4.user_id){
+            if(obj4.period_unit !='month'){
+              obj4.period_unit='week';
+            }
+              if(obj4 != undefined && (moment(obj4.start_date).isValid()) && obj4.period_unit && obj4.period_unit && obj4.org_id && obj4.user_id){
                 this.updateTitle('user-summary');
                 this.appglobals.newsummary_params.param1 = obj4;
                   console.log(" defined ");

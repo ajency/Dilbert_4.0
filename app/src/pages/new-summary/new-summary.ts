@@ -69,7 +69,7 @@ export class NewSummaryPage {
   
   this.userSummaryContentData=data12;
   console.log("here");
-  console.log(this.userSummaryContentData);
+  // console.log(this.userSummaryContentData);
 
     });
 

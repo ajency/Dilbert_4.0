@@ -44,7 +44,6 @@ export class UserSummarySidebarComponent {
   date : any;
   text : any;
   dateSelected : any;
-  para :any;
   param1 : any;
   org_id : any;
   period_unit : any;
@@ -54,9 +53,12 @@ export class UserSummarySidebarComponent {
   future_date : boolean = false;
   counter:number;
   newuser_id:any;
+  totaldays : any;
   datalength:number;
-  content:any[]=new Array();
-   // @Input('test') userSummaryData : any ;
+  monthdays :any;
+  month:any;
+  year:any;
+
 
 
   constructor(public navCtrl: NavController, 
@@ -74,7 +76,7 @@ export class UserSummarySidebarComponent {
     this.text = 'Hello user-summary-sidebar';
     this.apiURL = this.appGlobalsProvider.getApiUrl();
     this.counter=0;
-     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
+    this.param1 = this.appGlobalsProvider.newsummary_params.param1;
   }
 
   ngOnInit(){
@@ -148,7 +150,7 @@ export class UserSummarySidebarComponent {
     }
     console.log(date);
     this.newdate=date;
-}
+  }
 
 
 viewmoredetails(item,key){
@@ -158,95 +160,103 @@ viewmoredetails(item,key){
     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
     console.log(this.param1);
 
-    if(this.param1 !=''){
+    if(this.param1 !='')
+    {
       console.log("the data is as per the url params");
       this.user_id=this.param1.user_id;
       console.log(this.user_id);
       let found =0;
-        for(var i=0;i<this.userSummaryData.length;i++){
-                if(this.userSummaryData[i].user.user_id==this.user_id){
-                  this.userSummaryData[i].btnActive=true;
-                  this.maindata=this.userSummaryData[i];
-                  console.log("match userid");
-                  console.log(this.maindata);
-                  let data12={
-                      newdata:this.maindata
-                  }
-                  let new_summary_param ={
-                     org_id :this.param1.org_id,
-                     start_date : this.param1.start_date, 
-                     user_id : this.param1.user_id,
-                     period_unit : this.param1.period_unit
-                  }
-                  // console.log(new_summary_param.start_date+"this is the start date parrams are passed + id matches");
-               this.events.publish("update:summarydatanew", data12);
-               let serializedquery =  `?${$.param(new_summary_param)}`;
-               this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+        for(var i=0;i<this.userSummaryData.length;i++)
+        {
+          if(this.userSummaryData[i].user.user_id==this.user_id)
+            {
+              this.userSummaryData[i].btnActive=true;
+              this.maindata=this.userSummaryData[i];
+              console.log("match userid");
+              console.log(this.maindata);
+              let data12={
+                  newdata:this.maindata
+              }
+              let new_summary_param ={
+                 org_id :this.param1.org_id,
+                 start_date : this.param1.start_date, 
+                 user_id : this.param1.user_id,
+                 period_unit : this.param1.period_unit
+              }
+
+              let period_unit_data=this.param1.period_unit;
+              this.events.publish("update:period_unit_info", period_unit_data);
+              this.events.publish("update:summarydatanew", data12);
+              let serializedquery =  `?${$.param(new_summary_param)}`;
+              this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
               found=1;
             }
 
         } console.log("match found "+found);
-        if (found == 0) {
+        if (found == 0)
+        {
           this.param1.user_id=this.userSummaryData[0].user.user_id;
-          let new_summary_param = {
-           org_id :this.param1.org_id,
-           start_date : this.param1.start_date,
-           user_id : this.userSummaryData[0].user.user_id,
-           period_unit : this.appGlobalsProvider.period_unit
-         }
-          // console.log(new_summary_param.start_date+"this is the start date parrams are passed + id does not matches");
+          let new_summary_param = 
+          {
+             org_id :this.param1.org_id,
+             start_date : this.param1.start_date,
+             user_id : this.userSummaryData[0].user.user_id,
+             period_unit : this.param1.period_unit
+          }
           this.maindata=this.userSummaryData[0];
           let data12={
-          newdata : this.maindata
-        } 
-        this.events.publish("update:summarydatanew", data12);
-        let serializedquery =  `?${$.param(new_summary_param)}`;
-        this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+             newdata : this.maindata
+          }
+
+          let period_unit_data=this.param1.period_unit;
+          this.events.publish("update:period_unit_info", period_unit_data);
+          this.events.publish("update:summarydatanew", data12);
+          let serializedquery =  `?${$.param(new_summary_param)}`;
+          this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
 
         }
-
-
-          if(item !=''){
-            this.userSummaryData[key].btnActive = true;
-
-              for(var i = 0; i < this.userSummaryData.length; i++ )
+        if(item !='')
+        {
+          this.userSummaryData[key].btnActive = true;
+            for(var i = 0; i < this.userSummaryData.length; i++ )
+              {
+                if(i != key)
                 {
-                  if(i != key)
-                  {
-
                   this.userSummaryData[i].btnActive = false;
-
-                  }
+                }
                 
-                }
+              }
 
-                console.log(this.newdate+"this is hte data");
-                if(this.newdate=="" ||this.newdate== undefined){
-                  this.newdate=this.param1.start_date;
-                }
-                 // console.log(this.newdate+"this is hte data");
-         let new_summary_param = {
+              console.log(this.newdate+"this is hte data");
+              if(this.newdate=="" ||this.newdate== undefined){
+                this.newdate=this.param1.start_date;
+              }
+           let new_summary_param = {
              org_id :this.param1.org_id,
              start_date : this.newdate, 
              user_id : item.user.user_id,
-             period_unit : this.appGlobalsProvider.period_unit
-           }
+             period_unit : this.param1.period_unit
+            }
 
         
           this.maindata=item;
           let data12={
             newdata : this.maindata
-          } 
+           } 
+
+          let period_unit_data=this.param1.period_unit;
+          this.events.publish("update:period_unit_info", period_unit_data);
           // console.log(new_summary_param.start_date+"this is the start date+ parrams are passed and item is not empty ");
           this.events.publish("update:summarydatanew", data12);
           let serializedquery =  `?${$.param(new_summary_param)}`;
           this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
-      }
+        }
 
     }
 //if ends here 
 
-    else{
+    else
+    {
         this.userSummaryData[key].btnActive = true;
            for(var i = 0; i < this.userSummaryData.length; i++ )
               {
@@ -256,7 +266,8 @@ viewmoredetails(item,key){
                 }
               }
 
-      if(item !=''){
+      if(item !='')
+      {
 
          let new_summary_param = {
              org_id :this.authguard.userData.org_id,
@@ -265,17 +276,19 @@ viewmoredetails(item,key){
              period_unit : this.appGlobalsProvider.period_unit
            }
    
-        console.log(new_summary_param);
-        this.maindata=item;
-        let data12={
-          newdata : this.maindata
-        } 
-        console.log(item);
-        // console.log(new_summary_param.start_date+"this is the start date no param item not empty");
-        this.events.publish("update:summarydatanew", data12);
-        let serializedquery =  `?${$.param(new_summary_param)}`;
-        this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
-    }
+          console.log(new_summary_param);
+          this.maindata=item;
+          let data12={
+            newdata : this.maindata
+          } 
+          console.log(item);
+          let period_unit_data=this.appGlobalsProvider.period_unit;
+          this.events.publish("update:period_unit_info", period_unit_data);
+          // console.log(new_summary_param.start_date+"this is the start date no param item not empty");
+          this.events.publish("update:summarydatanew", data12);
+          let serializedquery =  `?${$.param(new_summary_param)}`;
+          this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+      }
 
 
     else{
@@ -291,8 +304,10 @@ viewmoredetails(item,key){
           
           this.maindata=this.userSummaryData[0];
           let data12={
-          newdata : this.maindata
-        } 
+           newdata : this.maindata
+          }
+        let period_unit_data=this.appGlobalsProvider.period_unit;
+        this.events.publish("update:period_unit_info", period_unit_data);
         // console.log(new_summary_param.start_date+"this is the start date no param , no item");
         this.events.publish("update:summarydatanew", data12);
         let serializedquery =  `?${$.param(new_summary_param)}`;
@@ -331,27 +346,72 @@ getData(date){
       curr = new Date(date);
 
     console.log(curr);
+    let datemonth=curr;
+    console.log(datemonth); var n = datemonth.getMonth();
+    var firstDay1 = new Date(datemonth.getFullYear(), datemonth.getMonth(), 0);
+    let monthnum = moment(datemonth).format('YYYY MM');
+    console.log(firstDay1);
+    this.monthdays = moment(monthnum).daysInMonth();
+
     let first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
     console.log(first);
 
     let firstDay = new Date(curr.setDate(first));
     console.log(firstDay);
-
+/**/    
+    console.log(n);
+    console.log(firstDay);
+    
     this.weekBucket = [];
     let i = 0;
+    console.log(this.monthdays);
+    this.totaldays=7;
+    console.log(this.param1);
 
-    while (i !== 7) {
-      // console.log(i);
-      let temp = new Date (firstDay);
-      let nextD = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate() + 1 );// Get Next Date
-      // console.log(nextD);
-      this.weekBucket.push(nextD);
-      firstDay = nextD;
-      i++;
+    if(this.param1 != '' || this.param1 != undefined){
+      if(this.param1.period_unit == 'week'){
+         this.totaldays=7;
+           while (i !== this.totaldays) 
+           {
+              let temp = new Date (firstDay);
+              let nextD = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate() + 1 );// Get Next Date
+              console.log(temp);
+              this.weekBucket.push(nextD);
+              firstDay = nextD;
+              i++;
+           }
+      }
+      if(this.param1.period_unit == 'month')
+       {
+         this.totaldays=this.monthdays;
+          while (i !== this.totaldays) 
+          {
+            let temp = new Date (firstDay1);
+            let nextD = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate() + 1 );// Get Next Date
+            console.log(temp);
+            this.weekBucket.push(nextD);
+            firstDay1 = nextD;
+            i++;
+          }
+       } 
+       else 
+       {
+        this.totaldays=7;
+        while (i !== this.totaldays) 
+         {
+          let temp = new Date (firstDay);
+          let nextD = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate() + 1 );// Get Next Date
+          console.log(temp);
+          this.weekBucket.push(nextD);
+          firstDay = nextD;
+          i++;
+        }
+       }
     }
+    console.log(this.totaldays);
     console.log("weekBucket");
-   console.log(this.weekBucket);
-   this.events.publish("update:weekBucketdata", this.weekBucket);
+    console.log(this.weekBucket);
+    this.events.publish("update:weekBucketdata", this.weekBucket);
 
 
    let date_range = date;
@@ -402,6 +462,7 @@ getData(date){
           }
 
         this.userSummaryData = response.data;
+        console.log(this.userSummaryData);
         // this.showmoredata();
         let key=0;
         this.nodata='';
@@ -427,9 +488,10 @@ getData(date){
         period_unit:this.period_unit
       };
 
-
-          let serializedquery =  `?${$.param(urlparam1)}`;
-          this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
+         let period_unit_data=this.period_unit;
+         this.events.publish("update:period_unit_info", period_unit_data);
+         let serializedquery =  `?${$.param(urlparam1)}`;
+         this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
          this.saveData1 = response.data;
 
       //   this.userSummaryData.forEach( (user) => {
