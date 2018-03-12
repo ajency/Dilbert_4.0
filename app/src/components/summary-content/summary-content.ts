@@ -75,6 +75,7 @@ export class SummaryContentComponent {
       this.titleCasePipe = new TitleCasePipe();
 
       this.updateContentCB = (data) => {
+        $("#changelogview").html("View in details");
         // this.currentData = data.date;
         this.undoSelection();
         console.log('inside update content');
