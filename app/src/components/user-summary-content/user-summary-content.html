@@ -5,37 +5,39 @@
 		<div  p-t-20 b-b-20 >
 		  {{text}} : 
 		</div>
-		<div p-t-20> 
-			<ion-list no-lines style="max-width: 300px;">	
-				<!-- <a href="#" style="text-decoration: none;"> -->
-				<ion-item >
-				    <ion-avatar item-start>
-				      <img src="{{user_summary_contentdata.newdata.user.avatar}}">
-				    </ion-avatar>
-				   
-				    <h2>{{user_summary_contentdata.newdata.user.name}}</h2>
-				    <ng-container *ngIf="user_summary_contentdata.newdata.summary.length != 0 ">
+		<div p-t-20 style="width: 200px;">
+			<div class="cursor" (click)="navigateToDashboard(data)">
+				<ion-list no-lines style="max-width: 300px;">	
+					<!-- <a href="#" style="text-decoration: none;"> -->
+					<ion-item >
+					    <ion-avatar item-start>
+					      <img src="{{user_summary_contentdata.newdata.user.avatar}}">
+					    </ion-avatar>
+					   
+					    <h2>{{user_summary_contentdata.newdata.user.name}}</h2>
+					    <ng-container *ngIf="user_summary_contentdata.newdata.summary.length != 0 ">
 
-				       <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status == 'active' ">
-		       				<div ion-text="" class="text text-md text-md-success">
-		       					{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
-		      				 </div> 
-		   			  </ng-container>
-		   			   <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status != 'active' ">
-		       				<div ion-text="" class="text text-md text-md-danger">
-		       					{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
-		      				 </div> 
-		   			  </ng-container>
-		   			</ng-container>  
-				</ion-item>
-				<!-- </a> -->
-			</ion-list>	 
-		</div>
+					       <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status == 'active' ">
+			       				<div ion-text="" class="text text-md text-md-success">
+			       					{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
+			      				 </div> 
+			   			  </ng-container>
+			   			   <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status != 'active' ">
+			       				<div ion-text="" class="text text-md text-md-danger">
+			       					{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
+			      				 </div> 
+			   			  </ng-container>
+			   			</ng-container>  
+					</ion-item>
+					<!-- </a> -->
+				</ion-list>	 
+			</div>
+		</div> 
 		<ng-container *ngIf=" period_unit_data =='week' ">
 			<table  class="logtable noborder">
 				<thead>
 					<tr>
-						<th p-t-10 p-b-10 p-r-10 p-l-10 *ngFor=" let item of weekBucketdata; let key = index " class="noborder datesrow " style="text-align:left">
+						<th p-t-10 p-b-10 p-r-10 p-l-10 *ngFor=" let item of weekBucketdata; let key = index "  class="noborder datesrow " style="text-align:left">
 							<div font-weight-5>{{item |date : 'dd MMM'}}</div><span  ion-text="" class="text text-md text-md-text"> {{item| date : 'EEE'}} </span>
 						</th>
 						<th p-t-10 p-b-10 class="noborder datesrow" style="text-align:left">
@@ -45,11 +47,18 @@
 				</thead>
 				<tbody>
 					<tr *ngIf=" user_summary_contentdata.newdata.summary.length != 0" >
-						<td  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " class="noborder rowsummarydata" p-l-10><!-- <span style="cursor: pointer;" (click)="testfunction(item)"> -->
+						<td  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " (click)="navigateToDashboard(item)" class="noborder rowsummarydata cursor" p-l-10  ><!-- <span style="cursor: pointer;" (click)="testfunction(item)"> -->
 							<ng-container *ngIf=" item.leave_status == 'Worked' || item.leave_status=='Worked on weekend' ||  item.leave_status=='Worked on holiday' || item.leave_status == 'Present' ">	
 								<td class="noborder" >
 
-						    	  <div font-weight-5 >{{item.total_time}} <span *ngIf="item.violations.length !=0"><ion-icon style="color: red;" name="information-circle"></ion-icon></span></div>
+						    	  <div font-weight-5 >{{item.total_time}} 
+						    	  	  <span *ngIf="item.violations.length !=0 ">
+
+						    	  		<ion-icon style="color: red;" name="information-circle">
+						    	  		
+						    	  		</ion-icon>
+						    	 	  </span>
+						    		</div>
 						    	  <span ion-text="" class="text text-md text-md-text">
 						    	  	<span>{{item.start_time}}</span>-<span> {{item.end_time}}</span>
 						    	  </span>
@@ -140,8 +149,7 @@
 				</tbody>
 			</table>
 		</ng-container>
-		<div class="blockvoilation">
-				<!-- <hr> -->
+<!-- 		<div class="blockvoilation">
 			<div m-t-40 m-b-10  p-t-10 p-b-10 p-l-10 p-r-10>
 				<ng-container *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " >
 					<ng-container  *ngIf="item.violations.length !=0 ">
@@ -172,14 +180,14 @@
 										Total Work Hours for day are &nbsp;{{temp.violation_meta.total_hrs_in_day}}hr
 									</div>
 								</div>
-
-								<div *ngIf="temp.type=='minimum_hrs_of_week' " class="logvoilationblock" p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10 > 
-									<!-- <div>{{item.work_date|date : 'dd MMM'}}</div> -->
-									 <div>
-									 	Minimum Weekly Hours not completed<br>
-										{{temp.violation_meta.total_hrs_in_week}}
+								<ng-container  *ngIf=" period_unit_data =='week' ">
+									<div *ngIf="temp.type=='minimum_hrs_of_week' " class="logvoilationblock" p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10 > 
+										 <div>
+										 	Minimum Weekly Hours not completed<br>
+											{{temp.violation_meta.total_hrs_in_week}}
+										</div>
 									</div>
-								</div>
+								</ng-container>
 
 								<ng-container  *ngIf=" period_unit_data =='month' ">
 									<div *ngIf="temp.type=='minimum_hrs_of_month' " class="logvoilationblock" p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10> 
@@ -191,11 +199,9 @@
 								</ng-container>	
 							</div>
 					</ng-container>
-
 				</ng-container>
-
 			</div>
-		</div>
+		</div> -->
 			<div *ngIf=" user_summary_contentdata.newdata.summary.length == 0" class="text-center" style="text-align: center;" m-t-10>
 				<div p-t-10 >
 					<h5 class="text-center">

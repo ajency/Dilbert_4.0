@@ -150,6 +150,9 @@ export class UserSummarySidebarComponent {
     }
     console.log(date);
     this.newdate=date;
+    let newsummarydate=date;
+    this.events.publish("update:summarydate", date);
+
   }
 
 
@@ -227,7 +230,7 @@ viewmoredetails(item,key){
                 
               }
 
-              console.log(this.newdate+"this is hte data");
+              console.log(this.newdate+"this is the data");
               if(this.newdate=="" ||this.newdate== undefined){
                 this.newdate=this.param1.start_date;
               }

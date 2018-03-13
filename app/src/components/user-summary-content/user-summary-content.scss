@@ -14,6 +14,10 @@ user-summary-content {
 	marging-top :20px;
 	padding-top :20px;
 }
+.rowsummarydata:hover {
+    opacity:0.5;
+
+}
 .logvoilationblock{
 	width:45%;
 	float:left;
@@ -54,4 +58,8 @@ user-summary-content {
         width:700px;
         min-height:200px;
 }
+.cursor{
+	cursor: pointer;
+}
+
 }
