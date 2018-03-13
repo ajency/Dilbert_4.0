@@ -59,6 +59,7 @@ export class UserSummarySidebarComponent {
   month:any;
   year:any;
   newsummarydata:any;
+  key:any;
 
 
   constructor(public navCtrl: NavController, 
@@ -155,13 +156,18 @@ export class UserSummarySidebarComponent {
 
   }
 
+  highlightSelectedUserData(){
+    for(var i=0;i<this.userSummaryData.length;i++){
+      if(this.userSummaryData[i].user.user_id==this.maindata.user.user_id){
+        this.userSummaryData[i].btnActive=true;
+      }
+      else{
+        this.userSummaryData[i].btnActive=false;
+      }
+    }
+  }
 
-viewmoredetails(item,key){
-     // for(var i=0;i<this.userSummaryData.length;i++){
-     //  this.userSummaryData[i].btnActive=false;
-     //  console.log( this.userSummaryData[i].btnActive);
-     // }
-    console.log(item);
+  viewmoredetails(item,key){
     console.log("clicked on sidebar data to view users summary ");
     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
     console.log(this.param1);
@@ -263,32 +269,17 @@ viewmoredetails(item,key){
 
     else
     {
-      console.log("else 1");
-      // console.log(this.saveData1);
-      // console.log(this.newsummarydata);
-      // this.userSummaryData=this.newsummarydata;
-        // this.userSummaryData[key].btnActive = true;
-        //    for(var i = 0; i < this.userSummaryData.length; i++ )
-        //       {
-        //         if(i != key)
-        //         {
-        //         this.userSummaryData[i].btnActive = false;
-        //         }
-        //       }
-
       if(item !='')
       {
          console.log(this.saveData1);
          this.userSummaryData[key].btnActive = true;
-           for(var i = 0; i < this.userSummaryData.length; i++ )
+         for(var i = 0; i < this.userSummaryData.length; i++ )
               {
                 if(i != key)
                 {
                 this.userSummaryData[i].btnActive = false;
                 }
               }
-
-        console.log("else");
 
          let new_summary_param = {
              org_id :this.authguard.userData.org_id,
@@ -313,17 +304,17 @@ viewmoredetails(item,key){
 
 
     else{
-        this.userSummaryData[key].btnActive = true;
-             for(var i = 0; i < this.userSummaryData.length; i++ )
-                {
-                  if(i != key)
-                  {
-                  this.userSummaryData[i].btnActive = false;
-                  }
-                }
-      if(this.newdate=="" || this.newdate== undefined){
-        this.newdate=this.newdate2.start;
-      }
+         this.userSummaryData[key].btnActive = true;
+         for(var i = 0; i < this.userSummaryData.length; i++ )
+            {
+              if(i != key)
+              {
+              this.userSummaryData[i].btnActive = false;
+              }
+            }
+        if(this.newdate=="" || this.newdate== undefined){
+           this.newdate=this.newdate2.start;
+          }
          let new_summary_param = {
            org_id :this.authguard.userData.org_id,
            start_date : this.newdate,
@@ -337,7 +328,6 @@ viewmoredetails(item,key){
           }
         let period_unit_data=this.appGlobalsProvider.period_unit;
         this.events.publish("update:period_unit_info", period_unit_data);
-        // console.log(new_summary_param.start_date+"this is the start date no param , no item");
         this.events.publish("update:summarydatanew", data12);
         let serializedquery =  `?${$.param(new_summary_param)}`;
         this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
@@ -353,9 +343,6 @@ viewmoredetails(item,key){
 
   
  getUserDate(dropdownValue, dateswnt) {
-
-        // let dates = this.getStartAndEndOfDate(new Date());
-        
         let date = {
           start: this.formatDate(new Date()),
           // end: this.formatDate(dates.end)
@@ -523,40 +510,10 @@ getData(date){
          this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
          this.saveData1 = response.data;
          this.newsummarydata=response.data;
-      //   this.userSummaryData.forEach( (user) => {
-
-
-      //   if(user.summary.length !== 0) { // Checks if summary has Length greater than 0, if so the week's data is present
-
-      //     if(user.summary[user.summary.length-1].work_date < user.user.joining_date ){
-      //       user.summary = [];
-      //     }
-
-      //     else if(user.summary[0].work_date < user.user.joining_date && user.summary[user.summary.length -1].work_date > user.user.joining_date){
-      //       for(i = 0; i < user.summary.length; i++){
-      //         if(user.summary[i].work_date < user.user.joining_date && user.summary[i].leave_status == 'Leave'){
-      //           user.summary[i].leave_status = 'Not joined';
-      //         }
-      //       }
-
-      //     }
-
-
-      //     user.total_time = "00:00";
-      //     for ( i = 0; i < user.summary.length; i++) {
-      //       if(user.summary[i].leave_status == "Present" || user.summary[i].leave_status == "Worked" || user.summary[i].leave_status == "Worked on holiday" || 
-      //       user.summary[i].leave_status == "Worked on weekend"  ) // Check the status before calculating
-      //         user.total_time = this.getSumofTime(user.total_time, user.summary[i].total_time);
-      //     }
-      //   } else { // No summary data found related to that user
-      //     user.total_time = "00:00";
-      //   }
-      // });
-
-        this.saveData1 = this.userSummaryData;
-        console.log("summary data ----");
-        console.log(this.userSummaryData.length);
-        this.datalength=this.userSummaryData.length;
+         this.saveData1 = this.userSummaryData;
+         console.log("summary data ----");
+         console.log(this.userSummaryData.length);
+         this.datalength=this.userSummaryData.length;
 
         // Flags for sorting
         this.flag2 = Array<number>(7);
@@ -596,13 +553,9 @@ formatDate(date) {
 
  onTextChange(text) {
     console.log(text, this.saveData1);
+
     this.userSummaryData = this.saveData1.filter(item => item.user.name.toLowerCase().indexOf(text.toLowerCase()) !== -1); // LowerCase all the names & keyword so that it cover all the possibilities
     this.zone.run(() => {}); 
-    // console.log(this.saveData1);
-    // console.log(this.userSummaryData);
-     // for(var i = 0; i < this.userSummaryData.length; i++ )
-     //          {
-     //            this.userSummaryData[i].btnActive = false;
-     //          }
+    this.highlightSelectedUserData();
   }
 }
