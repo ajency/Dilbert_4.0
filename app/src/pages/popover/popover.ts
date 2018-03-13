@@ -91,6 +91,14 @@ export class PopoverPage {
     console.log('navigating to summary page');
 
   }
+  viewNewSummary(){
+    this.viewCtrl.dismiss();
+    this.appglobals.newsummary_params.param1 = '';
+    this.events.publish('app:navroot', 'user-summary');   
+    console.log('navigating to new summary page');
+
+  }
+
 
   viewDashboard(){
       this.viewCtrl.dismiss();
@@ -100,6 +108,8 @@ export class PopoverPage {
     this.events.publish('app:navroot', 'dashboard');   
     console.log('navigating to dashboard page');
   }
+
+    
 
 
 

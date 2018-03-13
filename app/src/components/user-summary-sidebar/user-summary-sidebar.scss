@@ -1,0 +1,60 @@
+user-summary-sidebar {
+    .mydp{
+    border : none;
+    .btnclear{
+        display : none;
+    } 
+    .selection{
+            color: rgba(85, 85, 85, 0);
+        background: rgba(255, 255, 255, 0);
+    pointer-events: none;
+        
+    }
+
+    .btnpicker, .selectiongroup{
+        background: rgba(255, 255, 255, 0);
+    }
+}
+.selecteddataitem{
+    background-color:#f2f2f2;
+}
+
+.btnActivated{
+    background-color: #f2f2f2c2;
+}
+.test :hover{
+   background-color:yellow;
+}
+}
+
+.bgwhite{
+    background-color:white;
+}
+.bgselected{
+    background-color:#f2f2f2;
+}
+
+.dataitem{
+	text-decoration:none;
+	cursor:pointer;
+}
+.selecteddataitem{
+	background-color:#f2f2f2;
+}
+.btnclicked1{
+	display:none;
+}
+.btnclicked{
+    cursor:pointer;
+}
+
+.active {
+    background-color: #666;
+    color: white;
+}
+#datalist:first-child{
+    background-color:#f2f2f2;
+}
+.selected{
+    background-color:red;
+}

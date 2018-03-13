@@ -21,6 +21,9 @@ import { TitleCasePipe } from '../pipes/title-case/title-case';
 import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SummarydataProvider } from '../providers/summarydata/summarydata';
+// import { UserSummarySidebarComponent } from '../components/user-summary-sidebar/user-summary-sidebar';
+// import { UserSummaryContentComponent } from '../components/user-summary-content/user-summary-content';
 // import { TimePickerComponent } from '../components/time-picker/time-picker';
 // import { NgProgressModule, NgProgressCustomBrowserXhr } from 'ng2-progressbar';
 import { NgProgressModule } from 'ng2-progressbar';
@@ -93,6 +96,7 @@ export function createTranslateLoader(http: Http) {
     UserDataProvider,
     AuthguardProvider,
     AppGlobalsProvider,
+    SummarydataProvider,
     
   ]
 })

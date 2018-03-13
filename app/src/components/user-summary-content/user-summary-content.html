@@ -1,0 +1,216 @@
+<!-- Generated template for the UserSummaryContentComponent component -->
+<ng-container *ngIf=" user_summary_contentdata != null ">
+	<!-- <ng-container *ngIf=" user_summary_contentdata.newdata.length != 0 "> -->
+	<div class="container p-t-20 ">
+		<div  p-t-20 b-b-20 >
+		  {{text}} : 
+		</div>
+		<div p-t-20 style="width: 200px;">
+			<div class="cursor" (click)="navigateToDashboard(data)">
+				<ion-list no-lines style="max-width: 300px;">	
+					<!-- <a href="#" style="text-decoration: none;"> -->
+					<ion-item >
+					    <ion-avatar item-start>
+					      <img src="{{user_summary_contentdata.newdata.user.avatar}}">
+					    </ion-avatar>
+					   
+					    <h2>{{user_summary_contentdata.newdata.user.name}}</h2>
+					    <ng-container *ngIf="user_summary_contentdata.newdata.summary.length != 0 ">
+
+					       <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status == 'active' ">
+			       				<div ion-text="" class="text text-md text-md-success">
+			       					{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
+			      				 </div> 
+			   			  </ng-container>
+			   			   <ng-container *ngIf="user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status != 'active' ">
+			       				<div ion-text="" class="text text-md text-md-danger">
+			       					{{user_summary_contentdata.newdata.summary[user_summary_contentdata.newdata.summary.length-1].status}}
+			      				 </div> 
+			   			  </ng-container>
+			   			</ng-container>  
+					</ion-item>
+					<!-- </a> -->
+				</ion-list>	 
+			</div>
+		</div> 
+		<ng-container *ngIf=" period_unit_data =='week' ">
+			<table  class="logtable noborder">
+				<thead>
+					<tr>
+						<th p-t-10 p-b-10 p-r-10 p-l-10 *ngFor=" let item of weekBucketdata; let key = index "  class="noborder datesrow " style="text-align:left">
+							<div font-weight-5>{{item |date : 'dd MMM'}}</div><span  ion-text="" class="text text-md text-md-text"> {{item| date : 'EEE'}} </span>
+						</th>
+						<th p-t-10 p-b-10 class="noborder datesrow" style="text-align:left">
+							<span ion-text="" class="text text-md text-md-text">Total<br>Time</span> 
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngIf=" user_summary_contentdata.newdata.summary.length != 0" >
+						<td  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " (click)="navigateToDashboard(item)" class="noborder rowsummarydata cursor" p-l-10  ><!-- <span style="cursor: pointer;" (click)="testfunction(item)"> -->
+							<ng-container *ngIf=" item.leave_status == 'Worked' || item.leave_status=='Worked on weekend' ||  item.leave_status=='Worked on holiday' || item.leave_status == 'Present' ">	
+								<td class="noborder" >
+
+						    	  <div font-weight-5 >{{item.total_time}} 
+						    	  	  <span *ngIf="item.violations.length !=0 ">
+
+						    	  		<ion-icon style="color: red;" name="information-circle">
+						    	  		
+						    	  		</ion-icon>
+						    	 	  </span>
+						    		</div>
+						    	  <span ion-text="" class="text text-md text-md-text">
+						    	  	<span>{{item.start_time}}</span>-<span> {{item.end_time}}</span>
+						    	  </span>
+						    	 </td>
+					    	</ng-container> 
+					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  && item.leave_status == 'Weekend' || item.leave_status=='Holiday' ||  item.leave_status=='Leave'">		
+					    		<td class="noborder" style="min-width: 77px;padding: 0px;" ><div font-weight-5 p-b-15 class="bgcolorwaring" >{{item.leave_status}}</div></td>
+					    	</ng-container>
+					    	<ng-container *ngIf="item.leave_status=='Not joined'">		
+					    		<td class="noborder" style="min-width: 77px;padding: 0px;" ><div font-weight-5 p-b-15 >{{item.leave_status}}</div></td>
+					    	</ng-container>		
+
+
+					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  &&  item.leave_status=='Leave due to violation' ">	
+					    		<td class="noborder" style="min-width: 77px;">	
+					    			 <div font-weight-5 p-b-15  class="bgcolorwaring">Leave <ion-icon style="color: red;" name="information-circle"></ion-icon></div>
+					    			</td>
+					    	</ng-container>	<!-- </span> -->
+						</td>
+						
+						<ng-container *ngIf=" datalength != weekbucketlength" >
+							<td [colSpan]=" weekbucketlength - datalength" class="noborder">
+
+							</td>
+						</ng-container>
+						<ng-container>
+							<td class="noborder"> 
+								 <h4  p-t-5>{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></h4>
+							</td>
+						</ng-container>
+					</tr>
+				</tbody>
+			</table>
+		</ng-container>
+		
+		<ng-container *ngIf=" period_unit_data =='month' ">
+			<table  class=" noborder month ">
+				<thead>
+					<tr>
+						<th p-t-10 p-b-10 p-r-10 p-l-10 *ngFor=" let item of weekBucketdata; let key = index " class="noborder datesrow " style="text-align:left">
+							<div font-weight-5>{{item |date : 'dd MMM'}}</div><span  ion-text="" class="text text-md text-md-text"> {{item| date : 'EEE'}} </span>
+						</th>
+						<th p-t-10 p-b-10 class="noborder datesrow" style="text-align:left">
+							<span ion-text="" class="text text-md text-md-text">Total<br>Time</span> 
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngIf=" user_summary_contentdata.newdata.summary.length != 0" >
+						<td  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " class="noborder rowsummarydata" p-l-10>
+							<ng-container *ngIf=" item.leave_status == 'Worked' || item.leave_status=='Worked on weekend' ||  item.leave_status=='Worked on holiday' || item.leave_status == 'Present' ">	
+								<td class="noborder" >
+						    	  <div font-weight-5 >
+						    	  	{{item.total_time}} 
+						    	  	<span *ngIf="item.violations.length !=0">
+						    	  		<ion-icon style="color: red;" name="information-circle">
+						    	  			
+						    	  		</ion-icon>
+						    	  	</span>
+						    	  </div>
+						    	  <span ion-text="" class="text text-md text-md-text">
+						    	  	<span>{{item.start_time}}</span>-<span> {{item.end_time}}</span>
+						    	  </span>
+						    	 </td>
+					    	</ng-container> 
+					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  && item.leave_status == 'Weekend' || item.leave_status=='Holiday' ||  item.leave_status=='Leave'">		
+					    		<td class="noborder" style="min-width: 77px;padding: 0px;" ><div  p-b-15 class="bgcolorwaring" >{{item.leave_status}}</div></td>
+					    	</ng-container>	
+					    	<ng-container *ngIf="item.leave_status=='Not joined'">		
+					    		<td class="noborder" style="min-width: 77px;padding: 0px;" ><div font-weight-5 p-b-15 >{{item.leave_status}}</div></td>
+					    	</ng-container>		
+					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  &&  item.leave_status=='Leave due to violation' ">	
+					    		<td class="noborder" style="min-width: 77px;">	
+					    			 <div p-b-15  class="bgcolorwaring">Leave <ion-icon style="color: red;" name="information-circle"></ion-icon></div>
+					    			</td>
+					    	</ng-container>	
+						</td>
+						<ng-container *ngIf=" datalength != weekbucketlength" >
+							<td [colSpan]=" weekbucketlength - datalength" class="noborder">
+							</td>
+						</ng-container>
+						<ng-container>
+							<td class="noborder"> 
+								 <h4  p-t-5>{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></h4>
+							</td>
+						</ng-container>
+					</tr>
+				</tbody>
+			</table>
+		</ng-container>
+<!-- 		<div class="blockvoilation">
+			<div m-t-40 m-b-10  p-t-10 p-b-10 p-l-10 p-r-10>
+				<ng-container *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " >
+					<ng-container  *ngIf="item.violations.length !=0 ">
+							<div *ngFor="let temp of item.violations ;" >
+								<div *ngIf="temp.type=='late_alert' " class="logvoilationblock" p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10 >
+									<div>{{item.work_date|date : 'dd MMM'}}</div>
+									Late alert : <br>
+								    <span> Started day at &nbsp;{{timeconvert(temp.violation_meta.start_time,item.work_date)}}</span>
+								</div>
+								<div *ngIf="temp.type=='Logs Changed start_time' " class="logvoilationblock" p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10 >
+									<div>{{item.work_date|date : 'dd MMM'}}</div>
+									<div>Logs Changed</div>
+									<div>
+										Start time was changed from {{timeconvert(temp.violation_meta.start_time,item.work_date)}} To {{timeconvert(item.start_time,item.work_date)}}
+									</div>
+								</div>
+								<div *ngIf="temp.type=='Logs Changed total_time' " class="logvoilationblock"  p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10 >
+									<div>{{item.work_date|date : 'dd MMM'}}</div>
+									<div>Logs Changed</div>
+									<div> 
+										Total time was changed from {{temp.violation_meta.total_hrs_in_day}}hr To {{item.total_time}}hr
+									</div>
+								</div>
+								<div *ngIf="temp.type=='minimum_hrs_of_day' " class="logvoilationblock" p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10 >
+									<div>{{item.work_date|date : 'dd MMM'}}</div>
+									<div>
+										Mininum hours for day not completed<br>
+										Total Work Hours for day are &nbsp;{{temp.violation_meta.total_hrs_in_day}}hr
+									</div>
+								</div>
+								<ng-container  *ngIf=" period_unit_data =='week' ">
+									<div *ngIf="temp.type=='minimum_hrs_of_week' " class="logvoilationblock" p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10 > 
+										 <div>
+										 	Minimum Weekly Hours not completed<br>
+											{{temp.violation_meta.total_hrs_in_week}}
+										</div>
+									</div>
+								</ng-container>
+
+								<ng-container  *ngIf=" period_unit_data =='month' ">
+									<div *ngIf="temp.type=='minimum_hrs_of_month' " class="logvoilationblock" p-l-10 p-t-10 p-r-10 p-b-10 m-r-20 m-b-10> 
+									<div>
+										Minimum Monthly Hours not completed<br>
+										Worked for {{temp.violation_meta.total_hrs_in_month}} this month
+									</div>
+									</div>
+								</ng-container>	
+							</div>
+					</ng-container>
+				</ng-container>
+			</div>
+		</div> -->
+			<div *ngIf=" user_summary_contentdata.newdata.summary.length == 0" class="text-center" style="text-align: center;" m-t-10>
+				<div p-t-10 >
+					<h5 class="text-center">
+						No Logs Found 
+					</h5>
+				</div>
+			</div>
+		
+
+	</div>
+
+</ng-container>

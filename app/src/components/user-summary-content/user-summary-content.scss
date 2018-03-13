@@ -1,0 +1,65 @@
+user-summary-content {
+
+	.datesrow{
+	background-color: #f2f2f2c2;
+	}
+.bgcolorwaring{
+	background-color:#f97c7c54;
+	padding:10px;
+}
+.noborder{
+	border : 0px ;
+}
+.rowsummarydata{
+	marging-top :20px;
+	padding-top :20px;
+}
+.rowsummarydata:hover {
+    opacity:0.5;
+
+}
+.logvoilationblock{
+	width:45%;
+	float:left;
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+	min-height:90px;
+}
+.logtable{
+	width:100%;
+}
+
+ @media screen and (max-width: 950px){
+ 	.logvoilationblock{
+ 	width:100%;
+ 	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+ 	}
+	.logtable{
+		
+	}
+
+ }
+
+ @media screen and (max-width: 769px){
+.month{
+	display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        max-width:100%;
+        min-height:200px;
+}
+ }
+
+
+
+.month{
+	display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        width:700px;
+        min-height:200px;
+}
+.cursor{
+	cursor: pointer;
+}
+
+}

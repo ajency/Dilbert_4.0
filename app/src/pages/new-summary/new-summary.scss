@@ -1,0 +1,56 @@
+page-new-summary {
+
+// Dashboard columns
+.user_dashboard {
+    &__summary {
+        @media screen and (min-width: 769px){
+           
+        }
+    }
+}
+
+
+
+// Summary section
+.user_summary {
+    display: flex;
+    &__sidebar {
+        flex: .8;
+        box-shadow: $shadow-2;
+    }
+    &__content {
+        flex: 1.7;
+        box-shadow: $shadow-2;
+        @media screen and (min-width: 1400px) {
+            flex: 2;
+        }
+        @media screen and (min-width: 1601px) {
+            flex: 2.3;
+        }
+    }
+}
+
+
+
+
+// Common flexbox call
+.flex-row {
+    display: flex;
+    align-items: center;
+}
+
+
+ @media screen and (max-width: 769px){
+.user_summary {
+    display: block;
+     &__sidebar {
+        box-shadow: $shadow-2;
+    }
+        &__content {
+
+        }
+
+ }
+}
+
+}
