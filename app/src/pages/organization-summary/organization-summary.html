@@ -100,7 +100,7 @@
 
                                             <ng-container *ngIf="item.summary.length != 0">
                                                 <td *ngFor="let workday of item.summary">
-                                                    <a  class="single-day" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip">
+                                                    <a  class="single-day" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tooltip"  (click) = "usersdaydata(workday,item)">
                                                         <div *ngIf="workday.leave_status === 'Present' || workday.leave_status === 'Worked'  || workday.leave_status === 'Worked on weekend' || workday.leave_status === 'Worked on holiday' ">
                                                             <!-- <span class="th-total">{{ (workday.total_time != null || workday.total_time != '') ? getDayDate(workday.total_time,5) : "n/a" }}</span> -->
                                                             <span class="th-total th-small">Worked: {{ (workday.total_time != null || workday.total_time != '') ? getDayDate(workday.total_time,5) : naText }} <br/>(Lunch: {{ (workday.slots.lunch ? workday.slots.lunch : naText) }})</span>
