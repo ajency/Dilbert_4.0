@@ -99,6 +99,9 @@ class AppController extends Controller
                         $rhsFields = ['organisation_start_time'];
                         $mailList = ['hr','owner1','owner2'];
                         $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailList);
+                        $data['logo']= public_path().'/img/ajency-logo.png';
+                        $data['dilbert']=public_path().'/img/dilbert.png';
+                        $data['documentation']=public_path().'/img/ajency-email.png';
                         $vioResponse = (new ViolationRules)->checkForViolation('late_alert',$data,false,true);
 
                         // make an entry into the Locked data table

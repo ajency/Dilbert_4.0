@@ -12,14 +12,14 @@
             <!--  Dilbert Image : END -->
             <tr>
                 <td bgcolor="#ffffff" style="padding: 40px 40px 20px; text-align: center;">
-                    <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;">Hi {{$name}}</h1>
+                    <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;">Hi Nutan</h1>
                 </td>
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                    <p style="margin: 0;">We see that Dilbert has logged your total hours this month as:  <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_month']}} / {{$violation_data['rule_rhs']['total_month_hours']}}h - i.e. <b>{{$violation_data['meta']['time_difference']}} short</b></span> <br/>
-                    of the required time. It may be a one-off month, but just a small note to let you know what we think,<br/>
-                    as also laid out in the <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook</a>.</p>
+                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> {{$start}}</span> <br/>
+                    It may be a one-off day, but just a small note to let you know what we think,<br/>
+                    as also laid out in the Ajency.in Handbook.</p>
                 </td>
             </tr>
             <!-- Main Content1 : End -->
@@ -28,8 +28,8 @@
 	                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="padding-right: 20px; padding-left: 20px;">
 	                    <tr>
 	                        <td class="stack-column-center">
-                                 <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">
-                                    <img border="0" src="<?php echo $message->embed($violation_data['documentation']); ?>" style="width: 100%;">
+                                <a href="Ajency.inAtoZ.pdf" download="Ajency.inAtoZ.pdf">
+                                    <img border="0" src="<?php echo $message->embed($email); ?>" style="width: 100%;">
                                 </a>
 	                        </td>
 	                    </tr>

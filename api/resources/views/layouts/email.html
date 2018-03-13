@@ -1,25 +1,42 @@
-@extends('layouts.email')	
-@section('content') 
-	 <!-- Email Body : BEGIN -->
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;  background-color: white;" class="email-container">
-            <!-- Main Content1 : BEGIN -->
-            <!-- Dilbert Image : BEGIN -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body style="background-color: #eee;">
+	<center style="background-color: #eee;">
+		<!-- Header Start -->
+		<table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto; background-color: white;" class="email-container">
+			<tr>
+				<td style="padding-top:30px;padding-left: 30px; padding-bottom: 30px;  text-align: left">
+					<a href="https://ajency.in" target="_blank">
+						<img src="D:\work email dilbert\Dilbert_4.0\api\public\img\ajency-logo.png">
+					</a>
+				</td>
+			</tr>
+			<!-- Dilbert Image : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" align="center">
-                    <img src="<?php echo $message->embed($violation_data['dilbert']); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
+                    <img src="D:\work email dilbert\Dilbert_4.0\api\public\img\dilbert.png"  alt="dilbert" border="0" align="center"  class="g-img">
                 </td>
             </tr>
             <!--  Dilbert Image : END -->
+		</table>
+		<!-- Header End -->
+		 <!-- Email Body : BEGIN -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;  background-color: white;" class="email-container">
+
+            <!-- Main Content1 : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" style="padding: 40px 40px 20px; text-align: center;">
-                    <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;">Hi {{$name}}</h1>
+                    <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;">Hi Nutan</h1>
                 </td>
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> {{date("h:i a" , strtotime($violation_data['rule_key_fields']['start_time']))}} </span> <br/>
+                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> 11:08.</span> <br/>
                     It may be a one-off day, but just a small note to let you know what we think,<br/>
-                    as also laid out in the <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook</a>.</p>
+                    as also laid out in the Ajency.in Handbook.</p>
                 </td>
             </tr>
             <!-- Main Content1 : End -->
@@ -28,8 +45,8 @@
 	                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="padding-right: 20px; padding-left: 20px;">
 	                    <tr>
 	                        <td class="stack-column-center">
-                                <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">
-                                    <img border="0" src="<?php echo $message->embed($violation_data['documentation']); ?>" style="width: 100%;">
+                                <a href="Ajency.inAtoZ.pdf" download="Ajency.inAtoZ.pdf">
+                                    <img border="0" src="D:\work email dilbert\Dilbert_4.0\api\public\img\ajency-email.png" style="width: 100%;">
                                 </a>
 	                        </td>
 	                    </tr>
@@ -70,4 +87,20 @@
 			</tr>
 		</table>
     <!-- Email Body : END -->
-@endsection
+
+    <!-- Email Footer Start -->
+	     <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="width:600px; font-family: sans-serif; color: #888888; font-size: 12px; line-height: 140%; background-color: white;">
+	        <tr>
+	            <td style="padding-bottom:30px; width: 100%; font-family: sans-serif; font-size: 12px; line-height: 140%; text-align: center; color: #888888;" class="x-gmail-data-detectors">
+	            	<a href="https://ajency.in" style="text-decoration: none; color:grey;" target="_blank">
+                    	<h1>Ajency.in</h1>
+                	</a>
+                    <span>(C) 2017 Digital Dwarves Pvt Ltd. All Rights Reserved</span>
+	            </td>
+	        </tr>
+	    </table>
+	    <!-- Email Footer End -->
+	</center>
+
+</body>
+</html>
