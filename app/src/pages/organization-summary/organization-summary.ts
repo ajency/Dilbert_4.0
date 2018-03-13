@@ -48,6 +48,7 @@ export class OrganizationSummaryPage {
   private flag3 : boolean;
   future_date : boolean = false;
   private naText: string = "n/a";
+  newdate:any;
 
   constructor(public navCtrl: NavController, 
   public navParams: NavParams,
@@ -162,6 +163,7 @@ export class OrganizationSummaryPage {
         };
 
         this.getData(date);
+        this.newdate=date.start;
   };
 
   getData(date){
@@ -349,6 +351,7 @@ export class OrganizationSummaryPage {
   }
 
    onDateChange(date) {
+    console.log(date);
     if (date) {
       this.dateSelected = new Date(date);
       let dateObject = {
@@ -358,6 +361,7 @@ export class OrganizationSummaryPage {
       this.getData(dateObject);
     }
     console.log(date);
+    this.newdate=date;
   }
 
   onFormatDate(dateValue) { // Format any form Date to 'yyyy-mm-dd'
@@ -401,15 +405,34 @@ export class OrganizationSummaryPage {
 
   navigateToDashboard(data){
     console.log(data);
+
     let dash_param1 = {
       user_id : data.user.user_id,
-      start_date : this.formatDate(new Date()),
+      start_date : this.newdate,
       period_unit : this.appGlobalsProvider.period_unit
     }
 
     let dash_param2 = {
       summary_date : this.formatDate(new Date())
     }
+    this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
+    this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
+    this.events.publish('app:navroot', 'dashboard');
+  }
+
+  usersdaydata(data,userdata){
+    console.log(data);
+    console.log(userdata);
+     let dash_param1 = {
+      user_id : userdata.user.user_id,
+      start_date : data.work_date,
+      period_unit : this.appGlobalsProvider.period_unit
+    }
+
+    let dash_param2 = {
+      summary_date :  data.work_date
+    }
+    console.log(dash_param2.summary_date);
     this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
     this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
     this.events.publish('app:navroot', 'dashboard');
