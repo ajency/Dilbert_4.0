@@ -154,10 +154,18 @@ export class UserSummarySidebarComponent {
     this.events.publish("update:summarydate", date);
 
   }
+  highlightSelectedUserData(){
+    for(var i=0;i<this.userSummaryData.length;i++){
+      if(this.userSummaryData[i].user.user_id==this.maindata.user.user_id){
+        this.userSummaryData[i].btnActive=true;
+      }
+      else{
+        this.userSummaryData[i].btnActive=false;
+      }
+    }
+  }
 
-
-viewmoredetails(item,key){
-
+  viewmoredetails(item,key){
     console.log(item);
     console.log("clicked on sidebar data to view users summary ");
     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
@@ -571,6 +579,7 @@ formatDate(date) {
  onTextChange(text) {
     console.log(text, this.saveData1);
     this.userSummaryData = this.saveData1.filter(item => item.user.name.toLowerCase().indexOf(text.toLowerCase()) !== -1); // LowerCase all the names & keyword so that it cover all the possibilities
-     this.zone.run(() => {}); 
+    this.zone.run(() => {}); 
+    this.highlightSelectedUserData();
   }
 }
