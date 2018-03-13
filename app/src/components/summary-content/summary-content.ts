@@ -6,7 +6,7 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
-import { setTimeout } from 'timers';
+// import { setTimeout } from 'timers';
 import { TitleCasePipe } from '../../pipes/title-case/title-case';
 
 /**
@@ -25,7 +25,6 @@ export class SummaryContentComponent {
 
   private logListNative: any;
   private markerEditNative: any;
-
   private contentDimensions: any;
   // private contentLeftOffset: number;
   private allLogs: Array<any>;
