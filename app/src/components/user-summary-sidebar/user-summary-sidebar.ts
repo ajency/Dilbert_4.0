@@ -58,7 +58,7 @@ export class UserSummarySidebarComponent {
   monthdays :any;
   month:any;
   year:any;
-
+  newsummarydata:any;
 
 
   constructor(public navCtrl: NavController, 
@@ -82,10 +82,10 @@ export class UserSummarySidebarComponent {
   ngOnInit(){
 
 
-    console.log(this.appGlobalsProvider.newsummary_params.param1);
+     console.log(this.appGlobalsProvider.newsummary_params.param1);
      this.param1 = this.appGlobalsProvider.newsummary_params.param1;
      console.log("this is the ngOninit ");
-    console.log(this.param1);
+     console.log(this.param1);
 
     if((this.param1 == '') || (this.param1 == undefined) ){
       console.log("empty");
@@ -110,8 +110,8 @@ export class UserSummarySidebarComponent {
 
 
   }
-     ionViewCanEnter(): Promise<boolean>{
 
+  ionViewCanEnter(): Promise<boolean>{
     return new Promise((resolve,reject) => {
       this.authguard.verifyToken('user-summary')
       .then(() => {
@@ -157,7 +157,10 @@ export class UserSummarySidebarComponent {
 
 
 viewmoredetails(item,key){
-
+     // for(var i=0;i<this.userSummaryData.length;i++){
+     //  this.userSummaryData[i].btnActive=false;
+     //  console.log( this.userSummaryData[i].btnActive);
+     // }
     console.log(item);
     console.log("clicked on sidebar data to view users summary ");
     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
@@ -260,7 +263,23 @@ viewmoredetails(item,key){
 
     else
     {
-        this.userSummaryData[key].btnActive = true;
+      console.log("else 1");
+      // console.log(this.saveData1);
+      // console.log(this.newsummarydata);
+      // this.userSummaryData=this.newsummarydata;
+        // this.userSummaryData[key].btnActive = true;
+        //    for(var i = 0; i < this.userSummaryData.length; i++ )
+        //       {
+        //         if(i != key)
+        //         {
+        //         this.userSummaryData[i].btnActive = false;
+        //         }
+        //       }
+
+      if(item !='')
+      {
+         console.log(this.saveData1);
+         this.userSummaryData[key].btnActive = true;
            for(var i = 0; i < this.userSummaryData.length; i++ )
               {
                 if(i != key)
@@ -269,8 +288,7 @@ viewmoredetails(item,key){
                 }
               }
 
-      if(item !='')
-      {
+        console.log("else");
 
          let new_summary_param = {
              org_id :this.authguard.userData.org_id,
@@ -295,6 +313,14 @@ viewmoredetails(item,key){
 
 
     else{
+        this.userSummaryData[key].btnActive = true;
+             for(var i = 0; i < this.userSummaryData.length; i++ )
+                {
+                  if(i != key)
+                  {
+                  this.userSummaryData[i].btnActive = false;
+                  }
+                }
       if(this.newdate=="" || this.newdate== undefined){
         this.newdate=this.newdate2.start;
       }
@@ -496,7 +522,7 @@ getData(date){
          let serializedquery =  `?${$.param(urlparam1)}`;
          this.events.publish('app:updatehistory',{page: 'user-summary', state: {query: serializedquery},  frompath: `/user-summary` , replace : true });
          this.saveData1 = response.data;
-
+         this.newsummarydata=response.data;
       //   this.userSummaryData.forEach( (user) => {
 
 
@@ -571,6 +597,12 @@ formatDate(date) {
  onTextChange(text) {
     console.log(text, this.saveData1);
     this.userSummaryData = this.saveData1.filter(item => item.user.name.toLowerCase().indexOf(text.toLowerCase()) !== -1); // LowerCase all the names & keyword so that it cover all the possibilities
-     this.zone.run(() => {}); 
+    this.zone.run(() => {}); 
+    // console.log(this.saveData1);
+    // console.log(this.userSummaryData);
+     // for(var i = 0; i < this.userSummaryData.length; i++ )
+     //          {
+     //            this.userSummaryData[i].btnActive = false;
+     //          }
   }
 }
