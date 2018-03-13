@@ -75,7 +75,7 @@ export class SummaryContentComponent {
       this.titleCasePipe = new TitleCasePipe();
 
       this.updateContentCB = (data) => {
-        $("#changelogview").html("View More");
+        $(".changelogview").html("View More");
         // this.currentData = data.date;
         this.undoSelection();
         console.log('inside update content');
@@ -649,12 +649,12 @@ changelogview(){
         if ( $(".logbox").hasClass("hidden") ) {
              $(".logbox").removeClass("hidden");
              $(".logbox2").addClass("hidden");
-             $("#changelogview").html("View More");
+             $(".changelogview").html("View More");
        }
        else{
         $(".logbox").addClass("hidden");
         $(".logbox2").removeClass("hidden");
-        $("#changelogview").html("View Less");
+        $(".changelogview").html("View Less");
 
        }
 
