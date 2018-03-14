@@ -111,6 +111,7 @@ export class OrganizationSummaryPage {
           // end: this.formatDate(dates.end)
         };
       this.getData(dateObject);
+      this.newdate=this.param1.date;
 
       }
 
@@ -417,6 +418,8 @@ export class OrganizationSummaryPage {
     }
     this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
     this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
+    console.log(dash_param1);
+    console.log(dash_param2);
     this.events.publish('app:navroot', 'dashboard');
   }
 

@@ -5,7 +5,10 @@ user-summary-content {
 	}
 .bgcolorwaring{
 	background-color:#f97c7c54;
-	padding:10px;
+	padding-top:10px;
+	padding-left:10px;
+	padding-right:10px;
+	
 }
 .noborder{
 	border : 0px ;
@@ -24,16 +27,13 @@ user-summary-content {
 	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
 	min-height:90px;
 }
-.logtable{
-	width:100%;
-}
 
  @media screen and (max-width: 950px){
  	.logvoilationblock{
  	width:100%;
  	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
  	}
-	.logtable{
+	.weektable{
 		
 	}
 
@@ -52,7 +52,7 @@ user-summary-content {
 
 
 .month{
-	display: block;
+		display: block;
         overflow-x: auto;
         white-space: nowrap;
         width:700px;
@@ -60,6 +60,12 @@ user-summary-content {
 }
 .cursor{
 	cursor: pointer;
+}
+
+
+
+.datablock{
+	min-width:70px;
 }
 
 }

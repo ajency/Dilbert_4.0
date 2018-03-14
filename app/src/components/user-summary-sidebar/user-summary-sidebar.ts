@@ -404,7 +404,7 @@ getData(date){
           {
             let temp = new Date (firstDay1);
             let nextD = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate() + 1 );// Get Next Date
-            console.log(temp);
+            // console.log(temp);
             this.weekBucket.push(nextD);
             firstDay1 = nextD;
             i++;

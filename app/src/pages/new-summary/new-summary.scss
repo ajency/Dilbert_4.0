@@ -38,7 +38,24 @@ page-new-summary {
     display: flex;
     align-items: center;
 }
+ @media screen and (max-width: 1050px) {
+    .user_summary {
+        &__content {
+                width:80%;
+                    .month{
+                    width:90%;
+                    }
+                    .weektable{
+                        display:block;
+                        overflow-x: auto;
+                        white-space: nowrap;
+                        width:90%;
+                        min-height:200px;
+                    }
+                }
 
+    }
+}
 
  @media screen and (max-width: 769px){
 .user_summary {

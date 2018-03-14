@@ -5,7 +5,7 @@
 		<div  p-t-20 b-b-20 >
 		  {{text}} : 
 		</div>
-		<div p-t-20 style="width: 200px;">
+		<div p-t-20 style="width:300px;">
 			<div class="cursor" (click)="navigateToDashboard(data)">
 				<ion-list no-lines style="max-width: 300px;">	
 					<!-- <a href="#" style="text-decoration: none;"> -->
@@ -34,7 +34,7 @@
 			</div>
 		</div> 
 		<ng-container *ngIf=" period_unit_data =='week' ">
-			<table  class="logtable noborder">
+			<table  class="weektable noborder">
 				<thead>
 					<tr>
 						<th p-t-10 p-b-10 p-r-10 p-l-10 *ngFor=" let item of weekBucketdata; let key = index "  class="noborder datesrow " style="text-align:left">
@@ -49,7 +49,7 @@
 					<tr *ngIf=" user_summary_contentdata.newdata.summary.length != 0" >
 						<td  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " (click)="navigateToDashboard(item)" class="noborder rowsummarydata cursor" p-l-10  ><!-- <span style="cursor: pointer;" (click)="testfunction(item)"> -->
 							<ng-container *ngIf=" item.leave_status == 'Worked' || item.leave_status=='Worked on weekend' ||  item.leave_status=='Worked on holiday' || item.leave_status == 'Present' ">	
-								<td class="noborder" >
+								<td class="noborder datablock">
 
 						    	  <div font-weight-5 >{{item.total_time}} 
 						    	  	  <span *ngIf="item.violations.length !=0 ">
@@ -65,10 +65,10 @@
 						    	 </td>
 					    	</ng-container> 
 					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  && item.leave_status == 'Weekend' || item.leave_status=='Holiday' ||  item.leave_status=='Leave'">		
-					    		<td class="noborder" style="min-width: 77px;padding: 0px;" ><div font-weight-5 p-b-15 class="bgcolorwaring" >{{item.leave_status}}</div></td>
+					    		<td class="noborder datablock" style="padding: 0px;" ><div font-weight-5 p-b-15 class="bgcolorwaring" >{{item.leave_status}}</div></td>
 					    	</ng-container>
 					    	<ng-container *ngIf="item.leave_status=='Not joined'">		
-					    		<td class="noborder" style="min-width: 77px;padding: 0px;" ><div font-weight-5 p-b-15 >{{item.leave_status}}</div></td>
+					    		<td class="noborder datablock" style="padding: 0px;" ><div font-weight-5 p-b-15 >{{item.leave_status}}</div></td>
 					    	</ng-container>		
 
 
@@ -108,9 +108,9 @@
 				</thead>
 				<tbody>
 					<tr *ngIf=" user_summary_contentdata.newdata.summary.length != 0" >
-						<td  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " class="noborder rowsummarydata" p-l-10>
+						<td  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " (click)="navigateToDashboard(item)" class="noborder rowsummarydata cursor" p-l-10>
 							<ng-container *ngIf=" item.leave_status == 'Worked' || item.leave_status=='Worked on weekend' ||  item.leave_status=='Worked on holiday' || item.leave_status == 'Present' ">	
-								<td class="noborder" >
+								<td class="noborder datablock" >
 						    	  <div font-weight-5 >
 						    	  	{{item.total_time}} 
 						    	  	<span *ngIf="item.violations.length !=0">
@@ -125,14 +125,14 @@
 						    	 </td>
 					    	</ng-container> 
 					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  && item.leave_status == 'Weekend' || item.leave_status=='Holiday' ||  item.leave_status=='Leave'">		
-					    		<td class="noborder" style="min-width: 77px;padding: 0px;" ><div  p-b-15 class="bgcolorwaring" >{{item.leave_status}}</div></td>
+					    		<td class="noborder datablock" style="padding: 0px;" ><div  p-b-15 class="bgcolorwaring" >{{item.leave_status}}</div></td>
 					    	</ng-container>	
 					    	<ng-container *ngIf="item.leave_status=='Not joined'">		
-					    		<td class="noborder" style="min-width: 77px;padding: 0px;" ><div font-weight-5 p-b-15 >{{item.leave_status}}</div></td>
+					    		<td class="noborder datablock" style="padding: 0px;" ><div font-weight-5 p-b-15 >{{item.leave_status}}</div></td>
 					    	</ng-container>		
 					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  &&  item.leave_status=='Leave due to violation' ">	
-					    		<td class="noborder" style="min-width: 77px;">	
-					    			 <div p-b-15  class="bgcolorwaring">Leave <ion-icon style="color: red;" name="information-circle"></ion-icon></div>
+					    		<td class="noborder datablock">	
+					    			 <div p-b-15  class="bgcolorwaring">Leave<span><ion-icon style="color: red;" name="information-circle"></ion-icon></span></div>
 					    			</td>
 					    	</ng-container>	
 						</td>

@@ -46,7 +46,10 @@ export class UserSummaryContentComponent {
     console.log('Hello UserSummaryContentComponent Component');
     this.text = 'Summary';
 
-    this.date=
+
+
+
+    // this.date=
 
   	this.events.subscribe("update:summarydatanew",(data12) => {
       	console.log("user-summary-content inside subscribe data---------------");
@@ -101,9 +104,6 @@ export class UserSummaryContentComponent {
 
 
   	  });
-  //period_unit_info
-
-
   this.events.subscribe("update:weekBucketdata",(weekBucketdata) => {
      console.log(" week inside subscribe data---------------");
      this.weekBucketdata=weekBucketdata;
@@ -132,6 +132,9 @@ export class UserSummaryContentComponent {
 
   }
 
+
+
+
   timeconvert(time,date){
 
     var tempdate=date+" "+time;
@@ -141,11 +144,31 @@ export class UserSummaryContentComponent {
   }
 
  navigateToDashboard(data){
-  console.log(data);
-  if(data ==' ' || data != undefined){ 
+  console.log(this.appGlobalsProvider.newsummary_params.param1);
+  // if(this.appGlobalsProvider.newsummary_params.param1 !='' || this.appGlobalsProvider.newsummary_params.param1 != undefined ){
+  //   this.date=this.appGlobalsProvider.newsummary_params.param1.start_date;
+  // }
+      // this.events.subscribe("update:summarydate",(summarydate) => {
+      //   this.date=summarydate;
 
-  this.date=data.work_date;
-     console.log("data present");
+      //     console.log(this.date);
+
+      //    });
+
+
+  console.log(data);
+  if((data== '') || (data == undefined) ){ 
+
+    if((this.appGlobalsProvider.newsummary_params.param1=='')||(this.appGlobalsProvider.newsummary_params.param1==undefined)){
+      if(this.date ==""|| this.date==undefined){
+      this.date=this.formatDate(new Date());
+    }
+    }
+    else{
+      if(this.date==""||this.date==undefined){
+        this.date=this.appGlobalsProvider.newsummary_params.param1.start_date;
+      }
+    }
          let dash_param1 = {
           user_id : this.user_summary_contentdata.newdata.user.user_id,
           start_date : this.date,
@@ -156,21 +179,16 @@ export class UserSummaryContentComponent {
           summary_date : this.date
     }
 
-
-      console.log(dash_param1);
-      console.log(dash_param2);
       this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
       this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
       this.events.publish('app:navroot', 'dashboard'); 
-
+ 
 
   }
   else{
-    console.log("no data");
-    if(this.date ==""|| this.date==undefined){
+    console.log(" data present");
 
-      this.date=this.formatDate(new Date());
-    }
+     this.date=data.work_date;
     let dash_param1 = {
           user_id : this.user_summary_contentdata.newdata.user.user_id,
           start_date : this.date,
@@ -181,9 +199,6 @@ export class UserSummaryContentComponent {
           summary_date : this.date
     }
 
-
-      console.log(dash_param1);
-      console.log(dash_param2);
       this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
       this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
       this.events.publish('app:navroot', 'dashboard'); 
@@ -199,5 +214,7 @@ formatDate(date) {
     let day = temp.getDate() < 10 ? '0' + temp.getDate().toString() : temp.getDate().toString();
     return temp.getFullYear() + '-' + month + '-' + day;
   }
+
+
 
 }
