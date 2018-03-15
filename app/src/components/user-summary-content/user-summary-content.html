@@ -37,10 +37,10 @@
 			<table  class="weektable noborder">
 				<thead>
 					<tr>
-						<th p-t-10 p-b-10 p-r-10 p-l-10 *ngFor=" let item of weekBucketdata; let key = index "  class="noborder datesrow " style="text-align:left">
+						<th p-t-10 p-b-10 p-r-10 p-l-10 *ngFor=" let item of weekBucketdata; let key = index "  class="noborder datesrow datablock" style="text-align:left">
 							<div font-weight-5>{{item |date : 'dd MMM'}}</div><span  ion-text="" class="text text-md text-md-text"> {{item| date : 'EEE'}} </span>
 						</th>
-						<th p-t-10 p-b-10 class="noborder datesrow" style="text-align:left">
+						<th p-t-10 p-b-10 p-r-10 p-l-10 class="noborder datesrow" style="text-align:left">
 							<span ion-text="" class="text text-md text-md-text">Total<br>Time</span> 
 						</th>
 					</tr>
@@ -86,7 +86,7 @@
 						</ng-container>
 						<ng-container>
 							<td class="noborder"> 
-								 <h4  p-t-5>{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></h4>
+								 <span p-t-10 p-l-10 font-weight-5 style="font-size: 20px;">{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></span>
 							</td>
 						</ng-container>
 					</tr>
@@ -142,7 +142,7 @@
 						</ng-container>
 						<ng-container>
 							<td class="noborder"> 
-								 <h4  p-t-5>{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></h4>
+								 <span p-t-10 p-l-10 font-weight-5 style="font-size: 20px;">{{user_summary_contentdata.newdata.period_meta.worked_total}}<span>hr</span></span>
 							</td>
 						</ng-container>
 					</tr>
