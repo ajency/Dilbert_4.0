@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class leave extends Model
 {
     //
-    public function addLeaveData($request)
+    public function addLeaveData($data)
     {
     	$leave = new leave;
 
-        $leave->user_id = $request->user_id;
-        $leave->leave_date=$request->leave_date;
-        $leave->leave_entry_type=$request->leave_entry_type;
-        $leave->reason=$request->reason;
-        $leave->no_of_days=$request->no_of_days;
+        $leave->user_id = $data['user_id'];
+        $leave->leave_date=$data['leave_date'];
+        $leave->leave_entry_type=$data['leave_entry_type'];
+        $leave->reason=$data['reason'];
+        $leave->no_of_days=$data['no_of_days'];
         $leave->save();
         return $leave;
     }

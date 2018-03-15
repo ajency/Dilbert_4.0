@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "asimlqt/php-google-spreadsheet-client": "3.0.*",
         "aws/aws-sdk-php": "~3.0",
         "fideloper/proxy": "~3.3",
         "google/apiclient": "^2.0",
@@ -31,7 +32,8 @@
             "App\\": "app/",
             "Ajency\\User\\": "packages/ajency/user/src",
             "Ajency\\Violations\\": "packages/ajency/violations/src"
-        }
+        },
+         "files": ["app/Http/Helper/GoogleSheet/helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {

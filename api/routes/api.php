@@ -67,4 +67,5 @@ Route::group(['prefix' => 'leaves'], function() {
     Route::post('/update','LeaveController@updateLeavesData');
     Route::post('/view','LeaveController@viewLeaves');
     Route::post('/delete','LeaveController@deleteLeaves');
+    Route::post('/add-leave','LeaveController@document');
 });
