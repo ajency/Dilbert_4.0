@@ -61,7 +61,20 @@ export class UserSummaryContentComponent {
         this.datalength=this.user_summary_contentdata.newdata.summary.length;
         console.log(this.user_summary_contentdata.newdata.summary[this.datalength-1]);
         console.log(this.user_summary_contentdata.newdata.user.joining_date+"joining date");
-        // let i=0; 
+        let i=0; 
+        if(this.datalength !=0)
+        {
+          for(i=0;i<this.datalength;i++)
+          {
+            console.log(this.user_summary_contentdata.newdata.summary[i].work_date);
+            if(this.user_summary_contentdata.newdata.user.joining_date > this.user_summary_contentdata.newdata.summary[i].work_date){
+              this.user_summary_contentdata.newdata.summary[i].leave_status='Not joined';
+            }
+          }
+        }
+
+
+
         // if(this.datalength !=0)
         // {
         //   for(i=0;i<this.datalength;i++)

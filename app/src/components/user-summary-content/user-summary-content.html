@@ -50,22 +50,23 @@
 						<td  *ngFor="let item of user_summary_contentdata.newdata.summary ;let key = index " (click)="navigateToDashboard(item)" class="noborder rowsummarydata cursor" p-l-10  ><!-- <span style="cursor: pointer;" (click)="testfunction(item)"> -->
 							<ng-container *ngIf=" item.leave_status == 'Worked' || item.leave_status=='Worked on weekend' ||  item.leave_status=='Worked on holiday' || item.leave_status == 'Present' ">	
 								<td class="noborder datablock">
-
+								
 						    	  <div font-weight-5 >{{item.total_time}} 
+						    	  	<ion-icon name="sync" class="icon-size mini" *ngIf = "item.changes > 0"></ion-icon>
 						    	  	  <span *ngIf="item.violations.length !=0 ">
-
 						    	  		<ion-icon style="color: red;" name="information-circle">
-						    	  		
 						    	  		</ion-icon>
 						    	 	  </span>
-						    		</div>
+
+						    	  </div>
 						    	  <span ion-text="" class="text text-md text-md-text">
 						    	  	<span>{{item.start_time}}</span>-<span> {{item.end_time}}</span>
 						    	  </span>
+
 						    	 </td>
 					    	</ng-container> 
 					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  && item.leave_status == 'Weekend' || item.leave_status=='Holiday' ||  item.leave_status=='Leave'">		
-					    		<td class="noborder datablock" style="padding: 0px;" ><div font-weight-5 p-b-15 class="bgcolorwaring" >{{item.leave_status}}</div></td>
+					    		<td class="noborder datablock" style="padding: 0px;" ><div font-weight-5 p-b-15 class="bgcolorwaring" >{{item.leave_status}} <ion-icon name="sync" class="icon-size mini" *ngIf = "item.changes > 0"></ion-icon></div></td>
 					    	</ng-container>
 					    	<ng-container *ngIf="item.leave_status=='Not joined'">		
 					    		<td class="noborder datablock" style="padding: 0px;" ><div font-weight-5 p-b-15 >{{item.leave_status}}</div></td>
@@ -74,7 +75,7 @@
 
 					    	<ng-container *ngIf=" user_summary_contentdata.newdata.user.joining_date  < item.work_date  &&  item.leave_status=='Leave due to violation' ">	
 					    		<td class="noborder" style="min-width: 77px;">	
-					    			 <div font-weight-5 p-b-15  class="bgcolorwaring">Leave <ion-icon style="color: red;" name="information-circle"></ion-icon></div>
+					    			 <div font-weight-5 p-b-15  class="bgcolorwaring">Leave<ion-icon name="sync" class="icon-size mini" *ngIf = "item.changes > 0"></ion-icon> <ion-icon style="color: red;" name="information-circle"></ion-icon></div>
 					    			</td>
 					    	</ng-container>	<!-- </span> -->
 						</td>
