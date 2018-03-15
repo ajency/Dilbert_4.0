@@ -413,7 +413,7 @@ export class MyApp {
 
 
 private updateNav(data) : any{
-
+    console.log(data);
     console.log("############################## updating nav ##############", data);
     this.currentPage = data;
     // this.nav.setRoot(data);

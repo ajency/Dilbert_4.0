@@ -277,6 +277,14 @@ export class UserSummarySidebarComponent {
     {
       if(item !='')
       {
+        console.log("11");
+        console.log(this.param1);
+        if(this.param1 !='' && this.param1 !=undefined){
+          this.period_unit=this.param1.period_unit;
+        }
+        else{
+          this.period_unit=this.appGlobalsProvider.period_unit;
+        }
          console.log(item);
          this.newuserdata=item;
          console.log("no param and date is changed")
@@ -293,7 +301,7 @@ export class UserSummarySidebarComponent {
                  org_id :this.authguard.userData.org_id,
                  start_date :this.newdate, 
                  user_id : item.user.user_id,
-                 period_unit : this.appGlobalsProvider.period_unit
+                 period_unit : this.period_unit
              }
    
           console.log(new_summary_param);
@@ -302,7 +310,7 @@ export class UserSummarySidebarComponent {
              newdata : this.maindata
           } 
           console.log(item);
-          let period_unit_data=this.appGlobalsProvider.period_unit;
+          let period_unit_data=this.period_unit;
           this.events.publish("update:period_unit_info", period_unit_data);
           this.events.publish("update:summarydatanew", data12);
           let serializedquery =  `?${$.param(new_summary_param)}`;
@@ -312,6 +320,7 @@ export class UserSummarySidebarComponent {
 
     else{
       if(this.new_user_id !='' && this.new_user_id !=undefined){
+          console.log("12");
         console.log(this.new_user_id); 
         if(this.newdate=="" || this.newdate== undefined){
            this.newdate=this.newdate2.start;
@@ -339,6 +348,7 @@ export class UserSummarySidebarComponent {
          } 
       }
       else{
+          console.log("13");
            this.userSummaryData[key].btnActive = true;
            for(var i = 0; i < this.userSummaryData.length; i++ )
               {
