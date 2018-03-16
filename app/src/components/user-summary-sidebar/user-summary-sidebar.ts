@@ -95,6 +95,7 @@ export class UserSummarySidebarComponent {
       this.org_id =this.authguard.userData.org_id;
       this.period_unit = this.appGlobalsProvider.period_unit ;
       this.user_id=this.authguard.userData.user_id;
+      this.newdate= this.formatDate(new Date());
       this.getUserDate(1, new Date());
     }
      else {
@@ -102,6 +103,7 @@ export class UserSummarySidebarComponent {
       this.user_id=this.param1.user_id;
       this.org_id = this.param1.org_id;
       this.period_unit = this.param1.period_unit;
+      this.newdate=this.param1.start_date;
 
      let dateObject = {
           start: this.param1.start_date
