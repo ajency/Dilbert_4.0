@@ -34,29 +34,6 @@
 	                </table>
 	            </td>
 	        </tr>
-	        <tr>
-	        	  <!-- Main Content2 : BEGIN -->
-	            <td bgcolor="#ffffff" align="center" valign="top" style="padding: 10px;">
-	                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-	                    <tr>
-	                    	<td style="font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 0 10px 10px; text-align: center;" >
-								<p>
-									"Start your day any time after <span style="font-weight: bold;">9:30 am</span> and end by <span style="font-weight: bold;">8:30 pm</span>.<br/>
-									We suggest starting the day latest by <span style="font-weight: bold;">11 am</span>. There may be days when you <br/> want to start your day late but don't make it a regular practice.
-								</p>
-								<p>
-									For very simple reason, we work in a team.<br/>
-									A team where each person is dependent on the other, so there has to be an <br/> 
-									overlap of at least 80% of your time. While it is okay some times,<br/>
-									please  don't make it a regular practice"
-								</p>
-	                        </td>
-	                       
-	                    </tr>
-	                </table>
-	            </td>
-	              <!-- Main Content2 : End -->
-	        </tr>
 
     	</table>
 
