@@ -17,9 +17,9 @@
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                    <p style="margin: 0;">We see that Dilbert has logged your total hours today as: <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_day']}}</span> <br/>
-                    It may be a one-off day, but just a small note to let you know what we think,<br/>
-                    as also laid out in the <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook</a>.</p>
+                    <p style="margin: 0;">You worked  <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_day']}}</span> today <br/>
+                    That’s way less than the minimum of 5h 30m you should put in on any given day. This shortfall has triggered a leave. If you think there may be a mistake in the logs, please do bring it up. Happy to reverse it :)</br>
+                </p>
                 </td>
             </tr>
             <!-- Main Content1 : End -->
@@ -43,14 +43,8 @@
 	                    <tr>
 	                    	<td style="font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 0 10px 10px; text-align: center;" >
 								<p>
-									"Start your day any time after <span style="font-weight: bold;">9:30 am</span> and end by <span style="font-weight: bold;">8:30 pm</span>.<br/>
-									We suggest starting the day latest by <span style="font-weight: bold;">11 am</span>. There may be days when you <br/> want to start your day late but don't make it a regular practice.
-								</p>
-								<p>
-									For very simple reason, we work in a team.<br/>
-									A team where each person is dependent on the other, so there has to be an <br/> 
-									overlap of at least 80% of your time. While it is okay some times,<br/>
-									please  don't make it a regular practice"
+									To help you understand what we think (also laid out in the Ajency.in handbook): 
+									“For it to be a work day, it has to be a <span style="font-weight: bold;">minimum of 5 work hours</span>. Anything less than that is essentially a leave. At the same time, anything more than 10 work hours per day does not count (less than 5 is too short to do meaningful work and more than 10 is too long to do good work).”
 								</p>
 	                        </td>
 	                       

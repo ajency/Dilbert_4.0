@@ -109,7 +109,7 @@
 	</tr>
 	<tr>
 		<td style="padding-top:20px;">
-			<a href="{{$user_data['url']}}"> View you full logs here </a>
+			<a href="{{$user_data['url']}}"> View your full logs here </a>
 		</td>
 	</tr>
 	<tr>
