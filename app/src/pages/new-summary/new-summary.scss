@@ -66,6 +66,7 @@ page-new-summary {
  @media screen and (max-width: 769px){
     .user_summary {
         display: block;
+    //flex-direction: column;
          &__sidebar {
             box-shadow: $shadow-2;
         }
@@ -89,6 +90,7 @@ page-new-summary {
 
     .user_summary {
         flex-direction: column;
+    //  flex-direction: column-reverse;
         &__sidebar{
            
           //  position: fixed;
