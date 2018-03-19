@@ -56,7 +56,9 @@ class CronController extends Controller
 
                 // check for min hours per day
                 $userData = (new UserAuth)->getUserData($user->id,true);
-                $keyFields = ['total_hrs_in_day' => $userLockedData['total_time']];        // this type casting returns you the only the hours
+                $total_time=str_replace(":", " hr ", $userLockedData['total_time']);
+                $total_time=$total_time." m";
+                $keyFields = ['total_hrs_in_day' => $total_time];        // this type casting returns you the only the hours
                 $rhsFields = ['minimum_hrs_in_day'];
                 $mailList = ['hr','owner1','owner2'];
                 $data = (new ViolationApp)->createFormattedViolationData($userData,$keyFields,$rhsFields,$mailList);
@@ -406,7 +408,7 @@ class CronController extends Controller
             $lunchCount=date('D', strtotime($slotLunch['work_date']));
             $lunchSlot[$lunchCount]=$slotLunch['total_time'];
         }
-        $data['lunchSlot']=$lunchSlot;
+        $data['lunchSlot']=0;
         $data['endDate']=$end_date;
 
         //getting email id

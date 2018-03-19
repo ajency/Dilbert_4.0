@@ -17,7 +17,7 @@
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                     <p style="margin: 0;">Total hours logged this week: <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_week']}}/ {{$violation_data['rule_rhs']['total_week_hours']}}</span> - i.e. <b>That's {{isset($violation_data['meta']['time_difference']) ? $violation_data['meta']['time_difference'] : ' ' }} short</b> of the required time <br/>
+                     <p style="margin: 0;">Total hours logged this week: <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_week']}}/ {{$violation_data['rule_rhs']['total_week_hours']}}</span> - i.e. <b>That's {{isset($violation_data['meta']['time_difference']) ? $violation_data['meta']['time_difference'] : ' ' }} short</b> of the required time <br>
                      	This shortfall has triggered a leave. If you think there may be a mistake in the logs, please do bring it up. Happy to reverse it :)
             </tr>
             <!-- Main Content1 : End -->

@@ -17,8 +17,8 @@
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                    <p style="margin: 0;">We see that Dilbert has logged your total hours this month as:  <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_month']}} / {{$violation_data['rule_rhs']['total_month_hours']}}h - i.e. <b>{{$violation_data['meta']['time_difference']}} short</b></span> <br/>
-                    of the required time. It may be a one-off month, but just a small note to let you know what we think,<br/>
+                    <p style="margin: 0;">We see that Dilbert has logged your total hours this month as:  <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_month']}} / {{$violation_data['rule_rhs']['total_month_hours']}}h - i.e. <b>{{$violation_data['meta']['time_difference']}} short</b></span> <br>
+                    of the required time. It may be a one-off month, but just a small note to let you know what we think,<br>
                     as also laid out in the <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook</a>.</p>
                 </td>
             </tr>
@@ -43,13 +43,13 @@
 	                    <tr>
 	                    	<td style="font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 0 10px 10px; text-align: center;" >
 								<p>
-									"Start your day any time after <span style="font-weight: bold;">9:30 am</span> and end by <span style="font-weight: bold;">8:30 pm</span>.<br/>
-									We suggest starting the day latest by <span style="font-weight: bold;">11 am</span>. There may be days when you <br/> want to start your day late but don't make it a regular practice.
+									"Start your day any time after <span style="font-weight: bold;">9:30 am</span> and end by <span style="font-weight: bold;">8:30 pm</span>.<br>
+									We suggest starting the day latest by <span style="font-weight: bold;">11 am</span>. There may be days when you <br> want to start your day late but don't make it a regular practice.
 								</p>
 								<p>
-									For very simple reason, we work in a team.<br/>
-									A team where each person is dependent on the other, so there has to be an <br/> 
-									overlap of at least 80% of your time. While it is okay some times,<br/>
+									For very simple reason, we work in a team.<br>
+									A team where each person is dependent on the other, so there has to be an <br> 
+									overlap of at least 80% of your time. While it is okay some times,<br>
 									please  don't make it a regular practice"
 								</p>
 	                        </td>

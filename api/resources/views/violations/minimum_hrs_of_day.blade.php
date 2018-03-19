@@ -17,9 +17,9 @@
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                    <p style="margin: 0;">You worked  <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_day']}}</span> today <br/>
-                    That’s way less than the minimum of 5h 30m you should put in on any given day. This shortfall has triggered a leave. If you think there may be a mistake in the logs, please do bring it up. Happy to reverse it :)</br>
-                </p>
+                    <p style="margin: 0;">You worked  <span style="font-weight: bold;"> {{$violation_data['rule_key_fields']['total_hrs_in_day']}}</span> today <br>
+                    That’s way less than the minimum of 5h 30m you should put in on any given day. This shortfall has triggered a leave. If you think there may be a mistake in the logs, please do bring it up. Happy to reverse it :)<br>
+                	</p>
                 </td>
             </tr>
             <!-- Main Content1 : End -->
@@ -43,7 +43,7 @@
 	                    <tr>
 	                    	<td style="font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 0 10px 10px; text-align: center;" >
 								<p>
-									To help you understand what we think (also laid out in the Ajency.in handbook): 
+									To help you understand what we think (also laid out in the Ajency.in handbook):<br> 
 									“For it to be a work day, it has to be a <span style="font-weight: bold;">minimum of 5 work hours</span>. Anything less than that is essentially a leave. At the same time, anything more than 10 work hours per day does not count (less than 5 is too short to do meaningful work and more than 10 is too long to do good work).”
 								</p>
 	                        </td>
