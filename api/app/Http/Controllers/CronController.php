@@ -65,6 +65,7 @@ class CronController extends Controller
                 $data['logo']= public_path().'/img/ajency-logo.png';
                 $data['dilbert']=public_path().'/img/dilbert.png';
                 $data['documentation']=public_path().'/img/ajency-email.png';
+                echo "\n  ".$data['rule_rhs']['minimum_hrs_in_day'];
                 $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data,false,true);
                 if($vioResponse['status'] == 'violation') {
                     $userLockedData->status = "Leave due to violation";
@@ -408,7 +409,13 @@ class CronController extends Controller
             $lunchCount=date('D', strtotime($slotLunch['work_date']));
             $lunchSlot[$lunchCount]=$slotLunch['total_time'];
         }
-        $data['lunchSlot']=0;
+        if (empty($lunchSlot)) {
+            $data['lunchSlot']=0;
+        }
+        else
+        {
+            $data['lunchSlot']=$lunchSlot;
+        }
         $data['endDate']=$end_date;
 
         //getting email id
