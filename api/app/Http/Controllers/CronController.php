@@ -56,8 +56,9 @@ class CronController extends Controller
 
                 // check for min hours per day
                 $userData = (new UserAuth)->getUserData($user->id,true);
-                $total_time=str_replace(":", " hr ", $userLockedData['total_time']);
-                $total_time=$total_time." m";
+               /* $total_time=str_replace(":", " hr ", $userLockedData['total_time']);
+                $total_time=$total_time." m";*/
+                $total_time=$userLockedData['total_time'];
                 $keyFields = ['total_hrs_in_day' => $total_time];        // this type casting returns you the only the hours
                 $rhsFields = ['minimum_hrs_in_day'];
                 $mailList = ['hr','owner1','owner2'];
@@ -66,6 +67,7 @@ class CronController extends Controller
                 $data['dilbert']=public_path().'/img/dilbert.png';
                 $data['documentation']=public_path().'/img/ajency-email.png';
                 echo "\n  ".$data['rule_rhs']['minimum_hrs_in_day'];
+                echo "\nworked ".$total_time;
                 $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data,false,true);
                 if($vioResponse['status'] == 'violation') {
                     $userLockedData->status = "Leave due to violation";

@@ -119,7 +119,7 @@
                               {
                                 "title": "Total Hours in a day",
                                 "key_field": "total_hrs_in_day",
-                                "field_type": "Numeric",
+                                "field_type": "Time",
                                 "condition": "lessThan",
                                 "value": "minimum_hrs_in_day",
                                 "preset_value": 5
