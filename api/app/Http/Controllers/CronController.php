@@ -441,9 +441,9 @@ class CronController extends Controller
         //mail the weekly summary
         Mail::send('dilbert_mails/email_weekly_work_summary_hour', ['user_data' => $data], function($message) use($comm,$mlEmail){
                 $message->to($comm['value'])
-                ->cc($mlEmail[0])
-                ->bcc($mlEmail[1])
-                ->bcc($mlEmail[2])
+                ->cc('shreya@ajency.in')
+                ->bcc('shreya@ajency.in')
+                ->bcc('shreya@ajency.in')
                 ->subject('Dilbert 4 : Weekly update - '.date('F jS, Y'));
         });
     }
