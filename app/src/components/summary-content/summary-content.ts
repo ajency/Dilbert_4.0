@@ -8,7 +8,6 @@ import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
 import * as $ from 'jquery';
 
-
 import { TitleCasePipe } from '../../pipes/title-case/title-case';
 
 /**
@@ -27,6 +26,7 @@ export class SummaryContentComponent {
 
   private logListNative: any;
   private markerEditNative: any;
+
   private contentDimensions: any;
   // private contentLeftOffset: number;
   private allLogs: Array<any>;
@@ -42,6 +42,7 @@ export class SummaryContentComponent {
   today : any;
   logs : any;
   day_data : any;
+  logsLength:any;
   leave_status_values;
   edit_btn_pd : boolean = true;
   view_log_history_btn : boolean = true;
@@ -75,12 +76,15 @@ export class SummaryContentComponent {
       this.titleCasePipe = new TitleCasePipe();
 
       this.updateContentCB = (data) => {
-        $(".changelogview").html("View More");
+        $(".viewMoreLogs").html("View More");
+        $(".viewLess").addClass("hidden");
+        $(".viewMore").removeClass("hidden");
         // this.currentData = data.date;
         this.undoSelection();
         console.log('inside update content');
         this.day_data = data.summaryContentData.data.day_data;
         this.logs = data.summaryContentData.data.logs;
+        this.logslengthcheck();
         this.leave_status_values = data.summaryContentData.data.leave_status_values;
          
         this.summaryContentData = data.summaryContentData;
@@ -178,7 +182,7 @@ export class SummaryContentComponent {
   ngOnInit(){
     console.log("current user:", this.allowSlotUpdate)
     console.log("summary content", this.summaryContentData);
-  	// let dummy = new Date();
+    // let dummy = new Date();
    //  this.today = {
    //    day : this.days[dummy.getDay()],
    //    date : dummy.getDate(),
@@ -193,7 +197,7 @@ export class SummaryContentComponent {
 
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
-
+    this.logslengthcheck();
     this.checkPermissions();
    
     // console.log("elementref width", this.elementref.nativeElement.clientWidth);
@@ -648,19 +652,42 @@ changelogview(){
 
         if ( $(".logbox").hasClass("hidden") ) {
              $(".logbox").removeClass("hidden");
+             $(".changelogview").removeClass("viewLessData");
              $(".logbox2").addClass("hidden");
-             $(".changelogview").html("View More");
+             $(".viewMoreLogs").html("View More");
+             $(".viewLess").addClass("hidden");
+             $(".viewMore").removeClass("hidden");
+
+
        }
        else{
-        $(".logbox").addClass("hidden");
-        $(".logbox2").removeClass("hidden");
-        $(".changelogview").html("View Less");
+             $(".logbox").addClass("hidden");
+             $(".logbox2").removeClass("hidden");
+             $(".changelogview").addClass("viewLessData");
+             $(".viewMoreLogs").html("View Less");
+             $(".viewLess").removeClass("hidden");
+             $(".viewMore").addClass("hidden");
 
        }
 
 }
 
+  logslengthcheck(){
+    var count =0;
+    if(this.logs.length > 0){
+      for(var i=0 ;i < this.logs.length;i++){
+        if(this.logs[i].state_time != null && this.logs[i].state !='active'){
+          if(this.logs[i].state_time < 10){
+            count = count + 1;
 
+          }
+
+        }
+      }
+   }
+   this.logsLength=count;
+   console.log(this.logsLength);
+  }
 
 
 }

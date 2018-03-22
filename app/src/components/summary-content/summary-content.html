@@ -64,9 +64,12 @@
 
 </div>
     <!-- Detail view -->
-    <div class="floatright">
-        <button ion-button  small m-t-10  (mouseup)="changelogview()" class="changelogview" >View More</button>
-    </div>
+
+    <ng-container *ngIf="logsLength > 0 ">
+        <div class="floatright">
+            <button ion-button  small m-t-10  (mouseup)="changelogview()" class="changelogview viewMoreLogs" >View More</button>
+        </div>
+    </ng-container>
 
 
 
@@ -199,6 +202,15 @@
             <p class="x-small message" m-v-0 ion-text color="text-lighter"><ion-icon name="time"></ion-icon> {{ "you_completed" | translate }} {{getDayDate(day_data[0].total_time,5)}} {{ "hours_today" | translate }}</p>
         </li>
     </ul>
+ <!--    <ng-container *ngIf="logsLength > 0 ">
+        <div align="center">
+            <div (mouseup)="changelogview()" style="width:70px;cursor: pointer;">
+                <ion-icon name="ios-arrow-up-outline" class="icon-size full viewLess hidden text-md-text-lighter"></ion-icon> 
+                <div  class="viewMoreLogs text-md-text-lighter" >View More</div>
+                <ion-icon name="ios-arrow-down-outline" class="icon-size full viewMore text-md-text-lighter"></ion-icon> 
+            </div>
+        </div>        
+    </ng-container> -->
 
     <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
 

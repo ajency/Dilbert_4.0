@@ -389,9 +389,16 @@ summary-content {
     outline: 0;
 }
 .floatright{
-    text-align:right;
+    text-align: right;
+}
+.viewLessData{
+    color: #6943bf;
+    background-color: white;
+    border : 1px solid #6943bf; 
 }
 
-
+.viewLessData:hover{
+    background-color: white !important;
+}
 
 
