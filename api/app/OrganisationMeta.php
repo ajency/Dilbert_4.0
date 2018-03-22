@@ -15,7 +15,6 @@ class OrganisationMeta extends Model
      */
     public function getParamValue($key,$orgId,$grpId) {
         $metaData =  OrganisationMeta::where(['organisation_id' => $orgId, 'group_id' => $grpId, 'key' => $key])->first();
-        echo $metaData['value'];
         if($metaData)	//return if single value
             return $metaData->value;
         else

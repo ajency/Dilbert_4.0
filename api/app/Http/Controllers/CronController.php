@@ -422,8 +422,6 @@ class CronController extends Controller
         $comm=UserCommunication::where('object_id','=',$user['id'])->where('object_type','App\\User')->first();
         echo "comm ".$comm['value'];
         $mail=0;
-        echo "list";
-        print_r($mailList);
         foreach ($mailList as $ml) 
         {
             $mlEmail[$mail] = (new OrganisationMeta)->getParamValue($ml,$user['org_id'],0);
