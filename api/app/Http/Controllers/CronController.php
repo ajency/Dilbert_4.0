@@ -321,6 +321,8 @@ class CronController extends Controller
         $start_date= $date->modify('-6 days')->format('Y-m-d');
         $end_date=$date->modify('+6 days')->format('Y-m-d');
         $u = (new UserAuth)->getUserData($user);
+        $org = UserDetail::select('org_id')->where('user_id',$u['user']['id'])->first();
+        $org=$org->org_id;
         echo "start : ".$start_date." end : ".$end_date."\n";
         $userHoursCount = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->whereNotNull('start_time')->get();
         $userHours = Locked_Data::where('user_id',$u['user']['id'])->whereBetween('work_date',[$start_date,$end_date])->orderBy('work_date', 'asc')->get();    //number of days present
@@ -424,11 +426,11 @@ class CronController extends Controller
         $mail=0;
         foreach ($mailList as $ml) 
         {
-            $mlEmail[$mail] = (new OrganisationMeta)->getParamValue($ml,$user['org_id'],0);
+            $mlEmail[$mail] = (new OrganisationMeta)->getParamValue($ml,$org,0);
             echo "email : ".$mlEmail[$mail];
             $mail++;
         }
-        $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$user['org_id'],0);
+        $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$org,0);
         $data['default_hours']=$default_hours;
 
 
