@@ -33,7 +33,7 @@ export class UserSummarySidebarComponent {
   newdata :any;
   newdate:any;
   newdate2:any;
-  show = 7;
+  show :any = 7;
   nodata : any;
   maindata :any;
   user_id : any;
@@ -602,5 +602,7 @@ formatDate(date) {
     this.userSummaryData = this.saveData1.filter(item => item.user.name.toLowerCase().indexOf(text.toLowerCase()) !== -1); // LowerCase all the names & keyword so that it cover all the possibilities
     this.zone.run(() => {}); 
     this.highlightSelectedUserData();
+    this.datalength=this.userSummaryData.length;
+    console.log(this.datalength);
   }
 }

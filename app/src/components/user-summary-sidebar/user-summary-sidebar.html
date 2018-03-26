@@ -42,27 +42,33 @@
 		    <span clear item-end>  <h3>{{item.period_meta.worked_total}}<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
 		</button>
 	</ion-list>
-
-	<div *ngIf=" show >= datalength " (click)=" show = 7" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
-		<p id="text-change">
-			<span id="arrow"> 
-				<ion-icon  name="ios-arrow-up-outline" class="icon-size full"></ion-icon> 
-			</span>
-			<br>
-			<span id="innertxt">
-				View Less
-			</span>
-		</p>
-	</div>
-	<div *ngIf=" show < datalength " (click)=" show = show + 10 " align="center" class="text-center" id="showMore" style="cursor: pointer;" >
+	<ng-container  *ngIf="datalength !=0">
+		<ng-container  *ngIf="datalength > 7">
+		<div *ngIf=" show > datalength " (click)=" show = 7" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
 			<p id="text-change">
+				<span id="arrow"> 
+					<ion-icon  name="ios-arrow-up-outline" class="icon-size full"></ion-icon> 
+				</span>
+				<br>
 				<span id="innertxt">
-					View More</span><br>
-				<span id="arrow">
-					<ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> 
+					View Less
 				</span>
 			</p>
-	</div>
+		</div>
+		</ng-container>
+		<div *ngIf=" show < datalength " (click)=" show = show + 10 " align="center" class="text-center" id="showMore" style="cursor: pointer;" >
+				<p id="text-change">
+					<span id="innertxt">
+						View More</span><br>
+					<span id="arrow">
+						<ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> 
+					</span>
+				</p>
+		</div>
+	</ng-container>
+<!-- 	<ng-container  *ngIf="datalength ==0">
+		<div> User Not found</div>
+	</ng-container> -->
 		
 
 </div>
