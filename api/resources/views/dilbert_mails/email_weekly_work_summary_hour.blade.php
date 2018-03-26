@@ -66,7 +66,7 @@
 				<th>Worked</th>
 				<th>Lunch</th>
 			</tr>
-			@for($i = 0; $i < 7; $i++)
+			@for($i = 0; $i < count($user_data['totalTime']); $i++)
 				@if($user_data['totalHours'] < $user_data['minHrs'] AND $user_data['totalTime'][$i]!=NULL)
 					<!-- if total time for day is grater than required time -->
 					@if((int)$user_data['totalTime'][$i] >= $user_data['default_hours'])

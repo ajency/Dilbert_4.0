@@ -181,8 +181,8 @@ class CronController extends Controller
                 $data['documentation']=public_path().'/img/ajency-email.png';
             (new ViolationRules)->checkForViolation('minimum_hrs_of_week',$data,false,true);
 
-            //call weekly test
-            $this->weekly_summary_mail($user);            
+            //call weekly summary
+           $this->weekly_summary_mail($user);            
         }
     }
 
@@ -438,8 +438,6 @@ class CronController extends Controller
 
         // url for  View you full logs here
         $data['url']='https://dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
-        echo "\n\n this is url : ".$data['url'];
-
         //mail the weekly summary
         Mail::send('dilbert_mails/email_weekly_work_summary_hour', ['user_data' => $data], function($message) use($comm,$mlEmail){
                 $message->to($comm['value'])
