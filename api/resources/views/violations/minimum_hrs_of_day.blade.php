@@ -18,8 +18,8 @@
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
                     <p style="margin: 0;">You worked  <span style="font-weight: bold;"> 
-                    {{str_replace(":", " hr ", $violation_data['rule_key_fields']['total_hrs_in_day'])}}m</span> today <br>
-                    That’s way less than the minimum of {{str_replace(":", " hr ", $violation_data['rule_rhs']['minimum_hrs_in_day'])}}m you should put in on any given day. This shortfall has triggered a leave. If you think there may be a mistake in the logs, please do bring it up. Happy to reverse it :)<br>
+                    {{str_replace(":"," hr ",$violation_data['worked_hours'])}} m</span> today <br>
+                    That’s way less than the minimum of {{str_replace(":", " hr ", $violation_data['minimum_hrs_in_day'])}}m you should put in on any given day. This shortfall has triggered a leave. If you think there may be a mistake in the logs, please do bring it up. Happy to reverse it :)<br>
                 	</p>
                 </td>
             </tr>
