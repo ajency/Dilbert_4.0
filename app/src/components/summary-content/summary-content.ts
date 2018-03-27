@@ -39,6 +39,9 @@ export class SummaryContentComponent {
 
   private hasGlobalSlotPerm: boolean = false;
   // changedLogs : any;
+  weekTotal :any;
+  lunchTime: any;
+  minHours : any;
   today : any;
   logs : any;
   day_data : any;
@@ -65,6 +68,15 @@ export class SummaryContentComponent {
               public appServiceProvider : AppServiceProvider,
               public appGlobalsProvider : AppGlobalsProvider,
               public storage : Storage) {
+
+        this.events.subscribe("update:week_data",(week_data) => {
+          this.weekTotal = week_data.weekTotal;
+          this.lunchTime = week_data.lunchTotal;
+          this.minHours  = week_data.minHoursWeek;
+
+          console.log(week_data);
+
+         });
     // console.log('SummaryContentComponent Component');
       this.translate.get("toast_messages").subscribe((res: any) => {
        // this.errorString = res;
@@ -91,6 +103,11 @@ export class SummaryContentComponent {
   
         this.slotTypes = this.appServiceProvider.objectToArray(data.summaryContentData.data.slot_values);
         this.selectedSlotType = this.slotTypes[0]['slug'];
+
+    
+
+
+
       }
    
       this.changelogCB = (data) => {
@@ -660,7 +677,13 @@ changelogview(){
 
 }
 
+hidedailylogsblock(){
+  var c=0;
+  this.events.publish("update:mobilesidebar",c );
 
+  // $(".logsblock").addClass("hideBlockMobile");
+  // $(".mobileWeekDays").addClass("hideBlockMobile");
+}
 
 
 }
