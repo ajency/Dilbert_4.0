@@ -333,6 +333,17 @@ class CronController extends Controller
             $start_date= $date->modify('-6 days')->format('Y-m-d');
             $end_date=$date->modify('+6 days')->format('Y-m-d');
             $u = (new UserAuth)->getUserData($user);
+
+            // check violations
+            $violations_test = (new ViolationRules)->getViolations(["date_range" => ["start" => $start_date], "who_id" => $u['user']['id']]);
+            $violation_status="false";
+            foreach ($violations_test as $vt) {
+                if ($vt['type']=="minimum_hrs_of_week") {
+                    $violation_status="true";
+                    break;
+                }
+            }
+            $data['violation_status']=$violation_status;
             $org = UserDetail::select('org_id')->where('user_id',$u['user']['id'])->first();
             $org=$org->org_id;
             echo "start : ".$start_date." end : ".$end_date."\n";
