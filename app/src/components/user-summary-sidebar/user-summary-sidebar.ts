@@ -26,6 +26,7 @@ export class UserSummarySidebarComponent {
   private myDatePickerOptions: IMyDpOptions = {
       dateFormat: 'yyyy-mm-dd',
       inline:false,
+      selectorWidth:'200px',
       showClearDateBtn:false,
       disableUntil: {year: 2017, month: 1, day: 1},
       disableSince: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:  new Date().getDate()+1 } 
@@ -80,10 +81,13 @@ export class UserSummarySidebarComponent {
     this.apiURL = this.appGlobalsProvider.getApiUrl();
     this.counter=0;
     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
+
+    this.events.subscribe("update:mobileviewusersidebar",(data) => {
+          $('.summarysidebarcontainer').removeClass('mobileUserSidebar'); 
+       });
   }
 
   ngOnInit(){
-
 
      console.log(this.appGlobalsProvider.newsummary_params.param1);
      this.param1 = this.appGlobalsProvider.newsummary_params.param1;
@@ -140,14 +144,11 @@ export class UserSummarySidebarComponent {
 
   }
 
-
-
   requestData1(date1){
     console.log(this.newuserdata);
     if(this.newuserdata !='' && this.newuserdata != undefined ){
      this.new_user_id=this.newuserdata.user.user_id;
     }
-
     console.log("inside requestData function", date1);
     var date =date1.formatted; 
      if (date) {
@@ -162,8 +163,6 @@ export class UserSummarySidebarComponent {
     this.newdate=date;
     let newsummarydate=date;
     this.events.publish("update:summarydate", date);
-
-     
   }
 
   highlightSelectedUserData(){
@@ -178,6 +177,7 @@ export class UserSummarySidebarComponent {
   }
 
   viewmoredetails(item,key){
+    this.mobileviewsummary();
     console.log("clicked on sidebar data to view users summary ");
     this.param1 = this.appGlobalsProvider.newsummary_params.param1;
     console.log(this.param1);
@@ -216,7 +216,6 @@ export class UserSummarySidebarComponent {
             found=1;
           }
       }
-        console.log("match not found "+found);
         if (found == 0)
         {
           this.newuserdata=item;
@@ -279,7 +278,6 @@ export class UserSummarySidebarComponent {
     {
       if(item !='')
       {
-        console.log("11");
         console.log(this.param1);
         if(this.param1 !='' && this.param1 !=undefined){
           this.period_unit=this.param1.period_unit;
@@ -322,7 +320,6 @@ export class UserSummarySidebarComponent {
 
     else{
       if(this.new_user_id !='' && this.new_user_id !=undefined){
-          console.log("12");
         console.log(this.new_user_id); 
         if(this.newdate=="" || this.newdate== undefined){
            this.newdate=this.newdate2.start;
@@ -350,7 +347,6 @@ export class UserSummarySidebarComponent {
          } 
       }
       else{
-          console.log("13");
            this.userSummaryData[key].btnActive = true;
            for(var i = 0; i < this.userSummaryData.length; i++ )
               {
@@ -382,10 +378,7 @@ export class UserSummarySidebarComponent {
     
      
 }
-
-
-
-  
+ 
  getUserDate(dropdownValue, dateswnt) {
         let date = {
           start: this.formatDate(new Date()),
@@ -395,8 +388,6 @@ export class UserSummarySidebarComponent {
         this.getData(date);
         this.newdate2=date;
   };
-
-
 
 getData(date){
     let curr;
@@ -408,12 +399,8 @@ getData(date){
     console.log(datemonth); var n = datemonth.getMonth();
     var firstDay1 = new Date(datemonth.getFullYear(), datemonth.getMonth(), 0);
     let monthnum = moment(datemonth).format('YYYY MM');
-
     this.monthdays = moment(monthnum).daysInMonth();
-
     let first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-
-
     let firstDay = new Date(curr.setDate(first));
 
 /**/    
@@ -463,14 +450,10 @@ getData(date){
         }
        }
     }
-    this.events.publish("update:weekBucketdata", this.weekBucket);
-
-
+   this.events.publish("update:weekBucketdata", this.weekBucket);
    let date_range = date;
-
    console.log(date_range);
    console.log(this.user_id);
-  
 
    let optionalHeaders = {
       'X-API-KEY' : this.authguard.userData.x_api_key,
@@ -489,9 +472,8 @@ getData(date){
       };
 
       let filters = {
-      date_range : date_range,
-      period_unit : this.period_unit
-
+        date_range : date_range,
+        period_unit : this.period_unit
       };
 
       let body = {
@@ -520,14 +502,14 @@ getData(date){
         let key=0;
         this.nodata='';
 
-       this.viewmoredetails(this.nodata,key);
-       this.events.publish("update:summarydatausers", this.userSummaryData);
-       // console.log("param are here");
-       // console.log(this.param1);
-       console.log(this.newuserdata);
+        this.viewmoredetails(this.nodata,key);
+        this.events.publish("update:summarydatausers", this.userSummaryData);
+        // console.log("param are here");
+        // console.log(this.param1);
+        console.log(this.newuserdata);
 
        if(this.param1==''){
-        this.newuser_id=this.userSummaryData[0].user.user_id;
+         this.newuser_id=this.userSummaryData[0].user.user_id;
          // console.log(this.newuser_id+"new user id");
        }
        else
@@ -535,18 +517,17 @@ getData(date){
          this.newuser_id=this.param1.user_id;
          // console.log(this.newuser_id+"new user id");
        }
-        // console.log(this.newuser_id+"new user id-----");
 
       if(this.new_user_id !='' && this.new_user_id !=undefined){
-        this.newuser_id=this.new_user_id;
+         this.newuser_id=this.new_user_id;
       }
       console.log(this.newuser_id);
 
         let urlparam1 = {
-        org_id : this.org_id,
-        start_date: date.start,
-        user_id :this.newuser_id,
-        period_unit:this.period_unit
+          org_id : this.org_id,
+          start_date: date.start,
+          user_id :this.newuser_id,
+          period_unit:this.period_unit
       };
 
          let period_unit_data=this.period_unit;
@@ -598,9 +579,14 @@ formatDate(date) {
 
  onTextChange(text) {
     console.log(text, this.saveData1);
-
     this.userSummaryData = this.saveData1.filter(item => item.user.name.toLowerCase().indexOf(text.toLowerCase()) !== -1); // LowerCase all the names & keyword so that it cover all the possibilities
     this.zone.run(() => {}); 
     this.highlightSelectedUserData();
+  }
+
+  mobileviewsummary(){
+    let dummy;
+      $('.summarysidebarcontainer').addClass('mobileUserSidebar'); 
+    this.events.publish("update:mobileviewsummary1", dummy);
   }
 }

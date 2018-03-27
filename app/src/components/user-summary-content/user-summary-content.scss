@@ -3,70 +3,62 @@ user-summary-content {
 	.datesrow{
 	background-color: #f2f2f2c2;
 	}
-.bgcolorwaring{
-	background-color:#f97c7c54;
-	padding-top:10px;
-	padding-left:10px;
-	padding-right:10px;
-	
-}
-.noborder{
-	border : 0px ;
-}
-.rowsummarydata{
-	marging-top :20px;
-	padding-top :20px;
-}
-.rowsummarydata:hover {
-    opacity:0.5;
+    .bgcolorwaring{
+    	background-color:#f97c7c54;
+    	padding-top:10px;
+    	padding-left:10px;
+    	padding-right:10px;
+    }
+    .daydatablock{
+        padding-top:10px;
+        padding-left:10px;
+        padding-right:10px;
+        
+    }
+    .noborder{
+    	border : 0px ;
+    }
+    .rowsummarydata{
+    	margin-top :20px;
+    	padding-top :20px;
+    }
+    .rowsummarydata:hover {
+        opacity:0.5;
 
-}
-.logvoilationblock{
-	width:45%;
-	float:left;
-	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
-	min-height:90px;
-}
+    }
+    .logvoilationblock{
+    	width:45%;
+    	float:left;
+    	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+    	min-height:90px;
+    }
 
- @media screen and (max-width: 950px){
- 	.logvoilationblock{
- 	width:100%;
- 	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
- 	}
-	.weektable{
-		
-	}
+     @media screen and (max-width: 950px){
+     	.logvoilationblock{
+     	width:100%;
+     	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
+     	}
 
- }
+     }
 
- @media screen and (max-width: 769px){
-.month{
-	display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-        max-width:100%;
-        min-height:200px;
-}
- }
+    .weektable{
+    		display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+            width:700px;
+            min-height:200px;
+    }
+    .cursor{
+    	cursor: pointer;
+    }
+    .cursor:hover {
+        opacity:0.5;
 
+    }
 
-
-.month{
-		display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-        width:700px;
-        min-height:200px;
-}
-.cursor{
-	cursor: pointer;
-}
-
-
-
-.datablock{
-	min-width:70px;
-}
+    .datablock{
+    	min-width:70px;
+    }
 
 
   ::-webkit-scrollbar {
@@ -97,4 +89,41 @@ user-summary-content {
             }
         }
 
+        .mobileviewsummaryblock{
+            height:50px;
+            width:100px;
+            margin-bottom: 1px;
+            border-radius: 5px;
+        }
+        .bgcolorwaringmobile{
+            background-color:#f97c7c54;
+            text-align: center;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-bottom: 1px;
+            border-radius: 5px;
+        }
+
+
+        @media screen and (min-width: 600px) {
+            .mobilesummaryview{
+                display: none;
+            }
+            .test{      
+                        display: block;
+                    }
+
+        }
+
+         @media screen and (max-width: 600px) {
+              .test{
+                        /*display: none;*/
+                        /*position: fixed;*/
+                       /* transform: translateX(100%);
+                        transition: all 0.5s cubic-bezier(0.44, -0.25, 0.75, 1);*/
+                    }
+
+         }
+    
+        
 }

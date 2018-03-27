@@ -2,6 +2,8 @@
 import { Events, ModalController, PopoverController } from 'ionic-angular';
 import { Component, NgZone, Input } from '@angular/core';
 import * as moment from 'moment';
+import * as $ from 'jquery';
+
 import { AuthguardProvider } from '../../providers/authguard/authguard';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
@@ -45,6 +47,11 @@ export class UserSummaryContentComponent {
                public storage : Storage) {
     console.log('Hello UserSummaryContentComponent Component');
     this.text = 'Summary';
+    // $(document).ready(function(){
+    // $('.goback').click(function(){
+    //   console.log("back button");
+    //   });
+    // });
 
 
 
@@ -112,11 +119,8 @@ export class UserSummaryContentComponent {
 
         // }
 
-
-
-
-
   	  });
+
   this.events.subscribe("update:weekBucketdata",(weekBucketdata) => {
      console.log(" week inside subscribe data---------------");
      this.weekBucketdata=weekBucketdata;
@@ -126,26 +130,25 @@ export class UserSummaryContentComponent {
      this.weekbucketlength=this.weekBucketdata.length;
    });
 
+  this.events.subscribe("update:mobileviewsummary1",(dummy) => {
+      console.log(dummy);
+      this.viewmobilesummary();
+
+   });
     this.events.subscribe("update:summarydate",(summarydate) => {
         this.date=summarydate;
+        console.log(this.date);
+   });
 
-          console.log(this.date);
-
-         });
-
-   this.events.subscribe("update:period_unit_info",(data) => {
+  this.events.subscribe("update:period_unit_info",(data) => {
     console.log(" week inside subscribe data---------------");
     this.period_unit_data=data;
-    console.log("this is  weekbucketdata");
     console.log(this.period_unit_data);
-   // console.log(this.user_summary_contentdata.newdata.user.name);
    });
 
 
 
   }
-
-
 
 
   timeconvert(time,date){
@@ -158,31 +161,20 @@ export class UserSummaryContentComponent {
 
  navigateToDashboard(data){
   console.log(this.appGlobalsProvider.newsummary_params.param1);
-  // if(this.appGlobalsProvider.newsummary_params.param1 !='' || this.appGlobalsProvider.newsummary_params.param1 != undefined ){
-  //   this.date=this.appGlobalsProvider.newsummary_params.param1.start_date;
-  // }
-      // this.events.subscribe("update:summarydate",(summarydate) => {
-      //   this.date=summarydate;
-
-      //     console.log(this.date);
-
-      //    });
-
-
   console.log(data);
   if((data== '') || (data == undefined) ){ 
 
     if((this.appGlobalsProvider.newsummary_params.param1=='')||(this.appGlobalsProvider.newsummary_params.param1==undefined)){
       if(this.date ==""|| this.date==undefined){
-      this.date=this.formatDate(new Date());
+          this.date=this.formatDate(new Date());
     }
     }
     else{
       if(this.date==""||this.date==undefined){
-        this.date=this.appGlobalsProvider.newsummary_params.param1.start_date;
+          this.date=this.appGlobalsProvider.newsummary_params.param1.start_date;
       }
     }
-         let dash_param1 = {
+    let dash_param1 = {
           user_id : this.user_summary_contentdata.newdata.user.user_id,
           start_date : this.date,
           period_unit : this.appGlobalsProvider.period_unit
@@ -190,18 +182,18 @@ export class UserSummaryContentComponent {
 
     let dash_param2 = {
           summary_date : this.date
-    }
+      }
 
-      this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
-      this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
-      this.events.publish('app:navroot', 'dashboard'); 
+    this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
+    this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
+    this.events.publish('app:navroot', 'dashboard'); 
  
 
   }
   else{
     console.log(" data present");
 
-     this.date=data.work_date;
+    this.date=data.work_date;
     let dash_param1 = {
           user_id : this.user_summary_contentdata.newdata.user.user_id,
           start_date : this.date,
@@ -212,9 +204,9 @@ export class UserSummaryContentComponent {
           summary_date : this.date
     }
 
-      this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
-      this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
-      this.events.publish('app:navroot', 'dashboard'); 
+    this.appGlobalsProvider.dashboard_params.param1 = dash_param1;
+    this.appGlobalsProvider.dashboard_params.param2 = dash_param2;
+    this.events.publish('app:navroot', 'dashboard'); 
   }
  
 
@@ -228,6 +220,16 @@ formatDate(date) {
     return temp.getFullYear() + '-' + month + '-' + day;
   }
 
+goBackToSummary(){
+  $('.maincontainer').addClass('test');
+  let dummy;
+  this.events.publish("update:mobileviewusersidebar", dummy);
+}
 
+// mobileviewsummary
+viewmobilesummary(){
+   $('.maincontainer').removeClass('test');
+}
 
 }
+
