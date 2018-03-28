@@ -456,6 +456,9 @@ class CronController extends Controller
             $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$org,0);
             $data['default_hours']=$default_hours;
 
+            $data['dilbertweekly']=public_path().'/img/dilb_weekly_img.png';
+            $data['arrowRight']=public_path().'/img/arrow_right.png';
+
 
             // url for  View you full logs here
             $data['url']='https://dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
