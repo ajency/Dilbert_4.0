@@ -458,6 +458,8 @@ class CronController extends Controller
 
             $data['dilbertweekly']=public_path().'/img/dilb_weekly_img.png';
             $data['arrowRight']=public_path().'/img/arrow_right.png';
+        // url for  View you full logs here
+        $data['url']='https://dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
 
 
             // url for  View you full logs here
@@ -473,5 +475,10 @@ class CronController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
         }
+        //function sendmail
+        $data['redirect_url']='dilbert_mails/email_weekly_work_summary_hour';
+        $subject='Dilbert 4 : Weekly update-'.date('F jS, Y');
+        $to_list=$comm['value'];
+        send_mails($data,$subject,$to_list,$cc_mail,$bcc_mail);
     }
 }
