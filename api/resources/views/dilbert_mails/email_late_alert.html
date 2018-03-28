@@ -11,13 +11,13 @@
             <!-- Dilbert Image : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" align="center">
-                  <img src="D:\work\dilb_combo_fix\Dilbert_4.0\api\resources\views\dilbert_mails\dilbert.png"  alt="dilbert" border="0" align="center"  class="g-img">
+                  <img src="<?php echo $message->embed($violation_data['dilbert']); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
                 </td>
             </tr>
             <!--  Dilbert Image : END -->
             <tr>
                 <td bgcolor="#ffffff" style="padding: 10px 40px 20px; text-align: center;">
-                   <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Hi</span> Nutan,</h1>
+                   <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Hi</span> {{$name}},</h1>
                 </td>
             </tr>
             <tr>
@@ -28,16 +28,16 @@
             <tr>
             	<td style="text-align: center;font-family: sans-serif;  ">
             		  <h2> 
-            		  	<img src="D:\work\dilb_combo_fix\Dilbert_4.0\api\resources\views\dilbert_mails\alert-triangle.png"  alt="dilbert" border="0" align="center"  class="g-img" style="width: 20px;height: 20px;padding-top: 7px;"> 
-            		  	<sub style="font-size: 25px;"> 11:08 am</sub>
+            		  	<img src="<?php echo $message->embed($violation_data['alert_triangle']); ?>"  alt="dilbert" border="0" align="center"  class="g-img" style="width: 20px;height: 20px;padding-top: 7px;"> 
+            		  	<sub style="font-size: 25px;"> {{date("h:i a" , strtotime($violation_data['rule_key_fields']['start_time']))}}</sub>
             		  </h2>
             	</td>
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #282828a3; text-align: center;">
-                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> {{$start}}</span> <br/>
+                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> {{date("h:i a" , strtotime($violation_data['rule_key_fields']['start_time']))}}</span> <br/>
                     It may be a one-off day, but just a small note to let you know what we think,<br/>
-                    as also laid out in the <a href="">Ajency.in Handbook.</a> </p>
+                    as also laid out in the <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook.</a> </p>
                 </td>
             </tr>
             <!-- Main Content1 : End -->
@@ -46,7 +46,7 @@
 	                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="padding-right: 20px; padding-left: 20px;">
 	                    <tr>
 	                        <td class="stack-column-center">
-                                <a href="Ajency.inAtoZ.pdf" download="Ajency.inAtoZ.pdf">
+                                <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">
                                     <img border="0" src="<?php echo $message->embed($email); ?>" style="width: 100%;">
                                 </a>
 	                        </td>

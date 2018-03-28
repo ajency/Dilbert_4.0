@@ -102,6 +102,8 @@ class AppController extends Controller
                         $data['logo']= public_path().'/img/ajency-logo.png';
                         $data['dilbert']=public_path().'/img/dilbert.png';
                         $data['documentation']=public_path().'/img/ajency-email.png';
+                        $data['alert_triangle']=public_path().'/img/alert-triangle.png';
+
                         $vioResponse = (new ViolationRules)->checkForViolation('late_alert',$data,false,true);
 
                         // make an entry into the Locked data table

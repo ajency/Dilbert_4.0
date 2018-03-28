@@ -3,23 +3,41 @@
 	 <!-- Email Body : BEGIN -->
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;  background-color: white;" class="email-container">
             <!-- Main Content1 : BEGIN -->
+            	<tr>
+			<td bgcolor="#ffffff" style="padding-bottom: 10px; text-align: center; padding-left: 30px;padding-right: 30px;">
+				<h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; font-weight: bold; padding-top: 10px;padding-bottom: 10px;">Late Alert! </h1>
+			</td>
+		</tr>
             <!-- Dilbert Image : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" align="center">
-                    <img src="<?php echo $message->embed($violation_data['dilbert']); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
+                  <img src="<?php echo $message->embed($violation_data['dilbert']); ?>"  alt="dilbert" border="0" align="center"  class="g-img">
                 </td>
             </tr>
             <!--  Dilbert Image : END -->
             <tr>
-                <td bgcolor="#ffffff" style="padding: 40px 40px 20px; text-align: center;">
-                    <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;">Hi {{$name}}</h1>
+                <td bgcolor="#ffffff" style="padding: 10px 40px 20px; text-align: center;">
+                   <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Hi</span> {{$name}},</h1>
                 </td>
             </tr>
             <tr>
-                <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; text-align: center;">
-                    <p style="margin: 0;">You started the day at <span style="font-weight: bold;"> {{date("h:i a" , strtotime($violation_data['rule_key_fields']['start_time']))}} today</span> <br/>
-                    That’s a late start. We understand it may be a one-off day, but just a small note to let you know what we think, as also laid out in the 
-<a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook</a>.</p>
+            	<td style="text-align: center;font-family: sans-serif;color: #282828a3; ">
+            		<span style="font-size: 14px;padding-left: 20px;">Your Start Time</span>
+            	</td>
+            </tr>
+            <tr>
+            	<td style="text-align: center;font-family: sans-serif;  ">
+            		  <h2> 
+            		  	<img src="<?php echo $message->embed($violation_data['alert_triangle']); ?>"  alt="dilbert" border="0" align="center"  class="g-img" style="width: 20px;height: 20px;padding-top: 7px;"> 
+            		  	<sub style="font-size: 25px;"> {{date("h:i a" , strtotime($violation_data['rule_key_fields']['start_time']))}}</sub>
+            		  </h2>
+            	</td>
+            </tr>
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #282828a3; text-align: center;">
+                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> {{date("h:i a" , strtotime($violation_data['rule_key_fields']['start_time']))}}</span> <br/>
+                    It may be a one-off day, but just a small note to let you know what we think,<br/>
+                    as also laid out in the <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook.</a> </p>
                 </td>
             </tr>
             <!-- Main Content1 : End -->
@@ -29,7 +47,7 @@
 	                    <tr>
 	                        <td class="stack-column-center">
                                 <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">
-                                    <img border="0" src="<?php echo $message->embed($violation_data['documentation']); ?>" style="width: 100%;">
+                                    <img border="0" src="<?php echo $message->embed($email); ?>" style="width: 100%;">
                                 </a>
 	                        </td>
 	                    </tr>
@@ -41,7 +59,7 @@
 	            <td bgcolor="#ffffff" align="center" valign="top" style="padding: 10px;">
 	                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
 	                    <tr>
-	                    	<td style="font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; padding: 0 10px 10px; text-align: center;" >
+	                    	<td style="font-family: sans-serif; font-size: 15px; line-height: 140%; color: #282828a3; padding: 0 10px 10px; text-align: center;" >
 								<p>
 									"Start your day any time after <span style="font-weight: bold;">9:30 am</span> and end by <span style="font-weight: bold;">8:30 pm</span>.<br/>
 									We suggest starting the day latest by <span style="font-weight: bold;">11 am</span>. There may be days when you <br/> want to start your day late but don't make it a regular practice.
