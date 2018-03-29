@@ -13,13 +13,13 @@
 		</tr>
 		<tr>
 			<td bgcolor="#ffffff" style="padding-top: 40px;padding-bottom: 10px; text-align: center;">
-				<h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Hi</span> {{$user_data['name']}},</h1>
+				<h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Hi</span> {{$violation_data['name']}},</h1>
 			</td>
 		</tr>
 
 		<tr>
 			<td bgcolor="#ffffff" style="padding-top: 10px;padding-bottom: 40px; text-align: center;">
-				<h3 style="margin: 0; font-family: sans-serif;  line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Your total hours for the week ending on </span><span>{{date('F jS, Y', strtotime($user_data['endDate']))}} </span></h3>
+				<h3 style="margin: 0; font-family: sans-serif;  line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Your total hours for the week ending on </span><span>{{date('F jS, Y', strtotime($violation_data['endDate']))}} </span></h3>
 			</td>
 		</tr>
 		<!-- 2 Even Columns : BEGIN -->
@@ -32,12 +32,12 @@
 		                        <tr>
 		                            <td style="text-align: center;">
 		                               <span style="font-size:20px;">Your Total work Hours</span>
-		                               @if($user_data['violation_status'] == "true")
+		                               @if($violation_data['violation_status'] == "true")
 		                               <span style="color: red; font-size:35px;font-weight: bold;">
 		                               	@else
 		                               	<span style="color: #613eb0; font-size:35px;font-weight: bold;">
 		                               	@endif
-		                               	{{$user_data['totalHours']}} <span>hr</span></span>
+		                               	{{$violation_data['totalHours']}} <span>hr</span></span>
 		                            </td>
 		                        </tr>
 		                    </table>
@@ -47,7 +47,7 @@
 		                        <tr>
 		                            <td style="text-align: center;">
 		                                <span style="font-size:20px;">Your Total lunch Hours</span>
-		                                <span style="color: #F0C60A; font-size:35px;font-weight: bold;">{{$user_data['lunch_total']}} <span>hr</span></span>
+		                                <span style="color: #F0C60A; font-size:35px;font-weight: bold;">{{$violation_data['lunch_total']}} <span>hr</span></span>
 		                            </td>
 		                        </tr>
 		                    </table>
@@ -72,25 +72,27 @@
 					<th>Worked</th>
 					<th>Lunch</th>
 				</tr>
-				@for($i = 0; $i < count($user_data['totalTime']); $i++)
-					@if($user_data['weekStatus'][$i] == "Leave due to violation")
+				@for($i = 0; $i < count($violation_data['totalTime']); $i++)
+					@if($violation_data['weekStatus'][$i] == "Leave due to violation")
 						<tr style="height:50px;font-family: sans-serif;color: red;background-color: white">
+					@elseif($violation_data['weekStatus'][$i]=="Weekend")
+						<tr style="height:50px;font-family: sans-serif;color: #04dada;background-color: white">
 					@else
 						<tr style="height:50px;font-family: sans-serif;color: grey;background-color: white">
 					@endif
 
-						<td style="border: 1px solid #eee;">{{ date('D, jS F', strtotime($user_data['weekDate'][$i]))}}</td>
-							@if($user_data['totalTime'][$i]=="00:00" || $user_data['totalTime'][$i]==NULL)
-								<td style="border: 1px solid #eee;" colspan="2">{{$user_data['weekStatus'][$i]}}<span>hr</span></td>
+						<td style="border: 1px solid #eee;">{{ date('D, jS F', strtotime($violation_data['weekDate'][$i]))}}</td>
+							@if($violation_data['totalTime'][$i]=="00:00" || $violation_data['totalTime'][$i]==NULL)
+								<td style="border: 1px solid #eee;" colspan="2">{{$violation_data['weekStatus'][$i]}}</td>
 							@else
-								<td style="border: 1px solid #eee;">{{$user_data['totalTime'][$i]}}<span>hr</span></td>
+								<td style="border: 1px solid #eee;">{{$violation_data['totalTime'][$i]}}<span>hr</span></td>
 							@endif
-						@if($user_data['totalTime'][$i]!="00:00")
+						@if($violation_data['totalTime'][$i]!="00:00")
 						<td style="border: 1px solid #eee;">
-							@if(empty($user_data['lunchSlot'][date('D', strtotime($user_data['weekDate'][$i]))]))
+							@if(empty($violation_data['lunchSlot'][date('D', strtotime($violation_data['weekDate'][$i]))]))
 								0
 							@else
-								{{$user_data['lunchSlot'][date('D', strtotime($user_data['weekDate'][$i]))]}}
+								{{$violation_data['lunchSlot'][date('D', strtotime($violation_data['weekDate'][$i]))]}}
 							@endif 
 							<span>hr</span>
 						</td>
@@ -104,7 +106,7 @@
 	<tr>
 		<td style="padding-top: 10px; font-weight: bold;">
 			<!-- <sub style="padding-left: 10px;color:#613eb0;font-size:30px; t">&#x2192;</sub> -->
-			<a href="{{$user_data['url']}}" style="color:#613eb0">View your full logs here<sub><img style="padding-left: 5px;" src="<?php echo $message->embed($violation_data['arrowRight']); ?>" ></sub></a>
+			<a href="{{$violation_data['url']}}" style="color:#613eb0">View your full logs here<sub><img style="padding-left: 5px;" src="<?php echo $message->embed($violation_data['arrowRight']); ?>" ></sub></a>
 		</td>
 	</tr>
 <!-- 	<tr>

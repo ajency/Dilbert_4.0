@@ -13,7 +13,7 @@ function send_mails($data,$subject,$to_list,$cc_list=NULL,$bcc_list=NULL)
 	if (!empty($cc_list) && !empty($bcc_list)) 
 	 {
 	 	//if bcc cc list is given
-	 	Mail::send( $data['redirect_url'], ['user_data' => $data], function($message) use($to_list,$cc_list,$bcc_list,$subject){
+	 	Mail::send( $data['redirect_url'], ['violation_data' => $data], function($message) use($to_list,$cc_list,$bcc_list,$subject){
 	                 $message->to($to_list)
 	                 ->cc($cc_list)
 	                 ->bcc($bcc_list)
@@ -22,7 +22,7 @@ function send_mails($data,$subject,$to_list,$cc_list=NULL,$bcc_list=NULL)
 	}
 	elseif (empty($cc_list) && !empty($bcc_list)) {
 		//if cc list is empty
-		Mail::send( $data['redirect_url'], ['user_data' => $data], function($message) use($to_list,$cc_list,$subject){
+		Mail::send( $data['redirect_url'], ['violation_data' => $data], function($message) use($to_list,$cc_list,$subject){
 	                 $message->to($to_list)
 	                 ->bcc($bcc_list)
 	                 ->subject($subject);
@@ -30,7 +30,7 @@ function send_mails($data,$subject,$to_list,$cc_list=NULL,$bcc_list=NULL)
 	}
 	elseif (!empty($cc_list) && empty($bcc_list)) {
 		//if bcc list is empty
-		Mail::send( $data['redirect_url'], ['user_data' => $data], function($message) use($to_list,$cc_list,$subject){
+		Mail::send( $data['redirect_url'], ['violation_data' => $data], function($message) use($to_list,$cc_list,$subject){
 	                 $message->to($to_list)
 	                 ->cc($cc_list)
 	                 ->subject($subject);
@@ -38,7 +38,7 @@ function send_mails($data,$subject,$to_list,$cc_list=NULL,$bcc_list=NULL)
 	}
 	else
 	{
-		Mail::send( $data['redirect_url'], ['user_data' => $data], function($message) use($to_list,$cc_list,$subject){
+		Mail::send( $data['redirect_url'], ['violation_data' => $data], function($message) use($to_list,$cc_list,$subject){
 	                 $message->to($to_list)
 	                 ->subject($subject);
 	         });

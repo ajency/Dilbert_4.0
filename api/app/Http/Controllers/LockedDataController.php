@@ -161,7 +161,10 @@ class LockedDataController extends Controller
                 $userRole = (User::find($request->header('from')))->getRoleNames()->first();
                 // make status empty if user has 'member' role because normal user doesnt have the previleges to make changes to the status
                 if($userRole == 'member')
+                {
                     $request->status = '';
+                    echo "sad :(";
+                }
                 $maxCount = (int)OrganisationMeta::where(['organisation_id' => UserDetail::where('user_id',$userCode)->first()->org_id, 'key' => 'changes_max_count_'.$userRole])->first()->value;
                 if($maxCount != -1 && Data_Changes::where(['user_id' => $userCode, 'modified_by' => $request->header('from'), 'work_date' => $request->work_date])->count() >= $maxCount)
                     return response()->json(['status' => 400, "message" => __('api_messages.allowed_changes_error')]);
@@ -201,6 +204,7 @@ class LockedDataController extends Controller
                         $lockedEntry->total_time = "00:00";
                         $lockedEntry->status = $current_status;
                         $lockedEntry->save();
+                        array_push($dataToMail, $lockedEntry);
                         $this->edit_log_email($dataToMail);
                         return response()->json(['status' => 200, 'message' => __('api_messages.marked_as_leave'), 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
                     }
@@ -286,6 +290,7 @@ class LockedDataController extends Controller
                         $status=$lockedEntry->status;
                     }
                     //formatting edit log to send a mail
+                    array_push($dataToMail, $lockedEntry);
                     $this->edit_log_email($dataToMail,$status);
 
                     return response()->json(['status' => 200, 'message' => __('api_messages.changes_made_success'), 'data' => (new Locked_Data)->formattedLockedData($userCode,array($lockedEntry),$request->work_date,$request->work_date)]);
@@ -391,12 +396,14 @@ class LockedDataController extends Controller
 
     function edit_log_email($dataToMails,$status=null)
     {
+        try {
         $data=array();
         $data['values']=array();
         $cc_mail=array();
         $cc_mail_list=array();
         $flag=0;
         foreach ($dataToMails as $dataToMail) {
+            if ($dataToMail['column_modified']!=NULL) {
             // getting name for subject of the person whose data is modified
             $data['user_id']=$dataToMail['user_id'];
             $user = User::where(['id' => $data['user_id']])->first();
@@ -423,9 +430,10 @@ class LockedDataController extends Controller
             $comm=UserCommunication::where('object_id','=', $data['user_id'])->where('object_type','App\\User')->first();
 
             // getting CC and BCC list for mails
-            $recipients=config('log_edit_email');
+            //$recipients=config('log_edit_email');
 
             $flag=1;
+            }
         }
         if ($flag==1) {
              //getting authorized users
@@ -441,10 +449,19 @@ class LockedDataController extends Controller
                     array_push($cc_mail_list,$cc_m['value']);
             }
             $data['redirect_url']='dilbert_mails/email_log_edit';
+            $data['logo']= public_path().'/img/ajency-logo.png';
+            $data['editLog']=public_path().'/img/edit_logs.png';
             $bcc_mail=array();
-            echo "DATA\n";
-            print_r($dataToMails);
+            $dataOfUser=end($dataToMails);
+            $data['startTime']=$dataOfUser['start_time'];
+            $data['endTime']=$dataOfUser['end_time'];
+            $data['totalTime']=$dataOfUser['total_time'];
+            $data['status']=$dataOfUser['status'];
+            print_r($data);
             send_mails($data,$subject,$comm['value'],$cc_mail_list,$bcc_mail);
+        }
+        } catch (\Exception $e) {
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
         }
     }
 }

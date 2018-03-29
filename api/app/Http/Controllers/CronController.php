@@ -446,16 +446,21 @@ class CronController extends Controller
             //getting email id
             $comm=UserCommunication::where('object_id','=',$user['id'])->where('object_type','App\\User')->first();
             echo "comm ".$comm['value'];
-            $mail=0;
-            foreach ($mailList as $ml) 
+            $cc_list = ['hr'];
+             $bcc_list = ['owner1','owner2'];
+            foreach ($cc_list as $cc_l) 
             {
-                $mlEmail[$mail] = (new OrganisationMeta)->getParamValue($ml,$org,0);
-                echo "email : ".$mlEmail[$mail];
+                $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$user['org_id'],0);
+            }
+            $mail=0;
+            foreach ($bcc_list as $bcc_l) {
+                $bcc_mail[$mail] = (new OrganisationMeta)->getParamValue($bcc_l,$user['org_id'],0);
                 $mail++;
             }
             $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$org,0);
             $data['default_hours']=$default_hours;
 
+            $data['logo']= public_path().'/img/ajency-logo.png';
             $data['dilbertweekly']=public_path().'/img/dilb_weekly_img.png';
             $data['arrowRight']=public_path().'/img/arrow_right.png';
         // url for  View you full logs here
@@ -465,20 +470,14 @@ class CronController extends Controller
             // url for  View you full logs here
             $data['url']='https://dilbert4.ajency.in/dashboard?user_id='.$user['id'].'&start_date='.$start_date.'&period_unit=week?summary_date='.$start_date;
             //mail the weekly summary
-                    Mail::send('dilbert_mails/email_weekly_work_summary_hour', ['user_data' => $data], function($message) use($comm,$mlEmail){
-                            $message->to($comm['value'])
-                            ->cc($mlEmail[0])
-                            ->cc($mlEmail[1])
-                            ->bcc($mlEmail[2])
-                            ->subject('Dilbert 4 : Weekly update - '.date('F jS, Y'));
-                    });
+            //function sendmail
+            $data['redirect_url']='dilbert_mails/email_weekly_work_summary_hour';
+            $subject='Dilbert 4 : Weekly update-'.date('F jS, Y');
+            $to_list=$comm['value'];
+            send_mails($data,$subject,$to_list,$cc_mail,$bcc_mail);
         } catch (\Exception $e) {
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
         }
-        //function sendmail
-        $data['redirect_url']='dilbert_mails/email_weekly_work_summary_hour';
-        $subject='Dilbert 4 : Weekly update-'.date('F jS, Y');
-        $to_list=$comm['value'];
-        send_mails($data,$subject,$to_list,$cc_mail,$bcc_mail);
+        
     }
 }

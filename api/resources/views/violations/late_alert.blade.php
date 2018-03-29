@@ -47,7 +47,7 @@
 	                    <tr>
 	                        <td class="stack-column-center">
                                 <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">
-                                    <img border="0" src="<?php echo $message->embed($email); ?>" style="width: 100%;">
+                                    <img border="0" src="<?php echo $message->embed($violation_data['documentation']); ?>" style="width: 100%;">
                                 </a>
 	                        </td>
 	                    </tr>
