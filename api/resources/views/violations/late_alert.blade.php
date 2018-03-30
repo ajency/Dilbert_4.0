@@ -35,8 +35,7 @@
             </tr>
             <tr>
                 <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #282828a3; text-align: center;">
-                    <p style="margin: 0;">We see that Dilbert has logged your start time as:<span style="font-weight: bold;"> {{date("h:i a" , strtotime($violation_data['rule_key_fields']['start_time']))}}</span> <br/>
-                    It may be a one-off day, but just a small note to let you know what we think,<br/>
+                    <p style="margin: 0;">That’s a late start. We understand it may be a one-off day, but just a small note to let you know what we think,
                     as also laid out in the <a href="https://drive.google.com/open?id=0B17ClWYMGibaMHZiWnE4TEp3WlE">Ajency.in Handbook.</a> </p>
                 </td>
             </tr>
