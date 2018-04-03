@@ -1,0 +1,162 @@
+<!--
+  Generated template for the LeaveModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+<!-- <ion-content class="leave-popup">
+	
+	<ion-grid>
+	  <ion-row>
+	    <ion-col col-12>
+	    	<div> Date </div>
+	    	<div >
+	    		
+	    	</div>
+	    </ion-col>
+	  </ion-row>
+	  <ion-row>
+	    <ion-col col-12>
+	    	<div>
+	    		Tags
+	    	</div>
+	    	<div class="taggedUsers">
+	    		@anish
+	    	</div>
+	    	<div>
+	    		<ion-label fixed>Tag Your Colleagues..</ion-label>
+				<ion-input type="text" value="" ></ion-input>
+	    	</div>
+	    	<div class="leaveNote">
+	    		<span> Leave a Note</span>
+	    		<textarea></textarea>
+	    		
+	    	</div>
+	    </ion-col>
+	  </ion-row>
+	</ion-grid>
+
+</ion-content> -->
+<!-- <form> -->
+<ion-content class="leave-popup">
+	<div class="my-leave-popup">
+		<div align="center" class="leave-popup__title">
+			<h6> Add A Leave</h6>
+		</div>
+		<div padding>
+			<ion-grid>
+			  <ion-row>
+			    <ion-col col-12>
+			    	<div> Date </div>
+			    	<div>
+	                	<my-date-picker name="myDate" [options]="myDatePickerOptions" (dateChanged)="onDateChanged($event)"
+	               			 [(ngModel)]="model" required>
+	               		</my-date-picker>
+	               		<ng-container *ngIf="  this.selectedDates.length !=0">
+	               			<ng-container *ngFor="let item of this.selectedDates">
+	               				<div (click) = "deleteSetected(item)" class="selectedDatesBlock" >{{item.formatted}}</div>
+	               			</ng-container>
+	               		</ng-container>
+
+			    	</div>
+			    </ion-col>
+			  </ion-row>
+			  <ion-row>
+			    <ion-col col-12>
+			    	<div style="padding-bottom: 10px;">
+			    		Tags
+			    		 <!--   <tag-input 
+			                       [onlyFromAutocomplete]="true">
+			                <tag-input-dropdown [showDropdownIfEmpty]="true"
+			                                    [focusFirstElement]="true"
+			                                    [displayBy]="'name'"
+			                                    [identifyBy]="'userId'"
+			                            
+			                                    [autocompleteItems]="autocompleteItemsAsObjects">
+			                    <ng-template let-item="item" let-index="index">
+			                        ({{ index }}) {{ item.userId }} :{{ item.name }}
+			                    </ng-template>
+			                </tag-input-dropdown>
+			            </tag-input> -->
+
+			           <!--  <tag-input [ngModel]="['@item']"
+			                       [onlyFromAutocomplete]="true">
+			                <tag-input-dropdown [showDropdownIfEmpty]="true"
+			                                    [focusFirstElement]="true"
+			                                    [displayBy]="'name'"
+			                                   
+			                                    [autocompleteItems]="autocompleteItemsAsObjects">
+			                    <ng-template let-item="item" let-index="index">
+			                        ({{ index }}) : {{ item.name }}
+			                    </ng-template>
+			                </tag-input-dropdown>
+			            </tag-input>
+			             <tag-input [ngModel]="['@item']" [onAdding]="transform"  (onAdd)="onItemAdded($event)">
+           				 </tag-input> -->
+           				 <!-- <tag-input [ngModel]="[]"
+                      		 [placeholder]="'Enter a new repo'"
+                      		 [onTextChangeDebounce]="500"
+                       		[secondaryPlaceholder]="'Search in Github'"
+                      		 [onlyFromAutocomplete]="true">
+			                <tag-input-dropdown
+			                        [autocompleteObservable]="requestAutocompleteItems">
+			                    <ng-template let-item="item" let-index="index">
+			                        {{ item.display }}
+			                    </ng-template>
+			                </tag-input-dropdown>
+			            </tag-input> -->
+			            <!--  <tag-input [ngModel]="items" [onlyFromAutocomplete]="false"  (onAdd)="onItemAdded($event)">
+			                <tag-input-dropdown 
+			                        [showDropdownIfEmpty]="true"
+			                        [displayBy]="'name'"
+			                        [autocompleteObservable]="requestAutocompleteItemsFake">
+			                </tag-input-dropdown>
+			            </tag-input> -->
+			          <!--   <tag-input [ngModel]="itemsAsObjects" (onAdd)="onItemAdded($event)">
+			            	
+			            	{{itemsAsObjects}}
+			            </tag-input> -->
+			             <tag-input [ngModel]="[]" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)" [onAdding]="transform" required>
+			                <tag-input-dropdown [showDropdownIfEmpty]="true"
+			                                    [focusFirstElement]="true"
+			                                    [displayBy]="'name'"
+			                                    [identifyBy]="'userId'"
+			                                    [autocompleteItems]="autocompleteItemsAsObjects">
+			                    <ng-template let-item="item" let-index="index">
+			                       {{ item.name }}
+			                    </ng-template>
+			                </tag-input-dropdown>
+           				 </tag-input>
+			            
+
+
+			    	</div>
+			    	<!-- <div class="taggedUsers">
+			    		<div class="tagUser">@anish</div><div class="tagUser">@shreya</div>
+			    	</div> -->
+			    	<!-- <div>
+						<ion-list>
+						  <ion-item>
+						    <ion-input type="text" value="" placeholder="Tag Your Colleagues.."></ion-input>
+						  </ion-item>
+						</ion-list>
+			    	</div> -->
+			    	<div class="leaveNote">
+			    		<div class="leaveNoteHeader"> Leave a Note</div>
+			    		<textarea  id="leaveNoteData" required (keyup)="leaveNoteData($event.target.value)" style="min-width: 100%;min-height: 100px; "></textarea>	
+			    	</div>
+			    </ion-col>
+			  </ion-row>
+			</ion-grid>
+			<div style="text-align: center;"><button ion-button (click)="sendData()">Take a leave</button></div>
+			<div style="text-align: center;padding-bottom: 20px;"><button ion-button color="light"(click)= "close()">Cancel</button></div>
+		
+		</div>
+
+
+	</div>
+
+</ion-content>
+<!-- </form> -->

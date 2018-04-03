@@ -1,5 +1,6 @@
 // import { SummarySidebarService } from './../components/summary-sidebar/summary-sidebar.service';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorHandler, NgModule } from '@angular/core';
 // import { HttpModule, Http, BrowserXhr } from '@angular/http';
 import { HttpModule, Http } from '@angular/http';
@@ -58,6 +59,7 @@ export function createTranslateLoader(http: Http) {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     EnvironmentsModule,
     HttpModule,

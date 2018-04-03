@@ -1,7 +1,17 @@
 // ---------------------------
 // CUSTOM CSS FOR THIS PAGE -----------
 // ---------------------------
-page-start-home {}
+page-start-home {
+    .leaveContainer{
+        padding-left: 20px;
+        padding-bottom: 20px;
+        padding-right: 20px;
+    }
+    .leaveButton{
+        float: right;
+    }
+
+}
 
 // ---------------------------
 // GLOBAL ONE'S -----------

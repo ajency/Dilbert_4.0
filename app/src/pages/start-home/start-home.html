@@ -35,7 +35,38 @@
                         <div *ngIf = "failed" align="center"> {{message}} </div>
                     </div>
                 </ion-col>
+<!--                 <ion-col col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
+                    <span>My Leave Balance</span>
+                </ion-col> -->
                 <ion-col class="col dashboard__leaves mobile-hide" col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
+                   <!--  <ion-col col-12 col-md-12 col-lg-4 p-h-0 p-v-0 *ngIf = " summaryContentData && sideBarData" class="p-l-10" style="border :1px solid black"> -->
+                        <div class="p-b-20" *ngIf ="summaryContentData && sideBarData">
+                            <div class="leaveContainer">
+                                <ion-grid>
+                                    <ion-row >
+                                        <ion-col col-6  col-md-6 col-lg-6 >
+                                            <span> My Leave Balance</span>
+                                            <div>
+                                                <h3 font-weight-5 >
+                                                    06
+                                                </h3>
+                                            </div>
+                                        </ion-col>
+                                        <ion-col col-6  col-md-6 col-lg-6 >
+                                            <button ion-button class="leaveButton" (click) = "leaveModal()">Take a leave</button>
+                                            <button (click)="leavelist()">hi</button>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>  
+                                <hr>
+                            </div>
+                        </div>
+
+                        <!--  -->
+
+
+                        <!--  -->
+                    <!-- </ion-col> -->
                   
                     <!-- <div text-center m-t-20><button ion-button >Style Guide</button></div> -->
 

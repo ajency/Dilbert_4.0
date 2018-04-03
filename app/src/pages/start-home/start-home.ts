@@ -13,6 +13,8 @@ import { UserDataProvider } from '../../providers/user-data/user-data';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 import { AuthguardProvider } from '../../providers/authguard/authguard';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 import { Storage } from '@ionic/storage';
 
@@ -39,6 +41,7 @@ import { Storage } from '@ionic/storage';
  currentDate : any;
  summaryDate : any;
  userId : any;
+ x:any;
  key : any;
  apiURL : any;
  failed : boolean = false;
@@ -62,7 +65,8 @@ import { Storage } from '@ionic/storage';
   public authguard : AuthguardProvider,
   public appServiceProvider : AppServiceProvider,
   public storage : Storage,
-  public appGlobalsProvider : AppGlobalsProvider) {
+  public appGlobalsProvider : AppGlobalsProvider,
+  private http: Http) {
   this.apiURL = this.appGlobalsProvider.getApiUrl();
 
   // this.param1 = navParams.get("param1");
@@ -485,6 +489,31 @@ ionViewDidLoad() {
   else{
     return false;
   }
+}
+
+leaveModal(){
+   console.log("inside editModal");
+      let popover = this.popoverCtrl.create( 'LeaveModalPage');
+      popover.present();
+}
+
+leavelist(){
+// let url=`http://www.mocky.io/v2/5ac305ce33000076008731f5`;
+//     this.http.get(url)
+//     .subscribe(
+//       data => this.extractData(data)
+//        // err => this.handleError(err)
+//     );
+}
+  private extractData(res: Response) {
+// console.log(res);
+
+  this.x= res.json();
+  let num = this.x.length;
+  let dat =this.x;
+  console.log(dat);
+
+
 }
 
 }
