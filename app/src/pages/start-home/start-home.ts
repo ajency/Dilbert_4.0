@@ -13,8 +13,6 @@ import { UserDataProvider } from '../../providers/user-data/user-data';
 import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 import { AuthguardProvider } from '../../providers/authguard/authguard';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 
 import { Storage } from '@ionic/storage';
 
@@ -41,7 +39,6 @@ import { Storage } from '@ionic/storage';
  currentDate : any;
  summaryDate : any;
  userId : any;
- x:any;
  key : any;
  apiURL : any;
  failed : boolean = false;
@@ -65,8 +62,7 @@ import { Storage } from '@ionic/storage';
   public authguard : AuthguardProvider,
   public appServiceProvider : AppServiceProvider,
   public storage : Storage,
-  public appGlobalsProvider : AppGlobalsProvider,
-  private http: Http) {
+  public appGlobalsProvider : AppGlobalsProvider) {
   this.apiURL = this.appGlobalsProvider.getApiUrl();
 
   // this.param1 = navParams.get("param1");
@@ -302,7 +298,8 @@ ionViewDidLoad() {
             }
         }
 
-        
+         let data123=this.sideBarData;
+          this.events.publish("update:userDataForLeave", data123);
 
 
 
@@ -492,28 +489,9 @@ ionViewDidLoad() {
 }
 
 leaveModal(){
-   console.log("inside editModal");
+   console.log("inside leaveModal");
       let popover = this.popoverCtrl.create( 'LeaveModalPage');
       popover.present();
-}
-
-leavelist(){
-// let url=`http://www.mocky.io/v2/5ac305ce33000076008731f5`;
-//     this.http.get(url)
-//     .subscribe(
-//       data => this.extractData(data)
-//        // err => this.handleError(err)
-//     );
-}
-  private extractData(res: Response) {
-// console.log(res);
-
-  this.x= res.json();
-  let num = this.x.length;
-  let dat =this.x;
-  console.log(dat);
-
-
 }
 
 }

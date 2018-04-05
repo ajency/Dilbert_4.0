@@ -21,6 +21,10 @@ export class AppGlobalsProvider {
   cos_offset : string = '0';
   view_log_history_btn : boolean = true;
 
+  leave_param :any ={
+   param1:''
+  }
+
   
 
   dashboard_params : any = {

@@ -50,13 +50,13 @@
 			  <ion-row>
 			    <ion-col col-12>
 			    	<div> Date </div>
-			    	<div>
+			    	<div class="datePickerBox">
 	                	<my-date-picker name="myDate" [options]="myDatePickerOptions" (dateChanged)="onDateChanged($event)"
-	               			 [(ngModel)]="model" required>
+	               			 [(ngModel)]="model" required placeholder="Select date">
 	               		</my-date-picker>
 	               		<ng-container *ngIf="  this.selectedDates.length !=0">
 	               			<ng-container *ngFor="let item of this.selectedDates">
-	               				<div (click) = "deleteSetected(item)" class="selectedDatesBlock" >{{item.formatted}}</div>
+	               				<div class="selectedDatesBlock" >{{item}} <ion-icon class="removeDate" name="close" (click) = "deleteSetected(item)"></ion-icon></div>
 	               			</ng-container>
 	               		</ng-container>
 
@@ -66,63 +66,12 @@
 			  <ion-row>
 			    <ion-col col-12>
 			    	<div style="padding-bottom: 10px;">
-			    		Tags
-			    		 <!--   <tag-input 
-			                       [onlyFromAutocomplete]="true">
-			                <tag-input-dropdown [showDropdownIfEmpty]="true"
+			    		Tags 
+			             <tag-input [ngModel]="[]" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"  required placeholder="Tag Your Colleagues" theme='minimal'>
+			                <tag-input-dropdown  class="dropdown_custom" [showDropdownIfEmpty]="false"
 			                                    [focusFirstElement]="true"
-			                                    [displayBy]="'name'"
-			                                    [identifyBy]="'userId'"
-			                            
-			                                    [autocompleteItems]="autocompleteItemsAsObjects">
-			                    <ng-template let-item="item" let-index="index">
-			                        ({{ index }}) {{ item.userId }} :{{ item.name }}
-			                    </ng-template>
-			                </tag-input-dropdown>
-			            </tag-input> -->
-
-			           <!--  <tag-input [ngModel]="['@item']"
-			                       [onlyFromAutocomplete]="true">
-			                <tag-input-dropdown [showDropdownIfEmpty]="true"
-			                                    [focusFirstElement]="true"
-			                                    [displayBy]="'name'"
-			                                   
-			                                    [autocompleteItems]="autocompleteItemsAsObjects">
-			                    <ng-template let-item="item" let-index="index">
-			                        ({{ index }}) : {{ item.name }}
-			                    </ng-template>
-			                </tag-input-dropdown>
-			            </tag-input>
-			             <tag-input [ngModel]="['@item']" [onAdding]="transform"  (onAdd)="onItemAdded($event)">
-           				 </tag-input> -->
-           				 <!-- <tag-input [ngModel]="[]"
-                      		 [placeholder]="'Enter a new repo'"
-                      		 [onTextChangeDebounce]="500"
-                       		[secondaryPlaceholder]="'Search in Github'"
-                      		 [onlyFromAutocomplete]="true">
-			                <tag-input-dropdown
-			                        [autocompleteObservable]="requestAutocompleteItems">
-			                    <ng-template let-item="item" let-index="index">
-			                        {{ item.display }}
-			                    </ng-template>
-			                </tag-input-dropdown>
-			            </tag-input> -->
-			            <!--  <tag-input [ngModel]="items" [onlyFromAutocomplete]="false"  (onAdd)="onItemAdded($event)">
-			                <tag-input-dropdown 
-			                        [showDropdownIfEmpty]="true"
-			                        [displayBy]="'name'"
-			                        [autocompleteObservable]="requestAutocompleteItemsFake">
-			                </tag-input-dropdown>
-			            </tag-input> -->
-			          <!--   <tag-input [ngModel]="itemsAsObjects" (onAdd)="onItemAdded($event)">
-			            	
-			            	{{itemsAsObjects}}
-			            </tag-input> -->
-			             <tag-input [ngModel]="[]" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)" [onAdding]="transform" required>
-			                <tag-input-dropdown [showDropdownIfEmpty]="true"
-			                                    [focusFirstElement]="true"
-			                                    [displayBy]="'name'"
-			                                    [identifyBy]="'userId'"
+			                                    [displayBy]="'name1'"
+			                                    [identifyBy]="'user_id'"
 			                                    [autocompleteItems]="autocompleteItemsAsObjects">
 			                    <ng-template let-item="item" let-index="index">
 			                       {{ item.name }}
@@ -150,8 +99,8 @@
 			    </ion-col>
 			  </ion-row>
 			</ion-grid>
-			<div style="text-align: center;"><button ion-button (click)="sendData()">Take a leave</button></div>
-			<div style="text-align: center;padding-bottom: 20px;"><button ion-button color="light"(click)= "close()">Cancel</button></div>
+			<div style="text-align: center;"><button ion-button [disabled]="buttonRequestApi==false" (click)="sendData()">Take a leave</button></div>
+				<div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div>
 		
 		</div>
 
