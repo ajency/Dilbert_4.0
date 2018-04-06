@@ -10,6 +10,7 @@ use App\UserDetail;
 use App\Organisation;
 use App\Role;
 use App\Permission;
+use App\UserCommunication;
 use Ajency\User\Ajency\userauth\UserAuth;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -145,6 +146,36 @@ class UserController extends Controller
         foreach($usersDetails as $user) {
             $user->api_token = str_random(60);
             $user->save();
+        }
+    }
+
+    public function displayOrganisationUsers($orgId)
+    {
+        $returnValue=[];
+        $data=[];
+
+        $users = User::where(['status' => 'active'])->get(); // Get users that are active
+
+        foreach ($users as $user) {
+            $org_users = UserDetail::select('user_id')->where('org_id',$orgId)->where('user_id',$user['id'])->first();      
+
+            if ($org_users->exists()) {
+
+                 $email_id = UserCommunication::where('object_id','=',$org_users["user_id"])->where('object_type','App\\User')->first();
+                 $data['email'] = $email_id['value'];
+                 $data['user_id'] = $user['id'];
+                 $data['user_name'] = $user['name'];
+                 $user_tag = explode(' ',$user['name']);
+                 $data['user_tag']='@'.$user_tag[0];
+                 array_push($returnValue,$data);
+            }
+        }
+        if ($returnValue) {
+            return response()->json(['status' => "success", 'message' => "200 OK", 'data' => $returnValue]);  
+        }
+        else
+        {
+            return response()->json(['status' => "error", 'message' => "Users not found"]);  
         }
     }
 }
