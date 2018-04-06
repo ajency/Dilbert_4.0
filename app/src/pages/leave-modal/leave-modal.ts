@@ -38,6 +38,7 @@ import { Storage } from '@ionic/storage';
 export class LeaveModalPage {
     buttonRequestApi: boolean = false;
     users:any;
+    leave_note1:any;
     text:any;
     summaryData:any;
     leaveNote:any;
@@ -55,7 +56,7 @@ export class LeaveModalPage {
     model: any = null;
     disableDaysSelected: Array<Date> = [];
     selectedDates: Array<Date> = [];
-    dataurl: string = `http://www.mocky.io/v2/5ac4b7612f00002a00f5fb67`;  // URL to web API
+    dataurl: string = `http://www.mocky.io/v2/5ac6ffa84a00004f007e0898`;  // URL to web API
     jsonData: any;
     private myDatePickerOptions: IMyDpOptions = {
       dateFormat: 'yyyy-mm-dd',
@@ -83,14 +84,6 @@ export class LeaveModalPage {
                 this.nativeElement = this.element.nativeElement;
                 this.$ = this.appServiceProvider.jQuery;
   }
-
-  // public transform(name: any): Observable<object> {
-  //   console.log(name);
-  //       const item = {display: `@${name.name}`, value: name};
-  //       return of(item);
-  //       // console.log(item);
-  //   }
-
 
     public onItemAdded(item) {
 
@@ -158,12 +151,12 @@ export class LeaveModalPage {
     console.log(this.leave_param1);
 
 
-       this.events.subscribe("update:userDataForLeave",(data) => {
-        this.userInfo=data;
-          console.log("this.userInfo");
-          console.log(this.userInfo);
+       // this.events.subscribe("update:userDataForLeave",(data) => {
+       //  this.userInfo=data;
+       //    console.log("this.userInfo");
+       //    console.log(this.userInfo);
 
-         });
+       //   });
 
 
   }
@@ -171,12 +164,12 @@ export class LeaveModalPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad LeaveModalPage');
 
-     this.events.subscribe("update:userDataForLeave",(data) => {
-        this.userInfo=data;
-          console.log("this.userInfo");
-          console.log(this.userInfo);
+     // this.events.subscribe("update:userDataForLeave",(data) => {
+     //    this.userInfo=data;
+     //      console.log("this.userInfo");
+     //      console.log(this.userInfo);
 
-         });
+     //     });
       console.log(this.userInfo);
   console.log("yes");
   }
@@ -223,14 +216,16 @@ export class LeaveModalPage {
     }
 
     leaveNoteData(test){
-      // console.log(test);
+
         this.leaveNote=test;
+        var newstr = this.leaveNote.replace(/[\r\n|\n|\r]/gm,'');
+        this.leave_note1 = newstr.split(' ').join(''); 
         this.checkIfData();
     }
 
     checkIfData(){
-        if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0){
-      console.log("error");
+        if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0 ||this.leave_note1=="" ){
+     // console.log("error");
       this.buttonRequestApi=false;
     }else{
         this.buttonRequestApi=true;
@@ -313,28 +308,28 @@ export class LeaveModalPage {
        this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
             this.summaryData = response.data;
             console.log(this.summaryData);
-            // this.leaveAddedModal();
-            // this.close(); 
-                if(response.status == 'leave_taken'){
+            console.log(response);
+            this.appGlobalsProvider.leave_request_param.param1=response;
+
+                if(response.status == 'success'){
                      this.summaryData = response.data;
-                     console.log(this.summaryData);
+                     // console.log(this.summaryData);
                      this.leaveAddedModal();
                      this.close(); 
-
-
                 }
+
                    else{
-            this.appServiceProvider.presentToast(response.message, 'error');
+            // this.appServiceProvider.presentToast(response.message, 'error');
+            this.leaveAddedModal();
+            this.close(); 
           }
 
           })
-
-
       
     }
   }
   leaveAddedModal(){
-   console.log("inside leaveAddedModal");
+      console.log("inside leaveAddedModal");
       let popover = this.popoverCtrl.create( 'LeaveAddedPage');
       popover.present();
 }

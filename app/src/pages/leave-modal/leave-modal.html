@@ -70,14 +70,15 @@
 			             <tag-input [ngModel]="[]" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"  required placeholder="Tag Your Colleagues" theme='minimal'>
 			                <tag-input-dropdown  class="dropdown_custom" [showDropdownIfEmpty]="false"
 			                                    [focusFirstElement]="true"
-			                                    [displayBy]="'name1'"
+			                                    [displayBy]="'user_tag'"
 			                                    [identifyBy]="'user_id'"
 			                                    [autocompleteItems]="autocompleteItemsAsObjects">
 			                    <ng-template let-item="item" let-index="index">
 			                       {{ item.name }}
 			                    </ng-template>
 			                </tag-input-dropdown>
-           				 </tag-input>
+           				 </tag-input> 
+           				 <!-- <ng-container *ngIf=" selectedUsers.length == 0 "> select usrs</ng-container> -->
 			            
 
 

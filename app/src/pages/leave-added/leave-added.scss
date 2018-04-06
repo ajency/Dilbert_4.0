@@ -3,12 +3,19 @@ page-leave-added {
 	width:150px;
 	text-transform: uppercase;
 }
-.title_icon{
+.title_icon_success{
 	height: 30px;
 	font-size: 60px;
 	color: #0080bf;
 	padding: 0;
 	padding-top:20px;
+}
+.title_icon_error{
+	height: 30px;
+	font-size: 60px;
+	color: orange;
+	padding: 0;
+	padding-top:10px;
 }
 .mainContent{
 	padding-top: 10px;
@@ -23,6 +30,14 @@ page-leave-added {
 	font-weight: bold;
 	
 
+}
+.warning_message{
+	color: red;
+	padding-top: 5px;
+}
+.msg_container{
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 }
 

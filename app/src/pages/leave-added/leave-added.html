@@ -17,23 +17,50 @@
 
 </ion-content>
  -->
+<ng-container *ngIf=" responseStatusParam.status =='success' "> 
+	<ion-content class="leave-added-popup">
+		<div class="my-leave-popup">
+			<div align="center" class="leave-added-popup__title">
+				 <ion-icon name="checkmark-circle-outline" class="title_icon_success"></ion-icon>
+			</div>
+			<div padding>
+				<div class="mainContent">
+					<h4>Leave Added Successfully</h4>
+				</div>
 
-<ion-content class="leave-added-popup">
-	<div class="my-leave-popup">
-		<div align="center" class="leave-added-popup__title">
-			 <ion-icon name="checkmark-circle-outline" class="title_icon"></ion-icon>
-		</div>
-		<div padding>
-			<div class="mainContent">
-				<h4>Leave Added Successfully</h4>
+				<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
+				<div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div>
+			
 			</div>
 
-			<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
-			<div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div>
-		
+
 		</div>
 
+	</ion-content>
+</ng-container>
+<ng-container *ngIf=" responseStatusParam.status =='error' "> 
+	<ion-content class="leave-added-popup">
+		<div class="my-leave-popup">
+			<div align="center" class="leave-added-popup__title">
+				 <!-- <ion-icon name="checkmark-circle-outline" class="title_icon"></ion-icon> -->
+				 <ion-icon name="warning" class="title_icon_error"></ion-icon>
+			</div>
+			<div padding>
+				<div class="mainContent">
+						<h4>Leave could not be Added</h4>
+						<div class="msg_container">
+							<div class="warning_message">{{responseStatusParam.message}}</div>
+						</div>
+						
+				</div>
 
-	</div>
+				<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
+				<div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div>
+			
+			</div>
 
-</ion-content>
+
+		</div>
+
+	</ion-content>
+</ng-container>
