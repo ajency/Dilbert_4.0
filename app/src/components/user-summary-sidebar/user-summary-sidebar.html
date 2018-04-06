@@ -20,29 +20,31 @@
 		</div>	
 		
 	<!-- userSummaryData -->
-		<ion-list no-lines id="datalist">
-			<button id="datalist2" ion-item class="week-container" *ngFor=" let item of userSummaryData | slice:0:show; let i= index " (click) = "viewmoredetails(item,i)" (click)="mobileviewsummary()" [ngClass]="{'btnActivated': userSummaryData[i] && userSummaryData[i].btnActive == true}" >
-			    <ion-avatar item-start>
-			      <img src="{{item.user.avatar}}">
-			    </ion-avatar>
-			    <h2>{{item.user.name}}</h2>
-				<ng-container *ngIf="item.summary.length != 0 ">
-				    <ng-container *ngIf="item.summary[item.summary.length-1].status == 'active' ">
-				       <div ion-text="" class="text text-md text-md-success">
-				       		{{item.summary[item.summary.length-1].status}}
-				       </div> 
-				    </ng-container>
-				    <ng-container *ngIf="item.summary[item.summary.length-1].status != 'active' ">
-				       <div ion-text="" class="text text-md text-md-danger">
-				       		{{item.summary[item.summary.length-1].status}}
-				       </div> 
-				    </ng-container>
-				</ng-container>
-			    <span clear item-end>  <h3>{{item.period_meta.worked_total}}<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-			</button>
-		</ion-list>
+		<div class="">
+			<ion-list no-lines id="datalist" >
+				<button style="border: 1px solid #f1f1f1;" id="datalist2" ion-item class="week-container userlist" *ngFor=" let item of userSummaryData | slice:0:show; let i= index " (click) = "viewmoredetails(item,i)" (click)="mobileviewsummary()" [ngClass]="{'btnActivated': userSummaryData[i] && userSummaryData[i].btnActive == true}" >
+				    <ion-avatar item-start>
+				      <img src="{{item.user.avatar}}">
+				    </ion-avatar>
+				    <h2>{{item.user.name}}</h2>
+					<ng-container *ngIf="item.summary.length != 0 ">
+					    <ng-container *ngIf="item.summary[item.summary.length-1].status == 'active' ">
+					       <div ion-text="" class="text text-md text-md-success">
+					       		{{item.summary[item.summary.length-1].status}}
+					       </div> 
+					    </ng-container>
+					    <ng-container *ngIf="item.summary[item.summary.length-1].status != 'active' ">
+					       <div ion-text="" class="text text-md text-md-danger">
+					       		{{item.summary[item.summary.length-1].status}}
+					       </div> 
+					    </ng-container>
+					</ng-container>
+				    <span clear item-end>  <h3>{{item.period_meta.worked_total}}<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
+				</button>
+			</ion-list>
+		</div>
 			<!-- show >= 14 (click)=" show = show-7"  -->
-		<div *ngIf=" show >= datalength " (click)=" show = 7" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
+	<!-- 	<div *ngIf=" show >= datalength " (click)=" show = 7" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
 			<p id="text-change">
 				<span id="arrow"> 
 					<ion-icon  name="ios-arrow-up-outline" class="icon-size full"></ion-icon> 
@@ -61,7 +63,7 @@
 					<ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> 
 				</span>
 			</p>
-		</div>
+		</div> -->
 	</div>
 </ng-container>
 

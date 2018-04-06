@@ -3,6 +3,9 @@ user-summary-content {
 	.datesrow{
 	background-color: #f2f2f2c2;
 	}
+    .tableHeaderBackground{
+        background-color:#eeeeee4d;
+    }
     .bgcolorwaring{
     	background-color:#f97c7c54;
     	padding-top:10px;
@@ -124,6 +127,35 @@ user-summary-content {
                     }
 
          }
-    
-        
+    .workedblock1{
+        padding-top: 10px 
+    }
+    .workedblocktd{
+  
+    }
+    .starttable{
+        margin-top: 36px;
+        width: 800px;
+    }
+    .bg-red{
+        background-color:#f97c7c54;
+        text-align: center;
+        min-height: 30px;
+        text-align: center;
+        padding-left: 8px; 
+        padding-right: 8px;
+        padding-bottom:20px;
+        padding-top: 10px;
+    }
+    .totalblock{
+        height: 64px;
+    }
+    .rowUserSummaryList{
+        border-top: 1px solid #f1f1f1;
+        max-height: 64px;
+    }
+    .starttable tr:last-child{
+         border-bottom: 1px solid #f1f1f1;
+    }
+
 }

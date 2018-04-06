@@ -34,9 +34,9 @@ export class UserSummarySidebarComponent {
   newdata :any;
   newdate:any;
   newdate2:any;
-  show = 7;
   nodata : any;
   maindata :any;
+  maindata1:any;
   user_id : any;
   new_user_id : any;
   apiURL : any;
@@ -63,6 +63,7 @@ export class UserSummarySidebarComponent {
   newsummarydata:any;
   key:any;
   newuserdata:any;
+  viewAllUsers2:any;
 
 
   constructor(public navCtrl: NavController, 
@@ -85,6 +86,13 @@ export class UserSummarySidebarComponent {
     this.events.subscribe("update:mobileviewusersidebar",(data) => {
           $('.summarysidebarcontainer').removeClass('mobileUserSidebar'); 
        });
+
+    this.events.subscribe("update:viewAllUsers",(dummy) => {
+      let newDummyDate=dummy;
+      console.log(dummy);
+      this.viewAllUsers1(newDummyDate);
+
+   });
   }
 
   ngOnInit(){
@@ -101,6 +109,7 @@ export class UserSummarySidebarComponent {
       this.user_id=this.authguard.userData.user_id;
       this.newdate= this.formatDate(new Date());
       this.getUserDate(1, new Date());
+      this.events.publish("update:summarydate", this.newdate);
     }
      else {
       console.log('params passed');
@@ -114,7 +123,7 @@ export class UserSummarySidebarComponent {
           // end: this.formatDate(dates.end)
         };
       this.getData(dateObject);
-
+      this.events.publish("update:summarydate", this.param1.start_date);
       }
 
 
@@ -145,10 +154,13 @@ export class UserSummarySidebarComponent {
   }
 
   requestData1(date1){
+    console.log(this.viewAllUsers2);
+    if(this.viewAllUsers2 ==2){
     console.log(this.newuserdata);
-    if(this.newuserdata !='' && this.newuserdata != undefined ){
-     this.new_user_id=this.newuserdata.user.user_id;
-    }
+      if(this.newuserdata !='' && this.newuserdata != undefined ){
+       this.new_user_id=this.newuserdata.user.user_id;
+      }
+   }
     console.log("inside requestData function", date1);
     var date =date1.formatted; 
      if (date) {
@@ -166,20 +178,24 @@ export class UserSummarySidebarComponent {
   }
 
   highlightSelectedUserData(){
-    for(var i=0;i<this.userSummaryData.length;i++){
-      if(this.userSummaryData[i].user.user_id==this.maindata.user.user_id){
-        this.userSummaryData[i].btnActive=true;
-      }
-      else{
-        this.userSummaryData[i].btnActive=false;
+   console.log(this.maindata);
+     if(this.maindata != undefined){
+      for(var i=0;i<this.userSummaryData.length;i++){
+        if(this.userSummaryData[i].user.user_id==this.maindata.user.user_id){
+          this.userSummaryData[i].btnActive=true;
+        }
+        else{
+          this.userSummaryData[i].btnActive=false;
+        }
       }
     }
   }
 
   viewmoredetails(item,key){
+    console.log(item);
     this.mobileviewsummary();
     console.log("clicked on sidebar data to view users summary ");
-    this.param1 = this.appGlobalsProvider.newsummary_params.param1;
+    // this.param1 = this.appGlobalsProvider.newsummary_params.param1;
     console.log(this.param1);
     if(this.param1 !='' && item =='')
     {
@@ -195,6 +211,8 @@ export class UserSummarySidebarComponent {
       {
         if(this.userSummaryData[i].user.user_id==this.user_id)
           {
+            console.log("1");
+            this.viewAllUsers2=2;
             this.newuserdata=item;
             this.userSummaryData[i].btnActive=true;
             this.maindata=this.userSummaryData[i];
@@ -218,6 +236,8 @@ export class UserSummarySidebarComponent {
       }
         if (found == 0)
         {
+          console.log("2");
+          this.viewAllUsers2=2;
           this.newuserdata=item;
           this.userSummaryData[0].btnActive=true;
           this.param1.user_id=this.userSummaryData[0].user.user_id;
@@ -241,6 +261,8 @@ export class UserSummarySidebarComponent {
         }
         if(this.param1 !='' && item !='')
         {
+          console.log("3");
+          this.viewAllUsers2=2;
           this.newuserdata=item;
           this.userSummaryData[key].btnActive = true;
           for(var i = 0; i < this.userSummaryData.length; i++ )
@@ -275,9 +297,11 @@ export class UserSummarySidebarComponent {
     }
 //if ends here 
     else
-    {
+    {console.log("4.0");
       if(item !='')
       {
+        console.log("4");
+        this.viewAllUsers2=2;
         console.log(this.param1);
         if(this.param1 !='' && this.param1 !=undefined){
           this.period_unit=this.param1.period_unit;
@@ -319,7 +343,9 @@ export class UserSummarySidebarComponent {
 
 
     else{
+      console.log("5");
       if(this.new_user_id !='' && this.new_user_id !=undefined){
+        this.viewAllUsers2=2;
         console.log(this.new_user_id); 
         if(this.newdate=="" || this.newdate== undefined){
            this.newdate=this.newdate2.start;
@@ -347,7 +373,8 @@ export class UserSummarySidebarComponent {
          } 
       }
       else{
-           this.userSummaryData[key].btnActive = true;
+        console.log("123");
+           // this.userSummaryData[key].btnActive = true;
            for(var i = 0; i < this.userSummaryData.length; i++ )
               {
                 if(i != key)
@@ -363,9 +390,9 @@ export class UserSummarySidebarComponent {
                period_unit : this.appGlobalsProvider.period_unit
            }
             
-            this.maindata=this.userSummaryData[0];
+            this.maindata1=this.userSummaryData;
             let data12={
-                newdata : this.maindata
+                newdata : this.maindata1
             }
           let period_unit_data=this.appGlobalsProvider.period_unit;
           this.events.publish("update:period_unit_info", period_unit_data);
@@ -390,6 +417,7 @@ export class UserSummarySidebarComponent {
   };
 
 getData(date){
+  console.log("take users data  form here--------------");
     let curr;
     if(date.hasOwnProperty('start'))
       curr = new Date(date.start);
@@ -556,7 +584,7 @@ getData(date){
         this.zone.run(() => {});
 
 
-         console.log("show"+this.show);
+         // console.log("show"+this.show);
 
 }
 
@@ -582,11 +610,33 @@ formatDate(date) {
     this.userSummaryData = this.saveData1.filter(item => item.user.name.toLowerCase().indexOf(text.toLowerCase()) !== -1); // LowerCase all the names & keyword so that it cover all the possibilities
     this.zone.run(() => {}); 
     this.highlightSelectedUserData();
+    let data={
+                newdata : this.userSummaryData
+            }
+    this.events.publish("update:searchdata", data);
   }
 
   mobileviewsummary(){
     let dummy;
       $('.summarysidebarcontainer').addClass('mobileUserSidebar'); 
     this.events.publish("update:mobileviewsummary1", dummy);
+  }
+
+  viewAllUsers1(newDummyDate){
+     for(var i=0;i<this.userSummaryData.length;i++){
+      this.userSummaryData[i].btnActive=false;
+
+     }
+     this.new_user_id='';
+     this.viewAllUsers2=1;
+     this.param1='';
+
+     this.maindata1=this.userSummaryData;
+            let data12={
+                newdata : this.maindata1
+            }
+     this.events.publish("update:summarydatanew", data12);
+   
+     
   }
 }
