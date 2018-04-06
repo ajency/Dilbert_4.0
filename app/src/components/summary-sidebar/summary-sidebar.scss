@@ -19,9 +19,44 @@ summary-sidebar {
 .btnActivated{
     background-color: #f1f1f1;
 }
-
+  @media screen and (max-width: 600px) {
+          .hideBlockMobile{
+              display: none;
+       }
+    }
+  @media screen and (min-width: 600px) {
+        .topNavMobileDays{
+           display: none;
+       } 
+    
 }
 
+.topNavMobileDays{
+          
+        
+}
+
+.dateblock{
+     position:fixed; 
+     border-radius: 50%;
+     padding-top: 10px;
+     padding-bottom: 46px;
+     padding-right: 40px;
+     padding-left:16px;
+     background-color: #ffd412de;
+     height: 35px;
+     width: 40px;
+     bottom: 50px;
+     right: 20px;
+     /*width: 1px;*/
+    }
+.dateblock .icon-mydpcalendar{
+     font-size: 20px;
+
+    }
+
+}
+//2.4rem
 // ---------------------------
     // CURRENT TOP LEVEL CARD -----------
     // ---------------------------
