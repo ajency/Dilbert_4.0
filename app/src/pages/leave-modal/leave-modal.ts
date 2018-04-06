@@ -109,35 +109,79 @@ export class LeaveModalPage {
 
  this.checkIfData();
     }
-   readData () {
+//    readData () {
 
-    this.http.get(this.dataurl)
-    .subscribe(
-      data => this.extractData(data),
-       err => this.handleError(err)
-    );
-  }
-    private extractData(res: Response) {
+//     this.http.get(this.dataurl)
+//     .subscribe(
+//       data => this.extractData(data),
+//        err => this.handleError(err)
+//     );
+//   }
+//     private extractData(res: Response) {
 
 
-  this.jsonData= res.json();
-  let num = this.jsonData.length;
-  let dat =this.jsonData;
-  this.users=this.jsonData;
-  this.data=this.jsonData;
-  this.autocompleteItemsAsObjects = this.jsonData;
+//   this.jsonData= res.json();
+//   let num = this.jsonData.length;
+//   let dat =this.jsonData;
+//   this.users=this.jsonData;
+//   this.data=this.jsonData;
+//   this.autocompleteItemsAsObjects = this.jsonData;
+
+// }
+
+//   handleError (error: any) {
+//    console.log("error !")
+  
+//       let errMsg = (error.message) ? error.message :
+//       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+//       console.log(errMsg); 
+//       return errMsg;
+//   }
+
+//Api call to get all users
+readData(){
+
+console.log(this.apiURL);
+
+    let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
+
+    console.log(url);
+    let filter1 = {
+        // org_id : this.org_id,
+        // date:date.start,
+        // period_unit:this.period_unit
+      };
+
+     let filters = {
+      // date_range : date_range,
+      // period_unit : this.period_unit
+
+      };
+
+      let body = {
+        // filters : filters
+      }
+
+    let optionalHeaders = {
+          'X-API-KEY' : this.authguard.userData.x_api_key,
+          'From' : this.authguard.userData.user_id
+        };
+          //   this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+
+          //   console.log(response);
+
+          //       if(response.status == 'success'){
+          //            // this.users = response.data;
+          //            // this.autocompleteItemsAsObjects = this.users;
+
+          //       }
+
+          // })
 
 }
 
-  handleError (error: any) {
-   console.log("error !")
-  
-      let errMsg = (error.message) ? error.message :
-      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-      console.log(errMsg); 
-      return errMsg;
-  }
-// ng2-dropdown-menu
+
+// 
   ngOnInit(){
     this.$(this.nativeElement).parents().find('.popover-content').addClass("leave-popover2");
     this.$(this.nativeElement).parents().find('.ng2-dropdown').addClass("customdrop");
