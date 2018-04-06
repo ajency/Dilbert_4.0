@@ -1,31 +1,49 @@
 user-summary-sidebar {
     .mydp{
-    border : none;
-    .btnclear{
-        display : none;
-    } 
-    .selection{
-            color: rgba(85, 85, 85, 0);
-        background: rgba(255, 255, 255, 0);
-    pointer-events: none;
-        
+        border : none;
+        .btnclear{
+            display : none;
+        } 
+        .selection{
+                color: rgba(85, 85, 85, 0);
+            background: rgba(255, 255, 255, 0);
+        pointer-events: none;
+            
+        }
+
+        .btnpicker, .selectiongroup{
+            background: rgba(255, 255, 255, 0);
+        }
+    }
+    .selecteddataitem{
+        background-color:#f2f2f2;
     }
 
-    .btnpicker, .selectiongroup{
-        background: rgba(255, 255, 255, 0);
+    .btnActivated{
+        background-color: #f2f2f2c2;
     }
-}
-.selecteddataitem{
-    background-color:#f2f2f2;
+    .test :hover{
+       background-color:yellow;
+    }
+    .datePicker1{
+        float:right;
+    }
+
+
+
+
+        @media screen and (max-width: 600px) {
+            .mobileUserSidebar{
+                display: none;
+             }
+
+        }
+        .userlist{
+        height:64px;
+        }
 }
 
-.btnActivated{
-    background-color: #f2f2f2c2;
-}
-.test :hover{
-   background-color:yellow;
-}
-}
+
 
 .bgwhite{
     background-color:white;
@@ -54,7 +72,4 @@ user-summary-sidebar {
 }
 #datalist:first-child{
     background-color:#f2f2f2;
-}
-.selected{
-    background-color:red;
 }

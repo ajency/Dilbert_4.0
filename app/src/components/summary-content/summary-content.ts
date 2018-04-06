@@ -696,11 +696,7 @@ changelogview(){
         if(this.logs[i].state_time != null && this.logs[i].state !='active'){
           if(this.logs[i].state_time < 10){
             count = count + 1;
-hidedailylogsblock(){
-  var c=0;
-  this.events.publish("update:mobilesidebar",c );
 
-          }
   // $(".logsblock").addClass("hideBlockMobile");
   // $(".mobileWeekDays").addClass("hideBlockMobile");
 }
@@ -711,6 +707,11 @@ hidedailylogsblock(){
    this.logsLength=count;
    console.log(this.logsLength);
   }
+  hidedailylogsblock(){
+  var c=0;
+  this.events.publish("update:mobilesidebar",c );
+
+          }
 
 
 }

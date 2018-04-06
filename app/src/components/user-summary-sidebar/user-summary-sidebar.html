@@ -1,50 +1,50 @@
 <!-- Generated template for the UserSummarySidebarComponent component -->
 <ng-container *ngIf=" userSummaryData != null ">
-<div>
-	<ion-icon p-l-10 name="search" class="icon-size full" ion-txt class="text text-md text-md-text-lighter"></ion-icon><input type="search" name="" style="border: 0px; padding: 10px; padding-bottom: 10px; width: 90%;" placeholder="Filter By Name" id="searchemployee"  (ngModel)="text" (keyup)="onTextChange($event.target.value)">
+	<div class="summarysidebarcontainer">
+		<ion-icon p-l-10 name="search" class="icon-size full" ion-txt class="text text-md text-md-text-lighter"></ion-icon><input type="search" name="" style="border: 0px; padding: 10px; padding-bottom: 10px; width: 90%;" placeholder="Filter By Name" id="searchemployee"  (ngModel)="text" (keyup)="onTextChange($event.target.value)">
 
-	<div style="background-color: #eeeeee4d;">
-		<ion-grid style="padding: 0 !important">
-		  <ion-row>
-		    <ion-col col-6 p-t-15 p-l-15 >
-		    	This week
-		    </ion-col >
-		    <ion-col col-6 p-r-10>
-		    	 <div class="flex" style="float: right">
-		    	<my-date-picker  (dateChanged)="requestData1($event)"  [options]="myDatePickerOptions" [(ngModel)]="model" >
-				</my-date-picker>
-			</div>
-		    </ion-col>
-		  </ion-row>
-		</ion-grid>
-	</div>	
-	
-<!-- userSummaryData -->
-	<ion-list no-lines id="datalist">
-		<button id="datalist2" ion-item class="week-container" *ngFor=" let item of userSummaryData | slice:0:show; let i= index " (click) = "viewmoredetails(item,i)" [ngClass]="{'btnActivated': userSummaryData[i] && userSummaryData[i].btnActive == true}" >
-		   	
-		    <ion-avatar item-start>
-		      <img src="{{item.user.avatar}}">
-		    </ion-avatar>
-		    <h2>{{item.user.name}}</h2>
-			 <ng-container *ngIf="item.summary.length != 0 ">
-			     <ng-container *ngIf="item.summary[item.summary.length-1].status == 'active' ">
-			       <div ion-text="" class="text text-md text-md-success">{{item.summary[item.summary.length-1].status}}
-			       </div> 
-			    </ng-container>
-			     <ng-container *ngIf="item.summary[item.summary.length-1].status != 'active' ">
-			       <div ion-text="" class="text text-md text-md-danger">{{item.summary[item.summary.length-1].status}}
-			       </div> 
-
-			    </ng-container>
-			</ng-container>
-
-		    <span clear item-end>  <h3>{{item.period_meta.worked_total}}<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
-		</button>
-	</ion-list>
-	<ng-container  *ngIf="datalength !=0">
-		<ng-container  *ngIf="datalength > 7">
-		<div *ngIf=" show > datalength " (click)=" show = 7" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
+		<div style="background-color: #eeeeee4d;">
+			<ion-grid style="padding: 0 !important">
+			  <ion-row>
+			    <ion-col col-4 p-t-15 p-l-15 >
+			    	This week
+			    </ion-col >
+			    <ion-col col-8 p-r-10>
+			     <div class="flex" clss="datePicker1">
+			    	<my-date-picker  (dateChanged)="requestData1($event)"  [options]="myDatePickerOptions" [(ngModel)]="model" >
+					</my-date-picker>
+				</div>
+			    </ion-col>
+			  </ion-row>
+			</ion-grid>
+		</div>	
+		
+	<!-- userSummaryData -->
+		<div class="">
+			<ion-list no-lines id="datalist" >
+				<button style="border: 1px solid #f1f1f1;" id="datalist2" ion-item class="week-container userlist" *ngFor=" let item of userSummaryData | slice:0:show; let i= index " (click) = "viewmoredetails(item,i)" (click)="mobileviewsummary()" [ngClass]="{'btnActivated': userSummaryData[i] && userSummaryData[i].btnActive == true}" >
+				    <ion-avatar item-start>
+				      <img src="{{item.user.avatar}}">
+				    </ion-avatar>
+				    <h2>{{item.user.name}}</h2>
+					<ng-container *ngIf="item.summary.length != 0 ">
+					    <ng-container *ngIf="item.summary[item.summary.length-1].status == 'active' ">
+					       <div ion-text="" class="text text-md text-md-success">
+					       		{{item.summary[item.summary.length-1].status}}
+					       </div> 
+					    </ng-container>
+					    <ng-container *ngIf="item.summary[item.summary.length-1].status != 'active' ">
+					       <div ion-text="" class="text text-md text-md-danger">
+					       		{{item.summary[item.summary.length-1].status}}
+					       </div> 
+					    </ng-container>
+					</ng-container>
+				    <span clear item-end>  <h3>{{item.period_meta.worked_total}}<span>hr &nbsp;&nbsp;</span> <ion-icon ion-text color="" name="ios-arrow-forward-outline" class="text text-md text-md-text-lighter icon-size mini "></ion-icon></h3> </span>
+				</button>
+			</ion-list>
+		</div>
+			<!-- show >= 14 (click)=" show = show-7"  -->
+	<!-- 	<div *ngIf=" show >= datalength " (click)=" show = 7" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
 			<p id="text-change">
 				<span id="arrow"> 
 					<ion-icon  name="ios-arrow-up-outline" class="icon-size full"></ion-icon> 
@@ -55,22 +55,15 @@
 				</span>
 			</p>
 		</div>
-		</ng-container>
 		<div *ngIf=" show < datalength " (click)=" show = show + 10 " align="center" class="text-center" id="showMore" style="cursor: pointer;" >
-				<p id="text-change">
-					<span id="innertxt">
-						View More</span><br>
-					<span id="arrow">
-						<ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> 
-					</span>
-				</p>
-		</div>
-	</ng-container>
-<!-- 	<ng-container  *ngIf="datalength ==0">
-		<div> User Not found</div>
-	</ng-container> -->
-		
-
-</div>
+			<p id="text-change">
+				<span id="innertxt">
+					View More</span><br>
+				<span id="arrow">
+					<ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> 
+				</span>
+			</p>
+		</div> -->
+	</div>
 </ng-container>
 
