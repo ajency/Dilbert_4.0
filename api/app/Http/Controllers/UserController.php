@@ -164,7 +164,7 @@ class UserController extends Controller
                  $email_id = UserCommunication::where('object_id','=',$org_users["user_id"])->where('object_type','App\\User')->first();
                  $data['email'] = $email_id['value'];
                  $data['user_id'] = $user['id'];
-                 $data['user_name'] = $user['name'];
+                 $data['name'] = $user['name'];
                  $user_tag = explode(' ',$user['name']);
                  $data['user_tag']='@'.$user_tag[0];
                  array_push($returnValue,$data);
