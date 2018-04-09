@@ -5,6 +5,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { TagInputModule } from 'ngx-chips';
 import { CommonModule } from '@angular/common';
 // import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,6 +16,7 @@ import { Observable } from 'rxjs/Observable';
   imports: [
       CommonModule,
       TagInputModule, 
+      // BrowserAnimationsModule,
       // NoopAnimationsModule,
       MyDatePickerModule,
     IonicPageModule.forChild(LeaveModalPage),

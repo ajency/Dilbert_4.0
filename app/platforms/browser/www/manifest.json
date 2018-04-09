@@ -1,35 +1,11 @@
 {
+  "background_color": "#FFF",
+  "display": "standalone",
   "name": "Dilbert",
   "short_name": "Dilbert",
-  "start_url": "index.html",
-  "display": "standalone",
-  "icons": [
-    {
-      "src": "assets/img/128X128.png",
-        "sizes": "128x128",
-        "type": "image/png"
-      },
-      {
-        "src": "assets/img/144X144.png",
-        "sizes": "144x144",
-        "type": "image/png"
-      },
-      {
-        "src": "assets/img/152X152.png",
-        "sizes": "152x152",
-        "type": "image/png"
-      },
-      {
-        "src": "assets/img/192X192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "assets/img/256X256.png",
-        "sizes": "256x256",
-        "type": "image/png"
-      }
-    ],
-  "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7"
+  "version": "io.ionic.starter",
+  "description": "An awesome Ionic/Cordova app.",
+  "author": "Ionic Framework Team",
+  "icons": [],
+  "start_url": "index.html"
 }
