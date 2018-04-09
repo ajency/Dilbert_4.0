@@ -1,0 +1,133 @@
+{
+
+	  "DILBERT" : "DILBERT",
+	  "login" : "Login",
+	  "register" : "Register",
+	  "contact us" : "Contact Us",
+	  "by" : "By",
+
+
+	  "hero_title" : "Track Time. Record Work",
+	  "account_exist" : "Have an existing account?",
+	  "sign_in" : "Sign in",
+	  "sign_up" : "Sign up",
+	  "n_cont_whr_u_left_off" : "and continue where you left off",
+	  "with_google" : "with Google",
+	   "_change_ur_work_way" : ", change your way of work!",
+	  "already_hv_acc_in_dil" : "Already have an account on Dilbert?",
+	  "not_conn_2_dilbert" : "Haven't connected to Dilbert yet?",
+	  "conn_using_google_acc" : "Just connect your Google account",
+
+
+
+
+
+	   "my_summary" : "My Summary",
+	  "this_week" : "This Week",
+	  "week_total" : "Week Total",
+	  "month_total" : "Month Total",
+	  "lunch_time": "Total Lunch Time",
+	  "today" : "Today",
+	  "the_summary" : "The Summary",
+	  "summary" : "Summary",
+	  "day" : "Day",
+	  "start_time" : "Start time",
+	  "end_time" : "End time",
+	  "total_time" : "Total time",
+	  "u started day at" : "You Started your day at",
+	  "active_from" : "Active from",
+	  "offline_from" : "Offline from",
+	  "idle_from" : "Idle from",
+	  "to" : "to",
+	  "u ended day at" : "You ended your day at",
+	  "you_completed" : "You completed",
+	  "hours_today"  : "hours today",
+	  "hr" : "hr",
+	  "online" : "Online",
+	  "no logs found" : "No logs found",
+	  "no data found" : "No data found",
+	  "Leave" : "Leave",
+	  "Holiday" : "Holiday",
+	  "Weekend" : "Weekend",
+	  "Not joined" : "Not joined",
+	  "active" : "Active",
+	  "offline" : "Offline",
+	  "idle" : "Idle",
+	  "Jump to date" : "Jump to date",
+	  "Edit log time" : "Edit log time",
+	  "Modify_logs" : "Modify logs",
+	  "Leave_status" : "Leave status",
+	  "Save_changes" : "Save Changes",
+	  "Cancel" : "Cancel",
+	  "Worked" : "Worked",
+	  "Worked on weekend" : "Worked on weekend",
+	  "Worked on holiday" : "Worked on holiday",
+	  "Leave due to violation" : "Leave due to violation", 
+
+
+
+
+	   "Monday" : "Monday" ,
+	  "Tuesday" : "Tuesday",
+	  "Wednesday" : "Wednesday",
+	  "Thursday" :"Thursday", 
+      "Friday" :"Friday", 
+	  "Saturday" :"Saturday",
+	  "Sunday" :"Sunday",
+
+	  "Mon" : "Mon", 
+	  "Tue" : "Tue", 
+	  "Wed" : "Wed", 
+	  "Thu" : "Thu", 
+	  "Fri" : "Fri", 
+	  "Sat" : "Sat", 
+	  "Sun" : "Sun",
+
+
+	  "January"	: "January",
+	  "February":"February",
+	  "March":"March",
+	  "April":"April",
+	  "May":"May",
+	  "June":"June",
+	  "July" : "July",
+	  "August" : "August",
+	  "September" : "September",
+	  "October" : "October",
+	  "November" : "November",
+	  "December" : "December",
+
+
+	  "Jan"	: "Jan",
+	  "Feb":"Feb",
+	  "Mar":"Mar",
+	  "Apr":"Apr",
+	  "May":"May",
+	  "Jun":"Jun",
+	  "Jul" : "Jul",
+	  "Aug" : "Aug",
+	  "Sep" : "Sep",
+	  "Oct" : "Oct",
+	  "Nov" : "Nov",
+	  "Dec" : "Dec",
+
+
+	  "changed_logs" : "Changed logs",
+	  "modified" : "Modified",
+	  "status" : "Status",
+	  "from" : "from",
+	  "on" : "On",
+	  "at" : "at",
+
+
+	"toast_messages": {
+		"success": "Update success",
+		"error": "Update failed",
+		"slot_update_success": "Slot updated successfully",
+		"slot_update_failure": "Slot update has failed"
+	}
+
+
+
+
+}

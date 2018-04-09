@@ -1,0 +1,133 @@
+{
+	  "DILBERT" : "डिल्बर्ट",
+	  "login" : "लॉग इन करें",
+	  "register" : "रजिस्टर",
+	  "contact us" : "हमसे संपर्क करें",
+	  "by" : "द्वारा",
+
+
+	  "hero_title" : "ट्रैक समय रिकार्ड कार्य",
+	  "account_exist" : "मौजूदा खाता है?",
+	  "sign_in" : "साइन इन करें",
+	  "sign_up" : "साइन अप करें",
+	  "n_cont_whr_u_left_off" : "और जारी रखें जहां आपने छोड़ दिया",
+	  "with_google" : "Google के साथ",
+	   "_change_ur_work_way" : ", अपने काम का तरीका बदल दें!",
+	  "already_hv_acc_in_dil" : "पहले से ही डिल्बर्ट पर एक खाता है?",
+	  "not_conn_2_dilbert" : "अभी तक डिल्बर्ट से जुड़ा नहीं है?",
+	  "conn_using_google_acc" : "बस अपने Google खाते से जुड़ें",
+
+
+
+
+
+	   "my_summary" : "मेरा सारांश",
+	  "this_week" : "इस सप्ताह",
+	  "week_total" : "सप्ताह का कुल",
+	  "month_total" : "महीने का कुल",
+	  "lunch_time": "कुल दोपहर के भोजन का समय",
+	  "today" : "आज",
+	  "the_summary" : "सारांश",
+	  "summary" : "सारांश",
+	  "day" : "दिन",
+	  "start_time" : "प्रारंभ समय",
+	  "end_time" : "अंत समय",
+	  "total_time" : "कुल समय",
+	  "u started day at" : "आपने अपना दिन शुरू किया",
+	  "active_from" : "सक्रिय",
+	  "offline_from" : "ऑफ़लाइन",
+	  "idle_from" : "बेकार",
+	  "to" : "से",
+	  "u ended day at" : "आपने अपना दिन समाप्त कर दिया",
+	  "you_completed" : "आपने आज पूरा किया",
+	  "hours_today"  : "घंटा",
+	  "hr" : "घंटे",
+	  "online" : "ऑनलाइन",
+	  "no logs found" : "कोई लॉग नहीं मिला",
+	  "no data found" : "कोई डेटा नहीं मिला",
+	  "Leave" : "छुट्टी",
+	  "Holiday" : "छुट्टी",
+	  "Weekend" : "सप्ताहांत",
+	  "Not joined" : "शामिल नहीं हुआ",
+	  "active" : "सक्रिय",
+	  "offline" : "ऑफ़लाइन",
+	  "idle" : "बेकार",
+	  "Jump to date" : "तिथि पर जा",
+	  "Edit log time" : "लॉग समय संपादित करें",
+	  "Modify_logs" : "लॉग को संशोधित करें",
+	  "Leave_status" : "छुट्टी की स्थिति",
+	  "Save_changes" : "परिवर्तनों को सुरक्षित करें",
+	  "Cancel" : "रद्द करें",
+	  "Worked" : "काम किया",
+	  "Worked on weekend" : "सप्ताहांत पर काम किया",
+	  "Worked on holiday" : "छुट्टी पर काम किया",
+	  "Leave due to violation" : "उल्लंघन के कारण छुट्टी", 
+
+
+
+
+
+	   "Monday" : "सोमवार" ,
+	  "Tuesday" : "मंगलवार",
+	  "Wednesday" : "बुधवार",
+	  "Thursday" :"गुरूवार", 
+      "Friday" :"शुक्रवार", 
+	  "Saturday" :"शनिवार",
+	  "Sunday" :"रविवार",
+
+	  "Mon" : "सोम", 
+	  "Tue" : "मंगल", 
+	  "Wed" : "बुध", 
+	  "Thu" : "गुरु", 
+	  "Fri" : "शुक्र", 
+	  "Sat" : "शनि", 
+	  "Sun" : "रवि",
+
+
+	  "January"	: "जनवरी",
+	  "February":"फरवरी",
+	  "March":"मार्च",
+	  "April":"अप्रैल",
+	  "May":"मई",
+	  "June":"जून",
+	  "July" : "जुलाई",
+	  "August" : "अगस्त",
+	  "September" : "सितंबर",
+	  "October" : "अक्टूबर",
+	  "November" : "नवंबर",
+	  "December" : "दिसंबर",
+
+
+	  "Jan"	: "जनवरी",
+	  "Feb":"फरवरी",
+	  "Mar":"मार्च",
+	  "Apr":"अप्रैल",
+	  "May":"मई",
+	  "Jun":"जून",
+	  "Jul" : "जुलाई",
+	  "Aug" : "अगस्त",
+	  "Sep" : "सितंबर",
+	  "Oct" : "अक्टूबर",
+	  "Nov" : "नवंबर",
+	  "Dec" : "दिसंबर",
+
+
+	  "changed_logs" : "बदली हुई लॉग",
+	  "modified" : "संशोधित",
+	  "status" : "स्थिति",
+	  "from" : "",
+	  "on" : "",
+	  "at" : "को",
+
+
+	"toast_messages": {
+		"success": "अद्यतन सफलतापूर्ण हो गया",
+		"error": "अद्यतन विफल हो गया है",
+		"slot_update_success": "स्लॉट सफलतापूर्वक अपडेट किया गया",
+		"slot_update_failure": "स्लॉट अपडेट विफल हो गया है"
+	}
+
+
+
+
+}
