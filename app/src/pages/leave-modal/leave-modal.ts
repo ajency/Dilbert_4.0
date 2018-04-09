@@ -6,7 +6,7 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
 import {IMyDpOptions} from 'mydatepicker';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-// import { map, filter, first, debounceTime } from 'rxjs/operators';
+import { map, filter, first, debounceTime } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 // import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 
@@ -109,38 +109,11 @@ export class LeaveModalPage {
 
  this.checkIfData();
     }
-//    readData () {
 
-//     this.http.get(this.dataurl)
-//     .subscribe(
-//       data => this.extractData(data),
-//        err => this.handleError(err)
-//     );
-//   }
-//     private extractData(res: Response) {
-
-
-//   this.jsonData= res.json();
-//   let num = this.jsonData.length;
-//   let dat =this.jsonData;
-//   this.users=this.jsonData;
-//   this.data=this.jsonData;
-//   this.autocompleteItemsAsObjects = this.jsonData;
-
-// }
-
-//   handleError (error: any) {
-//    console.log("error !")
-  
-//       let errMsg = (error.message) ? error.message :
-//       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-//       console.log(errMsg); 
-//       return errMsg;
-//   }
 
 //Api call to get all users
 readData(){
-
+console.log(this.autocompleteItemsAsObjects);
 console.log(this.apiURL);
 
     let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
@@ -166,17 +139,20 @@ console.log(this.apiURL);
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id
         };
-          //   this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+            this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
 
-          //   console.log(response);
+            console.log(response);
 
-          //       if(response.status == 'success'){
-          //            // this.users = response.data;
-          //            // this.autocompleteItemsAsObjects = this.users;
-
-          //       }
-
-          // })
+                if(response.status == 'success'){
+                     this.users = response.data;
+                     this.autocompleteItemsAsObjects = this.users;
+                     console.log(this.autocompleteItemsAsObjects);
+                }
+                else{
+                this.appServiceProvider.presentToast(response.message, 'error');
+              }
+              
+          })
 
 }
 
@@ -193,29 +169,12 @@ console.log(this.apiURL);
     this.createdByUserData=this.authguard.userData;
     console.log(this.createdByUserData);
     console.log(this.leave_param1);
-
-
-       // this.events.subscribe("update:userDataForLeave",(data) => {
-       //  this.userInfo=data;
-       //    console.log("this.userInfo");
-       //    console.log(this.userInfo);
-
-       //   });
-
-
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LeaveModalPage');
-
-     // this.events.subscribe("update:userDataForLeave",(data) => {
-     //    this.userInfo=data;
-     //      console.log("this.userInfo");
-     //      console.log(this.userInfo);
-
-     //     });
       console.log(this.userInfo);
-  console.log("yes");
+      console.log("yes");
   }
 
 
@@ -279,7 +238,6 @@ console.log(this.apiURL);
     }
   sendData(){
     console.log("Data to be sent in api request");
-    // let x = document.getElementById('leaveNoteData').value;
     if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0){
       console.log("error");
     }
@@ -339,12 +297,12 @@ console.log(this.apiURL);
 
 
         let body ={
-          user:user,
-          created_by:createdByUser,
-          leave_date:leave_date,
-          leave_note:leave_note,
-          leave_type:leave_type,
-          tagged_users:tagged_users
+          user:'',
+          created_by:'',
+          leave_date:'',
+          leave_note:'',
+          leave_type:'',
+          tagged_users:''
 
         }
         console.log(body);

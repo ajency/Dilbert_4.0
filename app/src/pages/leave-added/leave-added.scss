@@ -39,13 +39,14 @@ page-leave-added {
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
+
 }
 
 .popover-md {
 	.popover-content.leave-added-popover2 {
 	     top: 200px !important;
 	     width: 400px;
-	     height:300px;
+	     min-height:300px;
 
         @media (min-width: 567px) {
             width: 400px;

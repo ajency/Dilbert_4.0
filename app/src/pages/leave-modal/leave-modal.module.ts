@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { LeaveModalPage } from './leave-modal';
 import { MyDatePickerModule } from 'mydatepicker';
 import { TagInputModule } from 'ngx-chips';
+import {RlTagInputModule} from 'angular2-tag-input';
 import { CommonModule } from '@angular/common';
 // import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
   imports: [
       CommonModule,
       TagInputModule, 
+       RlTagInputModule,
       // BrowserAnimationsModule,
       // NoopAnimationsModule,
       MyDatePickerModule,
