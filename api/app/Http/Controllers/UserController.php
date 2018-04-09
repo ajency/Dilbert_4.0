@@ -159,7 +159,7 @@ class UserController extends Controller
         foreach ($users as $user) {
             $org_users = UserDetail::select('user_id')->where('org_id',$orgId)->where('user_id',$user['id'])->first();      
 
-            if ($org_users->exists()) {
+            if (!empty($org_users)) {
 
                  $email_id = UserCommunication::where('object_id','=',$org_users["user_id"])->where('object_type','App\\User')->first();
                  $data['email'] = $email_id['value'];
