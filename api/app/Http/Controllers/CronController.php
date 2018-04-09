@@ -14,6 +14,7 @@ use App\Slots;
 use App\UserCommunication;
 use App\OrganisationMeta;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log as LogForErrors;
 
 use Ajency\User\Ajency\userauth\UserAuth;
 use Ajency\Violations\Ajency\ViolationRules;
@@ -450,11 +451,11 @@ class CronController extends Controller
              $bcc_list = ['owner1','owner2'];
             foreach ($cc_list as $cc_l) 
             {
-                $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$user['org_id'],0);
+                $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$org,0);
             }
             $mail=0;
             foreach ($bcc_list as $bcc_l) {
-                $bcc_mail[$mail] = (new OrganisationMeta)->getParamValue($bcc_l,$user['org_id'],0);
+                $bcc_mail[$mail] = (new OrganisationMeta)->getParamValue($bcc_l,$org,0);
                 $mail++;
             }
             $default_hours = (new OrganisationMeta)->getParamValue('default_day_hours',$org,0);
@@ -476,6 +477,7 @@ class CronController extends Controller
             $to_list=$comm['value'];
             send_mails($data,$subject,$to_list,$cc_mail,$bcc_mail);
         } catch (\Exception $e) {
+            LogForErrors::error('Error Type: Weekly summary mails, error:'.$e->getMessage()." other data : user-".$user['ID']." ".$user['name']);
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
         }
         
