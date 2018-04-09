@@ -78,7 +78,7 @@ exports.createLeave = functions.https.onRequest((request,response) => {
 		{
 			return_value={
 				"status" : "error",
-				"message" : "Mandatory fields "+mandatoryRequest+" not present",
+				"message" : "Mandatory fields ("+mandatoryRequest+") not present",
 				"data" : mandatoryRequest
 			}
 			response.status(200).send(return_value); 
