@@ -461,6 +461,7 @@ class LockedDataController extends Controller
             send_mails($data,$subject,$comm['value'],$cc_mail_list,$bcc_mail);
         }
         } catch (\Exception $e) {
+            LogForErrors::error('Error Type: Edit log mails, error:'.$e->getMessage()." other data : user-".$user['id']." ".$user['name']);
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
         }
     }
