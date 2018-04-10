@@ -21,6 +21,7 @@ use Ajency\User\Ajency\userauth\UserAuth;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+use Illuminate\Support\Facades\Log as LogForErrors;
 
 class LockedDataController extends Controller
 {
