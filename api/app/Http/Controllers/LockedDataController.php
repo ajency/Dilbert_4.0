@@ -457,7 +457,7 @@ class LockedDataController extends Controller
             $data['endTime']=$dataOfUser['end_time'];
             $data['totalTime']=$dataOfUser['total_time'];
             $data['status']=$dataOfUser['status'];
-            print_r($data);
+            //print_r($data);
             send_mails($data,$subject,$comm['value'],$cc_mail_list,$bcc_mail);
         }
         } catch (\Exception $e) {
