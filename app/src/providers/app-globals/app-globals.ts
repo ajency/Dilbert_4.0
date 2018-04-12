@@ -34,6 +34,7 @@ export class AppGlobalsProvider {
   newsummary_params : any = {
     param1 : ''
   }
+  
   private semVersion: any = {
     major: 2,
     minor: 2,
