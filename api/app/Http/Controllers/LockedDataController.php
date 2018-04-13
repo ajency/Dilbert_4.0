@@ -164,7 +164,7 @@ class LockedDataController extends Controller
                 if($userRole == 'member')
                 {
                     $request->status = '';
-                    echo "sad :(";
+                    // echo "sad :(";
                 }
                 $maxCount = (int)OrganisationMeta::where(['organisation_id' => UserDetail::where('user_id',$userCode)->first()->org_id, 'key' => 'changes_max_count_'.$userRole])->first()->value;
                 if($maxCount != -1 && Data_Changes::where(['user_id' => $userCode, 'modified_by' => $request->header('from'), 'work_date' => $request->work_date])->count() >= $maxCount)
