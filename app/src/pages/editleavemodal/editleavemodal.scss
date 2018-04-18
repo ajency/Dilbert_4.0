@@ -1,6 +1,4 @@
-page-leave-modal {
-
-
+page-editleavemodal {
 .leaveNote{
 	padding-bottom: 20px;
 }
@@ -44,57 +42,10 @@ page-leave-modal {
 	border: none;
 	font-weight: bold;
 }
-.dropdown_custom{
 
 }
 
-}
-.ng2-dropdown-menu--open{
-	max-height: 300px !important;
-	width:360px !important;
-}
-
-.customdrop{
-	max-height: 300px !important;
-	width:360px !important;
-	/*background-color: red !important;*/
-}
-
-.popover-md {
-	.popover-content.leave-popover2 {
-		 max-height: 600px;
-		 overflow-y:scroll;  
-	     top: 200px !important;
-	     width: 400px;
-
-        @media (min-width: 567px) {
-            width: 400px;
-        }
-        @media (max-width: 567px) {
-            width: 50%;
-        }
-	}
-	.popover-content.leave-popover2::-webkit-scrollbar {
-    width: 3px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-}
-}
-
-.leave-popup{
+.editleave-popup{
 	.scroll-content{
 		overflow: auto;
 	}
@@ -115,7 +66,36 @@ page-leave-modal {
 	}
 }
 
+.popover-md {
+	.popover-content.editleave-popover2 {
+		 max-height: 600px;
+		 overflow-y:scroll;  
+	     top: 200px !important;
+	     width: 400px;
 
-.editLeaveTagUsers tag[_ngcontent-c2]{
-	display: none !important;
+        @media (min-width: 567px) {
+            width: 400px;
+        }
+        @media (max-width: 567px) {
+            width: 50%;
+        }
+	}
+	.popover-content.editleave-popover2::-webkit-scrollbar {
+    width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
 }

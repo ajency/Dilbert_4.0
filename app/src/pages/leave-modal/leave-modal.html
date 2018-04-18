@@ -41,18 +41,24 @@
 </ion-content> -->
 <!-- <form> -->
 	<!-- <ng-container *ngIf=" users.length != 0 ">  -->	
-		<ng-container *ngIf=" autocompleteItemsAsObjects != undefined "> 
+		<!-- <ng-container *ngIf=" autocompleteItemsAsObjects != undefined ">  -->
 <ion-content class="leave-popup">
 
 	<div class="my-leave-popup">
 		<div align="center" class="leave-popup__title">
-			<h6> Add A Leave</h6>
+			<ng-container *ngIf="modalType=='editLeave'">
+				<h6> Edit A Leave</h6>
+			</ng-container>
+			<ng-container *ngIf="modalType !='editLeave'">
+				<h6> Add A Leave</h6>
+			</ng-container>
 		</div>
 		<div padding>
 			<ion-grid>
 			  <ion-row>
 			    <ion-col col-12>
 			    	<div> Date </div>
+			    	<ng-container *ngIf="modalType !='editLeave'">
 			    	<div class="datePickerBox">
 	                	<my-date-picker name="myDate" [options]="myDatePickerOptions" (dateChanged)="onDateChanged($event)"
 	               			 [(ngModel)]="model" required placeholder="Select date">
@@ -62,16 +68,30 @@
 	               				<div class="selectedDatesBlock" >{{item}} <ion-icon class="removeDate" name="close" (click) = "deleteSetected(item)"></ion-icon></div>
 	               			</ng-container>
 	               		</ng-container>
+			    	</div> 	
+			    </ng-container>
+			    <ng-container *ngIf="modalType =='editLeave'">
+			    	<div class="datePickerBox">
+	                	<my-date-picker name="myDate" [options]="myDatePickerOptions" (dateChanged)="editDateChanged($event)"
+	               			 [(ngModel)]="model" required placeholder="Select date">
+	               		</my-date-picker>
 
-			    	</div>
+	               		<ng-container *ngIf=" editSelectedDates.length !=0">
+	               			<ng-container *ngFor="let item of editSelectedDates">
+	               				<div class="selectedDatesBlock" >{{item}} <ion-icon class="removeDate" name="close" (click) = "editDeleteSetected(item)"></ion-icon></div>
+	               			</ng-container>
+	               		</ng-container>
+			    	</div> 	
+			    </ng-container>
 			    </ion-col>
 			  </ion-row>
 			  <ion-row>
 			    <ion-col col-12>
+			    	<ng-container *ngIf="modalType !='editLeave'">
 			    	<!-- <tag-input [ngModel]="['Javascript', 'Typescript']" ></tag-input> -->
 			    	<div style="padding-bottom: 10px;">
 			    		Tags 
-			             <tag-input [ngModel]="[]" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"  required placeholder="Tag Your Colleagues" theme='minimal'>
+			             <tag-input [ngModel]="items" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"  required placeholder="Tag Your Colleagues" theme='minimal'>
 			                <tag-input-dropdown  class="dropdown_custom" [showDropdownIfEmpty]="false"
 			                                    [focusFirstElement]="true"
 			                                    [displayBy]="'user_tag'"
@@ -82,16 +102,50 @@
 			                    </ng-template>
 			                </tag-input-dropdown>
            				 </tag-input> 
+           				
+
 			    	</div> 
+			    	</ng-container>
+
+			    	<!--  -->
+			    	<ng-container *ngIf="modalType =='editLeave'">
+						<div style="padding-bottom: 10px;" class="editLeaveTagUsers">
+				    		Tags 
+				             <tag-input [ngModel]="items" [onlyFromAutocomplete]="true" (onAdd)="editOnItemAdded($event)" (onRemove)="editOnItemRemoved($event)"  required placeholder="Tag Your Colleagues" theme='minimal'>
+				                <tag-input-dropdown  class="dropdown_custom" [showDropdownIfEmpty]="false"
+				                                    [focusFirstElement]="true"
+				                                    [displayBy]="'user_tag'"
+				                                    [identifyBy]="'user_id'"
+				                                    [autocompleteItems]="autocompleteItemsAsObjects">
+				                    <ng-template let-item="item" let-index="index">
+				                       {{ item.name }}
+				                    </ng-template>
+				                </tag-input-dropdown>
+	           				 </tag-input> 
+	           				 <ng-container *ngIf="  this.editSelectedUsers.length !=0">
+		               			<ng-container *ngFor="let item of this.editSelectedUsers">
+		               				<div class="selectedDatesBlock" >{{item.name}} <ion-icon class="removeDate" name="close" (click) = "editOnItemRemoved(item)"></ion-icon></div>
+		               			</ng-container>
+		               		</ng-container>
+
+				    	</div> 
+			    	</ng-container>
+			    	<!--  -->
 			    	<div class="leaveNote">
 			    		<div class="leaveNoteHeader"> Leave a Note</div>
-			    		<textarea  id="leaveNoteData" required (keyup)="leaveNoteData($event.target.value)" style="min-width: 100%;min-height: 100px; "></textarea>	
+			    		<textarea  [ngModel]="leaveNote" id="leaveNoteData" required (keyup)="leaveNoteData($event.target.value)" style="min-width: 100%;min-height: 100px; "></textarea>	
 			    	</div>
 			    </ion-col>
 			  </ion-row>
 			</ion-grid>
-			<div style="text-align: center;"><button ion-button [disabled]="buttonRequestApi==false" (click)="sendData()">Take a leave</button></div>
+			<ng-container *ngIf="modalType!='editLeave'">
+				<div style="text-align: center;"><button ion-button [disabled]="buttonRequestApi==false" (click)="sendData()">Take a leave</button></div>
 				<div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div>
+			</ng-container>
+			<ng-container *ngIf="modalType=='editLeave'">
+				<div style="text-align: center;"><button ion-button [disabled]="buttonRequestApi==false" (click)="updateData()">Take a leave(edit)</button></div>
+				<div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div>
+			</ng-container>
 		
 		</div>
 
@@ -99,6 +153,6 @@
 	</div>
 
 </ion-content>
-</ng-container>
+<!-- </ng-container> -->
 <!-- </ng-container> -->
 <!-- </form> -->

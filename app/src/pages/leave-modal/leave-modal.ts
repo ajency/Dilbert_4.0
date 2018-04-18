@@ -36,6 +36,10 @@ import { Storage } from '@ionic/storage';
 })
 
 export class LeaveModalPage {
+    leave_data:any;
+    items:any;
+    editLeaveData : any;
+    modalType:any;
     buttonRequestApi: boolean = false;
     users:any;
     leave_note1:any;
@@ -56,6 +60,8 @@ export class LeaveModalPage {
     model: any = null;
     disableDaysSelected: Array<Date> = [];
     selectedDates: Array<Date> = [];
+    editSelectedDates: Array<Date> = [];
+    editSelectedUsers:Array<any> = [];
     dataurl: string = `http://www.mocky.io/v2/5ac6ffa84a00004f007e0898`;  // URL to web API
     jsonData: any;
     private myDatePickerOptions: IMyDpOptions = {
@@ -83,6 +89,35 @@ export class LeaveModalPage {
                 this.apiURL = this.appGlobalsProvider.getApiUrl();
                 this.nativeElement = this.element.nativeElement;
                 this.$ = this.appServiceProvider.jQuery;
+
+
+
+    // this.editLeaveData = this.navParams.get('data');
+    // this.modalType = this.navParams.get('type');
+    this.autocompleteItemsAsObjects=this.navParams.get('users');
+
+    console.log(this.autocompleteItemsAsObjects);
+    console.log(this.modalType);
+    // console.log(this.selectedUsers);
+    // console.log(this.selectedDates);
+    // console.log(this.leaveNote);
+    
+    // if(this.editLeaveData  != undefined){
+    //    this.editSelectedDates=this.editLeaveData.leave_date;
+    //    this.editSelectedUsers=this.editLeaveData.tagged_users;
+    //    // this.items=this.editLeaveData.tagged_users;
+    //    this.leaveNote=this.editLeaveData.leave_note;
+    //    this.leave_note1=this.leaveNote;
+    //     console.log(this.editLeaveData.leave_note);
+    //     console.log(this.selectedDates);
+    //     console.log(this.leaveNote);
+    //     console.log(this.items);
+    //     console.log(this.selectedUsers);
+    // }
+
+
+   
+
   }
 
     public onItemAdded(item) {
@@ -113,55 +148,82 @@ export class LeaveModalPage {
 
 //Api call to get all users
 readData(){
-console.log(this.autocompleteItemsAsObjects);
-console.log(this.apiURL);
 
-    let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
+// console.log(this.autocompleteItemsAsObjects);
+// console.log(this.apiURL);
 
-    console.log(url);
-    let filter1 = {
-        // org_id : this.org_id,
-        // date:date.start,
-        // period_unit:this.period_unit
-      };
+//     let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
 
-     let filters = {
-      // date_range : date_range,
-      // period_unit : this.period_unit
+//     console.log(url);
+//     let filter1 = {
+//         // org_id : this.org_id,
+//         // date:date.start,
+//         // period_unit:this.period_unit
+//       };
 
-      };
+//      let filters = {
+//       // date_range : date_range,
+//       // period_unit : this.period_unit
 
-      let body = {
-        // filters : filters
-      }
+//       };
 
-    let optionalHeaders = {
-          'X-API-KEY' : this.authguard.userData.x_api_key,
-          'From' : this.authguard.userData.user_id
-        };
-            this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+//       let body = {
+//         // filters : filters
+//       }
 
-            console.log(response);
+//     let optionalHeaders = {
+//           'X-API-KEY' : this.authguard.userData.x_api_key,
+//           'From' : this.authguard.userData.user_id
+//         };
+//             this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
 
-                if(response.status == 'success'){
-                     this.users = response.data;
-                     this.autocompleteItemsAsObjects = this.users;
-                     console.log(this.autocompleteItemsAsObjects);
-                }
-                else{
-                this.appServiceProvider.presentToast(response.message, 'error');
-              }
+//             console.log(response);
+
+//                 if(response.status == 'success'){
+//                      this.users = response.data;
+//                      this.autocompleteItemsAsObjects = this.users;
+//                      console.log(this.autocompleteItemsAsObjects);
+//                 }
+//                 else{
+//                 this.appServiceProvider.presentToast(response.message, 'error');
+//               }
               
-          })
+//           })
 
 }
 
 
 // 
   ngOnInit(){
+        if(this.editLeaveData  != undefined){
+       this.editSelectedDates=this.editLeaveData.leave_date;
+       this.editSelectedUsers=this.editLeaveData.tagged_users;
+       // this.items=this.editLeaveData.tagged_users;
+       this.leaveNote=this.editLeaveData.leave_note;
+       this.leave_note1=this.leaveNote;
+        console.log(this.editLeaveData.leave_note);
+        console.log(this.selectedDates);
+        console.log(this.leaveNote);
+        console.log(this.items);
+        console.log(this.selectedUsers);
+    }
     this.$(this.nativeElement).parents().find('.popover-content').addClass("leave-popover2");
     this.$(this.nativeElement).parents().find('.ng2-dropdown').addClass("customdrop");
      $("ng2-dropdown-menu").addClass("customdrop");
+
+    // this.events.subscribe("update:leave_data",(leave_data) => {
+    // this.leave_data=leave_data;
+    // this.modalType="editLeave";
+
+    //   console.log(this.leave_data);
+    //   this.selectedUsers=this.leave_data.tagged_users;
+    //   this.selectedDates=this.leave_data.leave_date;
+    //    console.log(this.selectedUsers);
+    //    console.log(this.selectedDates);
+
+    //  });
+    console.log(this.selectedUsers);
+    console.log(this.selectedDates);
 
      
     this.readData();
@@ -169,6 +231,12 @@ console.log(this.apiURL);
     this.createdByUserData=this.authguard.userData;
     console.log(this.createdByUserData);
     console.log(this.leave_param1);
+
+
+
+
+
+
   }
 
   ionViewDidLoad() {
@@ -180,6 +248,11 @@ console.log(this.apiURL);
 
     close() {
     this.viewCtrl.dismiss();
+  }
+
+    close1() {
+      console.log(this.editLeaveData);
+  this.viewCtrl.dismiss();
   }
 
    onDateChanged(event) {
@@ -233,7 +306,9 @@ console.log(this.apiURL);
     }else{
         this.buttonRequestApi=true;
     }
-
+         console.log(this.selectedDates);
+         console.log(this.selectedUsers);
+         console.log( this.leaveNote);
 
     }
   sendData(){
@@ -297,12 +372,12 @@ console.log(this.apiURL);
 
 
         let body ={
-          user:'',
-          created_by:'',
-          leave_date:'',
-          leave_note:'',
-          leave_type:'',
-          tagged_users:''
+          user:user,
+          created_by:createdByUser,
+          leave_date:leave_date,
+          leave_note:leave_note,
+          leave_type:leave_type,
+          tagged_users:tagged_users
 
         }
         console.log(body);
@@ -337,7 +412,83 @@ console.log(this.apiURL);
 }
   
 
+updateData(){
+  console.log("data to be edited");
+  if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0){
+      console.log("error");
+    }
+    console.log(this.leaveNote);
+    console.log(this.selectedDates);
+    console.log(this.selectedUsers);
+    // console.log(this.leaveNote);
 
 }
 
-  
+editDateChanged(event){
+  console.log(event.formatted);
+  console.log(this.editSelectedDates);
+   if(event.formatted !=""){
+              if(this.editSelectedDates.length==0){
+                   this.editSelectedDates.push(event.formatted);
+              }
+              if(this.editSelectedDates.length!=0){
+                var x=1;
+                for(var i=0; i<this.editSelectedDates.length;i++){
+                   if(this.editSelectedDates[i] == event.formatted){
+                           x=0;
+                   }
+                }
+                console.log(x);
+                if(x==1){
+                   this.editSelectedDates.push(event.formatted);
+                }
+             }
+            
+              console.log(this.editSelectedDates);
+               // this.checkIfData();
+           }
+   console.log(this.editSelectedDates);
+   console.log(this.editLeaveData);
+
+}
+editDeleteSetected(removeDate){
+    // console.log(removeDate);
+      this.editSelectedDates = this.editSelectedDates.filter((date: any) => {
+          return removeDate !== date;
+      })
+      console.log(this.editSelectedDates);
+       // this.checkIfData();
+       this.model=null;
+        console.log(this.editLeaveData);
+
+}
+editOnItemAdded(item){
+     console.log('tag added: value is ' + item.name);
+     console.log(item);
+       let data1={
+            user_id:item.user_id,
+            name :item.name,
+            email:item.email
+        }
+         console.log(data1);
+         this.editSelectedUsers.push(data1);
+        console.log(this.editSelectedUsers);
+         console.log(this.editLeaveData);
+
+}
+editOnItemRemoved(item){
+    console.log(item);
+    console.log('tag removed: value is ' + item.name);
+      this.editSelectedUsers = this.editSelectedUsers.filter((data: any) => {
+          return item.name !== data.name;
+    })
+
+ console.log(this.editSelectedUsers);
+}
+
+
+}
+
+//   editOnItemAdded
+// editOnItemRemoved
+

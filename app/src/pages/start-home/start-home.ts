@@ -35,6 +35,9 @@ import { Storage } from '@ionic/storage';
  export class StartHomePage {
  // @ViewChild(SummaryContentComponent) sideContentObj: SummaryContentComponent;
  sideBarData: any;
+ show :any = 3;
+ leaveShow:any=2;
+ teamLeaveShow:any=2;
  summaryContentData : any;
  currentDate : any;
  summaryDate : any;
@@ -49,6 +52,18 @@ import { Storage } from '@ionic/storage';
  message : string;
  view_log_history_btn : boolean = true;
  changedLogs : any;
+ userLeaveData:any;
+ teamLeaveData:any;
+ leave_param1 :any;
+ dummyData:any;
+ user_id1:any;
+ newparam1:any;
+ teamCommentShow:any=1;
+ todayDate:any;
+ myTodayDate:any;
+ dataToBeEdited:any;
+ autocompleteItemsAsObjects:any;
+ allUser_ids:Array<any> = [];
 
  private chageLogCB: Function;
 
@@ -87,8 +102,13 @@ import { Storage } from '@ionic/storage';
 }
 
 ngOnInit(){
+    this.readUserData();
+    this.todayDate=moment().format("YYYY-MM-DD");
+    this.myTodayDate=moment().format("YYYY-MM-DD");
+
     this.events.publish("app:localize",this.appGlobalsProvider.lang);
     this.events.publish('app:updatehistory','dashboard');
+    this.leave_param1=this.appGlobalsProvider.leave_param.param1;
 
   
     this.param1 = this.appGlobalsProvider.dashboard_params.param1;
@@ -166,9 +186,32 @@ ngOnInit(){
       case 4:
         text = moment(date, "kk:mm:ss").format("HH:mm");
         break;
+      case 5:
+        text = moment(date.split(" ")[0], "YYYY-MM-DD").format("DD MMM");
+        break;
+
     }
     return text;
   }
+
+//   getDateFormated(date:string,option:number): string{
+//     var text: string = '';
+//         switch (option) {
+//       case 1:
+//         text = moment(date.split(" ")[0], "YYYY-MM-DD").format("DD MMM");
+//         break;
+//       case 2:
+//         text = moment(date.split(" ")[1], "kk:mm:ss").format("hh:mm a");
+//         break;
+//       case 3:
+//         text = moment(date, "kk:mm:ss").format("hh:mm a");
+//         break;
+//       case 4:
+//         text = moment(date, "kk:mm:ss").format("HH:mm");
+//         break;
+//     }
+//     return text;
+// }
 
 
  openStyle(){
@@ -490,8 +533,328 @@ ionViewDidLoad() {
 
 leaveModal(){
    console.log("inside leaveModal");
-      let popover = this.popoverCtrl.create( 'LeaveModalPage');
+      let popover = this.popoverCtrl.create( 'LeaveModalPage',{users:this.autocompleteItemsAsObjects});
       popover.present();
 }
 
+// checkleaves12(){
+//   console.log("My leaves");
+//       this.leave_param1=this.appGlobalsProvider.leave_param.param1;
+//       console.log(this.leave_param1);
+      
+//        let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/displayLeaveTest `;
+//        // let leave_date ={
+//        //      start:'',
+//        //      end:''
+//        // }
+
+//        let users={
+//         users:80
+//        }
+
+//         let  filters ={
+//           users:[80]
+
+//         };
+//         let optionalHeaders={
+//            'X-API-KEY' : this.key,
+//            'From' : this.authguard.userData.user_id
+
+
+//         };
+
+//          this.appServiceProvider.request(url, 'post', filters, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+
+//             console.log(response);
+//             this.userLeaveData=response;
+//             console.log(this.userLeaveData.data);
+//             console.log(this.userLeaveData.data.leaves);
+//         });
+
+
+// }
+checkleavesTeam(){
+  console.log("Team leaves");
+  console.log(this.autocompleteItemsAsObjects);
+  // console.log(this.autocompleteItemsAsObjects);
+ 
+
+
+  // this.todayDate=moment().format("YYYY-MM-DD");
+  console.log(this.todayDate);
+      this.leave_param1=this.appGlobalsProvider.leave_param.param1;
+      console.log(this.leave_param1);
+
+      // let url=`http://www.mocky.io/v2/5ad477072e00005600583b16`;
+       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/displayLeaveTest`;
+     
+        console.log(this.leave_param1.user_id);
+        if(this.leave_param1.user_id == undefined){
+          this.user_id1= this.authguard.user_id;
+
+        }
+        else{
+           this.user_id1= this.authguard.user_id;
+        }
+
+         for( let i =0 ;i<=this.autocompleteItemsAsObjects.length-1;i++){
+            console.log(this.autocompleteItemsAsObjects[i].user_id);
+                if(this.autocompleteItemsAsObjects[i].user_id !=this.user_id1){
+                  console.log("add into allUser_ids");
+                   this.allUser_ids.push(this.autocompleteItemsAsObjects[i].user_id);
+                }else{
+                  console.log("dont add");
+                }
+            // this.allUser_ids
+          }
+          console.log(this.allUser_ids);
+
+
+
+
+
+
+
+        // this.leave_param1=this.appGlobalsProvider.leave_param.param1;
+        // console.log(this.leave_param1);
+         let leave_date ={
+                    start:this.todayDate,
+                     end:''
+               }
+
+        let  filters ={
+          users:this.allUser_ids,
+          leave_date:leave_date
+
+
+        };
+       let filter1={
+            filters:filters
+
+        }
+        
+
+
+
+        let optionalHeaders={
+           'X-API-KEY' : this.key,
+           'From' : this.authguard.userData.user_id
+
+
+        };
+
+         this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+
+            console.log(response);
+            this.teamLeaveData=response;
+            // console.log(this.teamLeaveData.data);
+            // console.log(this.teamLeaveData.data.leaves);
+        });
+
+}
+
+
+
+checkleaves(){
+  console.log("My leaves");
+  console.log(this.allUser_ids);
+    // this.todayDate=moment().format("YYYY-MM-DD");
+      this.leave_param1=this.appGlobalsProvider.leave_param.param1;
+      console.log(this.leave_param1);
+      
+       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/displayLeave`;
+       let leave_date ={
+            start:this.myTodayDate,
+            end:''
+       }
+        this.newparam1 = this.appGlobalsProvider.dashboard_params.param1;
+
+        console.log(this.newparam1.user_id,"from appGlobalsProvider");
+        console.log(this.authguard.user_id,"from authguard");
+
+      if(this.newparam1.user_id != undefined){
+          this.user_id1= this.newparam1.user_id;
+        }
+        else{
+           this.user_id1= this.authguard.user_id;
+        }
+        console.log(this.user_id1);
+
+        let  filters ={
+          users:this.user_id1
+
+        };
+       let filter1={
+            filters:filters,
+            leave_date:leave_date
+        }
+        
+        let optionalHeaders={
+           'X-API-KEY' : this.key,
+           'From' : this.authguard.userData.user_id
+
+
+        };
+
+         this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+
+
+            console.log(response);
+           this.userLeaveData=response;
+            
+           //  console.log("dummy dadta");
+           //  console.log(this.userLeaveData);
+           //  console.log(this.userLeaveData.data);
+            console.log(this.userLeaveData.data.leaves.length);
+        });
+
+
+}
+
+
+
+
+
+
+  showAllTags(data){
+
+ // $(".morebtn").click(function(){
+ //         $(this).addClass("hide");
+ //         $(this).parent().addClass("hide");
+ //         $(this).parent().next().removeClass("hide");
+ //    });
+
+  $(".moreComments").click(function(){
+         // $(this).addClass("hide");
+         $(this).parent().parent().addClass("hide");
+         $(this).parent().parent().next().removeClass("hide");
+    });
+
+  $(".lessComments").click(function(){
+         // $(this).addClass("hide");
+         $(this).parent().addClass("hide");
+         $(this).parent().prev().removeClass("hide");
+    });
+
+
+   console.log(data);
+   // this.show=data.length;
+  }
+
+  testLeave(leaveShow){
+    console.log(leaveShow);
+
+  }
+
+
+  testing(){
+    this.checkleaves();
+    this.checkleavesTeam();
+    // this.checkleaves12();
+
+  }
+
+  LeaveType(val){
+    console.log("----- selected Team value---");
+    console.log(val.target.value);
+    if(val.target.value=="All"){
+      this.todayDate='';
+    }
+    else{
+       this.todayDate=moment().format("YYYY-MM-DD");;
+    }
+       this.checkleavesTeam();
+
+  }
+  MyLeaveType(val){
+    console.log("----- selected My value---");
+      console.log(val.target.value);
+    if(val.target.value=="All"){
+      this.myTodayDate='';
+    }
+    else{
+       this.myTodayDate=moment().format("YYYY-MM-DD");;
+    }
+       this.checkleaves();
+ 
+
+  }
+editLeave(item1){
+  console.log(item1);
+  this.dataToBeEdited=item1;
+  this.events.publish("update:leave_data", item1);
+    // let popover = this.popoverCtrl.create( 'EditleavemodalPage');
+     let popover = this.popoverCtrl.create( 'LeaveModalPage',{data:item1,type:"editLeave"});
+     // let popover = this.popoverCtrl.create( 'LeaveModalPage',{type:"editLeave"});
+      popover.present();
+
+
+}
+
+readUserData(){
+
+console.log("users loading");
+
+console.log(this.apiURL);
+
+    let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
+
+    console.log(url);
+    let filter1 = {
+        // org_id : this.org_id,
+        // date:date.start,
+        // period_unit:this.period_unit
+      };
+
+     let filters = {
+      // date_range : date_range,
+      // period_unit : this.period_unit
+
+      };
+
+      let body = {
+        // filters : filters
+      }
+
+    let optionalHeaders = {
+          'X-API-KEY' : this.authguard.userData.x_api_key,
+          'From' : this.authguard.userData.user_id
+        };
+            this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+
+            console.log(response);
+
+                if(response.status == 'success'){
+                     // this.users = response.data;
+                     this.autocompleteItemsAsObjects = response.data;
+                     console.log(this.autocompleteItemsAsObjects);
+                     this.checkleaves();
+                     this.checkleavesTeam();
+                }
+                else{
+                this.appServiceProvider.presentToast(response.message, 'error');
+              }
+              
+          })
+
+}
+
+  addComment(){
+     $(".commentAdded").click(function(){
+         // $(this).addClass("hide");
+         $(this).parent().parent().addClass("hide");
+         $(this).parent().parent().next().removeClass("hide");
+    });
+  }
+
+  cancelComment(){
+      $(".cancelComment").click(function(){
+         // $(this).addClass("hide");
+         $(this).parent().parent().addClass("hide");
+         $(this).parent().parent().prev().removeClass("hide");
+    });
+
+  }
 }
