@@ -1,3 +1,4 @@
+<div class="logsblock">
 <div>
    <p font-weight-5 m-v-20 class="contentitle flex-row space-between align-top">
         {{ "the_summary" | translate }}  <button *ngIf = "edit_btn_pd" (click) = "editModal(day_data[0])" title="Edit logs" ion-button outline small m-t-0> {{ 'Edit log time' | translate}} </button> </p>
@@ -77,7 +78,7 @@
     <div #logList class="detail-view" p-t-35>
 
 
-        <ul (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (click)="listClick($event)" *ngIf = "logs.length != 0" class="detail-view__container" p-h-20 m-h-10>
+        <ul (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (click)="listClick($event)" *ngIf = "logs.length != 0" class="detail-view__container" p-h-20 m-h-10 p-b-20>
 
 
             <!-- Removed condition from above element to check for server errors -->
@@ -243,4 +244,9 @@
         
         </ion-card>
     </div>
+</div>
+</div>
+<!--  (click)="hidedailylogsblock()" -->
+<div class="mobileWeekDays" (click)="hidedailylogsblock()" m-t-10>
+   <span> <ion-icon name="arrow-round-up" class="icon-size full text-md-primary"></ion-icon> <span p-l-10 >This Week :</span> <span font-weight-5 no-margin >{{weekTotal || naText}} {{ "hr" | translate }} / {{minHours || naText}} {{ "hr" | translate }}</span></span>
 </div>

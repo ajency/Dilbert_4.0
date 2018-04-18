@@ -21,6 +21,7 @@ use Ajency\User\Ajency\userauth\UserAuth;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+use Illuminate\Support\Facades\Log as LogForErrors;
 
 class LockedDataController extends Controller
 {
@@ -163,7 +164,7 @@ class LockedDataController extends Controller
                 if($userRole == 'member')
                 {
                     $request->status = '';
-                    echo "sad :(";
+                    // echo "sad :(";
                 }
                 $maxCount = (int)OrganisationMeta::where(['organisation_id' => UserDetail::where('user_id',$userCode)->first()->org_id, 'key' => 'changes_max_count_'.$userRole])->first()->value;
                 if($maxCount != -1 && Data_Changes::where(['user_id' => $userCode, 'modified_by' => $request->header('from'), 'work_date' => $request->work_date])->count() >= $maxCount)
@@ -457,7 +458,7 @@ class LockedDataController extends Controller
             $data['endTime']=$dataOfUser['end_time'];
             $data['totalTime']=$dataOfUser['total_time'];
             $data['status']=$dataOfUser['status'];
-            print_r($data);
+            //print_r($data);
             send_mails($data,$subject,$comm['value'],$cc_mail_list,$bcc_mail);
         }
         } catch (\Exception $e) {

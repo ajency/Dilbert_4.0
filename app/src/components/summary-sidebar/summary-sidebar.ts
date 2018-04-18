@@ -31,6 +31,8 @@ export class SummarySidebarComponent {
   btnActive : boolean = false;
   private myDatePickerOptions: IMyDpOptions = {
         // other options...
+        alignSelectorRight:true,
+        openSelectorTopOfInput:true,
         dateFormat: 'yyyy-mm-dd',
         disableUntil: {year: 2017, month: 1, day: 1},
         disableSince: {year: new Date().getFullYear(), month: new Date().getMonth()+1, day:  new Date().getDate()+1 } 
@@ -67,6 +69,12 @@ export class SummarySidebarComponent {
               public authguard : AuthguardProvider
               ) {
 
+    this.events.subscribe("update:mobilesidebar",(c) => {
+       this.changemobileview();
+
+
+         });
+
     this.lang_for_date_placeholder = this.appGlobalsProvider.lang;
 
     this.todays_date = moment().format('YYYY-MM-DD');
@@ -99,7 +107,7 @@ export class SummarySidebarComponent {
    }
 
    this.requestData = (ev,toastmessage: string = '') => {
-    
+      
         console.log("inside requestData function", ev);
         if(ev.date.year != 0 && ev.date.month != 0){
           this.appGlobalsProvider.requestDate = ev;
@@ -421,6 +429,14 @@ export class SummarySidebarComponent {
       // this.weekTotal = ((minutes / 60) < 10 ? "0" : "") + Math.floor(minutes / 60).toString() + ":" + ((minutes % 60) < 10 ? "0" : "") + Math.floor(minutes % 60).toString();
       this.weekTotal = this.sideBarData.data.period_meta.worked_total;
       this.lunchTime = this.sideBarData.data.period_meta.lunch_total;
+      let week_data={
+        weekTotal : this.weekTotal,
+        lunchTotal : this.lunchTime,
+        minHoursWeek : this.minHours
+      }
+      console.log(week_data);
+      this.events.publish('update:week_data', week_data);
+
 
       this.zone.run(() => {});
 
@@ -580,5 +596,13 @@ export class SummarySidebarComponent {
   }
 
 
-
+changemobileview(){
+  console.log("apply new class to view");
+   $(".week").addClass("mobileview1");
+   $("mobilehide").addClass("hideBlockMobile")
+}
+changemobileview1(){
+  console.log("remove new class to view");
+   $(".week").removeClass("mobileview1");
+}
 }

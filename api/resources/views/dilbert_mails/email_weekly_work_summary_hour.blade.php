@@ -3,7 +3,7 @@
 		<table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="text-align: center; margin: auto; background-color: white; padding-bottom: 50px;" class="email-container">
 		<tr>
 			<td bgcolor="#ffffff" style="padding-bottom: 10px; text-align: center; padding-left: 30px;padding-right: 30px;">
-				<h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; font-weight: bold; padding-top: 10px;padding-bottom: 10px;">Your Weekly Summary </h1>
+				<h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 125%; font-weight: bold; padding-top: 10px;padding-bottom: 10px;"> A Summary Of Your Week </h1>
 			</td>
 		</tr>
 		<tr>
@@ -19,7 +19,7 @@
 
 		<tr>
 			<td bgcolor="#ffffff" style="padding-top: 10px;padding-bottom: 40px; text-align: center;">
-				<h3 style="margin: 0; font-family: sans-serif;  line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Your total hours for the week ending on </span><span>{{date('F jS, Y', strtotime($violation_data['endDate']))}} </span></h3>
+				<h3 style="margin: 0; font-family: sans-serif;  line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">Your total hours for the week ending </span><span>{{date('jS F, Y', strtotime($violation_data['endDate']))}} </span></h3>
 			</td>
 		</tr>
 		<!-- 2 Even Columns : BEGIN -->
@@ -31,13 +31,13 @@
 		                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left; background-color:#eeeeee4a; padding: 10px;padding-top: 15px;padding-bottom: 15px; border-radius: 5px;   ">
 		                        <tr>
 		                            <td style="text-align: center;">
-		                               <span style="font-size:20px;">Your Total work Hours</span>
+		                               <span style="font-size:20px;">Your total work hours</span>
 		                               @if($violation_data['violation_status'] == "true")
 		                               <span style="color: red; font-size:35px;font-weight: bold;">
 		                               	@else
 		                               	<span style="color: #613eb0; font-size:35px;font-weight: bold;">
 		                               	@endif
-		                               	{{$violation_data['totalHours']}} <span>hr</span></span>
+		                               	{{$violation_data['totalHours']}} <span>hrs</span></span>
 		                            </td>
 		                        </tr>
 		                    </table>
@@ -46,8 +46,8 @@
 		                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="font-size: 14px; text-align: left;background-color:#eeeeee4a;padding: 10px;padding-top: 15px;padding-bottom: 15px; border-radius: 5px;">
 		                        <tr>
 		                            <td style="text-align: center;">
-		                                <span style="font-size:20px;">Your Total lunch Hours</span>
-		                                <span style="color: #F0C60A; font-size:35px;font-weight: bold;">{{$violation_data['lunch_total']}} <span>hr</span></span>
+		                                <span style="font-size:20px;">Your total lunch hours</span>
+		                                <span style="color: #F0C60A; font-size:35px;font-weight: bold;">{{$violation_data['lunch_total']}} <span>hrs</span></span>
 		                            </td>
 		                        </tr>
 		                    </table>
@@ -60,7 +60,7 @@
 
 		<tr>
 			<td bgcolor="#ffffff" style="padding-bottom: 0px;padding-top:0px; text-align: center;font-family: sans-serif;">
-				<p style="color:#282828a3;">Take a look at your current weeks log.</p>
+				<p style="color:#282828a3;">Take a look at your week's log:</p>
 			</td>
 		</tr>
 			
@@ -106,7 +106,7 @@
 	<tr>
 		<td style="padding-top: 10px; font-weight: bold;">
 			<!-- <sub style="padding-left: 10px;color:#613eb0;font-size:30px; t">&#x2192;</sub> -->
-			<a href="{{$violation_data['url']}}" style="color:#613eb0">View your full logs here<sub><img style="padding-left: 5px;" src="<?php echo $message->embed($violation_data['arrowRight']); ?>" ></sub></a>
+			<a href="{{$violation_data['url']}}" style="color:#613eb0">View your full log here<sub><img style="padding-left: 5px;" src="<?php echo $message->embed($violation_data['arrowRight']); ?>" ></sub></a>
 		</td>
 	</tr>
 <!-- 	<tr>
@@ -116,7 +116,7 @@
 	</tr> -->
 	<tr>
 		<td style="padding-top: 20px; font-family: sans-serif;">
-			<span style="color: #282828a3;">Just reply to this email if you see some errors in your logs or have questions.<br/>
+			<span style="color: #282828a3;">Please reply to this email if you see errors in your logs or have questions.<br/>
 			<span style="color: #312f2fd1;">Thanks!</span> </span>
 		</td>
 	</tr>

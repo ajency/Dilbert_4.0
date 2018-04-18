@@ -44,7 +44,7 @@
                                 {{date('h:i:s a', strtotime($violation_data['startTime']))}}
                             </td>
                             <td style="border-right: 2px solid #eee;border-left: 2px solid #eee;">{{date('h:i:s a', strtotime($violation_data['endTime']))}}</td>
-                            <td style="">{{date('h:i:s a ', strtotime($violation_data['totalTime']))}}</td>
+                            <td style="">{{date('H\h i\m', strtotime($violation_data['totalTime']))}}</td>
                         </tr>
 
                         <tr style="height:20px;font-family: sans-serif;color: grey;background-color: white;font-size: 12px;">
