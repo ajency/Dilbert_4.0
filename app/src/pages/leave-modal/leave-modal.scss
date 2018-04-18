@@ -1,0 +1,96 @@
+page-leave-modal {
+
+
+.leaveNote{
+	padding-bottom: 20px;
+}
+.leaveNoteHeader{
+	padding-bottom: 20px;
+
+}
+.tagUser{
+	margin:2px;
+	padding: 5px;
+	background-color: #f1f1f1;
+	text-align: center;
+	display: inline-block;
+}
+.selectedDatesBlock{
+	margin:2px;
+	padding: 5px;
+	background-color: #f1f1f1;
+	text-align: center;
+	display: inline-block;
+	border-radius: 15px;
+}
+.removeDate{
+	display: inline-block;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin-top: 2px;
+	transition: font-size .1s;
+	font-size: 16px;
+}
+.removeDate:hover{
+	font-size: 18px;
+}
+.sameSize{
+	width:118px;
+	text-transform: uppercase;
+}
+.button1{
+	padding-top: 20px;
+	background-color: white;
+	border: none;
+	font-weight: bold;
+}
+.dropdown_custom{
+
+}
+
+}
+.ng2-dropdown-menu--open{
+	max-height: 300px !important;
+	width:360px !important;
+}
+
+.customdrop{
+	max-height: 300px !important;
+	width:360px !important;
+	/*background-color: red !important;*/
+}
+
+.popover-md {
+	.popover-content.leave-popover2 {
+	     top: 200px !important;
+	     width: 400px;
+
+        @media (min-width: 567px) {
+            width: 400px;
+        }
+        @media (max-width: 567px) {
+            width: 50%;
+        }
+	}
+}
+
+.leave-popup{
+	.scroll-content{
+		overflow: auto;
+	}
+	&__title{
+		padding: 1.3em;
+    	border-bottom: 1px solid #eee;
+    	background: #f2f2f2;
+    	font-size: 13px;
+	}
+	.footer{
+		background: #f2f2f2;
+    	padding: 10px;
+    	font-size: 13px;
+	}
+	.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner,.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child{
+		border-bottom-color: #dedede;
+		box-shadow: none;
+	}
+}

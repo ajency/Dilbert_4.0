@@ -50,6 +50,7 @@ export class SummaryContentComponent {
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
   private naText: string;
+  leave_param:any;
   private toastMessages: any;
   private relaventWinHeight: number;
   private titleCasePipe: TitleCasePipe;
@@ -182,6 +183,19 @@ export class SummaryContentComponent {
   ngOnInit(){
     console.log("current user:", this.allowSlotUpdate)
     console.log("summary content", this.summaryContentData);
+    console.log(this.summaryContentData);
+    if(this.summaryContentData.data.user.email==''||this.summaryContentData.data.user.email==undefined ||this.summaryContentData.data.user.email==null ){
+      this.summaryContentData.data.user.email='';
+    }
+    console.log(this.summaryContentData.data.user.email);
+     this.appGlobalsProvider.leave_param.param1={
+      user_id:this.summaryContentData.data.user.user_id,
+      name:this.summaryContentData.data.user.name,
+      email:this.summaryContentData.data.user.email
+     }
+     console.log(this.appGlobalsProvider.leave_param.param1);
+
+    // this.events.publish("update:userDataForLeave", this.summaryContentData);
     // let dummy = new Date();
    //  this.today = {
    //    day : this.days[dummy.getDay()],
@@ -368,7 +382,7 @@ export class SummaryContentComponent {
 
           console.log(response);
 
-          if(response.status == 200){
+          if(response.status ==200 ){
            
            this.events.publish("start-home:changedLogs",response.data[0].history);
            // this.changedLogs = response;

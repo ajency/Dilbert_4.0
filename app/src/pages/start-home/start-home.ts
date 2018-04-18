@@ -298,7 +298,8 @@ ionViewDidLoad() {
             }
         }
 
-        
+         let data123=this.sideBarData;
+          this.events.publish("update:userDataForLeave", data123);
 
 
 
@@ -485,6 +486,12 @@ ionViewDidLoad() {
   else{
     return false;
   }
+}
+
+leaveModal(){
+   console.log("inside leaveModal");
+      let popover = this.popoverCtrl.create( 'LeaveModalPage');
+      popover.present();
 }
 
 }

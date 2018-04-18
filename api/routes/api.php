@@ -62,3 +62,7 @@ Route::get('/state-update','CronController@stateUpdate');  // cron runs every 5 
 
 // slots api
 Route::post('/edit-slots', 'SlotsController@editSlots');
+
+
+// organisation user details for leave management
+Route::post('/organisation-users/{org_id}','UserController@displayOrganisationUsers');

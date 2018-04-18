@@ -9,6 +9,7 @@ use App;
 use App\User;
 use App\UserDetail;
 use App\Organisation;
+use App\UserCommunication;
 use App\Log;
 use App\Locked_Data;
 use App\Slots;
@@ -50,7 +51,9 @@ class LogsController extends Controller
                         $self = true;
                     else
                         $self = false;
-                    $data['user'] = ['user_id' => $request->user_id, 'name' => $name, 'self' => $self];
+                    $email_id = UserCommunication::where('object_id','=',$request->user_id)->where('object_type','App\\User')->first();
+                    $email = $email_id['value'];
+                    $data['user'] = ['user_id' => $request->user_id, 'name' => $name, 'self' => $self, 'email' => $email];
                     // get the days data from locked__datas -------------- call that new function
                     $daysData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
                     $data['day_data'] = (new Locked_Data)->formattedLockedData($request->user_id,$daysData,$request->date,$request->date);  // formatted locked data
