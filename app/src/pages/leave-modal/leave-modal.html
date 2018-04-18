@@ -62,10 +62,7 @@
 			    	<div class="datePickerBox">
 	                	<my-date-picker name="myDate" [options]="myDatePickerOptions" (dateChanged)="onDateChanged($event)"
 	               			 [(ngModel)]="model" required placeholder="Select date">
-	               		</my-date-picker> 
-	               		<ng-template let-item="item" let-index="index">
-				            {{ index }}: {{ item.display }}
-				        </ng-template>
+	               		</my-date-picker>
 	               		<ng-container *ngIf="  this.selectedDates.length !=0">
 	               			<ng-container *ngFor="let item of this.selectedDates">
 	               				<div class="selectedDatesBlock" >{{item}} <ion-icon class="removeDate" name="close" (click) = "deleteSetected(item)"></ion-icon></div>
@@ -92,9 +89,9 @@
 			    <ion-col col-12>
 			    	<ng-container *ngIf="modalType !='editLeave'">
 			    	<!-- <tag-input [ngModel]="['Javascript', 'Typescript']" ></tag-input> -->
-			    	<div style="padding-bottom: 10px;">
+			    	<div style="padding-bottom: 10px;" class="LeaveTagUsers">
 			    		Tags 
-			             <tag-input [ngModel]="items" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"  required placeholder="Tag Your Colleagues" >
+			             <tag-input [ngModel]="items" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"  required placeholder="Tag Your Colleagues">
 			                <tag-input-dropdown  class="dropdown_custom" [showDropdownIfEmpty]="false"
 			                                    [focusFirstElement]="true"
 			                                    [displayBy]="'user_tag'"
