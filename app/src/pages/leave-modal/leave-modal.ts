@@ -7,6 +7,7 @@ import {IMyDpOptions} from 'mydatepicker';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { map, filter, first, debounceTime } from 'rxjs/operators';
+import 'rxjs/add/operator/filter';
 import { of } from 'rxjs/observable/of';
 // import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 

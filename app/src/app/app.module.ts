@@ -23,7 +23,7 @@ import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SummarydataProvider } from '../providers/summarydata/summarydata';
-import {RlTagInputModule} from 'angular2-tag-input';
+// import {RlTagInputModule} from 'angular2-tag-input';
 // import { UserSummarySidebarComponent } from '../components/user-summary-sidebar/user-summary-sidebar';
 // import { UserSummaryContentComponent } from '../components/user-summary-content/user-summary-content';
 // import { TimePickerComponent } from '../components/time-picker/time-picker';
@@ -60,7 +60,7 @@ export function createTranslateLoader(http: Http) {
   ],
   imports: [
     BrowserModule,
-     RlTagInputModule,
+     // RlTagInputModule,
     BrowserAnimationsModule,
     HttpModule,
     EnvironmentsModule,
