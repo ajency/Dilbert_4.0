@@ -747,3 +747,4 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 	    return response.status(400);
 	});
 });
+});

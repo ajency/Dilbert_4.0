@@ -189,16 +189,17 @@
                                                   <span class="innerLeaveContainer">
                                                      <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;"></ion-icon>
                                                      <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
-                                                    <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment()"></ion-icon> 
+                                                    <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
                                                   </span>
                                                 </div>
                                                 <div p-t-20 class="addComment hide">
                                                   <span>
                                                       <ion-icon ios="ios-close" md="md-close" class="icon-size full cancelComment" style="float: left; cursor: pointer;"  (mouseup)="cancelComment()"></ion-icon>
                                                       <span style="margin-left: 10px;"> 
-                                                        <input type="text" name="" placeholder="Reply" style="min-width: 80%;border: none;"> 
-                                                        <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;"></ion-icon>
-                                                        <hr style="margin-top: 2px;margin-left:20px;">
+                                                        <input type="text" name="" placeholder="Reply" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
+                                                        <!-- <button style="border:none;background-color: transparent; width: 0;" disabled > -->
+                                                        <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="comment()"></ion-icon>
+                                                        <hr style="margin-top: 2px;margin-left:20px;"><!-- </button>  -->
                                                       </span>
                                                   </span>
                                                 </div>

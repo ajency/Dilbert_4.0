@@ -331,7 +331,7 @@ readData(){
         };
 
 
-        let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/createLeave`;
+        let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudAddLeave`;
 
         let user ={
             user_id :this.leave_param1.user_id ,

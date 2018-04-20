@@ -64,6 +64,11 @@ import { Storage } from '@ionic/storage';
  dataToBeEdited:any;
  autocompleteItemsAsObjects:any;
  allUser_ids:Array<any> = [];
+ commentNote:any;
+ commentNote1:any;
+ commentButton: boolean = false;
+ commentDetails:any;
+ userDetails:any;
 
  private chageLogCB: Function;
 
@@ -102,6 +107,7 @@ import { Storage } from '@ionic/storage';
 }
 
 ngOnInit(){
+    this.userDetails=this.authguard.userData;
     this.readUserData();
     this.todayDate=moment().format("YYYY-MM-DD");
     this.myTodayDate=moment().format("YYYY-MM-DD");
@@ -841,20 +847,127 @@ console.log(this.apiURL);
 
 }
 
-  addComment(){
-     $(".commentAdded").click(function(){
-         // $(this).addClass("hide");
+  addComment(item){
+      this.commentNote="";
+      this.commentNote1 ="";
+      $(".commentAdded").click(function(){
+         // $(this).addClass("hide"); replyBlock
+         $(".addComment").addClass("hide");
+         $(".replyBlock").removeClass("hide");
+
          $(this).parent().parent().addClass("hide");
          $(this).parent().parent().next().removeClass("hide");
-    });
+
+      });
+
+    console.log("enter comment");
+    console.log(item);
+    this.commentDetails=item;
+
   }
 
   cancelComment(){
+
+      this.commentNote="";
+      this.commentNote1 ="";
       $(".cancelComment").click(function(){
          // $(this).addClass("hide");
+
+
          $(this).parent().parent().addClass("hide");
          $(this).parent().parent().prev().removeClass("hide");
-    });
+       });
 
+  }
+
+
+
+  comment(){
+    console.log("comment Added Api Call");
+    // console.log(item);
+    if(this.commentNote1 ==""||this.commentNote1 ==undefined||this.commentNote ==""||this.commentNote ==undefined){
+      console.log("enter comment")
+    }
+    else{
+
+      console.log(this.commentNote);
+      console.log(this.commentDetails);
+      console.log(this.userDetails);
+
+
+
+    let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudAddComment`;
+      //user id , parent id, key,comment Note and commented user
+
+    console.log(url);
+    let parent_id=this.commentDetails.parent_id;
+    let user_id1=this.commentDetails.user.user_id;
+    let user={
+            user_id :this.userDetails.user_id ,
+            email : this.userDetails.userEmail,
+            name :this.userDetails.name
+    }
+    // let filter1 = {
+    //     // org_id : this.org_id,
+    //     // date:date.start,
+    //     // period_unit:this.period_unit
+    //   };
+
+     let filters = {
+      user_id : this.commentDetails.user.user_id,
+      parent_id : this.commentDetails.parent_id,
+      key : "",
+      user:user
+
+      };
+
+
+      let body = {
+        filters : filters
+      }
+      console.log(body);
+
+    // let optionalHeaders = {
+    //       'X-API-KEY' : this.authguard.userData.x_api_key,
+    //       'From' : this.authguard.userData.user_id
+    //     };
+    //         this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+
+    //         console.log(response);
+
+    //             if(response.status == 'success'){
+    //                
+    //             }
+    //             else{
+    //             this.appServiceProvider.presentToast(response.message, 'error');
+    //           }
+              
+    //       })
+
+
+
+
+
+    }
+  }
+
+  commentnote(val){
+    // console.log("inside comment note");
+    console.log(val);
+    this.commentNote=val;
+      var newstr = this.commentNote.replace(/[\r\n|\n|\r]/gm,'');
+      this.commentNote1 = newstr.split(' ').join(''); 
+      this.checkIfEmpty();
+
+  }
+  checkIfEmpty(){
+    if(this.commentNote1==""){
+      console.log("Enter Comment");
+      this.commentButton=false;
+    }
+    else{
+      console.log("done");
+      this.commentButton=true;
+    }
   }
 }
