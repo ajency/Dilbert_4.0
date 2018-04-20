@@ -602,27 +602,148 @@ exports.displayLeaveTest = functions.https.onRequest((request,response) => {
 var db = firebase.firestore();
 
 exports.cloudLeave = functions.https.onRequest((request,response) => {
-
 	var cloudData = [];
+	var cloudData1 = [];
+	var cloudData2 = [];
+	var cloudData3 = [];
 	// var id = ["81","80","45"];
-	var id = "81";
+	var requestBody = request.body;
+	var user_temp = requestBody.user_id;
+	var user = user_temp.toString();
+	var parent_id_temp = requestBody.parent_id;
+	var parent_id = parent_id_temp.toString();
+	var promise1,promise2;
+
+
+	console.log("Parent Id",parent_id);
 	// var dateDa = new Date('2018-04-20'); 
-	const dataForDisplay = db.collection("leave_management").doc({id}).collection("812563");
+	const dataForDisplay = db.collection("leave_management").doc(user).collection(parent_id);
+	// const dataComment = dataForDisplay.doc("IzBBL6boIKlypUkHTNv3").collection("comments");
 
 	dataForDisplay.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
-          //console.log(querySnapshot.doc().collection("comments"));
-        cloudData.push(doc.data());
-    });
-        response.status(200).send(cloudData); 
-        return 0;
-})
-.then(function(docRef) {
-    console.log("Document written with ID: ", docRef);
-    return 1;
-})
-.catch(function(error) {
-    console.error("Error adding document: ", error);
-});
+	    querySnapshot.forEach((doc) => {
+	        console.log(doc.id, " => ", doc.data());
+	          //console.log(querySnapshot.doc().collection("comments"));
+	        cloudData.push(doc.data());
+	        console.log("Console 1",cloudData);
+
+	        //code to access comments of user
+			const dataComment = dataForDisplay.doc(doc.id).collection("comments");
+	       	var promise1 = new Promise(function(resolve,reject){
+	       		tempPromiseComment = dataComment.get();
+	       		tempPromiseComment.then((querySnapshotComment) => {
+	    			querySnapshotComment.forEach((docComment) => {
+	    				console.log("Comments");
+	    				console.log(docComment.data());
+	    				cloudData1.push(docComment.data().comments);
+	        			console.log("Console 2",cloudData1);
+	    		});
+	    			// commentData.push(cloudData1);
+	    			resolve(cloudData1);
+	    			return response.status(200);
+			})
+			.catch(function(error) {
+					reject(error);
+				    console.error("Error displaying comments document: ", error);
+				    return response.status(400);
+				})
+			});
+
+			// code to access tagged users
+	       	const dataTagged = dataForDisplay.doc(doc.id).collection("tagged_users");
+	        var promise2 = new Promise(function(resolve,reject){
+	        	tempPromise = dataTagged.get();
+	        	console.log("tempPromise",tempPromise);
+	        	tempPromise.then((querySnapshotTagged) => {
+	    			querySnapshotTagged.forEach((docTagged) => {
+	    				console.log("tagged users :  ");
+	    				console.log(docTagged.data());
+	    				cloudData2.push(docTagged.data().tagged_users);
+	        			console.log("Console 3",cloudData2);
+	    		});
+	    			// taggedData.push(cloudData2);
+	    			resolve(cloudData2[0]);
+	    			return response.status(200);
+			})
+			.catch(function(error) {
+					reject(error);
+				    console.error("Error displaying tagged users document: ", error);
+				    return response.status(400);
+				})
+			});
+
+			// code to access leave date
+			const dataLeave = dataForDisplay.doc(doc.id).collection("leave_date");
+	        var promise3 = new Promise(function(resolve,reject){
+	        	dataLeave.get().then((querySnapshotLeave) => {
+	    			querySnapshotLeave.forEach((docLeave) => {
+	    				console.log("Leave date : ");
+	    				console.log(docLeave.data());
+	    				cloudData3.push(docLeave.data().dates);
+	        			console.log("Console 4",cloudData3);
+	    				});
+	    			// leaveData.push(cloudData3);
+	    			resolve(cloudData3[0]);
+	    			return response.status(200);
+				})
+				.catch(function(error) {
+					reject(error);
+				    console.error("Error displaying tagged users document: ", error);
+				    return response.status(400);
+				})
+		        console.log("Console 5",cloudData3);
+		        console.log("Console 6",cloudData);
+		        console.log("dataForDisplay",dataForDisplay);
+	    	});
+
+
+		console.log("Promise 1",promise1);
+
+		Promise.all([promise1, promise2,promise3]).then(function(values) {
+	        	console.log("Test")
+	        	console.log("Values");
+	        	console.log(values);
+	        	console.log(values[0]);
+				console.log("Promise 1",promise1);
+
+	        	var tempData = {
+	        		"leave_type" : cloudData[0].leave_type,
+				    "leave_status": cloudData[0].leave_status,
+				    "leave_counter": cloudData[0].leave_counter,
+				    "leave_note": cloudData[0].leave_note,
+				    "parent_id": cloudData[0].parent_id,
+				    "date_of_application": cloudData[0].date_of_application,
+	        		"comment" : values[0],
+	        		"tagged_user" : values[1],
+	        		"leave_date" : values[2]
+	        	}
+
+	        	console.log("cloudData : ",cloudData);
+	        	console.log("tempData",tempData);
+	        	return response.status(200).send(tempData);
+	        })
+	        .catch(function(error) {
+			    console.error("Error returning promise: ", error);
+			    return response.status(400);
+			});
+			return 0;
+		});
+
+
+	  //       Promise.all([promise1, promise2]).then(function(values) {
+	  //       	console.log("Test")
+	  //       	console.log("Values");
+	  //       	console.log(values);
+	  //       	return response.status(200).send(values);
+	  //       })
+	  //       .catch(function(error) {
+			//     console.error("Error returning promise: ", error);
+			//     return response.status(400);
+			// });
+			return 0;
+	})
+	.catch(function(error) {
+	    console.error("Error adding document: ", error);
+	    return response.status(400);
+	});
 });
