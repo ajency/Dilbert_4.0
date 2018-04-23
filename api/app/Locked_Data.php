@@ -60,10 +60,10 @@ class Locked_Data extends Model
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "00:00",
-                "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
-                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true),
+                "violations" => []/*(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id]))*/,
+                "changes" => 0/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)*/,
                 "slots" => [
-                    "lunch" => (new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))
+                    "lunch" => "00:00"/*(new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))*/
                 ]
             ]);
             if($sendPeriodMeta) {
@@ -104,10 +104,10 @@ class Locked_Data extends Model
                     "start_time" => "",
                     "end_time" => "",
                     "total_time" => "00:00",
-                    "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
-                    "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true),
+                    "violations" => []/*(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id]))*/,
+                    "changes" => 0/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)*/,
                     "slots" => [
-                        "lunch" => (new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))
+                        "lunch" => "00:00"/*(new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))*/
                     ]
                 ]);
                 // to handle comparing datecounter and end based on the order
@@ -129,9 +129,9 @@ class Locked_Data extends Model
                 $dayData['start_time'] = '';
                 $dayData['end_time'] = '';
                 $dayData['total_time'] = "00:00";
-                $dayData['violations'] = (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
-                $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
-                $dayData['slots']['lunch'] = (new Slots)->getTotalSlotTime($user_id, 'lunch', $ld->work_date, $ld->work_date);
+                $dayData['violations'] = []/*(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]))*/;
+                $dayData['changes'] = 0/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true)*/;
+                $dayData['slots']['lunch'] = "00:00"/*(new Slots)->getTotalSlotTime($user_id, 'lunch', $ld->work_date, $ld->work_date)*/;
                 array_push($data,$dayData);
                 continue;
             }
@@ -177,10 +177,10 @@ class Locked_Data extends Model
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "00:00",
-                "violations" => (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id])),
-                "changes" => (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true),
+                "violations" => []/*(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id]))*/,
+                "changes" => 0/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)*/,
                 "slots" => [
-                    "lunch" => (new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))
+                    "lunch" => "00:00"/*(new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))*/
                 ]
             ]);
             // to handle comparing datecounter and end based on the order
