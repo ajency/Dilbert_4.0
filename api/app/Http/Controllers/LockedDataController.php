@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App;
 use App\User;
@@ -198,7 +199,7 @@ class LockedDataController extends Controller
                             $dataChanges->new_value = $cvalue;
                             $dataChanges->save();
                             array_push($dataToMail, $dataChanges);
-                            
+
                         }
                         $lockedEntry->start_time = NULL;
                         $lockedEntry->end_time = NULL;
@@ -213,7 +214,7 @@ class LockedDataController extends Controller
                     $roleMeta = (new OrganisationMeta)->getAllRoleMeta(UserDetail::where('user_id',$userCode)->first()->org_id,$userRole);
                     // $output->writeln(json_encode($roleMeta));
                     $st=0;
-                    $et=0;                    
+                    $et=0;
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // do the time check
                         $now = new DateTime();
@@ -243,13 +244,13 @@ class LockedDataController extends Controller
                             array_push($dataToMail, $dataChanges);
                             // reflect this change in the locked__datas table
                             $lockedEntry->$ckey = $cvalue;
-                                
+
                         }
                         if ($ckey=="start_time") {
                             $st=new DateTime($lockedEntry->start_time);
                         }
                         else if ($ckey=="end_time") {
-                            $et = new DateTime($lockedEntry->end_time);                                    
+                            $et = new DateTime($lockedEntry->end_time);
                         }
                     }
                     if($lockedEntry->end_time != null) {
@@ -264,7 +265,7 @@ class LockedDataController extends Controller
                                     $dataChanges->new_value = date_diff($st,$et)->format("%H:%I");
                                     $dataChanges->save();
                                     $lockedEntry->total_time = date_diff($st,$et)->format("%H:%I");
-                                }                            
+                                }
                             $lockedEntry->save();
                             array_push($dataToMail, $dataChanges);
                     // $data = $lockedEntry;
@@ -309,7 +310,7 @@ class LockedDataController extends Controller
         }
     }
 
-    public function allUsersSummary(Request $request, $orgId, $locale = "default") {
+    public function allUsersSummaryOld(Request $request, $orgId, $locale = "default") {
         $output = new ConsoleOutput();
         // set the preferred locale
         if($locale == "default") {
@@ -395,6 +396,115 @@ class LockedDataController extends Controller
         }
     }
 
+    /**
+     * improvised summary api
+     * @param  Request $request [description]
+     * @param  [type]  $orgId   [description]
+     * @param  string  $locale  [description]
+     * @return [type]           [description]
+     */
+    public function allUsersSummary(Request $request, $orgId, $locale = "default") {
+        $output = new ConsoleOutput();
+        // set the preferred locale
+        if($locale == "default") {
+            $userDets = UserDetail::where('user_id',$request->input('from'))->first();
+            $locale = $userDets['lang'];
+        }
+        App::setLocale($locale);
+        if(!empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
+            if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
+                // get the organisation details
+                $orgDetails = Organisation::where('id',$orgId)->first();
+                // check if the start and end dates are given
+                if($request->has('filters.date_range.start') && $request->has('filters.date_range.end')) {
+                    // if both start and end are given
+                    $startDate = new \DateTime($request->input('filters.date_range.start'));
+                    $endDate = new \DateTime($request->input('filters.date_range.end'));
+                }
+                else if($request->has('filters.date_range.start')) {
+                    // if only start is given
+                    if(!empty($request->input('filters.period_unit')))
+                        $periodUnit = $request->input('filters.period_unit');
+                    else
+                        $periodUnit = $orgDetails->period_unit;
+                    //startDate and endDate will be the first and the last day of the org_period
+                    $date = explode('-',$request->input('filters.date_range.start'));
+                    if($periodUnit == 'week') {
+                        $sdWeekNo = new \DateTime($request->input('filters.date_range.start'));
+                        $sdWeekNo = $sdWeekNo->format('W');
+                        $startDate = new \DateTime();
+                        $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
+                        $endDate = clone $startDate;
+                        $endDate->modify('+6 days');
+                    }
+                    else if ($periodUnit == 'month'){
+                        $startDate = new \DateTime($date[0].'-'.$date[1].'-01');
+                        $endDate = new \DateTime($date[0]."-".$date[1]."-".cal_days_in_month(CAL_GREGORIAN,$date[1],$date[0]));
+                    }
+                    else
+                        //just in case the organisation's period_unit is not set
+                        return response()->json(['status' => 400, 'message' => __('api_messages.org_period_unit')]);
+                }
+
+                // check if end date is ahead of time
+                if($endDate > new \DateTime())
+                    $endDate = new \DateTime();
+
+                $startDateString = $startDate->format('Y-m-d');
+                $endDateString = $endDate->format('Y-m-d');
+
+                // get all the users in the organisation
+                // $orgUsers = User::join('user_details','user_details.user_id','=','users.id')->orderBy('name','asc')->where('user_details.org_id',$orgId)->get();
+                $orgUsers = DB::table('users')
+                                ->join('user_details','user_details.user_id','=','users.id')
+                                ->select('users.status','users.name','user_details.user_id','user_details.avatar','user_details.joining_date')
+                                ->orderBy('name','asc')
+                                ->where('user_details.org_id',$orgId)
+                                ->get();
+
+                // fetch the summary of all users in this period
+                // $periodSummaryData = Locked_Data::whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->get();
+                $periodSummaryData = DB::table('locked__datas')
+                                    ->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+                                    ->get();
+
+                $data = [];
+                foreach($orgUsers as $oUser) {
+                    // check if user is active
+                    if($oUser->status != 'active')
+                        continue;
+                    // user details
+                    $userObj['user'] = [
+                        'user_id' => $oUser->user_id,
+                        'name' => $oUser->name,
+                        'avatar' => $oUser->avatar,
+                        'joining_date' => $oUser->joining_date
+                    ];
+
+                    // summary
+                    // user's data for the particular period
+                    // $output->writeln($startDate->format('Y-m-d')." ".$endDate->format('Y-m-d'));
+                    $summaryData = $periodSummaryData->where('user_id',$oUser->user_id);
+                    $periodData = (new Locked_Data)->formattedLockedData($oUser->user_id,$summaryData,$startDateString,$endDateString,'asc',true);
+                    $userObj['summary'] = $periodData['data'];
+
+                    // period meta
+                    $userObj['period_meta']['worked_total'] = $periodData['total_period_hours'];
+                    $userObj['period_meta']['lunch_total'] = (new Slots)->getTotalSlotTime($oUser->user_id, 'lunch', $startDateString,$endDateString);
+
+                    array_push($data,$userObj);
+                }
+                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data]);
+            }
+            else {
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
+            }
+        }
+        else {
+            return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
+        }
+    }
+
     function edit_log_email($dataToMails,$status=null)
     {
         try {
@@ -424,7 +534,7 @@ class LockedDataController extends Controller
             $dataEdit['new_value']= $dataToMail['new_value'];
             $data['status']=$status;
             array_push($data['values'], $dataEdit);
- 
+
             // getting subject
             $subject=' Dilbert 4 - '.$data['name'].'\'s Log edited';
             //getting email id of user
@@ -441,7 +551,7 @@ class LockedDataController extends Controller
             $users=User::all();
             foreach ($users as $user) {
                 if ($user->hasPermissionTo('edit_log_mails')) {
-                    $cc_list=UserCommunication::where('object_id','=', $user['id'])->where('object_type','App\\User')->first();  
+                    $cc_list=UserCommunication::where('object_id','=', $user['id'])->where('object_type','App\\User')->first();
                     array_push($cc_mail, $cc_list);
                 }
             }
@@ -463,7 +573,7 @@ class LockedDataController extends Controller
         }
         } catch (\Exception $e) {
             LogForErrors::error('Error Type: Edit log mails, error:'.$e->getMessage()." other data : user-".$user['id']." ".$user['name']);
-            return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
         }
     }
 }
