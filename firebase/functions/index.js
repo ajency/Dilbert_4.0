@@ -599,245 +599,71 @@ exports.displayLeaveTest = functions.https.onRequest((request,response) => {
 });
 
 
-var db = firebase.firestore();
-
-exports.cloudLeave = functions.https.onRequest((request,response) => {
-	var cloudData = [];
-	docRef = db.collection("leave_management");
-	docRef.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-        cloudData.push(doc.data());
-    });
-        response.status(200).send(cloudData); 
-        return 0;
-})
-.then(function(docRef) {
-    console.log("Document written with ID: ", docRef);
-    return 1;
-})
-.catch(function(error) {
-    console.error("Error adding document: ", error);
-});
- var dataPrint = db.collection("leave_management").doc("45").collection("459999");
-        console.log("DATA PRINT : ",dataPrint);
-});
-
-
-
-// var db = firebase.firestore();
-//To Add Leave
-exports.cloudAddLeave = functions.https.onRequest((request,response) => {
-	response.setHeader("Access-Control-Allow-Origin", "*");
-	if (request.method === "POST") 
-	{
-		mandatoryRequest=validateRequest(request);
-		if (mandatoryRequest.length === 0) {
-			console.log("cloudAddLeave test");
-			var temp=request.body.user.user_id;
-			console.log("temp:",temp);
-			var user_id=temp.toString();
-			var leave_counter=getLeaveCounter(request.body.leave_type);
-			var date = new Date();
-			var date_of_application = date.getTime();
-			var parent_id = generateId(request.body.user.user_id,date_of_application);
-			console.log("parent_id:",parent_id);
-			console.log("date_of_application:",date_of_application);
-			console.log(request.body.leave_note);
-
-			var leave_details={
-				 leave_note: request.body.leave_note,
-				 leave_type:request.body.leave_type,
-				 leave_status:"informed",
-				 leave_counter:leave_counter,
-				 date_of_application:date_of_application,
-				 parent_id:parent_id
-			}
-			
-			var comments={
-				comments:request.body.comments
-			}
-
-			var leave_date={
-
-				dates:request.body.leave_date
-			}
-
-			console.log("dates",leave_date);
-			var tagged_users={
-				tagged_users:request.body.tagged_users
-			}
-			var objdata={
-				leave_details:leave_details,
-				tagged_users:tagged_users,
-				leave_date:leave_date
-
-			}
-			var return_value_post={
-					"status" : "success",
-					"message" : "200 OK",
-					"data" : objdata
-				}
-
-				// add leave details 
-				console.log("user_id:",user_id);
-				var dataStore= db.collection("leave_management").doc(user_id).collection(parent_id).doc();
-				console.log(dataStore);
-				dataStore.set(leave_details)
-
-				.then(function() {
-				    console.log("leave details successfully written!");
-
-				    return response.status(200);
-				})
-				.catch(function(error) {
-				    console.error("Error writing document: ", error);
-				    return response.status(400);
-				});
-
-				// add leave comments 
-				// console.log(comments);
-				// dataStore.collection("comments").doc().set(comments)
-				// .then(function() {
-				//     console.log("leave comments successfully written!");
-				//     return response.status(200);
-				// })
-				// .catch(function(error) {
-				//     console.error("Error writing document: ", error);
-				//     return response.status(400);
-				// });
-
-				// add leave dates 
-				// console.log(leave_date);
-				dataStore.collection("leave_date").doc().set(leave_date)
-				.then(function() {
-				    console.log("leave dates successfully written!");
-				    return response.status(200);
-				})
-				.catch(function(error) {
-				    console.error("Error writing document: ", error);
-				    return response.status(400);
-				});
-
-					// add leave tagged users 
-				console.log(tagged_users);
-				dataStore.collection("tagged_users").doc().set(tagged_users)
-				.then(function() {
-				    console.log("tagged users successfully written!");
-				    return response.status(200).send(return_value_post);
-				})
-				.catch(function(error) {
-				    console.error("Error writing document: ", error);
-				    return response.status(400);
-				});
-		}
-		else{
-			return_value={
-				"status" : "error",
-				"message" : "Mandatory fields ("+mandatoryRequest+") not present",
-				"data" : mandatoryRequest
-			}
-			response.status(200).send(return_value); 
-		}
-
-	}
-	else{
-		return_value=[
-		{
-			"status" : "error",
-			"message" : "wrong method",
-		}]
-		response.status(200).send(return_value); 
-	}
-
-});
-
-//To Add comment
-exports.cloudAddComment = functions.https.onRequest((request,response) => {
-	response.setHeader("Access-Control-Allow-Origin", "*");
-	console.log("request method ",request.method);
-	if(request.method === "POST") 
-		{
-			var comments1={
-				comments:request.body.comments
-			}
-			var tempuserId=request.body.user_id;
-			var tempparentId=request.body.parent_id;
-			var userId=tempuserId.toString();
-			var parentId=tempparentId.toString();
-			var key=request.body.key;
-			console.log("parentId",userId);
-			console.log("parentId",parentId);
-			console.log(request.body.key);
-			// console.log(comments1);
-			var dataStore1= db.collection("leave_management").doc(userId).collection(parentId);
-			console.log("hello",dataStore1);
-			dataStore1.doc(key).collection("comments").doc().set(comments1)
-			.then(function() {
-				    console.log("comment successfully written!");
-				    return response.status(200).send("comment added");
-				})
-				.catch(function(error) {
-				    console.error("Error writing document: ", error);
-				    return response.status(400);
-				});
-		}	
-		else{
-			return_value=[
-			{
-				"status" : "error",
-				"message" : "wrong method",
-			}]
-			response.status(200).send(return_value); 
-		}
-	
-	});
-
-
 
 //View leaves
 
+var db = firebase.firestore();
 
 exports.cloudLeave = functions.https.onRequest((request,response) => {
+
+	console.log("Test run 12");
 	var cloudData = [];
 	var cloudData1 = [];
 	var cloudData2 = [];
 	var cloudData3 = [];
+
 	// var id = ["81","80","45"];
 	var requestBody = request.body;
 	var user_temp = requestBody.user_id;
+
 	var user = user_temp.toString();
-	var parent_id_temp = requestBody.parent_id;
-	var parent_id = parent_id_temp.toString();
+
+	var userCollection = user+"_leave";
+
 	var promise1,promise2;
+	var resp = [];
+	var docStatus = [];
+	var index = 0;
 
 
-	console.log("Parent Id",parent_id);
+	var results = [];
+
+
+	console.log("userCollection",userCollection);
 	// var dateDa = new Date('2018-04-20'); 
-	const dataForDisplay = db.collection("leave_management").doc(user).collection(parent_id);
+
+	const dataForDisplay = db.collection("leave_management").doc(user).collection(userCollection);
 	// const dataComment = dataForDisplay.doc("IzBBL6boIKlypUkHTNv3").collection("comments");
 
 	dataForDisplay.get().then((querySnapshot) => {
 	    querySnapshot.forEach((doc) => {
+	    	var userLeaves = {};
+	    	docStatus.push("pending");
+	    	var i = index;
+	    	index = index + 1;
+
 	        console.log(doc.id, " => ", doc.data());
 	          //console.log(querySnapshot.doc().collection("comments"));
-	        cloudData.push(doc.data());
+	        userLeaves = doc.data();
 	        console.log("Console 1",cloudData);
 
 	        //code to access comments of user
 			const dataComment = dataForDisplay.doc(doc.id).collection("comments");
+	       	
 	       	var promise1 = new Promise(function(resolve,reject){
 	       		tempPromiseComment = dataComment.get();
 	       		tempPromiseComment.then((querySnapshotComment) => {
 	    			querySnapshotComment.forEach((docComment) => {
 	    				console.log("Comments");
 	    				console.log(docComment.data());
-	    				cloudData1.push(docComment.data().comments);
-	        			console.log("Console 2",cloudData1);
+	    				// cloudData1.push(docComment.data().comments);
+	        			//console.log("Console 2",cloudData1);
+	        			userLeaves['comments'] = docComment.data();
 	    		});
 	    			// commentData.push(cloudData1);
-	    			resolve(cloudData1);
-	    			return response.status(200);
+	    			resolve(userLeaves);
+	    			// return response.status(200);
+	    			return 0;
 			})
 			.catch(function(error) {
 					reject(error);
@@ -848,6 +674,7 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 
 			// code to access tagged users
 	       	const dataTagged = dataForDisplay.doc(doc.id).collection("tagged_users");
+	        
 	        var promise2 = new Promise(function(resolve,reject){
 	        	tempPromise = dataTagged.get();
 	        	console.log("tempPromise",tempPromise);
@@ -855,12 +682,14 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 	    			querySnapshotTagged.forEach((docTagged) => {
 	    				console.log("tagged users :  ");
 	    				console.log(docTagged.data());
-	    				cloudData2.push(docTagged.data().tagged_users);
-	        			console.log("Console 3",cloudData2);
+	    				// cloudData2.push(docTagged.data().tagged_users);
+	        			//console.log("Console 3",cloudData2);
+	        			userLeaves['taggedUsers'] = docTagged.data().tagged_users;
 	    		});
 	    			// taggedData.push(cloudData2);
-	    			resolve(cloudData2[0]);
-	    			return response.status(200);
+	    			resolve(userLeaves);
+	    			// return response.status(200);
+	    			return 0;
 			})
 			.catch(function(error) {
 					reject(error);
@@ -871,17 +700,20 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 
 			// code to access leave date
 			const dataLeave = dataForDisplay.doc(doc.id).collection("leave_date");
+	        
 	        var promise3 = new Promise(function(resolve,reject){
 	        	dataLeave.get().then((querySnapshotLeave) => {
 	    			querySnapshotLeave.forEach((docLeave) => {
 	    				console.log("Leave date : ");
 	    				console.log(docLeave.data());
-	    				cloudData3.push(docLeave.data().dates);
-	        			console.log("Console 4",cloudData3);
+	    				/*cloudData3.push(docLeave.data().dates);
+	        			console.log("Console 4",cloudData3);*/
+	        			userLeaves['leaveDate'] = docLeave.data().dates;
 	    				});
 	    			// leaveData.push(cloudData3);
-	    			resolve(cloudData3[0]);
-	    			return response.status(200);
+	    			resolve(userLeaves);
+	    			// return response.status(200);
+	    			return 0;
 				})
 				.catch(function(error) {
 					reject(error);
@@ -894,36 +726,52 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 	    	});
 
 
-		console.log("Promise 1",promise1);
+			console.log("Promise 1",promise1);
 
-		Promise.all([promise1, promise2,promise3]).then(function(values) {
+			Promise.all([promise1, promise2,promise3]).then(function(values) {
 	        	console.log("Test")
 	        	console.log("Values");
 	        	console.log(values);
 	        	console.log(values[0]);
 				console.log("Promise 1",promise1);
 
-	        	var tempData = {
-	        		"leave_type" : cloudData[0].leave_type,
-				    "leave_status": cloudData[0].leave_status,
-				    "leave_counter": cloudData[0].leave_counter,
-				    "leave_note": cloudData[0].leave_note,
-				    "parent_id": cloudData[0].parent_id,
-				    "date_of_application": cloudData[0].date_of_application,
+	        	/*var tempData = {
+	        		"leave_type" : cloudData[i].leave_type,
+				    "leave_status": cloudData[i].leave_status,
+				    "leave_counter": cloudData[i].leave_counter,
+				    "leave_note": cloudData[i].leave_note,
+				    "parent_id": cloudData[i].parent_id,
+				    "date_of_application": cloudData[i].date_of_application,
 	        		"comment" : values[0],
 	        		"tagged_user" : values[1],
 	        		"leave_date" : values[2]
 	        	}
 
 	        	console.log("cloudData : ",cloudData);
-	        	console.log("tempData",tempData);
-	        	return response.status(200).send(tempData);
+	        	console.log("tempData",tempData);*/
+	        	// return response.status(200).send(tempData);
+
+	        	// resp.push(tempData);
+
+	        	docStatus[i] = "completed";
+
+	        	if (docStatus.indexOf("pending") === -1){
+	        		returnData={
+						"status" : "success",
+						"message" : "200 OK",
+						"data" : results
+					}
+					return response.status(200).send(returnData);
+	        	}
+	        	return 0;
 	        })
-	        .catch(function(error) {
+	    	.catch(function(error) {
 			    console.error("Error returning promise: ", error);
 			    return response.status(400);
 			});
-			return 0;
+			// return 0;
+			console.log("userLeaves : ",userLeaves);
+			results.push(userLeaves);
 		});
 
 		return 0;
@@ -932,5 +780,36 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 	    console.error("Error viewing document: ", error);
 	    return response.status(400);
 	});
+
+});
+
+exports.cloudViewLeave = functions.https.onRequest((request,response) => {
+	var cloudData = [];
+	var cloudData1 = [];
+	var cloudData2 = [];
+	var cloudData3 = [];
+	// var id = ["81","80","45"];
+	var requestBody = request.body;
+	var user_temp = requestBody.user_id;
+	var user = user_temp.toString();
+	var userCollection = user+"_leaves";
+	var promise1,promise2;
+	// var dateDa = new Date('2018-04-20'); 
+	const dataForDisplay = db.collection("leave_management").doc(user).collection(userCollection);
+	// const dataComment = dataForDisplay.doc("IzBBL6boIKlypUkHTNv3").collection("comments");
+			dataForDisplay.get().then((querySnapshot) => {
+			    querySnapshot.forEach((doc) => {
+			    	
+			    	//code 
+					//await Promise.all(doc.map(async promiseData => { await promise1 }))
+
+
+				});
+				return response.status(200).send("hey");
+			})
+			.catch(function(error) {
+			    console.error("Error viewing document: ", error);
+			    return response.status(400);
+			});
 
 });
