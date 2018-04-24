@@ -53,7 +53,11 @@ class LogsController extends Controller
                         $self = false;
                     $email_id = UserCommunication::where('object_id','=',$request->user_id)->where('object_type','App\\User')->first();
                     $email = $email_id['value'];
-                    $data['user'] = ['user_id' => $request->user_id, 'name' => $name, 'self' => $self, 'email' => $email];
+
+                    $avatar = UserDetail::where('user_id',$request->user_id)->first();
+                    $avatar = $avatar['avatar'];
+
+                    $data['user'] = ['user_id' => $request->user_id, 'name' => $name, 'self' => $self, 'email' => $email, 'avatar' => $avatar];
                     // get the days data from locked__datas -------------- call that new function
                     $daysData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
                     $data['day_data'] = (new Locked_Data)->formattedLockedData($request->user_id,$daysData,$request->date,$request->date);  // formatted locked data
