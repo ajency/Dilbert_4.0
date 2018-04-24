@@ -13,6 +13,7 @@ use App\SpecialDays;
 use App\Slots;
 use App\UserCommunication;
 use App\OrganisationMeta;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log as LogForErrors;
 
@@ -21,6 +22,7 @@ use Ajency\Violations\Ajency\ViolationRules;
 
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Illuminate\Support\Facades\Storage;
 
 class CronController extends Controller
 {
@@ -286,27 +288,32 @@ class CronController extends Controller
         $presentUsers = Locked_Data::where(['work_date' => date('Y-m-d')])->get();
         // for each user check the last log
         foreach($presentUsers as $pUser) {
-            $user = (new UserAuth)->getUserData($pUser['user_id'],true);
-            // get the users last log from a valid organisation ip
-            $orgDetails = Organisation::find($user['user_details'][0]['org_id']);
-            $ipList = unserialize($orgDetails['ip_lists']);
-            $lastLog = Log::where(['user_id' => $pUser['user_id'], 'work_date' => date('Y-m-d')])->whereIn('ip_addr',$ipList)->orderBy('id','desc')->first();
+            try {
+                $user = (new UserAuth)->getUserData($pUser['user_id'],true);
+                // get the users last log from a valid organisation ip
+                $orgDetails = Organisation::find($user['user_details'][0]['org_id']);
+                $ipList = unserialize($orgDetails['ip_lists']);
+                $lastLog = Log::where(['user_id' => $pUser['user_id'], 'work_date' => date('Y-m-d')])->whereIn('ip_addr',$ipList)->orderBy('id','desc')->first();
 
-            //if last log is offline continue else check the update_time
-            if($lastLog->to_state == 'offline' || $lastLog->to_state == 'Offline' || $lastLog->to_state == 'OFFLINE')
-                continue;
-            else {
-                if($this->getTimeDifferenceInMinutes($pUser['updated_at'],date('H:i')) >= 5) {
-                    // add offline state in logs for that user
-                    $offlineLog = new Log;
-                    $offlineLog->work_date = date('Y-m-d');
-                    $offlineLog->cos = $pUser['end_time']; // cos if of time so datetime get convert to time only format
-                    $offlineLog->user_id = $pUser['user_id'];
-                    $offlineLog->from_state = ($lastLog->to_state == 'New Session') ? 'active' : $lastLog->to_state;
-                    $offlineLog->to_state = 'offline';
-                    $offlineLog->ip_addr = $lastLog->ip_addr;
-                    $offlineLog->save();
+                //if last log is offline continue else check the update_time
+                if($lastLog->to_state == 'offline' || $lastLog->to_state == 'Offline' || $lastLog->to_state == 'OFFLINE')
+                    continue;
+                else {
+                    if($this->getTimeDifferenceInMinutes($pUser['updated_at'],date('H:i')) >= 5) {
+                        // add offline state in logs for that user
+                        $offlineLog = new Log;
+                        $offlineLog->work_date = date('Y-m-d');
+                        $offlineLog->cos = $pUser['end_time']; // cos if of time so datetime get convert to time only format
+                        $offlineLog->user_id = $pUser['user_id'];
+                        $offlineLog->from_state = ($lastLog->to_state == 'New Session') ? 'active' : $lastLog->to_state;
+                        $offlineLog->to_state = 'offline';
+                        $offlineLog->ip_addr = $lastLog->ip_addr;
+                        $offlineLog->save();
+                    }
                 }
+            }
+            catch(\Exception $e) {
+                Storage::disk('logs')->append('state_update_cron.log', '['.Carbon::now()->format('Y-m-d h:i:s').'] '.$e->getMessage().' (user: '.$pUser['user_id'].')'.PHP_EOL.$e->getTraceAsString());
             }
         }
         return response()->json(['status' => 200]);
@@ -360,7 +367,7 @@ class CronController extends Controller
             // total time in minutes
             $totalHours = 0;
             $time_count=0;
-            foreach($userHours as $uh) 
+            foreach($userHours as $uh)
             {
                 //getting total hours of week
                 if($uh['total_time'] != null && $uh['total_time'] != '') {
@@ -387,7 +394,7 @@ class CronController extends Controller
             }
 
             // calculate the time difference between rhs and rule_key_fields if key < rhs
-            if((int)$totalHours < ((int)$minHours * 60)) 
+            if((int)$totalHours < ((int)$minHours * 60))
             {
                 $tdHours = ($totalHours%60 == 0) ? ($minHours - (int)($totalHours/60)) : ($minHours - (int)($totalHours/60) - 1);
                 $tdMinutes = 60 - ($totalHours%60);
@@ -449,7 +456,7 @@ class CronController extends Controller
             echo "comm ".$comm['value'];
             $cc_list = ['hr'];
              $bcc_list = ['owner1','owner2'];
-            foreach ($cc_list as $cc_l) 
+            foreach ($cc_list as $cc_l)
             {
                 $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$org,0);
             }
@@ -478,8 +485,8 @@ class CronController extends Controller
             send_mails($data,$subject,$to_list,$cc_mail,$bcc_mail);
         } catch (\Exception $e) {
             LogForErrors::error('Error Type: Weekly summary mails, error:'.$e->getMessage()." other data : user-".$user['ID']." ".$user['name']);
-            return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
         }
-        
+
     }
 }
