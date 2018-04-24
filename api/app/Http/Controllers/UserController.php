@@ -157,7 +157,7 @@ class UserController extends Controller
         $users = User::where(['status' => 'active'])->get(); // Get users that are active
 
         foreach ($users as $user) {
-            $org_users = UserDetail::select('user_id')->where('org_id',$orgId)->where('user_id',$user['id'])->first();      
+            $org_users = UserDetail::select('user_id')->where('org_id',$orgId)->where('user_id',$user['id'])->first();  
 
             if (!empty($org_users)) {
 
@@ -167,6 +167,11 @@ class UserController extends Controller
                  $data['name'] = $user['name'];
                  $user_tag = explode(' ',$user['name']);
                  $data['user_tag']='@'.$user_tag[0];
+
+                 $avatar = UserDetail::where('user_id',$org_users["user_id"])->first();
+
+                 $data['avatar'] = $avatar['avatar'];
+
                  array_push($returnValue,$data);
             }
         }
