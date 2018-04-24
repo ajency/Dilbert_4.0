@@ -605,207 +605,201 @@ exports.displayLeaveTest = functions.https.onRequest((request,response) => {
 var db = firebase.firestore();
 
 exports.cloudLeave = functions.https.onRequest((request,response) => {
+	response.setHeader("Access-Control-Allow-Origin", "*");
+	if (request.method === "POST") 
+	{
+		console.log("Test run 17");
+		var cloudData = [];
+		var cloudData1 = [];
+		var cloudData2 = [];
+		var cloudData3 = [];
 
-	console.log("Test run 12");
-	var cloudData = [];
-	var cloudData1 = [];
-	var cloudData2 = [];
-	var cloudData3 = [];
+		var requestBody = request.body;
+		var user_temp = requestBody.filters.users;
 
-	// var id = ["81","80","45"];
-	var requestBody = request.body;
-	var user_temp = requestBody.user_id;
+		var user = user_temp.toString();
 
-	var user = user_temp.toString();
+		var userCollection = user+"_leave";
 
-	var userCollection = user+"_leave";
-
-	var promise1,promise2;
-	var resp = [];
-	var docStatus = [];
-	var index = 0;
+		var promise1,promise2;
+		var resp = [];
+		var docStatus = [];
+		var index = 0;
+		var results = [];
+		var returnData  = {};
+		var tempData = {};
 
 
-	var results = [];
+		console.log("userCollection",userCollection);
 
+		const dataForDisplay = db.collection("leave_management").doc(user).collection(userCollection);
 
-	console.log("userCollection",userCollection);
-	// var dateDa = new Date('2018-04-20'); 
+		dataForDisplay.get().then((querySnapshot) => {
+		    querySnapshot.forEach((doc) => {
+		    	var userLeaves = {};
+		    	docStatus.push("pending");
+		    	var i = index;
+		    	index = index + 1;
 
-	const dataForDisplay = db.collection("leave_management").doc(user).collection(userCollection);
-	// const dataComment = dataForDisplay.doc("IzBBL6boIKlypUkHTNv3").collection("comments");
+		        console.log(doc.id, " => ", doc.data());
 
-	dataForDisplay.get().then((querySnapshot) => {
-	    querySnapshot.forEach((doc) => {
-	    	var userLeaves = {};
-	    	docStatus.push("pending");
-	    	var i = index;
-	    	index = index + 1;
+		        userLeaves = doc.data();
+		        console.log("Console 1",cloudData);
 
-	        console.log(doc.id, " => ", doc.data());
-	          //console.log(querySnapshot.doc().collection("comments"));
-	        userLeaves = doc.data();
-	        console.log("Console 1",cloudData);
-
-	        //code to access comments of user
-			const dataComment = dataForDisplay.doc(doc.id).collection("comments");
-	       	
-	       	var promise1 = new Promise(function(resolve,reject){
-	       		tempPromiseComment = dataComment.get();
-	       		tempPromiseComment.then((querySnapshotComment) => {
-	    			querySnapshotComment.forEach((docComment) => {
-	    				console.log("Comments");
-	    				console.log(docComment.data());
-	    				// cloudData1.push(docComment.data().comments);
-	        			//console.log("Console 2",cloudData1);
-	        			userLeaves['comments'] = docComment.data();
-	    		});
-	    			// commentData.push(cloudData1);
-	    			resolve(userLeaves);
-	    			// return response.status(200);
-	    			return 0;
-			})
-			.catch(function(error) {
-					reject(error);
-				    console.error("Error displaying comments document: ", error);
-				    return response.status(400);
-				})
-			});
-
-			// code to access tagged users
-	       	const dataTagged = dataForDisplay.doc(doc.id).collection("tagged_users");
-	        
-	        var promise2 = new Promise(function(resolve,reject){
-	        	tempPromise = dataTagged.get();
-	        	console.log("tempPromise",tempPromise);
-	        	tempPromise.then((querySnapshotTagged) => {
-	    			querySnapshotTagged.forEach((docTagged) => {
-	    				console.log("tagged users :  ");
-	    				console.log(docTagged.data());
-	    				// cloudData2.push(docTagged.data().tagged_users);
-	        			//console.log("Console 3",cloudData2);
-	        			userLeaves['taggedUsers'] = docTagged.data().tagged_users;
-	    		});
-	    			// taggedData.push(cloudData2);
-	    			resolve(userLeaves);
-	    			// return response.status(200);
-	    			return 0;
-			})
-			.catch(function(error) {
-					reject(error);
-				    console.error("Error displaying tagged users document: ", error);
-				    return response.status(400);
-				})
-			});
-
-			// code to access leave date
-			const dataLeave = dataForDisplay.doc(doc.id).collection("leave_date");
-	        
-	        var promise3 = new Promise(function(resolve,reject){
-	        	dataLeave.get().then((querySnapshotLeave) => {
-	    			querySnapshotLeave.forEach((docLeave) => {
-	    				console.log("Leave date : ");
-	    				console.log(docLeave.data());
-	    				/*cloudData3.push(docLeave.data().dates);
-	        			console.log("Console 4",cloudData3);*/
-	        			userLeaves['leaveDate'] = docLeave.data().dates;
-	    				});
-	    			// leaveData.push(cloudData3);
-	    			resolve(userLeaves);
-	    			// return response.status(200);
-	    			return 0;
+		        //code to access comments of user
+				const dataComment = dataForDisplay.doc(doc.id).collection("comments");
+		       	
+		       	var promise1 = new Promise(function(resolve,reject){
+		       		tempPromiseComment = dataComment.get();
+		       		tempPromiseComment.then((querySnapshotComment) => {
+		    			querySnapshotComment.forEach((docComment) => {
+		    				console.log("Comments");
+		    				console.log(docComment.data());
+		    				cloudData.push(docComment.data());
+		        			userLeaves['comments'] = cloudData;
+		    		});
+		    			resolve(userLeaves);
+		    			return 0;
 				})
 				.catch(function(error) {
-					reject(error);
-				    console.error("Error displaying tagged users document: ", error);
-				    return response.status(400);
+						reject(error);
+					    console.error("Error displaying comments document: ", error);
+					    return response.status(400);
+					})
+				});
+
+				// code to access tagged users
+		       	const dataTagged = dataForDisplay.doc(doc.id).collection("tagged_users");
+		        
+		        var promise2 = new Promise(function(resolve,reject){
+		        	tempPromise = dataTagged.get();
+		        	console.log("tempPromise",tempPromise);
+		        	tempPromise.then((querySnapshotTagged) => {
+		    			querySnapshotTagged.forEach((docTagged) => {
+		    				console.log("tagged users :  ");
+		    				console.log(docTagged.data());
+		        			userLeaves['tagged_users'] = docTagged.data().tagged_users;
+		    		});
+		    			resolve(userLeaves);
+		    			return 0;
 				})
-		        console.log("Console 5",cloudData3);
-		        console.log("Console 6",cloudData);
-		        console.log("dataForDisplay",dataForDisplay);
-	    	});
+				.catch(function(error) {
+						reject(error);
+					    console.error("Error displaying tagged users document: ", error);
+					    return response.status(400);
+					})
+				});
 
+				// code to access leave date
+				const dataLeave = dataForDisplay.doc(doc.id).collection("leave_date");
+		        
+		        var promise3 = new Promise(function(resolve,reject){
+		        	dataLeave.get().then((querySnapshotLeave) => {
+		    			querySnapshotLeave.forEach((docLeave) => {
+		    				console.log("Leave date : ");
+		    				console.log(docLeave.data());
+		        			userLeaves['leave_date'] = docLeave.data().dates;
+		    				});
+		    			resolve(userLeaves);
+		    			return 0;
+					})
+					.catch(function(error) {
+						reject(error);
+					    console.error("Error displaying tagged users document: ", error);
+					    return response.status(400);
+					})
+			        console.log("Console 5",cloudData3);
+			        console.log("Console 6",cloudData);
+			        console.log("dataForDisplay",dataForDisplay);
+		    	});
 
-			console.log("Promise 1",promise1);
+		    	//code to access users
+				const dataUser = dataForDisplay.doc(doc.id).collection("user");
+		       	
+		       	var promise4 = new Promise(function(resolve,reject){
+		        	tempPromiseUser = dataUser.get();
+		        	console.log("tempPromiseUser",tempPromiseUser);
+		        	tempPromiseUser.then((querySnapshotUser) => {
+		    			querySnapshotUser.forEach((docUser) => {
+		    				console.log("tagged users :  ");
+		    				console.log(docUser.data());
+		        			userLeaves['user'] = docUser.data().user;
+		    		});
+		    			resolve(userLeaves);
+		    			return 0;
+				})
+				.catch(function(error) {
+						reject(error);
+					    console.error("Error displaying tagged users document: ", error);
+					    return response.status(400);
+					})
+				});
 
-			Promise.all([promise1, promise2,promise3]).then(function(values) {
-	        	console.log("Test")
-	        	console.log("Values");
-	        	console.log(values);
-	        	console.log(values[0]);
 				console.log("Promise 1",promise1);
 
-	        	/*var tempData = {
-	        		"leave_type" : cloudData[i].leave_type,
-				    "leave_status": cloudData[i].leave_status,
-				    "leave_counter": cloudData[i].leave_counter,
-				    "leave_note": cloudData[i].leave_note,
-				    "parent_id": cloudData[i].parent_id,
-				    "date_of_application": cloudData[i].date_of_application,
-	        		"comment" : values[0],
-	        		"tagged_user" : values[1],
-	        		"leave_date" : values[2]
-	        	}
+				Promise.all([promise1, promise2,promise3,promise4]).then(function(values) {
+		        	console.log("Test")
+		        	console.log("Values");
+		        	console.log(values);
+		        	console.log(values[0]);
+					console.log("Promise 1",promise1);
 
-	        	console.log("cloudData : ",cloudData);
-	        	console.log("tempData",tempData);*/
-	        	// return response.status(200).send(tempData);
+		        	docStatus[i] = "completed";
 
-	        	// resp.push(tempData);
-
-	        	docStatus[i] = "completed";
-
-	        	if (docStatus.indexOf("pending") === -1){
-	        		returnData={
-						"status" : "success",
-						"message" : "200 OK",
-						"data" : results
-					}
-					return response.status(200).send(returnData);
-	        	}
-	        	return 0;
-	        })
-	    	.catch(function(error) {
-			    console.error("Error returning promise: ", error);
-			    return response.status(400);
+		        	if (docStatus.indexOf("pending") === -1){
+		        		tempData["leaves"]=results;
+		        		returnData={
+							"status" : "success",
+							"message" : "200 OK",
+							"data" : tempData
+						}
+						return response.status(200).send(returnData);
+		        	}
+		        	return 0;
+		        })
+		    	.catch(function(error) {
+				    console.error("Error returning promise: ", error);
+				    return response.status(400);
+				});
+				console.log("userLeaves : ",userLeaves);
+				results.push(userLeaves);
 			});
-			// return 0;
-			console.log("userLeaves : ",userLeaves);
-			results.push(userLeaves);
-		});
 
-		return 0;
-	})
-	.catch(function(error) {
-	    console.error("Error viewing document: ", error);
-	    return response.status(400);
-	});
+			return 0;
+		})
+		.catch(function(error) {
+		    console.error("Error viewing document: ", error);
+		    return response.status(400);
+		});
+	}
+	else
+	{
+		return_value=[
+		{
+			"status" : "error",
+			"message" : "wrong method",
+		}]
+		response.status(200).send(return_value); 
+	}
 
 });
 
 exports.cloudViewLeave = functions.https.onRequest((request,response) => {
-	var cloudData = [];
-	var cloudData1 = [];
-	var cloudData2 = [];
-	var cloudData3 = [];
-	// var id = ["81","80","45"];
-	var requestBody = request.body;
-	var user_temp = requestBody.user_id;
-	var user = user_temp.toString();
-	var userCollection = user+"_leaves";
-	var promise1,promise2;
-	// var dateDa = new Date('2018-04-20'); 
-	const dataForDisplay = db.collection("leave_management").doc(user).collection(userCollection);
-	// const dataComment = dataForDisplay.doc("IzBBL6boIKlypUkHTNv3").collection("comments");
-			dataForDisplay.get().then((querySnapshot) => {
-			    querySnapshot.forEach((doc) => {
-			    	
-			    	//code 
-					//await Promise.all(doc.map(async promiseData => { await promise1 }))
+	console.log("Just Testing 10 ");
 
+	var requestBody1 = request.body;
+	var user_temp1 = requestBody1.filters.users;
+	var user1 = user_temp1.toString();
+	var userCollection1 = user1+"_leaves";
 
+	const dataForDisplay1 = db.collection("leave_management").doc(user1).collection(userCollection1);
+	console.log("dataForDisplay1",dataForDisplay1);
+			dataForDisplay1.get().then((querySnapshot1) => {
+			    querySnapshot1.forEach((doc1) => {
+			    	console.log("Document : ",doc1.data());
+			    	console.log("Testing 1 ");
 				});
-				return response.status(200).send("hey");
+				return response.status(200).send("heyhello");
 			})
 			.catch(function(error) {
 			    console.error("Error viewing document: ", error);
