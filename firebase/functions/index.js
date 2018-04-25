@@ -807,3 +807,279 @@ exports.cloudViewLeave = functions.https.onRequest((request,response) => {
 			});
 
 });
+
+//To Add Leave
+exports.cloudAddLeave = functions.https.onRequest((request,response) => {
+	response.setHeader("Access-Control-Allow-Origin", "*");
+	if (request.method === "POST") 
+	{
+		mandatoryRequest=validateRequest(request);
+		request=getRequestData(request);
+		if (mandatoryRequest.length === 0) {
+			console.log("request",request.body);
+			console.log("AddLeave");
+			var temp=request.body.user.user_id;
+			var user_id=temp.toString();
+			var leave_counter=getLeaveCounter(request.body.leave_type);
+			var date = new Date();
+			var date_of_application = date.getTime();
+			var user_leave =user_id+"_leave";
+			console.log("user_leave",user_leave);
+			var parent_id = generateId(request.body.user.user_id,date_of_application);
+			console.log("parent_id:",parent_id);
+			console.log("date_of_application:",date_of_application);
+			console.log(request.body.leave_note);
+
+			var leave_details={
+				 leave_note: request.body.leave_note,
+				 type:request.body.leave_type,
+				 leave_status:request.body.leave_status,
+				 leave_counter:leave_counter,
+				 date_of_application:date_of_application,
+				 parent_id:parent_id
+			}
+			var user={
+				user:request.body.user
+			}
+			var created_by={
+				created_by:request.body.created_by
+			}
+			var modified_by={
+				modified_by:request.body.modified_by
+			}
+			
+			var comments={
+				comments:request.body.comments
+			}
+
+			var leave_date={
+
+				dates:request.body.leave_date
+			}
+
+			console.log("dates",leave_date);
+			var tagged_users={
+				tagged_users:request.body.tagged_users
+			}
+			var objdata={
+				leave_details:leave_details,
+				tagged_users:tagged_users,
+				leave_date:leave_date
+
+			}
+			var return_value_post={
+					"status" : "success",
+					"message" : "200 OK",
+					"data" : objdata
+				}
+
+				// add leave details 
+				console.log("user_id:",user_id);
+				var dataStore= db.collection("leave_management").doc(user_id).collection(user_leave).doc(parent_id);
+				console.log(dataStore);
+				dataStore.set(leave_details)
+
+				.then(function() {
+				    console.log("leave details successfully written!");
+
+				    return response.status(200);
+				})
+				.catch(function(error) {
+				    console.error("Error writing document: ", error);
+				    return response.status(400);
+				});
+				//user added
+				console.log(user);
+				dataStore.collection("user").doc().set(user)
+				.then(function() {
+				    console.log("leave user data successfully written!");
+				    return response.status(200);
+				})
+				.catch(function(error) {
+				    console.error("Error writing document: ", error);
+				    return response.status(400);
+				});
+
+				//add created by user
+				console.log(created_by);
+				dataStore.collection("created_by").doc().set(created_by)
+				.then(function() {
+				    console.log("leave created_by data successfully written!");
+				    return response.status(200);
+				})
+				.catch(function(error) {
+				    console.error("Error writing document: ", error);
+				    return response.status(400);
+				});
+				//add modified by
+				console.log(modified_by);
+				dataStore.collection("modified_by").doc().set(modified_by)
+				.then(function() {
+				    console.log("leave modified_by data successfully written!");
+				    return response.status(200);
+				})
+				.catch(function(error) {
+				    console.error("Error writing document: ", error);
+				    return response.status(400);
+				});
+				// add leave dates 
+				dataStore.collection("leave_date").doc().set(leave_date)
+				.then(function() {
+				    console.log("leave dates successfully written!");
+				    return response.status(200);
+				})
+				.catch(function(error) {
+				    console.error("Error writing document: ", error);
+				    return response.status(400);
+				});
+
+					// add leave tagged users 
+				console.log(tagged_users);
+				dataStore.collection("tagged_users").doc().set(tagged_users)
+				.then(function() {
+				    console.log("tagged users successfully written!");
+				    return response.status(200).send(return_value_post);
+				})
+				.catch(function(error) {
+				    console.error("Error writing document: ", error);
+				    return response.status(400);
+				});
+		}
+		else{
+			return_value={
+				"status" : "error",
+				"message" : "Mandatory fields ("+mandatoryRequest+") not present",
+				"data" : mandatoryRequest
+			}
+			response.status(200).send(return_value); 
+		}
+
+	}
+	else{
+		return_value=[
+		{
+			"status" : "error",
+			"message" : "wrong method",
+		}]
+		response.status(200).send(return_value); 
+	}
+
+});
+
+
+//To Add comment
+// To Validate Comment
+function commentValidate(request){
+	console.log(request.body);
+	var emptyFields=[];
+	if(!request.body.user_id){
+		emptyFields.push('id');
+	}
+	if(!request.body.parent_id){
+		emptyFields.push('parent_id');
+	}
+	if(!request.body.user.user_id)
+	{
+		emptyFields.push('user\'s id');
+	}
+	if(!request.body.user.name)
+	{
+		emptyFields.push('user\'s name');
+	}
+	else if (!request.body.user.name) 
+	{
+		emptyFields.push('user\'s name');
+	}
+
+	if(!request.body.user.email)
+	{
+		emptyFields.push('user\'s email');
+	}
+	else if (!request.body.user.email) 
+	{
+		emptyFields.push('user\'s email');
+	}
+	if(!request.body.message)
+	{
+		emptyFields.push('message');
+	}
+	else if (!request.body.message) 
+	{
+		emptyFields.push('message');
+	}
+	
+	return emptyFields;	
+
+}
+
+exports.cloudAddComment = functions.https.onRequest((request,response) => {
+	response.setHeader("Access-Control-Allow-Origin", "*");
+	console.log("request method ",request.method);
+	if(request.method === "POST") 
+		{
+			mandatoryRequest=commentValidate(request);
+			console.log("emptyFields length",mandatoryRequest.length);
+			console.log("emptyFields",mandatoryRequest);
+			if(mandatoryRequest.length ===0){
+				var date = new Date();
+				var date_of_application = date.getTime();
+
+
+				var user={
+					user:request.body.user
+
+				}
+				var comments1={
+					id : request.body.user_id,
+					message:request.body.message,
+					user:request.body.user,
+					timestamp:date_of_application
+
+				}
+				console.log("request body",request.body);
+				var tempuserId=request.body.user_id;
+				var tempparentId=request.body.parent_id;
+				var userId=tempuserId.toString();
+				var parentId=tempparentId.toString();
+				var user_leave =userId+"_leave";
+				// var key=request.body.key;
+				console.log("parentId",userId);
+				console.log("parentId",parentId);
+				// console.log(request.body.key);
+				// console.log(comments1);
+				var return_value_post={
+						"status" : "success",
+						"message" : "200 OK",
+						"data" : comments1
+					}
+				var dataStore1= db.collection("leave_management").doc(userId).collection(user_leave);
+				console.log("hello",dataStore1);
+				dataStore1.doc(parentId).collection("comments").doc().set(comments1)
+				.then(function() {
+					    console.log("comment successfully written!");
+					    return response.status(200).send(return_value_post);
+					})
+					.catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+			}
+			else{
+				return_value={
+					"status" : "error",
+					"message" : "Mandatory fields ("+mandatoryRequest+") not present",
+					"data" : mandatoryRequest
+				}
+				response.status(200).send(return_value); 
+			}
+		}	
+		else{
+			return_value=[
+			{
+				"status" : "error",
+				"message" : "wrong method",
+			}]
+			response.status(200).send(return_value); 
+		}
+	
+	});
