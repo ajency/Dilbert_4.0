@@ -1059,7 +1059,7 @@ console.log(this.apiURL);
 
                 if(response.status == 'success'){
                    console.log("Comment Added");
-                   this.checkleaves();
+                   // this.checkleaves();
                    this.checkleavesTeam();
                 }
                 else{
@@ -1137,6 +1137,14 @@ console.log(this.apiURL);
     if (event.keyCode == 13)
     {
        this.comment();
+    }
+
+  }
+    teamcommentEnter(event){
+    console.log(event);
+    if (event.keyCode == 13)
+    {
+       this.teamComment();
     }
 
   }

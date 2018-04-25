@@ -259,10 +259,11 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 
 		console.log("dataForDisplay",dataForDisplay);
 		dataForDisplay.get().then((querySnapshot) => {
-			console.log("querySnapshot",querySnapshot);
-			if(!querySnapshot.exists) {
+			// console.log("querySnapshot",querySnapshot);
+			console.log("querySnapshot.exists",querySnapshot.exists());
+			if(!querySnapshot.exists()) {
 				console.log("User does not exist");
-				return response.status(400).send("Doesnt exist");
+				return response.status(400).send("Doesnt exist!!");
 			}
 		    querySnapshot.forEach((doc) => {
 		    	var userLeaves = {};
