@@ -235,11 +235,7 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
 	if (request.method === "POST") 
 	{
-		console.log("Test run 17");
-		var cloudData = [];
-		var cloudData1 = [];
-		var cloudData2 = [];
-		var cloudData3 = [];
+		console.log("Test run 22");
 
 		var requestBody = request.body;
 		var user_temp = requestBody.filters.users;
@@ -261,9 +257,16 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 
 		const dataForDisplay = db.collection("leave_management").doc(user).collection(userCollection);
 
+		console.log("dataForDisplay",dataForDisplay);
 		dataForDisplay.get().then((querySnapshot) => {
+			console.log("querySnapshot",querySnapshot);
+			if(!querySnapshot.exists) {
+				console.log("User does not exist");
+				return response.status(400).send("Doesnt exist");
+			}
 		    querySnapshot.forEach((doc) => {
 		    	var userLeaves = {};
+		    	var cloudData = [];
 		    	docStatus.push("pending");
 		    	var i = index;
 		    	index = index + 1;
@@ -335,8 +338,6 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 					    console.error("Error displaying tagged users document: ", error);
 					    return response.status(400);
 					})
-			        console.log("Console 5",cloudData3);
-			        console.log("Console 6",cloudData);
 			        console.log("dataForDisplay",dataForDisplay);
 		    	});
 
