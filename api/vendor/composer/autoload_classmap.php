@@ -65,6 +65,7 @@ return array(
     'App\\Slots' => $baseDir . '/app/Slots.php',
     'App\\SpecialDays' => $baseDir . '/app/SpecialDays.php',
     'App\\User' => $baseDir . '/app/User.php',
+    'App\\UserActivity' => $baseDir . '/app/UserActivity.php',
     'App\\UserCommunication' => $baseDir . '/app/UserCommunication.php',
     'App\\UserDetail' => $baseDir . '/app/UserDetail.php',
     'App\\ViolationApp' => $baseDir . '/app/ViolationApp.php',
