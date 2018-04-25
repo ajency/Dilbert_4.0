@@ -20,80 +20,8 @@ var config = {
   };
   firebase.initializeApp(config);
 
-exports.createLeave = functions.https.onRequest((request,response) => {
-	response.setHeader("Access-Control-Allow-Origin", "*");
-	if (request.method === "POST") 
-	{
-		console.log(request.body);
-		mandatoryRequest=validateRequest(request);
-		console.log("length",mandatoryRequest.length);
-		request=getRequestData(request);
-		if (mandatoryRequest.length === 0) {
-			requestBody=request.body;
-			console.log(requestBody);
-			var ref = firebase.database().ref('/leave/'+requestBody.user.user_id);
-			var leave_counter=getLeaveCounter(requestBody.leave_type);
-			var date = new Date();
-			var date_of_application = date.getTime();
-			var parent_id = generateId(requestBody.user.user_id,date_of_application);
+var db = firebase.firestore();
 
-			var obj = {
-				"user" : {
-					"user_id": requestBody.user.user_id,
-					"email" : requestBody.user.email,
-					"name" : requestBody.user.name
-				},
-
-				"created_by":{
-					"user_id":requestBody.created_by.user_id,
-					"email":requestBody.created_by.email,
-					"name":requestBody.created_by.name
-				},
-
-				"modified_by" : {
-					"user_id":requestBody.modified_by.user_id ,
-					"email" :requestBody.modified_by.email, 
-					"name" : requestBody.modified_by.name
-				},
-
-				"date_of_application" : date_of_application,
-				"leave_date" : requestBody.leave_date,
-				"leave_note" : requestBody.leave_note,
-				"parent_id" : parent_id,
-				"leave_counter" : leave_counter,     
-				"leave_status": requestBody.leave_status,
-				"leave_type" : requestBody.leave_type,
-				"tagged_users":requestBody.tagged_users                    
-			};
-
-			ref.push(obj); 
-			return_value={
-				"status" : "success",
-				"message" : "200 OK",
-				"data" : obj
-			}
-			response.status(200).send(return_value); 
-		}
-		else
-		{
-			return_value={
-				"status" : "error",
-				"message" : "Mandatory fields ("+mandatoryRequest+") not present",
-				"data" : mandatoryRequest
-			}
-			response.status(200).send(return_value); 
-		}
-	}
-	else
-	{
-		return_value=[
-		{
-			"status" : "error",
-			"message" : "wrong method",
-		}]
-		response.status(200).send(return_value); 
-	}
-});
 
 function getLeaveCounter(leave_type) {
 	var counter;
@@ -225,384 +153,83 @@ function getRequestData(request) {
 }
 
 
-exports.displayLeave = functions.https.onRequest((request,response) => {
-	response.setHeader("Access-Control-Allow-Origin", "*");
-	if (request.method === "POST") 
-	{
-	var requestBody = request.body;
-	var responseData=[];
-	var data = [];
-	var leaves;
 
-	console.log('request : ',requestBody);
-	var ref = firebase.database().ref('leave/'+requestBody.filters.users);
-
-	ref.once('value', function (snap) {
-	 	snap.forEach(function (parentSnap) {
-	 		responseData.push(parentSnap.val());
-	 	});
-	 	console.log('Response Data : ',responseData);
-	 	leaves = {
-	 		"leaves" : responseData
-	 	};
-
-	 	var dataResponse = {
-	 			"status" : "success",
-				"message" : "200 OK",
-				"data" : leaves
-		 	}
-
-		console.log('Return Data : ',dataResponse);
-
-	 	response.status(200).send(dataResponse); 
-
-	},function (error) {
-		console.log("Error: " + error.code);
-	});
-	}
-	else
-	{
-		return_value=[
-		{
-			"status" : "error",
-			"message" : "wrong method",
-		}]
-		response.status(200).send(return_value); 
-	}
-});
 
 
 exports.displayLeaveTest1 = functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
 	if (request.method === "POST") 
 	{
-	var requestBody = request.body;
-	var responseData=[];
-	var data = [];
-	var leaves;
+		console.log("Test run 18");
 
-	console.log('request : ',requestBody);
-	var ref = firebase.database().ref('leave/'+requestBody.filters.users);
+		var requestBody = request.body;
+		if(requestBody.filters.users)
+		{
+			var user_temp = requestBody.filters.users;
 
-	ref.once('value', function (snap) {
-	 	snap.forEach(function (parentSnap) {
-	 		responseData.push(parentSnap.val());
-	 	});
-	 	console.log('Response Data : ',responseData);
-	 	leaves = {
-	 		"leaves" : responseData
-	 	};
+			var user = user_temp.toString();
 
-	 	var dataResponse = {
-	 			"status" : "success",
-				"message" : "200 OK",
-				"data" : leaves
-		 	}
+			var userCollection = user+"_leave";
 
-		console.log('Return Data : ',dataResponse);
+			var promise1,promise2;
+			var resp = [];
+			var docStatus = [];
+			var index = 0;
+			var results = [];
+			var returnData  = {};
+			var tempData = {};
 
-	 	response.status(200).send(dataResponse); 
 
-	},function (error) {
-		console.log("Error: " + error.code);
-	});
+			console.log("userCollection",userCollection);
+			const userValidate = db.collection("leave_management");
+			//console.log("db.FieldPath.documentId() : ",db.testdata.documentId());
+			//const userValidate =testdata.where(db.FieldPath.get();
+			console.log(userValidate);
+			userValidate.get().then((queryUser) => {
+			    queryUser.forEach((doc) => {
+			    	/*if (doc.id === user) {
+			    		console.log("happy");			   
+			    	}
+			    	else
+			    	{
+			    		console.log("sad");
+			    	}*/
+			    	console.log("doc.id : ",doc.id)
+			    });
+			    return response.status(200);
+			})
+			.catch(function(error) {
+					    console.error("Error displaying users document: ", error);
+					    return response.status(400);
+					});
+		}
+		else
+		{
+			return_value=[
+			{
+				"status" : "error",
+				"message" : "User id not passed or not present"
+			}]
+			response.status(400).send(return_value); 
+		}
 	}
 	else
 	{
 		return_value=[
 		{
 			"status" : "error",
-			"message" : "wrong method",
+			"message" : "wrong method"
 		}]
-		response.status(200).send(return_value); 
+		response.status(400).send(return_value); 
 	}
+
 });
 
-
-exports.displayLeaveTest = functions.https.onRequest((request,response) => {
-	var return_value={
-				"status" : "success",
-				"message" : "200 OK",
-				"data" : {
-					"leaves": [
-					{
-						"user":{
-								"user_id": 80,
-								"name": "anish",
-								"email": "anish@ajency.in"
-							},
-						"leave_note": "sick",
-						"leave_date": [
-							"2018-04-12",
-							"2018-04-13"
-						],
-						"leave_parent_id": 12345,
-						"type": "leave_taken",
-						"tagged_users": [
-							{
-								"user_id": 80,
-								"name": "anish",
-								"email": "anish@ajency.in"
-							},
-							{
-								"user_id": 45,
-								"name": "nutan",
-								"email": "nutan@ajency.in"
-							}
-						],
-						"comments": [
-							{
-								"id": 1231,
-								"message": "hiii",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "nutan",
-										"email": "nutan@ajency.in"
-									},
-								"timestamp": "123123123"
-							}
-						]
-					},
-					{
-						"user": 
-							{
-								"user_id": 45,
-								"name": "nutan",
-								"email": "nutan@ajency.in"
-							},
-						"leave_note": "sick",
-						"leave_date": [
-							"2018-04-14",
-							"2018-04-15",
-							"2018-04-16"
-
-						],
-						"leave_parent_id": 12345,
-						"type": "leave_taken",
-						"tagged_users": [
-							{
-								"user_id": 80,
-								"name": "anish",
-								"email": "anish@ajency.in"
-							},
-							{
-								"user_id": 45,
-								"name": "nutan",
-								"email": "nutan@ajency.in"
-							},
-							{
-								"user_id": 81,
-								"name": "shreya",
-								"email": "shreya@ajency.in"
-							}
-						],
-						"comments": [
-							{
-								"id": 1231,
-								"message": "hiii",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "nutan",
-										"email": "nutan@ajency.in"
-									},
-								"timestamp": "123123123"
-							}
-						]
-					},
-					{
-						"user": 
-							{
-								"user_id": 81,
-								"name": "shreya",
-								"email": "shreya@ajency.in"
-							},
-						"leave_note": "I have a wedding to attend",
-						"leave_date": [
-							"2018-04-14",
-							"2018-04-15",
-							"2018-04-16"
-
-						],
-						"leave_parent_id": 12345,
-						"type": "leave_taken",
-						"tagged_users": [
-							{
-								"user_id": 80,
-								"name": "anish",
-								"email": "anish@ajency.in"
-							},
-							{
-								"user_id": 25,
-								"name": "tanaya",
-								"email": "bac@ajency.in"
-							},
-							{
-								"user_id": 15,
-								"name": "tanvi",
-								"email": "aa@ajency.in"
-							},
-							{
-								"user_id": 33,
-								"name": "prajay",
-								"email": "ss@ajency.in"
-							},
-							{
-								"user_id": 62,
-								"name": "sujit",
-								"email": "ds@ajency.in"
-							},
-							{
-								"user_id": 45,
-								"name": "nutan",
-								"email": "nutan@ajency.in"
-							},
-							{
-								"user_id": 81,
-								"name": "shreya",
-								"email": "shreya@ajency.in"
-							},
-							{
-								"user_id": 22,
-								"name": "sharang",
-								"email": "uu@ajency.in"
-							}
-						],
-						"comments": [
-							{
-								"id": 1231,
-								"message": "This is test",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "tanvi",
-										"email": "tanvi@ajency.in"
-									},
-								"timestamp": "123123123"
-							},
-							{
-								"id": 1231,
-								"message": "test2",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "amit",
-										"email": "amit@ajency.in"
-									},
-								"timestamp": "123123123"
-							},
-							{
-								"id": 1231,
-								"message": "test3",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "sujit",
-										"email": "nutan@ajency.in"
-									},
-								"timestamp": "123123123"
-							},
-							{
-								"id": 1231,
-								"message": "comment test4",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "sharang",
-										"email": "nutan@ajency.in"
-									},
-								"timestamp": "123123123"
-							}
-						]
-					},
-					{
-						"user": {
-								"user_id": 35,
-								"name": "sujay",
-								"email": "sujay@ajency.in"
-							},
-						"leave_note": "sick",
-						"leave_date": [
-							"2018-04-12"
-						],
-						"leave_parent_id": 5022233,
-						"type": "leave_taken",
-						"tagged_users": [
-							{
-								"user_id": 80,
-								"name": "anish",
-								"email": "anish@ajency.in"
-							}
-						],
-						"comments": [
-							{
-								"id": 1231,
-								"message": "hiii",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "nutan",
-										"email": "nutan@ajency.in"
-									},
-								"timestamp": "123123123"
-							},
-							{
-								"id": 1231,
-								"message": "hiii1",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "viraj",
-										"email": "nutan@ajency.in"
-									},
-								"timestamp": "123123123"
-							},
-							{
-								"id": 1231,
-								"message": "hiii2",
-								"user": 
-									{
-										"user_id": 45,
-										"name": "prajay",
-										"email": "nutan@ajency.in"
-									},
-								"timestamp": "123123123"
-							}
-						]
-					},
-					{
-						"user": {
-								"user_id": 35,
-								"name": "sujay",
-								"email": "sujay@ajency.in"
-							},
-						"leave_note": "sick",
-						"leave_date": [
-							"2018-04-12"
-						],
-						"leave_parent_id": 5022233,
-						"type": "leave_taken",
-						"tagged_users": [
-							{
-								"user_id": 80,
-								"name": "anish",
-								"email": "anish@ajency.in"
-							}
-						],
-						"comments": []
-					}
-					]
-				}
-	}
-	response.status(200).send(return_value); 
-});
 
 
 
 //View leaves
 
-var db = firebase.firestore();
 
 exports.cloudLeave = functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
