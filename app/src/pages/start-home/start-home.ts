@@ -973,6 +973,93 @@ console.log(this.apiURL);
                 if(response.status == 'success'){
                    console.log("Comment Added");
                    this.checkleaves();
+                   // this.checkleavesTeam();
+                }
+                else{
+                  
+                this.appServiceProvider.presentToast(response.message, 'error');
+              }
+              
+          })
+
+
+
+
+
+    }
+  }
+   teamComment(){
+    console.log("comment Added Api Call");
+    // console.log(item);
+    if(this.commentNote1 ==""||this.commentNote1 ==undefined||this.commentNote ==""||this.commentNote ==undefined){
+      console.log("enter comment")
+    }
+    else{
+      console.log(this.all_users);
+      console.log(this.commentNote);
+      console.log(this.commentDetails);
+      console.warn(this.userDetails.user_id);
+      console.warn(this.all_users);
+      for(var x=0; x < this.all_users.length;x++){
+        if(this.all_users[x].user_id==this.userDetails.user_id){
+         
+          this.loggedInUser=this.all_users[x]; 
+          console.warn(this.loggedInUser);
+        }
+        else{
+          console.log("no user found");
+        }
+      }
+
+
+
+    let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudAddComment`;
+      //user id , parent id, key,comment Note and commented user
+
+    console.log(url);
+    let parent_id=this.commentDetails.parent_id;
+    let user_id1=this.commentDetails.user.user_id;
+    let user={
+            user_id :this.userDetails.user_id ,
+            email : this.userDetails.userEmail,
+            name :this.userDetails.name,
+            avatar:this.userDetails.avatar
+    }
+    // let filter1 = {
+    //     // org_id : this.org_id,
+    //     // date:date.start,
+    //     // period_unit:this.period_unit
+    //   };
+    let comments ={
+      message: this.commentNote
+
+    }
+
+     let body = {
+      user_id : this.commentDetails.user.user_id,
+      parent_id :this.commentDetails.parent_id,
+      user:this.loggedInUser,
+      message: this.commentNote
+
+      };
+
+
+      // let body = {
+      //   filters : filters
+      // }
+      console.warn(body);
+
+    let optionalHeaders = {
+          'X-API-KEY' : this.authguard.userData.x_api_key,
+          'From' : this.authguard.userData.user_id
+        };
+            this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+
+            console.log(response);
+
+                if(response.status == 'success'){
+                   console.log("Comment Added");
+                   this.checkleaves();
                    this.checkleavesTeam();
                 }
                 else{
@@ -1042,6 +1129,15 @@ console.log(this.apiURL);
          $("#teamLeaveToggle").show();
     
        });
+
+  }
+
+  commentEnter(event){
+    console.log(event);
+    if (event.keyCode == 13)
+    {
+       this.comment();
+    }
 
   }
 }
