@@ -208,7 +208,8 @@ export class SummaryContentComponent {
      this.appGlobalsProvider.leave_param.param1={
       user_id:this.summaryContentData.data.user.user_id,
       name:this.summaryContentData.data.user.name,
-      email:this.summaryContentData.data.user.email
+      email:this.summaryContentData.data.user.email,
+      avatar:this.summaryContentData.data.user.avatar
      }
      console.log(this.appGlobalsProvider.leave_param.param1);
 

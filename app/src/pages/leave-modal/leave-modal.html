@@ -91,7 +91,7 @@
 			    	<!-- <tag-input [ngModel]="['Javascript', 'Typescript']" ></tag-input> -->
 			    	<div style="padding-bottom: 10px;" class="LeaveTagUsers">
 			    		Tags 
-			             <tag-input [ngModel]="items" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"  required placeholder="Tag Your Colleagues">
+			             <tag-input [ngModel]="items" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"  required placeholder="Tag Your Colleagues" theme='minimal'>
 			                <tag-input-dropdown  class="dropdown_custom" [showDropdownIfEmpty]="false"
 			                                    [focusFirstElement]="true"
 			                                    [displayBy]="'user_tag'"

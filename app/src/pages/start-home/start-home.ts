@@ -69,6 +69,10 @@ import { Storage } from '@ionic/storage';
  commentButton: boolean = false;
  commentDetails:any;
  userDetails:any;
+ myLeaveCount:any;
+ teamLeaveCount:any;
+ all_users:any;
+ loggedInUser:any;
 
  private chageLogCB: Function;
 
@@ -108,6 +112,7 @@ import { Storage } from '@ionic/storage';
 
 ngOnInit(){
     this.userDetails=this.authguard.userData;
+    console.log(this.userDetails);
     this.readUserData();
     this.todayDate=moment().format("YYYY-MM-DD");
     this.myTodayDate=moment().format("YYYY-MM-DD");
@@ -593,7 +598,7 @@ checkleavesTeam(){
       console.log(this.leave_param1);
 
       // let url=`http://www.mocky.io/v2/5ad477072e00005600583b16`;
-       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/displayLeaveTest`;
+       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudLeave`;
      
         console.log(this.leave_param1.user_id);
         if(this.leave_param1.user_id == undefined){
@@ -630,7 +635,7 @@ checkleavesTeam(){
                }
 
         let  filters ={
-          users:this.allUser_ids,
+          users:45,
           leave_date:leave_date
 
 
@@ -657,6 +662,7 @@ checkleavesTeam(){
             this.teamLeaveData=response;
             // console.log(this.teamLeaveData.data);
             // console.log(this.teamLeaveData.data.leaves);
+            this.teamLeaveCount=this.teamLeaveData.data.leaves.length;
         });
 
 }
@@ -670,7 +676,7 @@ checkleaves(){
       this.leave_param1=this.appGlobalsProvider.leave_param.param1;
       console.log(this.leave_param1);
       
-       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/displayLeave`;
+       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudLeave`;
        let leave_date ={
             start:this.myTodayDate,
             end:''
@@ -689,12 +695,12 @@ checkleaves(){
         console.log(this.user_id1);
 
         let  filters ={
-          users:this.user_id1
+          users:this.user_id1,
+          leave_date:leave_date
 
         };
        let filter1={
-            filters:filters,
-            leave_date:leave_date
+            filters:filters
         }
         
         let optionalHeaders={
@@ -706,14 +712,26 @@ checkleaves(){
 
          this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
 
-
+          if(response.status == 'success'){
             console.log(response);
-           this.userLeaveData=response;
-            
-           //  console.log("dummy dadta");
-           //  console.log(this.userLeaveData);
-           //  console.log(this.userLeaveData.data);
-            console.log(this.userLeaveData.data.leaves.length);
+             this.userLeaveData=response;
+              
+             //  console.log("dummy dadta");
+              console.log(this.userLeaveData);
+             //  console.log(this.userLeaveData.data);
+              console.log(this.userLeaveData.data.leaves.length);
+              this.myLeaveCount=this.userLeaveData.data.leaves.length;
+              if(this.userLeaveData.comments){
+                console.log("yes");
+              }
+              else
+              {
+                console.log("no");
+              }
+          }
+          else{
+            this.appServiceProvider.presentToast(response.message, 'error');
+          }
         });
 
 
@@ -835,6 +853,7 @@ console.log(this.apiURL);
                 if(response.status == 'success'){
                      // this.users = response.data;
                      this.autocompleteItemsAsObjects = response.data;
+                     this.all_users=response.data;
                      console.log(this.autocompleteItemsAsObjects);
                      this.checkleaves();
                      this.checkleavesTeam();
@@ -889,10 +908,21 @@ console.log(this.apiURL);
       console.log("enter comment")
     }
     else{
-
+      console.log(this.all_users);
       console.log(this.commentNote);
       console.log(this.commentDetails);
-      console.log(this.userDetails);
+      console.warn(this.userDetails.user_id);
+      console.warn(this.all_users);
+      for(var x=0; x < this.all_users.length;x++){
+        if(this.all_users[x].user_id==this.userDetails.user_id){
+         
+          this.loggedInUser=this.all_users[x]; 
+          console.warn(this.loggedInUser);
+        }
+        else{
+          console.log("no user found");
+        }
+      }
 
 
 
@@ -905,44 +935,52 @@ console.log(this.apiURL);
     let user={
             user_id :this.userDetails.user_id ,
             email : this.userDetails.userEmail,
-            name :this.userDetails.name
+            name :this.userDetails.name,
+            avatar:this.userDetails.avatar
     }
     // let filter1 = {
     //     // org_id : this.org_id,
     //     // date:date.start,
     //     // period_unit:this.period_unit
     //   };
+    let comments ={
+      message: this.commentNote
 
-     let filters = {
+    }
+
+     let body = {
       user_id : this.commentDetails.user.user_id,
-      parent_id : this.commentDetails.parent_id,
-      key : "",
-      user:user
+      parent_id :this.commentDetails.parent_id,
+      user:this.loggedInUser,
+      message: this.commentNote
 
       };
 
 
-      let body = {
-        filters : filters
-      }
-      console.log(body);
+      // let body = {
+      //   filters : filters
+      // }
+      console.warn(body);
 
-    // let optionalHeaders = {
-    //       'X-API-KEY' : this.authguard.userData.x_api_key,
-    //       'From' : this.authguard.userData.user_id
-    //     };
-    //         this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+    let optionalHeaders = {
+          'X-API-KEY' : this.authguard.userData.x_api_key,
+          'From' : this.authguard.userData.user_id
+        };
+            this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
 
-    //         console.log(response);
+            console.log(response);
 
-    //             if(response.status == 'success'){
-    //                
-    //             }
-    //             else{
-    //             this.appServiceProvider.presentToast(response.message, 'error');
-    //           }
+                if(response.status == 'success'){
+                   console.log("Comment Added");
+                   this.checkleaves();
+                   this.checkleavesTeam();
+                }
+                else{
+                  
+                this.appServiceProvider.presentToast(response.message, 'error');
+              }
               
-    //       })
+          })
 
 
 
@@ -969,5 +1007,41 @@ console.log(this.apiURL);
       console.log("done");
       this.commentButton=true;
     }
+  }
+
+  mytoggle(){
+    console.log("inside toggle");
+       $("#myLeaveToggle").click(function(){
+         $(".myLeaveToggleBox").slideUp(500);
+         $("#myLeaveToggle").hide();
+         $("#myLeaveToggle1").show();
+    
+       });
+
+      $("#myLeaveToggle1").click(function(){
+         $(".myLeaveToggleBox").slideDown(500);
+         $("#myLeaveToggle1").hide();
+         $("#myLeaveToggle").show();
+    
+       });
+
+  }
+
+   teamtoggle(){
+    console.log("inside toggle");
+       $("#teamLeaveToggle").click(function(){
+         $(".teamLeaveToggleBox").slideUp(500);
+         $("#teamLeaveToggle").hide();
+         $("#teamLeaveToggle1").show();
+    
+       });
+
+      $("#teamLeaveToggle1").click(function(){
+         $(".teamLeaveToggleBox").slideDown(500);
+         $("#teamLeaveToggle1").hide();
+         $("#teamLeaveToggle").show();
+    
+       });
+
   }
 }

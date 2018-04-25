@@ -336,7 +336,8 @@ readData(){
         let user ={
             user_id :this.leave_param1.user_id ,
             email : this.leave_param1.email,
-            name :this.leave_param1.name
+            name :this.leave_param1.name,
+            avatar:this.leave_param1.avatar
         }
         let leave_date =this.selectedDates;
 

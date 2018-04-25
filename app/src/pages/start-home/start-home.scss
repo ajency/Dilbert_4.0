@@ -201,7 +201,36 @@ page-start-home {
 .innerLeaveContainer{
   font-size: 14px;
 }
+.countLeaves{
+  border-radius: 50%;
+  width: 50px;
+  font-size: 12px;
+  padding-left: 7px;
+  padding-right: 7px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  background-color: #fa5777;
+  color:white;
+}
+.toggletxt{
+  /*border: 1px solid white;*/
+  padding: 5px;
+  color: white;
+  background-color: #613eb0;
+  border-radius: 15px;
+  font-size: 12px;
+}
+.toggletxt1{
+  border: 1px solid #613eb0;
+  padding: 5px;
+  color: #613eb0;
+  border-radius: 15px;
+  font-size: 12px;
 
+}
+.teamTogglecontainer{
+
+}
 
 }
 
