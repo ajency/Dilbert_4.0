@@ -235,7 +235,7 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
 	if (request.method === "POST") 
 	{
-		console.log("Test run 22");
+		console.log("Test run 26");
 
 		var requestBody = request.body;
 		var user_temp = requestBody.filters.users;
@@ -251,7 +251,8 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 		var results = [];
 		var returnData  = {};
 		var tempData = {};
-
+		var resp1 = [];
+		var errorResponse = {};
 
 		console.log("userCollection",userCollection);
 
@@ -259,13 +260,21 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 
 		console.log("dataForDisplay",dataForDisplay);
 		dataForDisplay.get().then((querySnapshot) => {
-			// console.log("querySnapshot",querySnapshot);
-			console.log("querySnapshot.exists",querySnapshot.exists());
-			if(!querySnapshot.exists()) {
-				console.log("User does not exist");
-				return response.status(400).send("Doesnt exist!!");
+			console.log("querySnapshot",querySnapshot);
+			if(querySnapshot.empty) {
+				var templeave={
+					"leaves": resp1
+				}
+				errorResponse =  {
+	 			"status" : "success",
+				"message" : "200 OK",
+				"data" : templeave
+		 	};
+				return response.status(200).send(errorResponse);
 			}
+			console.log(querySnapshot.empty);
 		    querySnapshot.forEach((doc) => {
+		    	console.log('doc', doc.id)
 		    	var userLeaves = {};
 		    	var cloudData = [];
 		    	docStatus.push("pending");
