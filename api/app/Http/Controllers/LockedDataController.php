@@ -457,7 +457,7 @@ class LockedDataController extends Controller
                 // $orgUsers = User::join('user_details','user_details.user_id','=','users.id')->orderBy('name','asc')->where('user_details.org_id',$orgId)->get();
                 $orgUsers = DB::table('users')
                                 ->join('user_details','user_details.user_id','=','users.id')
-                                ->select('users.status','users.name','user_details.user_id','user_details.avatar','user_details.joining_date')
+                                ->select('users.status','users.name', 'users.violation_grp_id', 'user_details.user_id','user_details.avatar','user_details.joining_date', 'user_details.org_id')
                                 ->orderBy('name','asc')
                                 ->where('user_details.org_id',$orgId)
                                 ->get();
@@ -485,7 +485,10 @@ class LockedDataController extends Controller
                     // user's data for the particular period
                     // $output->writeln($startDate->format('Y-m-d')." ".$endDate->format('Y-m-d'));
                     $summaryData = $periodSummaryData->where('user_id',$oUser->user_id);
-                    $periodData = (new Locked_Data)->formattedLockedData($oUser->user_id,$summaryData,$startDateString,$endDateString,'asc',true);
+                    $periodData = (new Locked_Data)->formattedLockedData(null,$summaryData,$startDateString,$endDateString,'asc',true,[
+                        'user_org_id' => $oUser->org_id,
+                        'user_violation_grp_id' => $oUser->violation_grp_id,
+                    ]);
                     $userObj['summary'] = $periodData['data'];
 
                     // period meta

@@ -17,15 +17,22 @@ class Locked_Data extends Model
     /**
      * Gives a formatted locked data with leave status, live status, and
      * violation data
-     * @param  $user_id
-     * @param  [type] $lockedData Eloquent object
-     * @param  start  start_date of period
-     * @param  end    end_date of period
-     * @param  sortOrder  order of period data | default 'asc'
+     * @param  $user_id        User's id - can be sent as null
+     * @param  $lockedData     Eloquent object
+     * @param  start           start_date of period
+     * @param  end             end_date of period
+     * @param  sortOrder       order of period data | default 'asc'
      * @param  sendPeriodMeta  flag to send period_meta object in the returned data | default false
+     * @param  meta            all extra data goes here
      * @return array containing the formatted data
+     *
+     * Possible data in meta
+     * $meta = [
+     *      'user_org_id' => '',
+     *      'user_violation_grp_id' => '',
+     * ]
      */
-    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "asc", $sendPeriodMeta = false) {
+    public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "asc", $sendPeriodMeta = false, $meta = []) {
         // if period_meta needs to be sent
         if($sendPeriodMeta)
             $totalPeriodHours = 0;
@@ -35,7 +42,17 @@ class Locked_Data extends Model
 
         $data = [];
         // user details to be used later
-        $udet = (new UserAuth)->getUserData($user_id,true);
+        if($user_id != null) {
+            // when the necessary data isnt passed in meta
+            $udet = (new UserAuth)->getUserData($user_id,true);
+            $user_org_id = $udet['user_details'][0]['org_id'];
+            $user_violation_grp_id = $udet['user']['violation_grp_id'];
+        }
+        else {
+            $user_org_id = $meta['user_org_id'];
+            $user_violation_grp_id = $meta['user_violation_grp_id'];
+        }
+
         $output = new ConsoleOutput;
         // $output->writeln(json_encode($lockedData));
         $start = new \DateTime($start);
@@ -56,7 +73,7 @@ class Locked_Data extends Model
             array_push($data,[
                 "work_date" => $dateCounter->format('Y-m-d'),
                 "status" => "",
-                "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$dateCounter->format('Y-m-d')),
+                "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$user_org_id,$user_violation_grp_id,$dateCounter->format('Y-m-d')),
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "00:00",
@@ -79,7 +96,7 @@ class Locked_Data extends Model
         foreach ($lockedData as $ld) {
             // if status is null calculate the status
             if($ld->status == null && $ld->start_time != null)
-                $ld->status = (new CronController)->getUserStatus('present',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$ld->work_date);
+                $ld->status = (new CronController)->getUserStatus('present',$user_org_id,$user_violation_grp_id,$ld->work_date);
 
             // increment the expectedCounter
             if(in_array($ld->status, ['Present', 'Worked', 'Leave due to violation']))
@@ -100,7 +117,7 @@ class Locked_Data extends Model
                 array_push($data,[
                     "work_date" => $dateCounter->format('Y-m-d'),
                     "status" => "",
-                    "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$dateCounter->format('Y-m-d')),
+                    "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$user_org_id,$user_violation_grp_id,$dateCounter->format('Y-m-d')),
                     "start_time" => "",
                     "end_time" => "",
                     "total_time" => "00:00",
@@ -140,7 +157,7 @@ class Locked_Data extends Model
                 $dayData['end_time'] = $endTime->format('H:i');
                 // if current day get status from logs
                 if($ld->work_date == date('Y-m-d'))
-                    $dayData['status'] = $this->getCurrentStatus($user_id,$udet['user_details'][0]['org_id'],date('Y-m-d'));
+                    $dayData['status'] = $this->getCurrentStatus($user_id,$user_org_id,date('Y-m-d'));
                 else
                     $dayData['status'] = '';
                 $dayData['total_time'] = $ld->total_time;
@@ -152,7 +169,7 @@ class Locked_Data extends Model
                 $endTime = new \DateTime();
                 //set as the current time
                 $dayData['end_time'] = ''/*$endTime->modify('+5 hour +30 minutes')->format('H:i')*/;
-                $dayData['status'] = ''/*$this->getCurrentStatus($user_id,$udet['user_details'][0]['org_id'],date('Y-m-d'))*/;
+                $dayData['status'] = ''/*$this->getCurrentStatus($user_id,$user_org_id,date('Y-m-d'))*/;
                 $dayData['total_time'] = "00:00";
             }
             // $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
@@ -160,7 +177,7 @@ class Locked_Data extends Model
                 for calculating leave status
              */
             // $udet = (new UserAuth)->getUserData($user_id,true);
-            $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$ld->work_date) : $ld->status/*'Present'*/;
+            $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$user_org_id,$user_violation_grp_id,$ld->work_date) : $ld->status/*'Present'*/;
             //violation status - for now dummy
             $dayData['violations'] = (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
             $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
@@ -173,7 +190,7 @@ class Locked_Data extends Model
             array_push($data,[
                 "work_date" => $dateCounter->format('Y-m-d'),
                 "status" => "",
-                "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$udet['user_details'][0]['org_id'],$udet['user']['violation_grp_id'],$dateCounter->format('Y-m-d')),
+                "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$user_org_id,$user_violation_grp_id,$dateCounter->format('Y-m-d')),
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "00:00",
@@ -196,7 +213,7 @@ class Locked_Data extends Model
             if($totalPeriodMinutes < 10)
                 $totalPeriodMinutes = '0'.$totalPeriodMinutes;
             $totalPeriodHours = $tpHours.':'.$totalPeriodMinutes;
-            $expectedPeriodHours = $expectedCounter * (int) (new OrganisationMeta)->getParamValue('default_day_hours',$udet['user_details'][0]['org_id'],0);
+            $expectedPeriodHours = $expectedCounter * (int) (new OrganisationMeta)->getParamValue('default_day_hours',$user_org_id,0);
             if($expectedPeriodHours < 10)
                 $expectedPeriodHours = '0'.$expectedPeriodHours;
             return [
