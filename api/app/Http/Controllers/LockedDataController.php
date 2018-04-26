@@ -16,6 +16,7 @@ use App\Data_Changes;
 use App\OrganisationMeta;
 use App\UserCommunication;
 use App\Slots;
+use App\Helper;
 use DateTime;
 use Ajency\User\Ajency\userauth\UserAuth;
 
@@ -198,7 +199,7 @@ class LockedDataController extends Controller
                             $dataChanges->new_value = $cvalue;
                             $dataChanges->save();
                             array_push($dataToMail, $dataChanges);
-                            
+
                         }
                         $lockedEntry->start_time = NULL;
                         $lockedEntry->end_time = NULL;
@@ -213,7 +214,7 @@ class LockedDataController extends Controller
                     $roleMeta = (new OrganisationMeta)->getAllRoleMeta(UserDetail::where('user_id',$userCode)->first()->org_id,$userRole);
                     // $output->writeln(json_encode($roleMeta));
                     $st=0;
-                    $et=0;                    
+                    $et=0;
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // do the time check
                         $now = new DateTime();
@@ -243,13 +244,13 @@ class LockedDataController extends Controller
                             array_push($dataToMail, $dataChanges);
                             // reflect this change in the locked__datas table
                             $lockedEntry->$ckey = $cvalue;
-                                
+
                         }
                         if ($ckey=="start_time") {
                             $st=new DateTime($lockedEntry->start_time);
                         }
                         else if ($ckey=="end_time") {
-                            $et = new DateTime($lockedEntry->end_time);                                    
+                            $et = new DateTime($lockedEntry->end_time);
                         }
                     }
                     if($lockedEntry->end_time != null) {
@@ -264,7 +265,7 @@ class LockedDataController extends Controller
                                     $dataChanges->new_value = date_diff($st,$et)->format("%H:%I");
                                     $dataChanges->save();
                                     $lockedEntry->total_time = date_diff($st,$et)->format("%H:%I");
-                                }                            
+                                }
                             $lockedEntry->save();
                             array_push($dataToMail, $dataChanges);
                     // $data = $lockedEntry;
@@ -310,6 +311,7 @@ class LockedDataController extends Controller
     }
 
     public function allUsersSummary(Request $request, $orgId, $locale = "default") {
+        $entryTime = (new Helper)->currentTimeInMilliseconds();
         $output = new ConsoleOutput();
         // set the preferred locale
         if($locale == "default") {
@@ -384,7 +386,8 @@ class LockedDataController extends Controller
 
                     array_push($data,$userObj);
                 }
-                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data]);
+                $exitTime = (new Helper)->currentTimeInMilliseconds();
+                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data, 'time' => ($exitTime - $entryTime)]);
             }
             else {
                 return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
@@ -424,7 +427,7 @@ class LockedDataController extends Controller
             $dataEdit['new_value']= $dataToMail['new_value'];
             $data['status']=$status;
             array_push($data['values'], $dataEdit);
- 
+
             // getting subject
             $subject=' Dilbert 4 - '.$data['name'].'\'s Log edited';
             //getting email id of user
@@ -441,7 +444,7 @@ class LockedDataController extends Controller
             $users=User::all();
             foreach ($users as $user) {
                 if ($user->hasPermissionTo('edit_log_mails')) {
-                    $cc_list=UserCommunication::where('object_id','=', $user['id'])->where('object_type','App\\User')->first();  
+                    $cc_list=UserCommunication::where('object_id','=', $user['id'])->where('object_type','App\\User')->first();
                     array_push($cc_mail, $cc_list);
                 }
             }
@@ -463,7 +466,7 @@ class LockedDataController extends Controller
         }
         } catch (\Exception $e) {
             LogForErrors::error('Error Type: Edit log mails, error:'.$e->getMessage()." other data : user-".$user['id']." ".$user['name']);
-            return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
         }
     }
 }
