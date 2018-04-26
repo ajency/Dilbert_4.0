@@ -18,6 +18,7 @@ use App\OrganisationMeta;
 use App\UserCommunication;
 use App\Slots;
 use App\SpecialDays;
+use App\Helper;
 use DateTime;
 use Ajency\User\Ajency\userauth\UserAuth;
 
@@ -386,7 +387,8 @@ class LockedDataController extends Controller
 
                     array_push($data,$userObj);
                 }
-                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data]);
+                $exitTime = (new Helper)->currentTimeInMilliseconds();
+                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data, 'time' => ($exitTime - $entryTime)]);
             }
             else {
                 return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
