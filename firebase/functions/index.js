@@ -254,12 +254,38 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 		var resp1 = [];
 		var errorResponse = {};
 
-		console.log("userCollection",userCollection);
+		// date filter
+		var end_string = requestBody.filters.leave_date.end;
+		var start_string = requestBody.filters.leave_date.start;
 
-		const dataForDisplay = db.collection("leave_management").doc(user).collection(userCollection);
+		var start_date,end_date;
 
-		console.log("dataForDisplay",dataForDisplay);
-		dataForDisplay.get().then((querySnapshot) => {
+		var dataForDisplayQuery = db.collection("leave_management").doc(user).collection(userCollection);
+
+		var dataMainQuery =  db.collection("leave_management").doc(user).collection(userCollection);
+
+		if(start_string !== "" && end_string !== "")
+		{
+			start_date = new Date(start_string);
+			end_date = new Date(end_string);
+			console.log("You are in 1");
+			dataForDisplayQuery = dataForDisplayQuery.where("start_date",">=",start_date);
+			dataForDisplayQuery = dataForDisplayQuery.where("end_date","<",end_date);
+		}
+		else if(start_string !== "")
+		{
+			start_date = new Date(start_string);
+			console.log("You are in 2");
+			dataForDisplayQuery = dataForDisplayQuery.where("end_date",">=",start_date);
+		}
+		else if(end_string !== "")
+		{
+			end_date = new Date(end_string);
+			console.log("You are in 3");
+			dataForDisplayQuery = dataForDisplayQuery.where("start_date","<=",end_date);
+		}
+
+		dataForDisplayQuery.get().then((querySnapshot) => {
 			console.log("querySnapshot",querySnapshot);
 			if(querySnapshot.empty) {
 				var templeave={
@@ -287,7 +313,7 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 		        console.log("Console 1",cloudData);
 
 		        //code to access comments of user
-				const dataComment = dataForDisplay.doc(doc.id).collection("comments");
+				const dataComment = dataMainQuery.doc(doc.id).collection("comments");
 		       	
 		       	var promise1 = new Promise(function(resolve,reject){
 		       		tempPromiseComment = dataComment.get();
@@ -309,7 +335,7 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 				});
 
 				// code to access tagged users
-		       	const dataTagged = dataForDisplay.doc(doc.id).collection("tagged_users");
+		       	const dataTagged = dataMainQuery.doc(doc.id).collection("tagged_users");
 		        
 		        var promise2 = new Promise(function(resolve,reject){
 		        	tempPromise = dataTagged.get();
@@ -331,7 +357,7 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 				});
 
 				// code to access leave date
-				const dataLeave = dataForDisplay.doc(doc.id).collection("leave_date");
+				const dataLeave = dataMainQuery.doc(doc.id).collection("leave_date");
 		        
 		        var promise3 = new Promise(function(resolve,reject){
 		        	dataLeave.get().then((querySnapshotLeave) => {
@@ -348,11 +374,11 @@ exports.cloudLeave = functions.https.onRequest((request,response) => {
 					    console.error("Error displaying tagged users document: ", error);
 					    return response.status(400);
 					})
-			        console.log("dataForDisplay",dataForDisplay);
+			        console.log("dataMainQuery",dataMainQuery);
 		    	});
 
 		    	//code to access users
-				const dataUser = dataForDisplay.doc(doc.id).collection("user");
+				const dataUser = dataMainQuery.doc(doc.id).collection("user");
 		       	
 		       	var promise4 = new Promise(function(resolve,reject){
 		        	tempPromiseUser = dataUser.get();
@@ -464,9 +490,20 @@ exports.cloudAddLeave = functions.https.onRequest((request,response) => {
 			var user_leave =user_id+"_leave";
 			console.log("user_leave",user_leave);
 			var parent_id = generateId(request.body.user.user_id,date_of_application);
-			console.log("parent_id:",parent_id);
-			console.log("date_of_application:",date_of_application);
-			console.log(request.body.leave_note);
+			// console.log("parent_id:",parent_id);
+			// console.log("date_of_application:",date_of_application);
+			// console.log(request.body.leave_note);
+			var tempdates=request.body.leave_date;
+			var tempdates1=tempdates.sort();
+			console.log("dates",tempdates);
+			console.log("sorted dates",tempdates1);
+			console.log(request.body.leave_date);
+			var start_date= new Date(tempdates1[0]);
+			var end_date= new Date(tempdates1[tempdates1.length-1]);
+			console.log("start date",start_date);
+			console.log("end date",end_date);
+			console.log("start",tempdates1[0]);
+			console.log("end",tempdates1[tempdates1.length-1]);
 
 			var leave_details={
 				 leave_note: request.body.leave_note,
@@ -474,7 +511,9 @@ exports.cloudAddLeave = functions.https.onRequest((request,response) => {
 				 leave_status:request.body.leave_status,
 				 leave_counter:leave_counter,
 				 date_of_application:date_of_application,
-				 parent_id:parent_id
+				 parent_id:parent_id,
+				 start_date:start_date,
+				 end_date:end_date
 			}
 			var user={
 				user:request.body.user
@@ -601,7 +640,6 @@ exports.cloudAddLeave = functions.https.onRequest((request,response) => {
 		}]
 		response.status(200).send(return_value); 
 	}
-
 });
 
 
