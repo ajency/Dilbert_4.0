@@ -387,8 +387,7 @@ class LockedDataController extends Controller
 
                     array_push($data,$userObj);
                 }
-                $exitTime = (new Helper)->currentTimeInMilliseconds();
-                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data, 'time' => ($exitTime - $entryTime)]);
+                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data]);
             }
             else {
                 return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
@@ -407,6 +406,7 @@ class LockedDataController extends Controller
      * @return [type]           [description]
      */
     public function allUsersSummary(Request $request, $orgId, $locale = "default") {
+        $entryTime = (new Helper)->currentTimeInMilliseconds();
         $output = new ConsoleOutput();
         // set the preferred locale
         if($locale == "default") {
@@ -501,7 +501,8 @@ class LockedDataController extends Controller
 
                     array_push($data,$userObj);
                 }
-                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data]);
+                $exitTime = (new Helper)->currentTimeInMilliseconds();
+                return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data, 'time' => ($exitTime - $entryTime)]);
             }
             else {
                 return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
