@@ -97,28 +97,39 @@ class CronController extends Controller
     /**
      * returns the users status based on their presence (present / absent)
      * @param  [type] $presence present / absent
-     * @param         $orgId
-     * @param         $grpId
+     * @param         $orgId        user's organisation id
+     * @param         $grpId        user's vioaltion group id
+     * @param         $date         date for which to get the user status | default is 'default'
+     *                              if 'default' then current date is taken
+     * @param         $specialDays  Eloquent builder object (i.e. with get() or all())
      * @return [type]           [description]
      */
-    public function getUserStatus($presence,$orgId,$grpId,$date = 'default') {
+    public function getUserStatus($presence, $orgId, $grpId, $date = 'default', $specialDays = null) {
+        // determine the date
         if($date == 'default')
             $date = date('Y-m-d');
+
+        // fetch the special days if not passed
+        if($specialDays == null)
+            $currentSpecialDay = SpecialDays::where('date', $date);
+        else
+            $currentSpecialDay = $specialDays->where('date', $date);
+
         if($presence == 'absent') {
-            if(SpecialDays::where(['date' => $date/*date('Y-m-d')*/, 'type' => 'holiday'])->exists())
+            if($currentSpecialDay->where(['type' => 'holiday'])->exists())
                 // if it is a holiday
                 return 'Holiday';
-            else if((date('w',strtotime($date)) == 0 || date('w',strtotime($date)) == 6) && !SpecialDays::where(['date' => $date/*date('Y-m-d')*/, 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+            else if((date('w',strtotime($date)) == 0 || date('w',strtotime($date)) == 6) && !$currentSpecialDay->where(['type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
                 // if sat or sun and not a working weekend
                 return 'Weekend';
             else
                 return 'Leave';
         }
         else {
-            if(SpecialDays::where(['date' => $date/*date('Y-m-d')*/, 'type' => 'holiday', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+            if($currentSpecialDay->where(['type' => 'holiday', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
                 // if it is a holiday
                 return 'Worked on holiday';
-            else if(SpecialDays::where(['date' => $date/*date('Y-m-d')*/, 'type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
+            else if($currentSpecialDay->where(['type' => 'working_day', 'org_id' => $orgId, 'grp_id' => $grpId])->exists())
                 // special working day like working-weekend
                 return 'Worked';
             else if(date('w',strtotime($date)) == 0 || date('w',strtotime($date)) == 6)

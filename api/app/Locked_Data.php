@@ -40,17 +40,23 @@ class Locked_Data extends Model
         // expected no of hours
         $expectedCounter = 0;
 
+        // getUserStatus requires special days - for faster performance this is sent to the function
+        if(isset($meta['special_days']))
+            $specialDays = $meta['special_days'];
+        else
+            $specialDays = SpecialDays::whereBetween('date',[$start,$end]);
+
         $data = [];
         // user details to be used later
         if($user_id != null) {
             // when the necessary data isnt passed in meta
             $udet = (new UserAuth)->getUserData($user_id,true);
-            $user_org_id = $udet['user_details'][0]['org_id'];
-            $user_violation_grp_id = $udet['user']['violation_grp_id'];
+            $userOrgId = $udet['user_details'][0]['org_id'];
+            $userViolationGrpId = $udet['user']['violation_grp_id'];
         }
         else {
-            $user_org_id = $meta['user_org_id'];
-            $user_violation_grp_id = $meta['user_violation_grp_id'];
+            $userOrgId = $meta['user_org_id'];
+            $userViolationGrpId = $meta['user_violation_grp_id'];
         }
 
         $output = new ConsoleOutput;
@@ -73,7 +79,7 @@ class Locked_Data extends Model
             array_push($data,[
                 "work_date" => $dateCounter->format('Y-m-d'),
                 "status" => "",
-                "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$user_org_id,$user_violation_grp_id,$dateCounter->format('Y-m-d')),
+                "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$userOrgId,$userViolationGrpId,$dateCounter->format('Y-m-d'),$specialDays),
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "00:00",
@@ -96,7 +102,7 @@ class Locked_Data extends Model
         foreach ($lockedData as $ld) {
             // if status is null calculate the status
             if($ld->status == null && $ld->start_time != null)
-                $ld->status = (new CronController)->getUserStatus('present',$user_org_id,$user_violation_grp_id,$ld->work_date);
+                $ld->status = (new CronController)->getUserStatus('present',$userOrgId,$userViolationGrpId,$ld->work_date,$specialDays);
 
             // increment the expectedCounter
             if(in_array($ld->status, ['Present', 'Worked', 'Leave due to violation']))
@@ -117,7 +123,7 @@ class Locked_Data extends Model
                 array_push($data,[
                     "work_date" => $dateCounter->format('Y-m-d'),
                     "status" => "",
-                    "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$user_org_id,$user_violation_grp_id,$dateCounter->format('Y-m-d')),
+                    "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$userOrgId,$userViolationGrpId,$dateCounter->format('Y-m-d'),$specialDays),
                     "start_time" => "",
                     "end_time" => "",
                     "total_time" => "00:00",
@@ -157,7 +163,7 @@ class Locked_Data extends Model
                 $dayData['end_time'] = $endTime->format('H:i');
                 // if current day get status from logs
                 if($ld->work_date == date('Y-m-d'))
-                    $dayData['status'] = $this->getCurrentStatus($user_id,$user_org_id,date('Y-m-d'));
+                    $dayData['status'] = $this->getCurrentStatus($user_id,$userOrgId,date('Y-m-d'));
                 else
                     $dayData['status'] = '';
                 $dayData['total_time'] = $ld->total_time;
@@ -169,7 +175,7 @@ class Locked_Data extends Model
                 $endTime = new \DateTime();
                 //set as the current time
                 $dayData['end_time'] = ''/*$endTime->modify('+5 hour +30 minutes')->format('H:i')*/;
-                $dayData['status'] = ''/*$this->getCurrentStatus($user_id,$user_org_id,date('Y-m-d'))*/;
+                $dayData['status'] = ''/*$this->getCurrentStatus($user_id,$userOrgId,date('Y-m-d'))*/;
                 $dayData['total_time'] = "00:00";
             }
             // $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
@@ -177,7 +183,7 @@ class Locked_Data extends Model
                 for calculating leave status
              */
             // $udet = (new UserAuth)->getUserData($user_id,true);
-            $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$user_org_id,$user_violation_grp_id,$ld->work_date) : $ld->status/*'Present'*/;
+            $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$userOrgId,$userViolationGrpId,$ld->work_date,$specialDays) : $ld->status/*'Present'*/;
             //violation status - for now dummy
             $dayData['violations'] = (new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
             $dayData['changes'] = (new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true);
@@ -190,7 +196,7 @@ class Locked_Data extends Model
             array_push($data,[
                 "work_date" => $dateCounter->format('Y-m-d'),
                 "status" => "",
-                "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$user_org_id,$user_violation_grp_id,$dateCounter->format('Y-m-d')),
+                "leave_status" => ($dateCounter->format('Y-m-d') == date('Y-m-d')) ? '' : (new CronController)->getUserStatus('absent',$userOrgId,$userViolationGrpId,$dateCounter->format('Y-m-d'),$specialDays),
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "00:00",
@@ -213,7 +219,7 @@ class Locked_Data extends Model
             if($totalPeriodMinutes < 10)
                 $totalPeriodMinutes = '0'.$totalPeriodMinutes;
             $totalPeriodHours = $tpHours.':'.$totalPeriodMinutes;
-            $expectedPeriodHours = $expectedCounter * (int) (new OrganisationMeta)->getParamValue('default_day_hours',$user_org_id,0);
+            $expectedPeriodHours = $expectedCounter * (int) (new OrganisationMeta)->getParamValue('default_day_hours',$userOrgId,0);
             if($expectedPeriodHours < 10)
                 $expectedPeriodHours = '0'.$expectedPeriodHours;
             return [

@@ -17,6 +17,7 @@ use App\Data_Changes;
 use App\OrganisationMeta;
 use App\UserCommunication;
 use App\Slots;
+use App\SpecialDays;
 use DateTime;
 use Ajency\User\Ajency\userauth\UserAuth;
 
@@ -488,6 +489,7 @@ class LockedDataController extends Controller
                     $periodData = (new Locked_Data)->formattedLockedData(null,$summaryData,$startDateString,$endDateString,'asc',true,[
                         'user_org_id' => $oUser->org_id,
                         'user_violation_grp_id' => $oUser->violation_grp_id,
+                        'special_days' => SpecialDays::whereBetween('date', [$startDateString,$endDateString]),
                     ]);
                     $userObj['summary'] = $periodData['data'];
 
