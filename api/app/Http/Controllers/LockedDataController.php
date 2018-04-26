@@ -201,7 +201,8 @@ class LockedDataController extends Controller
                             $dataChanges->new_value = $cvalue;
                             $dataChanges->save();
                             array_push($dataToMail, $dataChanges);
-
+                            // increment the changes count
+                            $lockedEntry->changes_count = $lockedEntry->changes_count + 1;
                         }
                         $lockedEntry->start_time = NULL;
                         $lockedEntry->end_time = NULL;
@@ -246,7 +247,8 @@ class LockedDataController extends Controller
                             array_push($dataToMail, $dataChanges);
                             // reflect this change in the locked__datas table
                             $lockedEntry->$ckey = $cvalue;
-
+                            // increment the changes count
+                            $lockedEntry->changes_count = $lockedEntry->changes_count + 1;
                         }
                         if ($ckey=="start_time") {
                             $st=new DateTime($lockedEntry->start_time);
@@ -256,20 +258,22 @@ class LockedDataController extends Controller
                         }
                     }
                     if($lockedEntry->end_time != null) {
-                                    $dataChanges = new Data_Changes;
-                                    $dataChanges->user_id = $userCode;
-                                    $dataChanges->modified_by = $request->header('from');
-                                    $dataChanges->modified_on = date('Y-m-d');
-                                    $dataChanges->table_modified = 'locked__datas';
-                                    $dataChanges->column_modified = 'total_time';
-                                    $dataChanges->work_date = $request->work_date;
-                                    $dataChanges->old_value = $lockedEntry->total_time;
-                                    $dataChanges->new_value = date_diff($st,$et)->format("%H:%I");
-                                    $dataChanges->save();
-                                    $lockedEntry->total_time = date_diff($st,$et)->format("%H:%I");
-                                }
-                            $lockedEntry->save();
-                            array_push($dataToMail, $dataChanges);
+                        $dataChanges = new Data_Changes;
+                        $dataChanges->user_id = $userCode;
+                        $dataChanges->modified_by = $request->header('from');
+                        $dataChanges->modified_on = date('Y-m-d');
+                        $dataChanges->table_modified = 'locked__datas';
+                        $dataChanges->column_modified = 'total_time';
+                        $dataChanges->work_date = $request->work_date;
+                        $dataChanges->old_value = $lockedEntry->total_time;
+                        $dataChanges->new_value = date_diff($st,$et)->format("%H:%I");
+                        $dataChanges->save();
+                        $lockedEntry->total_time = date_diff($st,$et)->format("%H:%I");
+                        // increment the changes count
+                        $lockedEntry->changes_count = $lockedEntry->changes_count + 1;
+                    }
+                    $lockedEntry->save();
+                    array_push($dataToMail, $dataChanges);
                     // $data = $lockedEntry;
                     // $data['violation_count'] = 0;
                     //

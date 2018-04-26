@@ -25,6 +25,7 @@ return array(
     'App\\Events\\EventChrome' => $baseDir . '/app/Events/EventChrome.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Group' => $baseDir . '/app/Group.php',
+    'App\\Helper' => $baseDir . '/app/Helper.php',
     'App\\Http\\Controllers\\Ajency\\User\\SocialAuthController' => $baseDir . '/app/Http/Controllers/Ajency/User/SocialAuthController.php',
     'App\\Http\\Controllers\\AppController' => $baseDir . '/app/Http/Controllers/AppController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',

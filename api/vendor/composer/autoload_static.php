@@ -400,6 +400,7 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'App\\Events\\EventChrome' => __DIR__ . '/../..' . '/app/Events/EventChrome.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Group' => __DIR__ . '/../..' . '/app/Group.php',
+        'App\\Helper' => __DIR__ . '/../..' . '/app/Helper.php',
         'App\\Http\\Controllers\\Ajency\\User\\SocialAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Ajency/User/SocialAuthController.php',
         'App\\Http\\Controllers\\AppController' => __DIR__ . '/../..' . '/app/Http/Controllers/AppController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
