@@ -170,14 +170,14 @@ ngOnInit(){
         // console.log(dummy);
         // console.log(this.userLeaveData);
         // console.log(this.teamLeaveData);
-        // if(this.userLeaveData.data.leaves){
-        //   this.userLeaveData.data.leaves.push(dummy);
-        // }
+        // // if(this.userLeaveData.data.leaves){
+        // //   this.userLeaveData.data.leaves.push(dummy);
+        // // }
         //   console.log(this.userLeaveData);
-          // this.myLeaveCount=this.userLeaveData.data.leaves.length;
-          // this.dummmy=dummy;
+        //   this.myLeaveCount=this.userLeaveData.data.leaves.length;
+        //   this.dummmy=dummy;
 
-          // this.zone.run(() => {});
+        //   // this.zone.run(() => {});
           this.checkleaves();
 
      });
@@ -944,6 +944,16 @@ console.log(this.apiURL);
                         this.userLeaveData.data.leaves[i].comments.unshift(response.data);
                       }
                    }
+                    for(var i=0;i<this.teamLeaveData.data.leaves.length;i++){
+
+                      if(this.teamLeaveData.data.leaves[i].parent_id==this.commentDetails.parent_id){
+                        
+                        if(!this.teamLeaveData.data.leaves[i].comments){
+                          this.teamLeaveData.data.leaves[i].comments=[];
+                        }
+                        this.teamLeaveData.data.leaves[i].comments.unshift(response.data);
+                      }
+                   }
                    this.commentNote="";
                 }
                 else{
@@ -984,7 +994,7 @@ console.log(this.apiURL);
 
 
 
-    let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudAddComment`;
+    let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/addComment`;
       //user id , parent id, key,comment Note and commented user
 
     console.log(url);
@@ -1123,9 +1133,13 @@ console.log(this.apiURL);
   // test(){
   //     console.log(this.userLeaveData);
   //     // var temp123=this.userLeaveData.data.leaves[0];
+  //     if(!this.dummmy.comments){
+  //       this.dummmy.comments=[];
+  //     }
+
   //     var temp123=this.dummmy;
   //     console.log(temp123);
-  //     this.userLeaveData.data.leaves.push(temp123);
+  //     // this.userLeaveData.data.leaves.unshift(temp123);
   //     console.log(this.userLeaveData);
 
   // }

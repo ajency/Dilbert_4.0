@@ -461,9 +461,9 @@
                                                   <span>
                                                       <ion-icon ios="ios-close" md="md-close" class="icon-size full cancelComment" style="float: left; cursor: pointer;"  (mouseup)="cancelComment()"></ion-icon>
                                                       <span style="margin-left: 10px;"> 
-                                                        <input type="text" (keydown)="teamcommentEnter($event)" name="" placeholder="Reply" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
+                                                        <input type="text" (keydown)="commentEnter($event)" name="" placeholder="Reply" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
                                                         <!-- <button style="border:none;background-color: transparent; width: 0;" disabled > -->
-                                                        <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="teamComment()"></ion-icon>
+                                                        <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="Comment()"></ion-icon>
                                                         <hr style="margin-top: 2px;margin-left:20px;"><!-- </button>  -->
                                                       </span>
                                                   </span>
