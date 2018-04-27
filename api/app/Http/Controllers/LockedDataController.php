@@ -424,6 +424,7 @@ class LockedDataController extends Controller
                         'user_org_id' => $oUser->org_id,
                         'user_violation_grp_id' => $oUser->violation_grp_id,
                         'special_days' => SpecialDays::whereBetween('date', [$startDateString,$endDateString]),
+                        'extra_params' => $request->has('filters.extra_params') ? $request->input('filters.extra_params') : null,
                     ]);
                     $userObj['summary'] = $periodData['data'];
 

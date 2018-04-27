@@ -27,9 +27,18 @@ class Locked_Data extends Model
      * @return array containing the formatted data
      *
      * Possible data in meta
+     * Everything in this array is optional
      * $meta = [
      *      'user_org_id' => '',
      *      'user_violation_grp_id' => '',
+     *      'special_days' => [],    // Eloquent object of SpecialDays model. Required to calculate leave_status
+     *      'extra_params' => null   // extra_params default null
+     * ]
+     * $extra_params defaults
+     * [
+     *      'changes' => true,   // these defaults will be assumed if not sent
+     *      'slots' => true,
+     *      'violations' => true,
      * ]
      */
     public function formattedLockedData($user_id,$lockedData,$start,$end,$sortOrder = "asc", $sendPeriodMeta = false, $meta = []) {
@@ -40,6 +49,23 @@ class Locked_Data extends Model
         // expected no of hours
         $expectedCounter = 0;
 
+        // extra params that are to be sent. Assign defaults if not sent.
+        if($meta['extra_params'] != null) {
+            // i.e extra_params required
+            // if param_key not present, that param shouldn't be sent
+            $sendParam = [
+                'changes' => isset($meta['extra_params']['changes']) ? $meta['extra_params']['changes'] : false,
+                'slots' => isset($meta['extra_params']['slots']) ? $meta['extra_params']['slots'] : false,
+                'violations' => isset($meta['extra_params']['violations']) ? $meta['extra_params']['violations'] : false,
+            ];
+        }
+        else {
+            $sendParam = [
+                'changes' => true,
+                'slots' => true,
+                'violations' => true,
+            ];
+        }
         // getUserStatus requires special days - for faster performance this is sent to the function
         if(isset($meta['special_days']))
             $specialDays = $meta['special_days'];
@@ -83,11 +109,15 @@ class Locked_Data extends Model
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "00:00",
-                "violations" => []/*(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id]))*/,
-                "changes" => 0/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)*/,
+                "violations" => 0,
                 "slots" => [
-                    "lunch" => "00:00"/*(new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))*/
+                    "lunch" => "00:00"
                 ]
+                + ($sendParam['changes'] ? ["changes" => 0] : [])
+                + ($sendParam['violations'] ? ["violations" => 0] : [])
+                + ($sendParam['slots'] ? ["slots" => [
+                    "lunch" => "00:00"
+                ]] : [])
             ]);
             if($sendPeriodMeta) {
                 return [
@@ -127,12 +157,13 @@ class Locked_Data extends Model
                     "start_time" => "",
                     "end_time" => "",
                     "total_time" => "00:00",
-                    "violations" => []/*(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id]))*/,
-                    "changes" => 0/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)*/,
-                    "slots" => [
-                        "lunch" => "00:00"/*(new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))*/
-                    ]
-                ]);
+                ]
+                + ($sendParam['changes'] ? ["changes" => 0] : [])
+                + ($sendParam['violations'] ? ["violations" => 0] : [])
+                + ($sendParam['slots'] ? ["slots" => [
+                    "lunch" => "00:00"
+                ]] : [])
+                );
                 // to handle comparing datecounter and end based on the order
                 $dateCounter->modify($dateModifyString);
                 // $output->writeln("date counter: ".$dateCounter->format('Y-m-d'));
@@ -152,9 +183,9 @@ class Locked_Data extends Model
                 $dayData['start_time'] = '';
                 $dayData['end_time'] = '';
                 $dayData['total_time'] = "00:00";
-                $dayData['violations'] = []/*(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]))*/;
-                $dayData['changes'] = 0/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true)*/;
-                $dayData['slots']['lunch'] = "00:00"/*(new Slots)->getTotalSlotTime($user_id, 'lunch', $ld->work_date, $ld->work_date)*/;
+                ($sendParam['violations']) ? ($dayData['violations'] = 0) : null;
+                ($sendParam['changes']) ? ($dayData['changes'] = 0) : null;
+                ($sendParam['slots']) ? ($dayData['slots']['lunch'] = "00:00") : null;
                 array_push($data,$dayData);
                 continue;
             }
@@ -183,11 +214,11 @@ class Locked_Data extends Model
                 for calculating leave status
              */
             // $udet = (new UserAuth)->getUserData($user_id,true);
-            $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$userOrgId,$userViolationGrpId,$ld->work_date,$specialDays) : $ld->status/*'Present'*/;
+            $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$userOrgId,$userViolationGrpId,$ld->work_date,$specialDays) : $ld->status;
             //violation status - for now dummy
-            $dayData['violations'] = $ld->violations_count/***(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]))***/;
-            $dayData['changes'] = $ld->changes_count/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true)*/;
-            $dayData['slots']['lunch'] = (new Slots)->getTotalSlotTime($user_id, 'lunch', $ld->work_date, $ld->work_date);
+            ($sendParam['violations']) ? ($dayData['violations'] = $ld->violations_count) : null;
+            ($sendParam['changes']) ? ($dayData['changes'] = $ld->changes_count) : null;
+            ($sendParam['slots']) ? ($dayData['slots']['lunch'] = (new Slots)->getTotalSlotTime($user_id, 'lunch', $ld->work_date, $ld->work_date)) : null;
             array_push($data,$dayData);
         }
         // so that the last entry is not excluded if empty
@@ -200,12 +231,13 @@ class Locked_Data extends Model
                 "start_time" => "",
                 "end_time" => "",
                 "total_time" => "00:00",
-                "violations" => []/*(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $dateCounter->format('Y-m-d')], "who_id" => $user_id]))*/,
-                "changes" => 0/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$dateCounter->format('Y-m-d'),$dateCounter->format('Y-m-d')],true)*/,
-                "slots" => [
-                    "lunch" => "00:00"/*(new Slots)->getTotalSlotTime($user_id, 'lunch', $dateCounter->format('Y-m-d'), $dateCounter->format('Y-m-d'))*/
-                ]
-            ]);
+            ]
+            + ($sendParam['changes'] ? ["changes" => 0] : [])
+            + ($sendParam['violations'] ? ["violations" => 0] : [])
+            + ($sendParam['slots'] ? ["slots" => [
+                "lunch" => "00:00"
+            ]] : [])
+            );
             // to handle comparing datecounter and end based on the order
             $dateCounter->modify($dateModifyString);
         }
