@@ -428,6 +428,11 @@ class LockedDataController extends Controller
                     'sort_order' => ($request->has('sort_order')) ? $request->sort_order : 'asc',
                 ];
 
+                $search = [
+                    'by' => $request->has('filters.search.by') ? $request->input('filters.search.by') : 'name',
+                    'value' => $request->has('filters.search.value') ? $request->input('filters.search.value') : ''
+                ];
+
                 // get the organisation details
                 $orgDetails = Organisation::where('id',$orgId)->first();
                 // check if the start and end dates are given
@@ -474,7 +479,8 @@ class LockedDataController extends Controller
                                 ->join('user_details','user_details.user_id','=','users.id')
                                 ->select('users.status','users.name', 'users.violation_grp_id', 'user_details.user_id','user_details.avatar','user_details.joining_date', 'user_details.org_id')
                                 ->orderBy($pagination['sort_by'],$pagination['sort_order'])
-                                ->where(['user_details.org_id' => $orgId, 'users.status' => 'active']);
+                                ->where(['user_details.org_id' => $orgId, 'users.status' => 'active'])
+                                ->where($search['by'], 'like', '%'.$search['value'].'%');
                 $totalOrgUsers = $allOrgUsers->count();
                 $orgUsers = $allOrgUsers->skip(($pagination['page'] - 1) * $pagination['limit'])
                                         ->take($pagination['limit'])
