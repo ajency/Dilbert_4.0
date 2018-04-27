@@ -202,11 +202,7 @@ readData(){
        // this.items=this.editLeaveData.tagged_users;
        this.leaveNote=this.editLeaveData.leave_note;
        this.leave_note1=this.leaveNote;
-        console.log(this.editLeaveData.leave_note);
-        console.log(this.selectedDates);
-        console.log(this.leaveNote);
-        console.log(this.items);
-        console.log(this.selectedUsers);
+
     }
     this.$(this.nativeElement).parents().find('.popover-content').addClass("leave-popover2");
     this.$(this.nativeElement).parents().find('.ng2-dropdown').addClass("customdrop");
@@ -230,14 +226,7 @@ readData(){
     this.readData();
     this.leave_param1=this.appGlobalsProvider.leave_param.param1;
     this.createdByUserData=this.authguard.userData;
-    console.log(this.createdByUserData);
-    console.log(this.leave_param1);
-
-
-
-
-
-
+  
   }
 
   ionViewDidLoad() {
@@ -307,9 +296,6 @@ readData(){
     }else{
         this.buttonRequestApi=true;
     }
-         console.log(this.selectedDates);
-         console.log(this.selectedUsers);
-         console.log( this.leaveNote);
 
     }
   sendData(){
@@ -319,19 +305,13 @@ readData(){
     }
     else{
 
-         console.log(this.selectedDates);
-         console.log(this.selectedUsers);
-         console.log( this.leaveNote);
-         console.log(this.apiURL);
-
-
         let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id
         };
 
 
-        let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudAddLeave`;
+        let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/addLeave`;
 
         let user ={
             user_id :this.leave_param1.user_id ,
@@ -368,7 +348,7 @@ readData(){
         let leave_status='';
         
 
-        let leave_type ='leave_taken';
+        let type ='leave_taken';
         
 
 
@@ -378,7 +358,7 @@ readData(){
           created_by:createdByUser,
           leave_date:leave_date,
           leave_note:leave_note,
-          leave_type:leave_type,
+          type:type,
           tagged_users:tagged_users
 
         }
@@ -392,7 +372,8 @@ readData(){
 
                 if(response.status == 'success'){
                      this.summaryData = response.data;
-                     // console.log(this.summaryData);
+                     console.log(this.summaryData);
+                     this.events.publish("update:leave_info", this.summaryData);
                      this.leaveAddedModal();
                      this.close(); 
                 }
@@ -419,10 +400,10 @@ updateData(){
   if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0){
       console.log("error");
     }
-    console.log(this.leaveNote);
-    console.log(this.selectedDates);
-    console.log(this.selectedUsers);
     // console.log(this.leaveNote);
+    // console.log(this.selectedDates);
+    // console.log(this.selectedUsers);
+    // // console.log(this.leaveNote);
 
 }
 

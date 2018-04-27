@@ -73,6 +73,7 @@ import { Storage } from '@ionic/storage';
  teamLeaveCount:any;
  all_users:any;
  loggedInUser:any;
+ dummmy:any;
 
  private chageLogCB: Function;
 
@@ -163,24 +164,25 @@ ngOnInit(){
 
       }
 
-      // else if(this.param1){
-      //   this.currentDate = this.param1.date_rangestart;
-      //   this.summaryDate = this.param1.date_rangestart;
-      //   this.getData();
-
-      //  }
-
     }
+      //dummy data for leave view 
+      this.events.subscribe("update:leave_info",(dummy) => {
+        // console.log(dummy);
+        // console.log(this.userLeaveData);
+        // console.log(this.teamLeaveData);
+        // if(this.userLeaveData.data.leaves){
+        //   this.userLeaveData.data.leaves.push(dummy);
+        // }
+        //   console.log(this.userLeaveData);
+          // this.myLeaveCount=this.userLeaveData.data.leaves.length;
+          // this.dummmy=dummy;
+
+          // this.zone.run(() => {});
+          this.checkleaves();
+
+     });
   
 }
-
- // openPopover(myEvent) {
- //    let popover = this.popoverCtrl.create(PopoverContentPage);
- //    popover.present({
- //      ev: myEvent
- //    });
- //  }
-
 
    getDayDate(date: string, option: number): string {
     var text: string = '';
@@ -548,49 +550,11 @@ leaveModal(){
       popover.present();
 }
 
-// checkleaves12(){
-//   console.log("My leaves");
-//       this.leave_param1=this.appGlobalsProvider.leave_param.param1;
-//       console.log(this.leave_param1);
-      
-//        let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/displayLeaveTest `;
-//        // let leave_date ={
-//        //      start:'',
-//        //      end:''
-//        // }
 
-//        let users={
-//         users:80
-//        }
-
-//         let  filters ={
-//           users:[80]
-
-//         };
-//         let optionalHeaders={
-//            'X-API-KEY' : this.key,
-//            'From' : this.authguard.userData.user_id
-
-
-//         };
-
-//          this.appServiceProvider.request(url, 'post', filters, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
-
-
-//             console.log(response);
-//             this.userLeaveData=response;
-//             console.log(this.userLeaveData.data);
-//             console.log(this.userLeaveData.data.leaves);
-//         });
-
-
-// }
 checkleavesTeam(){
   console.log("Team leaves");
   console.log(this.autocompleteItemsAsObjects);
   // console.log(this.autocompleteItemsAsObjects);
- 
-
 
   // this.todayDate=moment().format("YYYY-MM-DD");
   console.log(this.todayDate);
@@ -598,7 +562,7 @@ checkleavesTeam(){
       console.log(this.leave_param1);
 
       // let url=`http://www.mocky.io/v2/5ad477072e00005600583b16`;
-       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudLeave`;
+       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/viewLeave`;
      
         console.log(this.leave_param1.user_id);
         if(this.leave_param1.user_id == undefined){
@@ -619,7 +583,7 @@ checkleavesTeam(){
                 }
             // this.allUser_ids
           }
-          console.log(this.allUser_ids);
+          console.warn(this.allUser_ids);
 
 
 
@@ -645,7 +609,7 @@ checkleavesTeam(){
 
         }
         
-
+        console.warn(filter1);
 
 
         let optionalHeaders={
@@ -660,8 +624,6 @@ checkleavesTeam(){
 
             console.log(response);
             this.teamLeaveData=response;
-            // console.log(this.teamLeaveData.data);
-            // console.log(this.teamLeaveData.data.leaves);
             this.teamLeaveCount=this.teamLeaveData.data.leaves.length;
         });
 
@@ -676,7 +638,7 @@ checkleaves(){
       this.leave_param1=this.appGlobalsProvider.leave_param.param1;
       console.log(this.leave_param1);
       
-       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudLeave`;
+       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/viewLeave`;
        let leave_date ={
             start:this.myTodayDate,
             end:''
@@ -908,11 +870,7 @@ console.log(this.apiURL);
       console.log("enter comment")
     }
     else{
-      console.log(this.all_users);
-      console.log(this.commentNote);
-      console.log(this.commentDetails);
-      console.warn(this.userDetails.user_id);
-      console.warn(this.all_users);
+
       for(var x=0; x < this.all_users.length;x++){
         if(this.all_users[x].user_id==this.userDetails.user_id){
          
@@ -926,7 +884,7 @@ console.log(this.apiURL);
 
 
 
-    let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudAddComment`;
+    let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/addComment`;
       //user id , parent id, key,comment Note and commented user
 
     console.log(url);
@@ -972,8 +930,21 @@ console.log(this.apiURL);
 
                 if(response.status == 'success'){
                    console.log("Comment Added");
-                   this.checkleaves();
+                    console.log("comment data",response.data);
+                   // this.checkleaves();
                    // this.checkleavesTeam();
+                   console.warn(this.userLeaveData.data.leaves);
+                   for(var i=0;i<this.userLeaveData.data.leaves.length;i++){
+
+                      if(this.userLeaveData.data.leaves[i].parent_id==this.commentDetails.parent_id){
+                        
+                        if(!this.userLeaveData.data.leaves[i].comments){
+                          this.userLeaveData.data.leaves[i].comments=[];
+                        }
+                        this.userLeaveData.data.leaves[i].comments.unshift(response.data);
+                      }
+                   }
+                   this.commentNote="";
                 }
                 else{
                   
@@ -1060,7 +1031,7 @@ console.log(this.apiURL);
                 if(response.status == 'success'){
                    console.log("Comment Added");
                    // this.checkleaves();
-                   this.checkleavesTeam();
+                   // this.checkleavesTeam();
                 }
                 else{
                   
@@ -1148,4 +1119,14 @@ console.log(this.apiURL);
     }
 
   }
+
+  // test(){
+  //     console.log(this.userLeaveData);
+  //     // var temp123=this.userLeaveData.data.leaves[0];
+  //     var temp123=this.dummmy;
+  //     console.log(temp123);
+  //     this.userLeaveData.data.leaves.push(temp123);
+  //     console.log(this.userLeaveData);
+
+  // }
 }

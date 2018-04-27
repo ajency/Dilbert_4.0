@@ -58,6 +58,7 @@
                                         </ion-col>
                                         <ion-col col-6  col-md-6 col-lg-6 >
                                             <button ion-button class="leaveButton" (click) = "leaveModal()">Take a leave</button>
+                                            <!-- <button (click)="test()">ok</button> -->
                                         </ion-col>
                                     </ion-row>
                                 </ion-grid>  
@@ -90,29 +91,14 @@
                                             <ng-container  *ngIf="userLeaveData.data.leaves.length == 0">
                                               <div font-weight-5 style="text-align: center;"> No Leaves Found</div>
                                             </ng-container>
-                                            <ng-container *ngFor="let item of userLeaveData.data.leaves | slice:0:leaveShow;let leaveIndex =index ">
+                                            <ng-container *ngFor="let item of userLeaveData.data.leaves| slice:0:leaveShow; let leaveIndex =index ">
                                             <div class="leaveViewBlock">
                                                 <div class="TeamUserName"> 
-                                                    <!-- <ion-list m-b-0>
-                                                      <ion-item p-l-0 >
-                                                        <ion-avatar item-start>
-                                                          <img src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50 ">
-                                                        </ion-avatar>
-                                                        {{item.user.name}} -->
-                                                        <!--  <ng-container *ngFor="let username of item.user>
-                                                          {{username.name}} :
-                                                         </ng-container> -->
-                                                    <!--   </ion-item>
-                                                    </ion-list> -->
-                                                    <!-- https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50 -->
-                                                     {{item.user.name}}
-                                                  
                                                 </div>
                                                 <div class="">
-                                                     <div class="leaveNote"> <ng-container *ngIf="item.leave_date">
-                                                <!-- I'm Going on a leave for 3 days from June 6th to June 8th -->
+                                                     <div class="leaveNote">
+                                                      <ng-container *ngIf="item.leave_date">
                                                        {{item.leave_note}} for {{item.leave_date.length}} Days on
-                                                       
                                                         <ng-container *ngFor="let dates of item.leave_date ; let i=index ">
                                                             <ng-container *ngIf="i == item.leave_date.length- 1 && item.leave_date.length !=1 ">and</ng-container>
                                                             <span font-weight-5> {{getDayDate(dates,5)}} </span>
@@ -229,7 +215,7 @@
                                                 </div> 
                                                 <div class="replyBlock">
                                                   <span class="innerLeaveContainer">
-                                                     <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;"></ion-icon>
+                                                     <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer; display: none;"></ion-icon>
                                                      <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
                                                     <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
                                                   </span>
@@ -466,7 +452,7 @@
                                                 </div>
                                                 <div class="replyBlock">
                                                   <span class="innerLeaveContainer">
-                                                     <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;"></ion-icon>
+                                                     <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;display: none;"></ion-icon>
                                                      <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
                                                     <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
                                                   </span>
