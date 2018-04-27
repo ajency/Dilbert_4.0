@@ -115,6 +115,9 @@ class AppController extends Controller
                         $locked->end_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
                         $locked->total_time = "00:00";
                         // $locked->status = "Present";
+                        // if there is a violation update the violations_count
+                        if($vioResponse['status'] == 'violation')
+                            $locked->violations_count = 1;
                         $locked->save();
                     } else {
                         // just update the end time and total time

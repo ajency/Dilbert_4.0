@@ -185,7 +185,7 @@ class Locked_Data extends Model
             // $udet = (new UserAuth)->getUserData($user_id,true);
             $dayData['leave_status'] = ($ld->status == null) ? (new CronController)->getUserStatus('present',$userOrgId,$userViolationGrpId,$ld->work_date,$specialDays) : $ld->status/*'Present'*/;
             //violation status - for now dummy
-            $dayData['violations'] = /***$ld->violations_count***/(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]));
+            $dayData['violations'] = $ld->violations_count/***(new ViolationApp)->getFormattedViolationData((new ViolationRules)->getViolations(["date_range" => ["start" => $ld->work_date], "who_id" => $user_id]))***/;
             $dayData['changes'] = $ld->changes_count/*(new Data_Changes)->getDataChanges(0,$user_id,"locked__datas",["work_date",$ld->work_date,$ld->work_date],true)*/;
             $dayData['slots']['lunch'] = (new Slots)->getTotalSlotTime($user_id, 'lunch', $ld->work_date, $ld->work_date);
             array_push($data,$dayData);

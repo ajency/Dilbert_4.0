@@ -83,6 +83,7 @@ class CronController extends Controller
                 $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data,false,true);
                 if($vioResponse['status'] == 'violation') {
                     $userLockedData->status = "Leave due to violation";
+                    $userLockedData->violations_count = $userLockedData->violations_count + 1;
                     $userLockedData->save();
                 }
                 else {
