@@ -420,6 +420,14 @@ class LockedDataController extends Controller
         App::setLocale($locale);
         if(!empty($request->input('filters.date_range')) && $request->header('X-API-KEY')!= null && $request->header('from')!= null) {
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
+                // pagination details
+                $pagination = [
+                    'limit' => ($request->has('limit')) ? $request->limit : 10,
+                    'page' => ($request->has('page')) ? $request->page : 1,
+                    'sort_by' => ($request->has('sort_by')) ? $request->sort_by : 'name',
+                    'sort_order' => ($request->has('sort_order')) ? $request->sort_order : 'asc',
+                ];
+
                 // get the organisation details
                 $orgDetails = Organisation::where('id',$orgId)->first();
                 // check if the start and end dates are given
@@ -462,12 +470,15 @@ class LockedDataController extends Controller
 
                 // get all the users in the organisation
                 // $orgUsers = User::join('user_details','user_details.user_id','=','users.id')->orderBy('name','asc')->where('user_details.org_id',$orgId)->get();
-                $orgUsers = DB::table('users')
+                $allOrgUsers = DB::table('users')
                                 ->join('user_details','user_details.user_id','=','users.id')
                                 ->select('users.status','users.name', 'users.violation_grp_id', 'user_details.user_id','user_details.avatar','user_details.joining_date', 'user_details.org_id')
-                                ->orderBy('name','asc')
-                                ->where('user_details.org_id',$orgId)
-                                ->get();
+                                ->orderBy($pagination['sort_by'],$pagination['sort_order'])
+                                ->where(['user_details.org_id' => $orgId, 'users.status' => 'active']);
+                $totalOrgUsers = $allOrgUsers->count();
+                $orgUsers = $allOrgUsers->skip(($pagination['page'] - 1) * $pagination['limit'])
+                                        ->take($pagination['limit'])
+                                        ->get();
 
                 // fetch the summary of all users in this period
                 // $periodSummaryData = Locked_Data::whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->get();
@@ -475,11 +486,8 @@ class LockedDataController extends Controller
                                     ->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
                                     ->get();
 
-                $data = [];
+                $summary = [];
                 foreach($orgUsers as $oUser) {
-                    // check if user is active
-                    if($oUser->status != 'active')
-                        continue;
                     // user details
                     $userObj['user'] = [
                         'user_id' => $oUser->user_id,
@@ -503,8 +511,10 @@ class LockedDataController extends Controller
                     $userObj['period_meta']['worked_total'] = $periodData['total_period_hours'];
                     $userObj['period_meta']['lunch_total'] = (new Slots)->getTotalSlotTime($oUser->user_id, 'lunch', $startDateString,$endDateString);
 
-                    array_push($data,$userObj);
+                    array_push($summary,$userObj);
                 }
+                $data['user_summary'] = $summary;
+                $data['next_page'] = ($pagination['page'] * $pagination['limit']) <= $totalOrgUsers;
                 $exitTime = (new Helper)->currentTimeInMilliseconds();
                 return response()->json(['status' => 200, 'message' => __('api_messages.summary_returned'), 'data' => $data, 'time' => ($exitTime - $entryTime)]);
             }
