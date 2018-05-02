@@ -25,35 +25,128 @@ class Log extends Model
 
     /**
      * iterates through the users logs and gives a properly formatted day summary
-     * @param  [type] $ip_list   array of valid ips
-     * @param  [type] $userLogs  users logs
-     * @param  [type] $cosOffset change of state offset - any state_time less
-     *                           than this is ignored
-     * @return [type]            formatted day summary
+     * @param  [type] $ip_list      array of valid ips
+     * @param  [type] $userLogs     users logs
+     * @param  [type] $cosOffset    change of state offset - any state_time less
+     *                              than this is ignored
+     * @param  [type] $sendAllLogs  send all logs (office and other) | default false
+     * @return [type]               formatted day summary
      */
-    public function getDaySummary($ip_list, $userLogs, $cosOffset) {
+    public function getDaySummary($ip_list, $userLogs, $cosOffset, $sendAllLogs = false) {
+
         $logs = [];
+        // $state = null;
+        // $start = null;
+        // $end = null;
+        // foreach($userLogs as $log) {
+        //
+        //     // check if the logs ip belongs to organisation's ip_lists
+        //     // if not skip the log
+        //     if(!$sendAllLogs) {
+        //      // if(!in_array($log->ip_addr,$ip_list))
+        //      //     continue;
+        //     }
+        //
+        //     // if this is the start of the startDate
+        //     if($start == null && $log->to_state == 'New Session') {   // New Session = active
+        //             $state = 'active';
+        //             $start = $log->cos;
+        //             $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
+        //             continue;
+        //     }
+        //     // signifying the end of the offline state
+        //     else if($state == 'offline' && $log->to_state == 'New Session') {
+        //         $end = $log->cos;
+        //         if($this->timeDifferenceInMins($start,$end) >= $cosOffset) {
+        //             array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '', 'work_from_home' => $workFromHome]);
+        //             $state = 'active';
+        //             $start = $log->cos;
+        //             $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
+        //             $end = null;
+        //             continue;
+        //         }
+        //         else {
+        //             // edit the end time of the previous record
+        //             $lastRecord = array_pop($logs);
+        //             if($lastRecord == null) {
+        //                 // if this the first entry to the logs array
+        //                 array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '', 'work_from_home' => $workFromHome]);
+        //                 $state = $log->to_state;
+        //                 $start = $log->cos;
+        //                 $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
+        //                 $end = null;
+        //             }
+        //             else {
+        //                 // ignore the current record and use the previous one
+        //                 $state = $lastRecord['state'];
+        //                 $start = $lastRecord['start_time'];
+        //                 $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
+        //                 $end = null;
+        //             }
+        //         }
+        //     }
+        //     // detects the end of the state and also curbs multiple
+        //     // offline entries from being reported
+        //     if(($log->from_state == $state || $log->to_state == 'offline') && $state != 'offline') {
+        //         $end = $log->cos;
+        //         // check if this change of state is to be passed
+        //         if($this->timeDifferenceInMins($start,$end) >= $cosOffset) {
+        //             array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '', 'work_from_home' => $workFromHome]);
+        //             $state = $log->to_state;
+        //             $start = $log->cos;
+        //             $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
+        //             $end = null;
+        //         }
+        //         else {
+        //             // edit the end time of the previous record
+        //             $lastRecord = array_pop($logs);
+        //             if($lastRecord == null) {
+        //                 // if this the first entry to the logs array
+        //                 array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '', 'work_from_home' => $workFromHome]);
+        //                 $state = $log->to_state;
+        //                 $start = $log->cos;
+        //                 $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
+        //                 $end = null;
+        //             }
+        //             else {
+        //                 // ignore the current record and use the previous one
+        //                 $state = $lastRecord['state'];
+        //                 $start = $lastRecord['start_time'];
+        //                 $workFromHome = $lastRecord['work_from_home'];
+        //                 $end = null;
+        //             }
+        //         }
+        //     }
+        //     else
+        //         continue;
+        // }
+        // if($state != null)
+        //     array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => null, 'slot' => '', 'work_from_home' => $workFromHome]);$logs = [];
         $state = null;
         $start = null;
         $end = null;
         foreach($userLogs as $log) {
             // check if the logs ip belongs to organisation's ip_lists
             // if not skip the log
-            if(!in_array($log->ip_addr,$ip_list))
-                continue;
+            if(!$sendAllLogs) {
+                if(!in_array($log->ip_addr,$ip_list))
+                    continue;
+            }
             // if this is the start of the startDate
             if($start == null && $log->to_state == 'New Session') {   // New Session = active
                     $state = 'active';
                     $start = $log->cos;
+                    $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
                     continue;
             }
             // signifying the end of the offline state
             else if($state == 'offline' && $log->to_state == 'New Session') {
                 $end = $log->cos;
                 if($this->timeDifferenceInMins($start,$end) >= $cosOffset) {
-                    array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '']);
+                    array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '', 'work_from_home' => $workFromHome]);
                     $state = 'active';
                     $start = $log->cos;
+                    $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
                     $end = null;
                     continue;
                 }
@@ -62,15 +155,13 @@ class Log extends Model
                     $lastRecord = array_pop($logs);
                     if($lastRecord == null) {
                         // if this the first entry to the logs array
-                        array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '']);
-                        $state = $log->to_state;
-                        $start = $log->cos;
                         $end = null;
                     }
                     else {
                         // ignore the current record and use the previous one
                         $state = $lastRecord['state'];
                         $start = $lastRecord['start_time'];
+                        $workFromHome = $lastRecord['work_from_home'];
                         $end = null;
                     }
                 }
@@ -81,9 +172,10 @@ class Log extends Model
                 $end = $log->cos;
                 // check if this change of state is to be passed
                 if($this->timeDifferenceInMins($start,$end) >= $cosOffset) {
-                    array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '']);
+                    array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '', 'work_from_home' => $workFromHome]);
                     $state = $log->to_state;
                     $start = $log->cos;
+                    $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
                     $end = null;
                 }
                 else {
@@ -91,15 +183,13 @@ class Log extends Model
                     $lastRecord = array_pop($logs);
                     if($lastRecord == null) {
                         // if this the first entry to the logs array
-                        array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '']);
-                        $state = $log->to_state;
-                        $start = $log->cos;
                         $end = null;
                     }
                     else {
                         // ignore the current record and use the previous one
                         $state = $lastRecord['state'];
                         $start = $lastRecord['start_time'];
+                        $workFromHome = ($this->getIPType($log->ip_addr, $ip_list) == 'other') ? true : false;
                         $end = null;
                     }
                 }
@@ -108,78 +198,28 @@ class Log extends Model
                 continue;
         }
         if($state != null)
-            array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => null, 'slot' => '']);$logs = [];
-            $state = null;
-            $start = null;
-            $end = null;
-            foreach($userLogs as $log) {
-                // check if the logs ip belongs to organisation's ip_lists
-                // if not skip the log
-                if(!in_array($log->ip_addr,$ip_list))
-                    continue;
-                // if this is the start of the startDate
-                if($start == null && $log->to_state == 'New Session') {   // New Session = active
-                        $state = 'active';
-                        $start = $log->cos;
-                        continue;
-                }
-                // signifying the end of the offline state
-                else if($state == 'offline' && $log->to_state == 'New Session') {
-                    $end = $log->cos;
-                    if($this->timeDifferenceInMins($start,$end) >= $cosOffset) {
-                        array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '']);
-                        $state = 'active';
-                        $start = $log->cos;
-                        $end = null;
-                        continue;
-                    }
-                    else {
-                        // edit the end time of the previous record
-                        $lastRecord = array_pop($logs);
-                        if($lastRecord == null) {
-                            // if this the first entry to the logs array
-                            $end = null;
-                        }
-                        else {
-                            // ignore the current record and use the previous one
-                            $state = $lastRecord['state'];
-                            $start = $lastRecord['start_time'];
-                            $end = null;
-                        }
-                    }
-                }
-                // detects the end of the state and also curbs multiple
-                // offline entries from being reported
-                if(($log->from_state == $state || $log->to_state == 'offline') && $state != 'offline') {
-                    $end = $log->cos;
-                    // check if this change of state is to be passed
-                    if($this->timeDifferenceInMins($start,$end) >= $cosOffset) {
-                        array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => $this->timeDifferenceInMins($start,$end), 'slot' => '']);
-                        $state = $log->to_state;
-                        $start = $log->cos;
-                        $end = null;
-                    }
-                    else {
-                        // edit the end time of the previous record
-                        $lastRecord = array_pop($logs);
-                        if($lastRecord == null) {
-                            // if this the first entry to the logs array
-                            $end = null;
-                        }
-                        else {
-                            // ignore the current record and use the previous one
-                            $state = $lastRecord['state'];
-                            $start = $lastRecord['start_time'];
-                            $end = null;
-                        }
-                    }
-                }
-                else
-                    continue;
-            }
-            if($state != null)
-                array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => null, 'slot' => '']);
+            array_push($logs,['state' => $state, 'start_time' => substr($start,0,5), 'end_time' => substr($end,0,5), 'state_time' => null, 'slot' => '', 'work_from_home' => '']);
 
-            return $logs;
+        return $logs;
+    }
+
+    /**
+     * determines the type of ip address
+     * @param  [type] $ipAddress ip address
+     * @param  [type] $ipList    list of 'office' ip addresses
+     * @param  [type] $orgId     organisation id - to be sent only if ip_list is null
+     * @return [type]            office / other
+     */
+    public function getIPType($ipAddress, $ipList = null, $orgId = null) {
+        // if the ip address list is not passed,
+        // fetch it from the organisations table
+        if($ipList == null) {
+            $ipList = unserialize(Organisation::find($orgId)->ip_lists);
+        }
+
+        if(in_array($ipAddress, $ipList))
+            return 'office';
+        else
+            return 'other';
     }
 }
