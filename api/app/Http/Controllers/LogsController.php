@@ -53,12 +53,13 @@ class LogsController extends Controller
                     $data['user'] = ['user_id' => $request->user_id, 'name' => $name, 'self' => $self];
                     // get the days data from locked__datas -------------- call that new function
                     $daysData = Locked_Data::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
+                    $workFromHome = ($daysData->first() == null) ? false : $daysData->first()->work_from_home;
                     $data['day_data'] = (new Locked_Data)->formattedLockedData($request->user_id,$daysData,$request->date,$request->date);  // formatted locked data
                     // get the user's day logs
                     $userLogs = Log::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get(); // all logs
                     // Organisation's ip list
                     $ip_list = unserialize(Organisation::find(UserDetail::where(['user_id' => $request->user_id])->first()->org_id)->ip_lists);
-                    $logs = (new Log)->getDaySummary($ip_list, $userLogs, $cosOffset, $daysData->first()->work_from_home);
+                    $logs = (new Log)->getDaySummary($ip_list, $userLogs, $cosOffset, $workFromHome);
                     // add slots to the logs
                     $slots = Slots::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
                     $slottedLogs = (new Slots)->addSlotsToLogs($logs, $slots);
