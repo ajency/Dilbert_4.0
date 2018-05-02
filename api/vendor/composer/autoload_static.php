@@ -440,6 +440,7 @@ class ComposerStaticInit00b03d2595ae3ddeb6402cf02d1b909d
         'App\\Slots' => __DIR__ . '/../..' . '/app/Slots.php',
         'App\\SpecialDays' => __DIR__ . '/../..' . '/app/SpecialDays.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
+        'App\\UserActivity' => __DIR__ . '/../..' . '/app/UserActivity.php',
         'App\\UserCommunication' => __DIR__ . '/../..' . '/app/UserCommunication.php',
         'App\\UserDetail' => __DIR__ . '/../..' . '/app/UserDetail.php',
         'App\\ViolationApp' => __DIR__ . '/../..' . '/app/ViolationApp.php',
