@@ -11,6 +11,7 @@ use App\Organisation;
 use App\Role;
 use App\Permission;
 use App\UserCommunication;
+use App\Locked_Data;
 use Ajency\User\Ajency\userauth\UserAuth;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -181,6 +182,63 @@ class UserController extends Controller
         else
         {
             return response()->json(['status' => "error", 'message' => "Users not found"]);  
+        }
+    }
+
+    public function workFromHome(Request $request, $locale = "default") {
+        // set the preferred locale
+        if($locale == "default")
+            App::setLocale('en');
+        else
+            App::setLocale($locale);
+
+        if($request->header('X-API-KEY')!= null && $request->header('from')!= null && $request->has(['users', 'mark_work_from_home'])) {
+            if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
+                // when some valid user accesses this api check if the calling user has the right permissions
+                $callingUser = User::where('id',$request->header('from'))->first();
+
+                // work from home can be marked by an 'admin' or 'hr' for all users
+                // and a 'member' for themselves
+                if($callingUser->hasRole(['admin', 'hr']) || (count($request->users) == 1 && $request->users[0] == $request->header('from'))) {
+                    foreach($request->users as $userId) {
+                        if($request->has('dates')) {
+                            $pastDays = [];    // array of days already present in locked__datas
+                            // fetch all locked_data entries
+                            $lockedDataEntries = Locked_Data::where('user_id',$userId)->whereIn('work_date',$request->dates)->get();
+                            foreach($lockedDataEntries as $lockedEntry) {
+                                array_push($pastDays,$lockedEntry->work_date);
+                                $lockedEntry->work_from_home = $request->mark_work_from_home ? true : false;
+                                $lockedEntry->save();
+
+                                // [TODO] recalculate the total hours
+
+                            }
+
+                            // handle future days
+                            $futureDays = array_values(array_diff($request->dates,$pastDays));
+                            // [TODO] store / remove these future days against a user
+
+                        }
+                        else {
+                            // mark the user as a 'work_from_home' user
+                            $user = User::find($userId);
+                            $user->work_from_home = $request->mark_work_from_home ? true : false;
+                            $user->save();
+                        }
+                    }
+
+                    return response()->json(['status' => 200, 'message' => __('api_messages.work_from_home_success')]);
+                }
+                else {
+                    return response()->json(["status" => 403, "message" => __('api_messages.authorisation')]);
+                }
+            }
+            else {
+                return response()->json(['status' => 401, 'message' => __('api_messages.authentication')]);
+            }
+        }
+        else {
+            return response()->json(['status' => 400, 'message' => __('api_messages.params_missing')]);
         }
     }
 }

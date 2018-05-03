@@ -41,6 +41,7 @@ return [
     "org_users_returned" => "Utilisateurs de l'organisation renvoyés.",
     "user_deleted" => "Utilisateur supprimé.",
     "user_restored" => "Utilisateur restauré.",
+    "work_from_home_success" => "Préférence de travail à domicile mise à jour.",
 
     // User
     "role_dne" => "Le rôle n'existe pas",
