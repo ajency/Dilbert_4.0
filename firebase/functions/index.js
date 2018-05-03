@@ -1024,3 +1024,309 @@ function getUserLeaves(filters,user)
 	   return new Error('Error viewing document'+error);
 	});
 }
+
+exports.updateLeave= functions.https.onRequest((request,response) => {
+response.setHeader("Access-Control-Allow-Origin", "*");
+	if (request.method === "POST") 
+	{
+		mandatoryRequest=validateUpdateRequest(request);
+		request=getUpdateRequestData(request);
+		if (mandatoryRequest.length === 0) 
+		{
+			console.log("body",request.body);
+			console.log("user id",request.body.user_id);
+
+			var parent_id_temp=request.body.parent_id;
+			var parent_id=parent_id_temp.toString();
+			var temp=request.body.user_id;
+			var user_id=temp.toString();
+			var user_leave =user_id+"_leave";
+			var leave_counter=getLeaveCounter(request.body.leave_data.leave_type);
+			var tempdates=request.body.leave_data.leave_date;
+			var tempdates1=tempdates.sort();
+			var start_date= new Date(tempdates1[0]);
+			var end_date= new Date(tempdates1[tempdates1.length-1]);
+			var leave_details={
+						 leave_note: request.body.leave_data.leave_note,
+						 type:request.body.leave_data.leave_type,
+						 leave_status:request.body.leave_data.leave_status,
+						 leave_counter:leave_counter,
+						 date_of_application:request.body.leave_data.date_of_application,
+						 parent_id:parent_id,
+						 start_date:start_date,
+						 end_date:end_date
+			}
+			var user={
+				user:request.body.leave_data.user
+			}
+			var created_by={
+				created_by:request.body.leave_data.created_by
+			}
+			var modified_by={
+				modified_by:request.body.leave_data.modified_by
+			}
+			
+			var comments={
+				comments:""
+			}
+
+			var leave_date={
+
+				dates:request.body.leave_data.leave_date
+			}
+			console.log("dates",leave_date);
+			var tagged_users={
+				tagged_users:request.body.leave_data.tagged_users
+			}
+			var objdata={
+				date_of_application:request.body.leave_data.date_of_application,
+				end_date:end_date,
+				leave_counter:leave_counter,
+				leave_date:request.body.leave_data.leave_date,
+				leave_note: request.body.leave_data.leave_note,
+				leave_status:request.body.leave_data.leave_status,
+				parent_id:parent_id,
+				start_date:start_date,
+				tagged_user:request.body.leave_data.tagged_users,
+				type:request.body.leave_data.leave_type,
+				user:request.body.leave_data.user
+			}
+			var return_value_post={
+					"status" : "success",
+					"message" : "200 OK",
+					"data" : objdata
+				}
+				console.log(leave_details);
+
+				// add leave details 
+					// console.log("user_id:",user_id);
+					var dataStore= db.collection("leave_management").doc(user_id).collection(user_leave).doc(parent_id);
+					// console.log(dataStore);
+					dataStore.set(leave_details)
+
+					.then(function() {
+					    console.log("leave details successfully written!");
+					    return response.status(200);
+					})
+					.catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+
+					//  modified by
+					dataStore.collection("modified_by").get().then(function(doc){
+						doc.forEach((docComment) => {
+							console.log("document random id",docComment.id);
+							dataStore.collection("modified_by").doc(docComment.id).update(modified_by).then(function() {
+							    console.log("leave modified_by data successfully written!");
+							    return response.status(200);
+					})
+					.catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+						});
+						return 0;
+					}).catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+
+					// ------------------------
+					dataStore.collection("leave_date").get().then(function(doc){
+						doc.forEach((docLeaveDate) => {
+							console.log("document random id",docLeaveDate.id);
+							dataStore.collection("leave_date").doc(docLeaveDate.id).update(leave_date).then(function() {
+					    console.log("leave leave_date data successfully written!");
+					    return response.status(200);
+					})
+					.catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+
+						});
+							return 0;
+					}).catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+					//------------------------------
+
+					//----------------------------
+					dataStore.collection("tagged_users").get().then(function(doc){
+						doc.forEach((docTaggedUsers) => {
+							console.log("document random id",docTaggedUsers.id);
+							dataStore.collection("tagged_users").doc(docTaggedUsers.id).update(tagged_users).then(function() {
+					    console.log("leave tagged_users data successfully written!");
+					    return response.status(200).send(return_value_post);
+					})
+					.catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+
+						});
+							return 0;
+
+					}).catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+					//-------------------------------------
+				
+			}
+
+
+	}
+	else
+	{
+		return_value=[
+		{
+			"status" : "error",
+			"message" : "wrong method",
+		}]
+		response.status(200).send(return_value); 
+	}
+	
+	});
+
+function getUpdateRequestData(request) {
+	requestData = request.body.leave_data;
+	
+	if (!requestData.leave_status) {
+		requestData.leave_status = "informed";
+	}
+
+	if (!requestData.leave_type) {
+		requestData.leave_type = "leave_taken";
+	}
+	return request;
+}
+
+exports.cancelLeave = functions.https.onRequest((request,response) => {
+	response.setHeader("Access-Control-Allow-Origin", "*");
+	console.log("request method ",request.method);
+	if(request.method === "POST") 
+		{
+			mandatoryRequest=cancelLeaveValidate(request);
+			// console.log("emptyFields length",mandatoryRequest.length);
+			console.log("emptyFields",mandatoryRequest);
+			if(mandatoryRequest.length ===0){
+				var user={
+					user:request.body.user
+				}
+
+				console.log("request body",request.body);
+				var tempuserId=request.body.user.user_id;
+				var tempparentId=request.body.parent_id;
+				var userId=tempuserId.toString();
+				var parentId=tempparentId.toString();
+				var user_leave =userId+"_leave";
+				console.log("user",userId);
+				console.log("parentId",parentId);
+				var returnData={
+					parent_id:parentId,
+					user:request.body.user
+				}
+				var return_value_post={
+						"status" : "success",
+						"message" : "200 OK",
+						"data" : returnData
+					}
+				var dataStore= db.collection("leave_management").doc(userId).collection(user_leave);
+				dataStore.doc(parentId).delete()
+				.then(function() {
+					    console.log("leave Canceled successfully written!");
+					    return response.status(200).send(return_value_post);
+					})
+					.catch(function(error) {
+					    console.error("Error writing document: ", error);
+					    return response.status(400);
+					});
+			}
+			else{
+				return_value={
+					"status" : "error",
+					"message" : "Mandatory fields ("+mandatoryRequest+") not present",
+					"data" : mandatoryRequest
+				}
+				response.status(200).send(return_value); 
+			}
+		}	
+		else{
+			return_value=[
+			{
+				"status" : "error",
+				"message" : "wrong method",
+			}]
+			response.status(200).send(return_value); 
+		}
+	
+	});
+
+
+function cancelLeaveValidate(request) {
+	var emptyFields=[];
+
+	if(!request.body.user.user_id)
+	{
+		emptyFields.push('user\'s id');
+	}
+	if(!request.body.parent_id)
+	{
+		emptyFields.push('parent_id');
+	}
+	
+	return emptyFields;	
+}
+function validateUpdateRequest(request) {
+	var emptyFields=[];
+
+	if(!request.body.leave_data.user.user_id)
+	{
+		emptyFields.push('user\'s id');
+	}
+	if(!request.body.leave_data.user.name)
+	{
+		emptyFields.push('user\'s name');
+	}
+	else if (!request.body.leave_data.user.name.trim()) 
+	{
+		emptyFields.push('user\'s name');
+	}
+
+	if(!request.body.leave_data.user.email)
+	{
+		emptyFields.push('user\'s email');
+	}
+	else if (!request.body.leave_data.user.email.trim()) 
+	{
+		emptyFields.push('user\'s email');
+	}
+	if(!request.body.leave_data.leave_date)
+	{
+		emptyFields.push('leave date');
+	}
+	else if(request.body.leave_data.leave_date.length===0)
+	{
+		emptyFields.push('leave date');
+	}
+	if(!request.body.leave_data.leave_note)
+	{
+		emptyFields.push('leave note');
+	}
+	else if (!request.body.leave_data.leave_note.trim()) 
+	{
+		emptyFields.push('leave note');
+	}
+	if(!request.body.leave_data.tagged_users) 
+	{
+		emptyFields.push('tagged user');
+	}
+	else if(request.body.leave_data.tagged_users.length===0)
+	{
+		emptyFields.push('tagged user');
+	}
+	return emptyFields;	
+}
