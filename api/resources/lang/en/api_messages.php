@@ -41,6 +41,7 @@ return [
     "org_users_returned" => "Organisation's users returned.",
     "user_deleted" => "User deleted.",
     "user_restored" => "User restored.",
+    "work_from_home_success" => "Work from home preference updated.",
 
     // User
     "role_dne" => "Role does not exist.",

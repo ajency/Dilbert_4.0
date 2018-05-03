@@ -37,6 +37,7 @@ Route::post('/join-organisation/{locale?}','OrganisationController@joinOrAddOrga
 // users api
 Route::post('/users/{locale?}','UserController@displayUsers');
 Route::post('/users/edit/{userCode}/{locale?}','UserController@editUserDetails');
+Route::post('/users/work-from-home/{locale?}','UserController@workFromHome');  // Mark 'Work from Home'
 
 // role management
 Route::post('/role/{locale?}','RoleController@changeOrAddRole');
