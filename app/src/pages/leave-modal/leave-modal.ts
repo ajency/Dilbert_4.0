@@ -496,10 +496,10 @@ updateData(){
   if(!this.editLeaveData.modified_by){
     this.editLeaveData.modified_by=[];
   }
-  this.editLeaveData.modified_by=modified_by;
-  this.editLeaveData.leave_date=this.editSelectedDates;
-  this.editLeaveData.tagged_users=this.editSelectedUsers;
-  this.editLeaveData.leave_note=this.editLeaveNote;
+  // this.editLeaveData.modified_by=modified_by;
+  // this.editLeaveData.leave_date=this.editSelectedDates;
+  // this.editLeaveData.tagged_users=this.editSelectedUsers;
+  // this.editLeaveData.leave_note=this.editLeaveNote;
   console.log("after update data");
   console.log(this.editLeaveData);
   let user ={
@@ -524,7 +524,7 @@ updateData(){
     date_of_application:this.editLeaveData.date_of_application
   }
 
-
+//this.editLeaveData.user.user_id
   let body ={
    user_id:this.editLeaveData.user.user_id,
    parent_id:this.editLeaveData.parent_id,
@@ -535,15 +535,21 @@ updateData(){
 
   this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
     if(response.status == 'success'){
+
       console.log(response.data);
+     this.editLeaveData.modified_by=modified_by;
+     this.editLeaveData.leave_date=this.editSelectedDates;
+     this.editLeaveData.tagged_users=this.editSelectedUsers;
+     this.editLeaveData.leave_note=this.editLeaveNote;
          // this.leaveAddedModal();
          this.close(); 
     }
 
-    else{
+    else{ 
+      this.close(); 
       this.appServiceProvider.presentToast(response.message, 'error');
       // this.leaveAddedModal();
-      this.close(); 
+    
     }
 
     })
