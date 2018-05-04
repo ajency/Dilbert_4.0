@@ -192,7 +192,7 @@ class UserController extends Controller
         else
             App::setLocale($locale);
 
-        if($request->header('X-API-KEY')!= null && $request->header('from')!= null && $request->has(['users', 'mark_work_from_home'])) {
+        if($request->header('X-API-KEY')!= null && $request->header('from')!= null && $request->has('users')) {
             if(UserDetail::where(['api_token' => $request->header('X-API-KEY'), 'user_id' =>$request->header('from')])->count() != 0) {
                 // when some valid user accesses this api check if the calling user has the right permissions
                 $callingUser = User::where('id',$request->header('from'))->first();
@@ -200,14 +200,16 @@ class UserController extends Controller
                 // work from home can be marked by an 'admin' or 'hr' for all users
                 // and a 'member' for themselves
                 if($callingUser->hasRole(['admin', 'hr']) || (count($request->users) == 1 && $request->users[0] == $request->header('from'))) {
-                    foreach($request->users as $userId) {
-                        if($request->has('dates')) {
-                            $pastDays = [];    // array of days already present in locked__datas
+                    foreach($request->users as $user) {
+                        foreach($user['user_id'] as $userId) {
+                            $pastDays = [];
+                            $days = array_pluck($user['days'],'work_from_home','work_date');
                             // fetch all locked_data entries
-                            $lockedDataEntries = Locked_Data::where('user_id',$userId)->whereIn('work_date',$request->dates)->get();
+                            $lockedDataEntries = Locked_Data::where('user_id',$userId)->whereIn('work_date',array_keys($days))->get();
+                            // set the flag for each locked entry
                             foreach($lockedDataEntries as $lockedEntry) {
                                 array_push($pastDays,$lockedEntry->work_date);
-                                $lockedEntry->work_from_home = $request->mark_work_from_home ? true : false;
+                                $lockedEntry->work_from_home = $days[$lockedEntry->work_date];
                                 $lockedEntry->save();
 
                                 // [TODO] recalculate the total hours
@@ -215,18 +217,21 @@ class UserController extends Controller
                             }
 
                             // handle future days
-                            $futureDays = array_values(array_diff($request->dates,$pastDays));
-                            // [TODO] store / remove these future days against a user
+                            $futureDays = array_values(array_diff(array_keys($days),$pastDays));
 
-                        }
-                        else {
-                            // mark the user as a 'work_from_home' user
-                            $user = User::find($userId);
-                            $user->work_from_home = $request->mark_work_from_home ? true : false;
-                            $user->save();
+                            // make entry for the future days
+                            // currently entry will be made only for current day
+                            // [TODO] function in user activity model to make an entry in the locked__datas table for current day
+
+                            // update the global setting for the users
+                            if(isset($user['work_from_home'])) {
+                                // mark the user as a 'work_from_home' user
+                                $userObj = User::find($userId);
+                                $userObj->work_from_home = $user['work_from_home'];
+                                $userObj->save();
+                            }
                         }
                     }
-
                     return response()->json(['status' => 200, 'message' => __('api_messages.work_from_home_success')]);
                 }
                 else {
