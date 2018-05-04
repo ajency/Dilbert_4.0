@@ -90,47 +90,49 @@ class AppController extends Controller
                 $orgDetails = Organisation::where(['id' => $user['user_details']['org_id']])->first();
                 $ipList = unserialize($orgDetails['ip_lists']);
                 $lockedEntry = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')]);
-                if(in_array($request->ip(), $ipList)) {
-                    // add entry to locked_data table
-                    // check if it is the first entry for the day
-                    if ($lockedEntry->count() == 0) {
-                        // violation check for late_alert
-                        $keyFields = ['start_time' => $this->getCurrentTimeZoneTime($timeZone)];
-                        $rhsFields = ['organisation_start_time'];
-                        $mailList = ['hr','owner1','owner2'];
-                        $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailList);
-                        $data['logo']= public_path().'/img/ajency-logo.png';
-                        $data['dilbert']=public_path().'/img/dilbert.png';
-                        $data['documentation']=public_path().'/img/ajency-email.png';
-                        $data['alert_triangle']=public_path().'/img/alert-triangle.png';
+                // if(in_array($request->ip(), $ipList)) {
+                // add entry to locked_data table
+                // check if it is the first entry for the day
+                if ($lockedEntry->count() == 0) {
+                    // violation check for late_alert
+                    $keyFields = ['start_time' => $this->getCurrentTimeZoneTime($timeZone)];
+                    $rhsFields = ['organisation_start_time'];
+                    $mailList = ['hr','owner1','owner2'];
+                    $data = (new ViolationApp)->createFormattedViolationData($user,$keyFields,$rhsFields,$mailList);
+                    $data['logo']= public_path().'/img/ajency-logo.png';
+                    $data['dilbert']=public_path().'/img/dilbert.png';
+                    $data['documentation']=public_path().'/img/ajency-email.png';
+                    $data['alert_triangle']=public_path().'/img/alert-triangle.png';
 
-                        $vioResponse = (new ViolationRules)->checkForViolation('late_alert',$data,false,true);
+                    $vioResponse = (new ViolationRules)->checkForViolation('late_alert',$data,false,true);
 
-                        // make an entry into the Locked data table
-                        $locked = new Locked_Data;
-                        $locked->user_id = $request->header('from');
-                        $locked->work_date = date('Y-m-d');
-                        // clip the start time to 9:30 am
-                        $locked->start_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
-                        $locked->end_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
-                        $locked->total_time = "00:00";
-                        // $locked->status = "Present";
-                        $locked->save();
-                    } else {
-                        // just update the end time and total time
-                        $lockedEntry = $lockedEntry->first();
-                        if((new DateTime($this->getCurrentTimeZoneTime($timeZone))) >= (new DateTime("09:30"))) {
-                            $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
-                            $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
-                            $lockedEntry->save();
-                        }
-                        else {
-                            // needs to be done because the cron uses the updated_at to determine offline state
-                            $lockedEntry->updated_at = (new DateTime)->format('Y-m-d H:i:s');
-                            $lockedEntry->save();
-                        }
+                    // make an entry into the Locked data table
+                    $locked = new Locked_Data;
+                    $locked->user_id = $request->header('from');
+                    $locked->work_date = date('Y-m-d');
+                    // clip the start time to 9:30 am
+                    $locked->start_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
+                    $locked->end_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
+                    $locked->total_time = "00:00";
+                    $locked->work_from_home = $user['user']['work_from_home'];
+                    // $locked->status = "Present";
+                    $locked->save();
+                } else {
+                    // just update the end time and total time
+                    $lockedEntry = $lockedEntry->first();
+                    if((new DateTime($this->getCurrentTimeZoneTime($timeZone))) >= (new DateTime("09:30"))) {
+                        $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
+                        // [TODO] use the total time calculation function
+                        $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
+                        $lockedEntry->save();
+                    }
+                    else {
+                        // needs to be done because the cron uses the updated_at to determine offline state
+                        $lockedEntry->updated_at = (new DateTime)->format('Y-m-d H:i:s');
+                        $lockedEntry->save();
                     }
                 }
+                // }
                 // return the start, end and total time from the locked_data
                 $newLockedEntry = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')]);
                 if($newLockedEntry->count() == 0)
