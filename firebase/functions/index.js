@@ -1307,6 +1307,10 @@ function validateUpdateRequest(request) {
 	{
 		emptyFields.push('leave data');
 	}
+	if(!request.body.parent_id)
+	{
+		emptyFields.push('parent id');
+	}
 	if(!request.body.user_id)
 	{
 		emptyFields.push('user id');
