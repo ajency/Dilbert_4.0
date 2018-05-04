@@ -1026,16 +1026,17 @@ function getUserLeaves(filters,user)
 }
 
 exports.updateLeave= functions.https.onRequest((request,response) => {
-response.setHeader("Access-Control-Allow-Origin", "*");
+	response.setHeader("Access-Control-Allow-Origin", "*");
 	if (request.method === "POST") 
 	{
+		console.log("Request : ",request.body);
 		mandatoryRequest=validateUpdateRequest(request);
-		request=getUpdateRequestData(request);
 		if (mandatoryRequest.length === 0) 
 		{
 			console.log("body",request.body);
 			console.log("user id",request.body.user_id);
 
+			request=getUpdateRequestData(request);
 			var parent_id_temp=request.body.parent_id;
 			var parent_id=parent_id_temp.toString();
 			var temp=request.body.user_id;
@@ -1046,38 +1047,43 @@ response.setHeader("Access-Control-Allow-Origin", "*");
 			var tempdates1=tempdates.sort();
 			var start_date= new Date(tempdates1[0]);
 			var end_date= new Date(tempdates1[tempdates1.length-1]);
+
 			var leave_details={
-						 leave_note: request.body.leave_data.leave_note,
-						 type:request.body.leave_data.leave_type,
-						 leave_status:request.body.leave_data.leave_status,
-						 leave_counter:leave_counter,
-						 date_of_application:request.body.leave_data.date_of_application,
-						 parent_id:parent_id,
-						 start_date:start_date,
-						 end_date:end_date
+				leave_note: request.body.leave_data.leave_note,
+				type:request.body.leave_data.leave_type,
+				leave_status:request.body.leave_data.leave_status,
+				leave_counter:leave_counter,
+				date_of_application:request.body.leave_data.date_of_application,
+				parent_id:parent_id,
+				start_date:start_date,
+				end_date:end_date
 			}
+
 			var user={
 				user:request.body.leave_data.user
 			}
+
 			var created_by={
 				created_by:request.body.leave_data.created_by
 			}
+
 			var modified_by={
 				modified_by:request.body.leave_data.modified_by
 			}
-			
+
 			var comments={
 				comments:""
 			}
 
 			var leave_date={
-
 				dates:request.body.leave_data.leave_date
 			}
 			console.log("dates",leave_date);
+
 			var tagged_users={
 				tagged_users:request.body.leave_data.tagged_users
 			}
+
 			var objdata={
 				date_of_application:request.body.leave_data.date_of_application,
 				end_date:end_date,
@@ -1091,93 +1097,99 @@ response.setHeader("Access-Control-Allow-Origin", "*");
 				type:request.body.leave_data.leave_type,
 				user:request.body.leave_data.user
 			}
+
 			var return_value_post={
-					"status" : "success",
-					"message" : "200 OK",
-					"data" : objdata
-				}
-				console.log(leave_details);
-
-				// add leave details 
-					// console.log("user_id:",user_id);
-					var dataStore= db.collection("leave_management").doc(user_id).collection(user_leave).doc(parent_id);
-					// console.log(dataStore);
-					dataStore.set(leave_details)
-
-					.then(function() {
-					    console.log("leave details successfully written!");
-					    return response.status(200);
-					})
-					.catch(function(error) {
-					    console.error("Error writing document: ", error);
-					    return response.status(400);
-					});
-
-					//  modified by
-					dataStore.collection("modified_by").get().then(function(doc){
-						doc.forEach((docComment) => {
-							console.log("document random id",docComment.id);
-							dataStore.collection("modified_by").doc(docComment.id).update(modified_by).then(function() {
-							    console.log("leave modified_by data successfully written!");
-							    return response.status(200);
-					})
-					.catch(function(error) {
-					    console.error("Error writing document: ", error);
-					    return response.status(400);
-					});
-						});
-						return 0;
-					}).catch(function(error) {
-					    console.error("Error writing document: ", error);
-					    return response.status(400);
-					});
-
-					// ------------------------
-					dataStore.collection("leave_date").get().then(function(doc){
-						doc.forEach((docLeaveDate) => {
-							console.log("document random id",docLeaveDate.id);
-							dataStore.collection("leave_date").doc(docLeaveDate.id).update(leave_date).then(function() {
-					    console.log("leave leave_date data successfully written!");
-					    return response.status(200);
-					})
-					.catch(function(error) {
-					    console.error("Error writing document: ", error);
-					    return response.status(400);
-					});
-
-						});
-							return 0;
-					}).catch(function(error) {
-					    console.error("Error writing document: ", error);
-					    return response.status(400);
-					});
-					//------------------------------
-
-					//----------------------------
-					dataStore.collection("tagged_users").get().then(function(doc){
-						doc.forEach((docTaggedUsers) => {
-							console.log("document random id",docTaggedUsers.id);
-							dataStore.collection("tagged_users").doc(docTaggedUsers.id).update(tagged_users).then(function() {
-					    console.log("leave tagged_users data successfully written!");
-					    return response.status(200).send(return_value_post);
-					})
-					.catch(function(error) {
-					    console.error("Error writing document: ", error);
-					    return response.status(400);
-					});
-
-						});
-							return 0;
-
-					}).catch(function(error) {
-					    console.error("Error writing document: ", error);
-					    return response.status(400);
-					});
-					//-------------------------------------
-				
+				"status" : "success",
+				"message" : "200 OK",
+				"data" : objdata
 			}
+			console.log(leave_details);
 
+			// add leave details 
+			// console.log("user_id:",user_id);
+			var dataStore= db.collection("leave_management").doc(user_id).collection(user_leave).doc(parent_id);
+			// console.log(dataStore);
+			dataStore.set(leave_details)
 
+			.then(function() {
+				console.log("leave details successfully written!");
+				return response.status(200);
+			})
+			.catch(function(error) {
+				console.error("Error writing document: ", error);
+				return response.status(400);
+			});
+
+			//  modified by
+			dataStore.collection("modified_by").get().then(function(doc){
+				doc.forEach((docComment) => {
+					console.log("document random id",docComment.id);
+					dataStore.collection("modified_by").doc(docComment.id).update(modified_by).then(function() {
+						console.log("leave modified_by data successfully written!");
+						return response.status(200);
+					})
+					.catch(function(error) {
+						console.error("Error writing document: ", error);
+						return response.status(400);
+					});
+				});
+				return 0;
+			}).catch(function(error) {
+				console.error("Error writing document: ", error);
+				return response.status(400);
+			});
+
+			// ------------------------
+			dataStore.collection("leave_date").get().then(function(doc){
+				doc.forEach((docLeaveDate) => {
+					console.log("document random id",docLeaveDate.id);
+					dataStore.collection("leave_date").doc(docLeaveDate.id).update(leave_date).then(function() {
+						console.log("leave leave_date data successfully written!");
+						return response.status(200);
+					})
+					.catch(function(error) {
+						console.error("Error writing document: ", error);
+						return response.status(400);
+					});
+				});
+				return 0;
+			}).catch(function(error) {
+				console.error("Error writing document: ", error);
+				return response.status(400);
+			});
+			//------------------------------
+
+			//----------------------------
+			dataStore.collection("tagged_users").get().then(function(doc){
+				doc.forEach((docTaggedUsers) => {
+					console.log("document random id",docTaggedUsers.id);
+					dataStore.collection("tagged_users").doc(docTaggedUsers.id).update(tagged_users).then(function() {
+						console.log("leave tagged_users data successfully written!");
+						return response.status(200).send(return_value_post);
+					})
+					.catch(function(error) {
+						console.error("Error writing document: ", error);
+						return response.status(400);
+					});
+
+				});
+				return 0;
+
+			}).catch(function(error) {
+				console.error("Error writing document: ", error);
+				return response.status(400);
+			});
+			//-------------------------------------
+		}
+		else
+		{
+			return_value={
+				"status" : "error",
+				"message" : "Mandatory fields ("+mandatoryRequest+") not present",
+				"data" : mandatoryRequest
+			}
+			response.status(200).send(return_value);
+		}
 	}
 	else
 	{
@@ -1283,6 +1295,18 @@ function cancelLeaveValidate(request) {
 function validateUpdateRequest(request) {
 	var emptyFields=[];
 
+	if(!request.body.leave_data)
+	{
+		emptyFields.push('leave data');
+	}
+	if(!request.body.user_id)
+	{
+		emptyFields.push('user id');
+	}
+	if(!request.body.leave_data.user)
+	{
+		emptyFields.push('user');
+	}
 	if(!request.body.leave_data.user.user_id)
 	{
 		emptyFields.push('user\'s id');
