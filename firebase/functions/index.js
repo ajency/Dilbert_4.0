@@ -1280,7 +1280,6 @@ exports.cancelLeave = functions.https.onRequest((request,response) => {
 
 function cancelLeaveValidate(request) {
 	var emptyFields=[];
-
 	if(!request.body.user)
 	{
 		emptyFields.push('user');
@@ -1297,7 +1296,6 @@ function cancelLeaveValidate(request) {
 			emptyFields.push('parent_id');
 		}
 	
-	return emptyFields;	
 	return emptyFields
 }
 function validateUpdateRequest(request) {

@@ -45,6 +45,7 @@
                                 <ion-grid>
                                     <ion-row >
                                         <ion-col col-6  col-md-6 col-lg-6 >
+                                          <div style="display: none;">
                                             <!-- <span>  -->
                                             <span *ngIf="sideBarData && sideBarData.data.user.self" >My Leave Balance</span>
                                             <span *ngIf="sideBarData && !sideBarData.data.user.self" > {{sideBarData.data.user.name}}'s Leave Balance </span>
@@ -55,6 +56,7 @@
                                                     06
                                                 </h3>
                                             </div>
+                                          </div>
                                         </ion-col>
                                         <ion-col col-6  col-md-6 col-lg-6 >
                                             <button ion-button class="leaveButton" (click) = "leaveModal()">Take a leave</button>
