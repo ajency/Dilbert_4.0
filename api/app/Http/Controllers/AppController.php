@@ -12,6 +12,7 @@ use App\Organisation;
 use App\PingLogs;
 use App\ViolationApp;
 use DateTime;
+use Carbon\Carbon;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class AppController extends Controller
@@ -133,6 +134,40 @@ class AppController extends Controller
                     }
                 }
                 // }
+
+                // update the user activity table
+                $userActivities = UserActivity::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->get();
+                $lastUserActivity = $userActivities->last();
+                $ipType = in_array($request->ip(), $ipList) ? 'office' : 'other';
+                if($lastUserActivity == null) {
+                    // create the first entry in the user activity table for this day
+                    $userActivity = new UserActivity;
+                    $userActivity->user_id =  $request->header('from');
+                    $userActivity->type = $ipType;
+                    $userActivity->work_date = Carbon::now()->format('Y-m-d');
+                    $userActivity->from = Carbon::now()->format('H:i:s');
+                    $userActivity->to = Carbon::now()->format('H:i:s');
+                    $userActivity->save();
+                }
+                else {
+                    // if the ping is of the same ip type and not a certain
+                    // amount of timethen update the activity log
+                    if($lastUserActivity->type == $ipType && Carbon::now()->diffInMinutes(new Carbon($lastUserActivity->to)) < 5) {
+                        // update the the end_time of the last user activity
+                        $lastUserActivity->to = Carbon::now()->format('H:i:s');
+                    }
+                    else {
+                        // create a new entry
+                        $userActivity = new UserActivity;
+                        $userActivity->user_id =  $request->header('from');
+                        $userActivity->type = $ipType;
+                        $userActivity->work_date = Carbon::now()->format('Y-m-d');
+                        $userActivity->from = Carbon::now()->format('H:i:s');
+                        $userActivity->to = Carbon::now()->format('H:i:s');
+                        $userActivity->save();
+                    }
+                }
+
                 // return the start, end and total time from the locked_data
                 $newLockedEntry = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')]);
                 if($newLockedEntry->count() == 0)
