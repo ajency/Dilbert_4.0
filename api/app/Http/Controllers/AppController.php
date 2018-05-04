@@ -11,6 +11,7 @@ use App\Locked_Data;
 use App\Organisation;
 use App\PingLogs;
 use App\ViolationApp;
+use App\UserActivity;
 use DateTime;
 use Carbon\Carbon;
 use Symfony\Component\Console\Output\ConsoleOutput;
