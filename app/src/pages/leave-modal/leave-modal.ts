@@ -338,7 +338,7 @@ export class LeaveModalPage {
 //edit leave
 
 editDateChanged(event){
-  // this.editDeleteSetected("s");
+  this.editDeleteSetected("s");
   console.log(event.formatted);
   console.log(this.editSelectedDates);
    if(event.formatted !="")
@@ -378,6 +378,7 @@ editDeleteSetected(removeDate){
 
 }
 editOnItemAdded(item){
+     this.editOnItemRemoved("oh");
      console.log('tag added: value is ' + item.name);
       let data1={
             user_id:item.user_id,
@@ -414,12 +415,31 @@ editOnItemRemoved(item){
     console.log(item);
     console.log('tag removed: value is ' + item.name);
       this.editSelectedUsers = this.editSelectedUsers.filter((data: any) => {
-          return item.name !== data.name;
+          return item.user_id !== data.user_id;
     })
   console.log(this.editSelectedUsers);
   this.checkIfEditData();
   console.log(item);
-  this.autocompleteItemsAsObjects2.push(item);
+  if(item.user_id){
+    if(this.autocompleteItemsAsObjects2.length==0){
+                   this.autocompleteItemsAsObjects2.push(item);
+       }
+      if(this.autocompleteItemsAsObjects2.length!=0){
+        var x=1;
+        for(var i=0; i<this.autocompleteItemsAsObjects2.length;i++){
+           if(this.autocompleteItemsAsObjects2[i].user_id == item.user_id){
+                   x=0;
+           }
+        }
+        console.log(x);
+        if(x==1){
+           this.autocompleteItemsAsObjects2.push(item);
+        }
+     }
+
+    // this.autocompleteItemsAsObjects2.push(item);
+  }
+  
   console.log(this.autocompleteItemsAsObjects2);
 }
 
