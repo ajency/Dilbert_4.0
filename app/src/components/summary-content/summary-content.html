@@ -153,15 +153,15 @@
         <div *ngFor = "let obj of logs; let i = index;" (mousemove)="onMouseMove($event,i)" (click)="highlightSelected($event,'click',i)" [attr.data_index]="i" [ngClass]="{'click': allowSlotUpdate}" id="logcontainerdefault" class="logbox ">
             
             <li *ngIf = "obj.state == 'idle' && obj.end_time != '' && obj.state_time > 10 " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols idle">
-                <h6  ion-text font-weight-3 color="dark"> {{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <h6  ion-text font-weight-3 color="dark"> {{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ng-container *ngIf="obj.work_from_home==true"> <ion-icon ios="ios-home" md="md-home"></ion-icon></ng-container></h6>
                 <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
             <li *ngIf = "obj.state == 'offline' && obj.end_time != '' && obj.state_time > 10 " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols offline">
-                <h6  ion-text font-weight-3 color="dark"> {{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <h6  ion-text font-weight-3 color="dark"> {{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ng-container *ngIf="obj.work_from_home==true"> <ion-icon ios="ios-home" md="md-home"></ion-icon></ng-container></h6>
                 <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
             <li *ngIf = "obj.state == 'active' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols online">
-                <h6  ion-text font-weight-3 color="dark"> {{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <h6  ion-text font-weight-3 color="dark"> {{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ng-container *ngIf="obj.work_from_home==true"> <ion-icon ios="ios-home" md="md-home"></ion-icon></ng-container></h6>
                 <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
 
@@ -175,15 +175,15 @@
         <div *ngFor = "let obj of logs; let i = index;" (mousemove)="onMouseMove($event,i)" (click)="highlightSelected($event,'click',i)" [attr.data_index]="i" [ngClass]="{'click': allowSlotUpdate}"  id="logcontainersecond" class="logbox2 hidden">
             
             <li *ngIf = "obj.state == 'idle' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols idle">
-                <h6  ion-text font-weight-3 color="dark"> {{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <h6  ion-text font-weight-3 color="dark"> {{ "idle_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ng-container *ngIf="obj.work_from_home==true"> <ion-icon ios="ios-home" md="md-home"></ion-icon></ng-container></h6>
                 <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
             <li *ngIf = "obj.state == 'offline' && obj.end_time != '' " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols offline">
-                <h6  ion-text font-weight-3 color="dark"> {{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <h6  ion-text font-weight-3 color="dark"> {{ "offline_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ng-container *ngIf="obj.work_from_home==true"> <ion-icon ios="ios-home" md="md-home"></ion-icon></ng-container></h6>
                 <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
             <li *ngIf = "obj.state == 'active' && obj.end_time != ''  " [ngClass]="{'marker-lunch': obj.slot == 'lunch','tooltip': allowSlotUpdate}" class="detail-view__cols online">
-                <h6  ion-text font-weight-3 color="dark"> {{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}}</h6>
+                <h6  ion-text font-weight-3 color="dark"> {{ "active_from" | translate }} {{getDayDate(obj.start_time,3)}} {{ "to" | translate }} {{getDayDate(obj.end_time,3)}} <ng-container *ngIf="obj.work_from_home==true"> <ion-icon ios="ios-home" md="md-home"></ion-icon></ng-container></h6>
                 <span [hidden]="!allowSlotUpdate" class="tooltiptext">Click or hold and drag to mark a slot</span>
             </li>
 
