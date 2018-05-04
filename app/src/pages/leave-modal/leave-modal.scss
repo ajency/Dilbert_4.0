@@ -62,9 +62,9 @@ page-leave-modal {
 
 .popover-md {
 	.popover-content.leave-popover2 {
-		 max-height: 600px;
+		 max-height: 550px;
 		 overflow-y:scroll;  
-	     top: 200px !important;
+	     /*top: 150px !important;*/
 	     width: 400px;
 
         @media (min-width: 567px) {
