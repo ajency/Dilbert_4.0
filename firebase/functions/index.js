@@ -1281,16 +1281,24 @@ exports.cancelLeave = functions.https.onRequest((request,response) => {
 function cancelLeaveValidate(request) {
 	var emptyFields=[];
 
-	if(!request.body.user.user_id)
+	if(!request.body.user)
 	{
-		emptyFields.push('user\'s id');
+		emptyFields.push('user');
+	}
+	else
+	{
+		if(!request.body.user.user_id)
+		{
+			emptyFields.push('user\'s id');
+		}
 	}
 	if(!request.body.parent_id)
-	{
-		emptyFields.push('parent_id');
-	}
+		{
+			emptyFields.push('parent_id');
+		}
 	
 	return emptyFields;	
+	return emptyFields
 }
 function validateUpdateRequest(request) {
 	var emptyFields=[];
