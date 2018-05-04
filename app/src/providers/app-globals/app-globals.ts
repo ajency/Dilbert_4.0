@@ -21,7 +21,17 @@ export class AppGlobalsProvider {
   cos_offset : string = '0';
   view_log_history_btn : boolean = true;
 
-  
+  leave_param :any ={
+   param1:''
+  }
+
+  leave_request_param :any ={
+   param1:''
+  }
+  leave_update_param :any ={
+   param1:'',
+   param2:''
+  }
 
   dashboard_params : any = {
     param1 : '',
@@ -31,13 +41,15 @@ export class AppGlobalsProvider {
   summary_params : any = {
     param1 : ''
   }
-
+  newsummary_params : any = {
+    param1 : ''
+  }
+  
   private semVersion: any = {
-    major: 1,
+    major: 2,
     minor: 2,
     patch: 6
   };
-
   appVersion : string = '' ;
 
 private activeTabsList: any = {
@@ -64,6 +76,12 @@ private activeTabsList: any = {
       component: 'OrganizationSummaryPage',
       deeplink: 'summary',
       placeholder: 'Summary',
+      active: true
+    },
+     usersummary:{
+      component: 'NewSummaryPage',
+      deeplink: 'user-summary',
+      placeholder: 'user-summary',
       active: true
     },
   };

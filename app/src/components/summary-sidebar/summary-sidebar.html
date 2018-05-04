@@ -1,8 +1,18 @@
 <!-- Generated template for the SummarySidebarComponent component -->
 <!-- Week Container -->
 <div class="week">
+    <div class="topNavMobileDays" (click)="changemobileview1()" style="padding-bottom: 5px;">
+        <span p-l-10><ion-icon name="arrow-round-back" class="icon-size full text-md-primary"></ion-icon> <span p-l-10 class="text text-md text-md-text-lighter"><sup style="font-size: 12px;">This Week </sup></span></span>
+        <div p-l-40 font-weight-5 style="margin-top: -7px;">{{weekTotal || naText}} {{ "hr" | translate }} / {{minHours || naText}} {{ "hr" | translate }}</div>
+        <div class="week__current current-card ">
+           <div class="current-card__header flex-row " style="padding: 5px;">
+                 <div class="week-loader" [ngStyle]="{'width': loader_percentage + '%'}" style="box-shadow: 0px 1px 16px 0px rgba(0, 0, 0, 0.13);"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Current week -->
-    <div class="week__current current-card">
+    <div class="week__current current-card hideBlockMobile">
         <div class="current-card__header flex-row">
             <p *ngIf = "sideBarData.data.periodData.length <= 7" ion-text color="primary" no-margin>{{ "week_total" | translate }}</p>
             <p *ngIf = "sideBarData.data.periodData.length > 7" ion-text color="primary" no-margin>{{ "month_total" | translate }}</p>
@@ -73,7 +83,7 @@
         <div class="full-card__body">
             <!-- Week list -->
             <ul class="week-list list-control overflow-active">
-                <button ion-item class="week-container"  *ngFor="let date of sideBarData.data.periodData;let i = index " (click) = "updateSummaryContent(date, i)" [ngClass]="{'btnActivated': sideBarData.data.periodData[i] && sideBarData.data.periodData[i].btnActive == true}" >
+                <button ion-item class="week-container"  *ngFor="let date of sideBarData.data.periodData;let i = index " (click) = "updateSummaryContent(date, i)" (click)="changemobileview1()" [ngClass]="{'btnActivated': sideBarData.data.periodData[i] && sideBarData.data.periodData[i].btnActive == true}" >
                     <div class="btn-container" [ngClass]="{'leave-row': (date.leave_status == 'Leave' || date.leave_status == '' || date.leave_status == 'Weekend' || date.leave_status == 'Holiday' || date.leave_status == 'Leave due to violation'|| date.leave_status == 'Not joined' ) && !sideBarData.data.periodData[i].btnActive}"  >
                         <li class="week-list__row flex-row">
                             <div class="week-list__day">
@@ -138,6 +148,18 @@
             <!-- Week list ends -->
         </div>
     </div>
+<!--     <ion-fab right top>
+    <button ion-fab>
+      <ion-icon name="pin"></ion-icon>
+    </button>
+  </ion-fab> -->
+     <div class="topNavMobileDays " style="width: 40px;">
+        <div class="dateblock">
+
+          <my-date-picker [options]="myDatePickerOptions" (dateChanged)="requestData($event)">
+                </my-date-picker>
+        </div>        
+     </div>
 </div>
 
     <!-- Current week ends -->

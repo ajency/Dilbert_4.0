@@ -9,7 +9,7 @@ import { CookieService } from 'ngx-cookie';
 import { TitleCasePipe } from '../pipes/title-case/title-case';
 import { TranslateService } from '@ngx-translate/core';
 
-
+import * as moment from 'moment';
 
 // import {TranslateService, TranslatePipe, TranslateLoader, TranslateStaticLoader} from 'ng2-translate';
 // import { TranslateService, TranslatePipe } from '@ngx-translate/core';
@@ -233,6 +233,7 @@ export class MyApp {
 
         let pathparts2 = pathparts[1].split('?')
           console.log(pathparts2);
+
           if(pathparts2.length == 1 ){
             
             if(pathparts2[0] == 'dashboard'){
@@ -242,6 +243,10 @@ export class MyApp {
             else if(pathparts2[0] == 'summary'){
               console.log('updating title to summary');
               this.updateTitle('summary');
+            }
+             else if(pathparts2[0] == 'user-summary'){
+              console.log('updating title to user-summary');
+              this.updateTitle('user-summary');
             }
 
             else if(pathparts2[0] == 'login' || pathparts2[0] == 'register'){
@@ -261,7 +266,8 @@ export class MyApp {
 
                 let obj1 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
                 let obj2 = JSON.parse('{"' + decodeURI(pathparts2[2]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-
+                   console.log(obj1);
+                    console.log(obj2);
                   if(obj1 != undefined && obj2 != undefined && obj1.start_date && obj1.period_unit && obj1.user_id && obj2.summary_date && ( obj1.period_unit == 'week' || obj1.period_unit == 'month' )){
                     this.updateTitle('dashboard');
                     this.appglobals.dashboard_params.param1 = obj1;
@@ -276,10 +282,12 @@ export class MyApp {
 
             else if(pathparts2[0] == 'summary'){
               let obj3 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+              console.log("obj3");
               console.log(obj3);
               if(obj3 != undefined && obj3.date && obj3.period_unit && obj3.period_unit == 'week' && obj3.org_id){
                 this.updateTitle('summary');
                 this.appglobals.summary_params.param1 = obj3;
+
 
               }
               else{
@@ -287,6 +295,31 @@ export class MyApp {
 
               }
             }
+            else if(pathparts2[0] == 'user-summary'){
+            let obj4 = JSON.parse('{"' + decodeURI(pathparts2[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace('[', '').replace(']', '') + '"}');
+            console.log("obj4");
+            console.log(obj4);
+             console.log("this date is: "+moment(obj4.start_date).isValid());
+            //  (moment(obj4.start_date).isValid())
+            if(obj4.period_unit !='month'){
+              obj4.period_unit='week';
+            }
+              if(obj4 != undefined && (moment(obj4.start_date).isValid()) && obj4.period_unit && obj4.period_unit && obj4.org_id && obj4.user_id){
+                this.updateTitle('user-summary');
+                this.appglobals.newsummary_params.param1 = obj4;
+                  console.log(" defined ");
+                   console.log(this.appglobals.newsummary_params.param1);
+
+
+              }
+              else{
+                console.log("not defined ");
+                this.appglobals.newsummary_params.param1 = '';
+
+              }
+           }
+
+
             else{
               console.log('navigating to not-found page');
               this.updateNav('not-found');
@@ -380,7 +413,7 @@ export class MyApp {
 
 
 private updateNav(data) : any{
-
+    console.log(data);
     console.log("############################## updating nav ##############", data);
     this.currentPage = data;
     // this.nav.setRoot(data);

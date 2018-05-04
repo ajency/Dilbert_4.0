@@ -30,7 +30,8 @@
             "App\\": "app/",
             "Ajency\\User\\": "packages/ajency/user/src",
             "Ajency\\Violations\\": "packages/ajency/violations/src"
-        }
+        },
+        "files": ["app/Http/Helper/Mail/helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {

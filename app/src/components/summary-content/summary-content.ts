@@ -6,7 +6,8 @@ import { AppServiceProvider } from '../../providers/app-service/app-service';
 import { AppGlobalsProvider } from '../../providers/app-globals/app-globals';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
-import { setTimeout } from 'timers';
+import * as $ from 'jquery';
+
 import { TitleCasePipe } from '../../pipes/title-case/title-case';
 
 /**
@@ -38,9 +39,13 @@ export class SummaryContentComponent {
 
   private hasGlobalSlotPerm: boolean = false;
   // changedLogs : any;
+  weekTotal :any;
+  lunchTime: any;
+  minHours : any;
   today : any;
   logs : any;
   day_data : any;
+  logsLength:any;
   leave_status_values;
   edit_btn_pd : boolean = true;
   view_log_history_btn : boolean = true;
@@ -48,6 +53,7 @@ export class SummaryContentComponent {
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
   private naText: string;
+  leave_param:any;
   private toastMessages: any;
   private relaventWinHeight: number;
   private titleCasePipe: TitleCasePipe;
@@ -64,6 +70,15 @@ export class SummaryContentComponent {
               public appServiceProvider : AppServiceProvider,
               public appGlobalsProvider : AppGlobalsProvider,
               public storage : Storage) {
+
+        this.events.subscribe("update:week_data",(week_data) => {
+          this.weekTotal = week_data.weekTotal;
+          this.lunchTime = week_data.lunchTotal;
+          this.minHours  = week_data.minHoursWeek;
+
+          console.log(week_data);
+
+         });
     // console.log('SummaryContentComponent Component');
       this.translate.get("toast_messages").subscribe((res: any) => {
        // this.errorString = res;
@@ -74,11 +89,15 @@ export class SummaryContentComponent {
       this.titleCasePipe = new TitleCasePipe();
 
       this.updateContentCB = (data) => {
+        $(".viewMoreLogs").html("View More");
+        $(".viewLess").addClass("hidden");
+        $(".viewMore").removeClass("hidden");
         // this.currentData = data.date;
         this.undoSelection();
         console.log('inside update content');
         this.day_data = data.summaryContentData.data.day_data;
         this.logs = data.summaryContentData.data.logs;
+        this.logslengthcheck();
         this.leave_status_values = data.summaryContentData.data.leave_status_values;
          
         this.summaryContentData = data.summaryContentData;
@@ -89,6 +108,11 @@ export class SummaryContentComponent {
   
         this.slotTypes = this.appServiceProvider.objectToArray(data.summaryContentData.data.slot_values);
         this.selectedSlotType = this.slotTypes[0]['slug'];
+
+    
+
+
+
       }
    
       this.changelogCB = (data) => {
@@ -176,7 +200,21 @@ export class SummaryContentComponent {
   ngOnInit(){
     console.log("current user:", this.allowSlotUpdate)
     console.log("summary content", this.summaryContentData);
-  	// let dummy = new Date();
+    console.log(this.summaryContentData);
+    if(this.summaryContentData.data.user.email==''||this.summaryContentData.data.user.email==undefined ||this.summaryContentData.data.user.email==null ){
+      this.summaryContentData.data.user.email='';
+    }
+    console.log(this.summaryContentData.data.user.email);
+     this.appGlobalsProvider.leave_param.param1={
+      user_id:this.summaryContentData.data.user.user_id,
+      name:this.summaryContentData.data.user.name,
+      email:this.summaryContentData.data.user.email,
+      avatar:this.summaryContentData.data.user.avatar
+     }
+     console.log(this.appGlobalsProvider.leave_param.param1);
+
+    // this.events.publish("update:userDataForLeave", this.summaryContentData);
+    // let dummy = new Date();
    //  this.today = {
    //    day : this.days[dummy.getDay()],
    //    date : dummy.getDate(),
@@ -191,7 +229,7 @@ export class SummaryContentComponent {
 
     this.setToday();
     this.logs = this.summaryContentData.data.logs;
-
+    this.logslengthcheck();
     this.checkPermissions();
    
     // console.log("elementref width", this.elementref.nativeElement.clientWidth);
@@ -362,7 +400,7 @@ export class SummaryContentComponent {
 
           console.log(response);
 
-          if(response.status == 200){
+          if(response.status ==200 ){
            
            this.events.publish("start-home:changedLogs",response.data[0].history);
            // this.changedLogs = response;
@@ -640,5 +678,55 @@ export class SummaryContentComponent {
   editBoxClick(event): void{
     event.stopPropagation();
   }
+
+
+changelogview(){
+
+        if ( $(".logbox").hasClass("hidden") ) {
+             $(".logbox").removeClass("hidden");
+             $(".changelogview").removeClass("viewLessData");
+             $(".logbox2").addClass("hidden");
+             $(".viewMoreLogs").html("View More");
+             $(".viewLess").addClass("hidden");
+             $(".viewMore").removeClass("hidden");
+
+
+       }
+       else{
+             $(".logbox").addClass("hidden");
+             $(".logbox2").removeClass("hidden");
+             $(".changelogview").addClass("viewLessData");
+             $(".viewMoreLogs").html("View Less");
+             $(".viewLess").removeClass("hidden");
+             $(".viewMore").addClass("hidden");
+
+       }
+
+}
+
+  logslengthcheck(){
+    var count =0;
+    if(this.logs.length > 0){
+      for(var i=0 ;i < this.logs.length;i++){
+        if(this.logs[i].state_time != null && this.logs[i].state !='active'){
+          if(this.logs[i].state_time < 10){
+            count = count + 1;
+
+  // $(".logsblock").addClass("hideBlockMobile");
+  // $(".mobileWeekDays").addClass("hideBlockMobile");
+}
+
+        }
+      }
+   }
+   this.logsLength=count;
+   console.log(this.logsLength);
+  }
+  hidedailylogsblock(){
+  var c=0;
+  this.events.publish("update:mobilesidebar",c );
+
+          }
+
 
 }
