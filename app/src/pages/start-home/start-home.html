@@ -66,9 +66,9 @@
                                 <ion-grid>
                                     <ion-row>
                                         <ion-col col-12  col-md-12 col-lg-12 >
-                                            <h5 *ngIf="sideBarData && sideBarData.data.user.self" font-weight-5>My leaves <span class="countLeaves" *ngIf="userLeaveData != undefined && userLeaveData.data.leaves.length != 0 " >{{myLeaveCount}}</span> <span style="float: right;cursor: pointer;display:none;" id="myLeaveToggle" (mouseup)="mytoggle()"><span class="toggletxt">view less</span></span>  <span style="float: right;cursor: pointer;" id="myLeaveToggle1" (mouseup)="mytoggle()"> <span class="toggletxt1">view more</span></span></h5>
+                                            <h5 *ngIf="sideBarData && sideBarData.data.user.self" font-weight-5>My leaves <span class="countLeaves" *ngIf="userLeaveData != undefined && userLeaveData.data.leaves.length != 0 " >{{userLeaveData.data.leaves.length}}</span> <span style="float: right;cursor: pointer;display:none;" id="myLeaveToggle" (mouseup)="mytoggle()"><span class="toggletxt">view less</span></span>  <span style="float: right;cursor: pointer;" id="myLeaveToggle1" (mouseup)="mytoggle()"> <span class="toggletxt1">view more</span></span></h5>
 
-                                            <h5 *ngIf="sideBarData && !sideBarData.data.user.self" font-weight-5> {{sideBarData.data.user.name}}'s  leaves <span class="countLeaves"  *ngIf="userLeaveData != undefined && userLeaveData.data.leaves.length != 0 ">{{myLeaveCount}}</span> <span style="float: right;cursor: pointer;display:none;" id="myLeaveToggle" (mouseup)="mytoggle()"><span class="toggletxt">view less</span></span>  <span style="float: right;cursor: pointer;" id="myLeaveToggle1" (mouseup)="mytoggle()"> <span class="toggletxt1">view more</span></span></h5>
+                                            <h5 *ngIf="sideBarData && !sideBarData.data.user.self" font-weight-5> {{sideBarData.data.user.name}}'s  leaves <span class="countLeaves"  *ngIf="userLeaveData != undefined && userLeaveData.data.leaves.length != 0 ">{{userLeaveData.data.leaves.length}}</span> <span style="float: right;cursor: pointer;display:none;" id="myLeaveToggle" (mouseup)="mytoggle()"><span class="toggletxt">view less</span></span>  <span style="float: right;cursor: pointer;" id="myLeaveToggle1" (mouseup)="mytoggle()"> <span class="toggletxt1">view more</span></span></h5>
                                         </ion-col>
                                     </ion-row>
                                     <div class="myLeaveToggleBox" style="display:none;">
@@ -137,42 +137,6 @@
                                                              </span>
                                                         </ng-container>
                                                     </span>
-                                                    <!--  <span class="taggedUsers displayTagedUsers hide">
-                                                        <ng-container *ngIf="item.tagged_users.length ==1">
-                                                            <sub><ion-icon name="pricetag" style="color:orange;font-size: 16px;"></ion-icon></sub>
-                                                        </ng-container>
-                                                        <ng-container *ngIf="item.tagged_users.length !=1">
-                                                            <sub><ion-icon name="pricetags" style="color:orange;font-size: 16px;"></ion-icon></sub>
-                                                        </ng-container>
-                                                         <ng-container *ngIf="item.tagged_users.length ==1">
-                                                             <ng-container *ngFor="let tag of item.tagged_users ; let i=index ">
-                                                                  @{{tag.name}}  
-                                                             </ng-container>
-                                                        </ng-container>
-                                                        <ng-container *ngIf="item.tagged_users.length !=1">
-                                                            <span >
-                                                                 <ng-container *ngFor="let tag of item.tagged_users  let i=index ">
-                                                                      @{{tag.name}}  <ng-container *ngIf="i != item.tagged_users.length- 1 && i != item.tagged_users.length- 1" >,</ng-container>
-                                                                 </ng-container>
-                                                            </span>
-                                                        </ng-container>
-                                                    </span> -->
-                                                    
-                                                    <!-- <div class="userComment">
-                                                        <ng-container *ngIf="item.comments.length !=0">
-                                                               <ng-container *ngFor="let comment of item.comments ; let i=index ">
-                                                                    <ion-list m-b-0 class="commentAvatar">
-                                                                      <ion-item p-l-0 class="commentAvatar">
-                                                                        <ion-avatar item-start class="commentAvatar">
-                                                                          <img src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50 ">
-                                                                        </ion-avatar>
-                                                                       <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}</span>
-                                                                      </ion-item>
-                                                                    </ion-list>
-                                                               </ng-container>
-                                                        </ng-container>
-                                                    </div> -->
-                                                       <!-- {{item.comments}} -->
                                                     <ng-container *ngIf="item.comments">
                                                       <div class="userComment">
                                                       <ng-container *ngIf="item.comments.length !=0">
@@ -198,14 +162,6 @@
                                                                   <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}</span>
                                                                  </div>
                                                              </ng-container>
-                                                            <!--   <ng-container *ngIf="item.comments.length !=1">
-                                                                  <div class="avatarContainer">
-                                                                      <ng-container *ngFor="let comment of item.comments| slice:1:item.comments.length "> 
-                                                                          <img src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50 " class="avatarList"> 
-                                                                      </ng-container> 
-                                                                      <span class="moreComments">+ {{item.comments.length-1}} more</span>
-                                                                  </div>
-                                                            </ng-container>  -->
                                                                <div class="lessComments viewLessButton" (mouseup)=" showAllTags(item)" style="text-align: center;"> 
                                                                 <ion-icon  name="ios-arrow-up-outline"></ion-icon> <br>
                                                                view less</div>
@@ -215,8 +171,8 @@
                                                 </div> 
                                                 <div class="replyBlock">
                                                   <span class="innerLeaveContainer">
-                                                     <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer; display: none;"></ion-icon>
-                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;display:none;" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
+                                                     <ion-icon *ngIf="sideBarData && sideBarData.data.user.self" ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;" (click)="cancelLeave(item)"></ion-icon>
+                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;"(click)="editLeave(item)" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
                                                     <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
                                                   </span>
                                                 </div>
@@ -295,20 +251,6 @@
                                           <ng-container *ngFor="let item of teamLeaveData.data.leaves | slice:0:teamLeaveShow;let leaveIndex =index ">
                                             <div class="leaveViewBlock">
                                                 <div class="TeamUserName"> 
-                                                    <!-- ++++++++++++++++++++++++++++++++++ -->
-
-                                                    <!-- <img src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50 " class="avatar">
-                                                        
-                                                     <span font-weight-5>{{item.user.name}} :</span>
-                                                    
-                                                      <span class="noteCon">{{item.leave_note}} for <span font-weight-5> {{item.leave_date.length}} Days </span> on
-                                                          <ng-container *ngFor="let dates of item.leave_date ; let i=index ">
-                                                              <ng-container *ngIf="i == item.leave_date.length- 1 && item.leave_date.length !=1 ">and</ng-container>
-                                                              <span font-weight-5> {{getDayDate(dates,5)}} </span>
-                                                              <ng-container *ngIf="i < item.leave_date.length- 2">,</ng-container>
-                                                          </ng-container>
-                                                      </span> -->
-                                                      <!-- ++++++++++++++++++++++++++++++++++++++ -->
                                                     <table class="noBorder">
                                                         <tr class="noBorder">
                                                             <td class="noBorder" style="min-width:40px;">
@@ -329,15 +271,6 @@
                                                     </table>
                                                 </div>
                                                 <div class="innerContainer">
-                                                     <!-- <div class="leaveNote">  -->
-                                                <!-- I'm Going on a leave for 3 days from June 6th to June 8th -->
-                                                     <!--   {{item.leave_note}} for {{item.leave_date.length}} Days on
-                                                      <ng-container *ngFor="let dates of item.leave_date ; let i=index ">
-                                                          <ng-container *ngIf="i == item.leave_date.length- 1 && item.leave_date.length !=1 ">and</ng-container>
-                                                          <span font-weight-5> {{getDayDate(dates,5)}} </span>
-                                                          <ng-container *ngIf="i < item.leave_date.length- 2">,</ng-container>
-                                                      </ng-container> -->
-                                                    <!-- </div> -->
                                                     <span class="taggedUsers">
                                                         <ng-container *ngIf="item.tagged_users.length ==1">
                                                             <sub><ion-icon name="pricetag" style="color:orange;font-size: 16px;"></ion-icon></sub>
@@ -357,13 +290,6 @@
                                                                  </ng-container>
                                                             </span>
                                                              <span class=""  *ngIf=" show < item.tagged_users.length " (mouseup)="showAllTags(item.tagged_users)" > 
-                                                               <!--  <span class="selectTag">
-                                                                    <select class="tagselect">
-                                                                        <option  disabled>+ {{item.tagged_users.length-show}} Others</option>
-                                                                        <option *ngFor="let option of item.tagged_users " disabled>{{option.name}}</option>
-                                                                    </select> 
-                                                                </span> -->
-
                                                                 <div class="dropdownTags">
                                                                   <span class="dropbtn">+ {{item.tagged_users.length-show}} Others</span>
                                                                   <div class="dropdownTags-content" >
@@ -374,41 +300,8 @@
                                                              </span>
                                                         </ng-container>
                                                     </span>
-                                                    
-                                                     <!-- <span class="taggedUsers displayTagedUsers hide">
-                                                        <ng-container *ngIf="item.tagged_users.length ==1">
-                                                            <sub><ion-icon name="pricetag" style="color:orange;font-size: 16px;"></ion-icon></sub>
-                                                        </ng-container>
-                                                        <ng-container *ngIf="item.tagged_users.length !=1">
-                                                            <sub><ion-icon name="pricetags" style="color:orange;font-size: 16px;"></ion-icon></sub>
-                                                        </ng-container>
-                                                         <ng-container *ngIf="item.tagged_users.length ==1">
-                                                             <ng-container *ngFor="let tag of item.tagged_users ; let i=index ">
-                                                                  @{{tag.name}}  
-                                                             </ng-container>
-                                                        </ng-container>
-                                                        <ng-container *ngIf="item.tagged_users.length !=1">
-                                                            <span >
-                                                                 <ng-container *ngFor="let tag of item.tagged_users  let i=index ">
-                                                                      @{{tag.name}}  <ng-container *ngIf="i != item.tagged_users.length- 1 && i != item.tagged_users.length- 1" >,</ng-container>
-                                                                 </ng-container>
-                                                            </span>
-                                                        </ng-container>
-                                                    </span> -->
                                                     <ng-container *ngIf="item.comments">
                                                       <div class="userComment">
-                                                         <!--  <ng-container *ngIf="item.comments.length !=0">
-                                                                 <ng-container *ngFor="let comment of item.comments ; let i=index ">
-                                                                      <ion-list m-b-0 class="commentAvatar">
-                                                                        <ion-item p-l-0 class="commentAvatar">
-                                                                          <ion-avatar item-start class="commentAvatar">
-                                                                            <img src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50 ">
-                                                                          </ion-avatar>
-                                                                         <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}</span>
-                                                                        </ion-item>
-                                                                      </ion-list>
-                                                                 </ng-container>
-                                                          </ng-container> -->
                                                           <ng-container *ngIf="item.comments.length !=0">
                                                              <ng-container *ngFor="let comment of item.comments| slice:0:teamCommentShow ; let i=index ">
                                                                  <div class="commentBox"> <img src="{{comment.user.avatar}} " class="avatarList">
@@ -433,14 +326,6 @@
                                                                   <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}</span>
                                                                  </div>
                                                              </ng-container>
-                                                            <!--   <ng-container *ngIf="item.comments.length !=1">
-                                                                  <div class="avatarContainer">
-                                                                      <ng-container *ngFor="let comment of item.comments| slice:1:item.comments.length "> 
-                                                                          <img src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50 " class="avatarList"> 
-                                                                      </ng-container> 
-                                                                      <span class="moreComments">+ {{item.comments.length-1}} more</span>
-                                                                  </div>
-                                                            </ng-container>  -->
                                                                <div class="lessComments viewLessButton" (mouseup)=" showAllTags(item)" style="text-align: center;"> 
                                                                 <ion-icon  name="ios-arrow-up-outline"></ion-icon> <br>
 
@@ -453,7 +338,7 @@
                                                 <div class="replyBlock">
                                                   <span class="innerLeaveContainer">
                                                      <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;display: none;"></ion-icon>
-                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;display:none;" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
+                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;" (click)="editLeave(item)" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
                                                     <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
                                                   </span>
                                                 </div>
