@@ -134,14 +134,12 @@ export class LeaveModalPage {
                        if(!this.editedItems[j].user_tag){
                       this.editedItems[j].user_tag='';
                       }
-
                       if(this.editedItems[j].user_tag==''){
                         var temp_tag=this.editSelectedUsers[j].name;
                         var tagUser=temp_tag.split(' ');
                         var temUserTag= "@"+tagUser[0];
                         this.editedItems[j].user_tag=temUserTag;
                       }
-
                     }
                       console.log(this.editedItems);
                       console.log(this.autocompleteItemsAsObjects2);
@@ -149,9 +147,6 @@ export class LeaveModalPage {
                       for(var i=0;i<this.editedItems.length;i++){
                         this.upadtetaguser(this.editedItems[i]);
                       }
-
-
-
                       console.log(this.autocompleteItemsAsObjects2);
 
 
@@ -241,13 +236,10 @@ export class LeaveModalPage {
                    this.selectedDates.push(event.formatted);
                 }
              }
-            
               console.log(this.selectedDates);
                this.checkIfData();
            }
     }
-
-
 
     deleteSetected(removeDate){
       // console.log(removeDate);
@@ -272,7 +264,6 @@ export class LeaveModalPage {
     }else{
         this.buttonRequestApi=true;
     }
-
     }
     sendData(){
     console.log("Data to be sent in api request");
@@ -280,15 +271,11 @@ export class LeaveModalPage {
       console.log("error");
     }
      else{
-
         let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id
         };
-
-
         let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/addLeave`;
-
         let user ={
             user_id :this.leave_param1.user_id ,
             email : this.leave_param1.email,
@@ -299,26 +286,18 @@ export class LeaveModalPage {
         let leave_note=this.leaveNote;
         let date_of_application='';
         let  tagged_users=this.selectedUsers;
-
         let createdByUser ={
             user_id :this.createdByUserData.user_id ,
             email : this.createdByUserData.userEmail,
             name :this.createdByUserData.name
         }
-
         let modified_by ={
             user_id :'',
             email : '',
             name :''
         }
         let leave_status='';
-        
-
         let type ='leave_taken';
-        
-
-
-
         let body ={
           user:user,
           created_by:createdByUser,
@@ -326,7 +305,6 @@ export class LeaveModalPage {
           leave_note:leave_note,
           type:type,
           tagged_users:tagged_users
-
         }
         console.log(body);
 
@@ -343,15 +321,12 @@ export class LeaveModalPage {
                      this.leaveAddedModal();
                      this.close(); 
                 }
-
                    else{
             // this.appServiceProvider.presentToast(response.message, 'error');
             this.leaveAddedModal();
             this.close(); 
           }
-
           })
-      
     }
   }
   leaveAddedModal(){
@@ -518,7 +493,7 @@ updateData(){
 
 //this.editLeaveData.user.user_id
   let body ={
-   user_id:"",
+   user_id:this.editLeaveData.user.user_id,
    parent_id:this.editLeaveData.parent_id,
    leave_data:data_leave
 
@@ -527,20 +502,21 @@ updateData(){
 
   this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
     this.appGlobalsProvider.leave_update_param.param1=response;
-    if(response.status == 'success'){
-     console.log(response.data);
-     this.editLeaveData.modified_by=modified_by;
-     this.editLeaveData.leave_date=this.editSelectedDates;
-     this.editLeaveData.tagged_users=this.editSelectedUsers;
-     this.editLeaveData.leave_note=this.editLeaveNote;
-     // this.leaveAddedModal();
-     this.close(); 
-     this.leaveUpdateModal();
-    }
-    else{ 
-      this.close(); 
-      this.leaveUpdateModal();
-    }
+    this.appGlobalsProvider.leave_update_param.param2="updateLeave";
+      if(response.status == 'success'){
+       console.log(response.data);
+       this.editLeaveData.modified_by=modified_by;
+       this.editLeaveData.leave_date=this.editSelectedDates;
+       this.editLeaveData.tagged_users=this.editSelectedUsers;
+       this.editLeaveData.leave_note=this.editLeaveNote;
+       // this.leaveAddedModal();
+       this.close(); 
+       this.leaveUpdateModal();
+      }
+      else{ 
+        this.close(); 
+        this.leaveUpdateModal();
+      }
 
     })
 

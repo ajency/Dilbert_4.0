@@ -24,7 +24,9 @@ export class CancelLeavePage {
   userData:any;
   userleavedata:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(
+     public popoverCtrl: PopoverController,
+     public navCtrl: NavController, public navParams: NavParams,
   	 public element: ElementRef,
   	 public authguard : AuthguardProvider,
      public events : Events,
@@ -53,6 +55,7 @@ export class CancelLeavePage {
           'From' : this.authguard.userData.user_id
         };
      let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cancelLeave`;
+     //this.leaveData.parent_id
      let body ={
         user:this.leaveData.user,
         parent_id:this.leaveData.parent_id
@@ -60,30 +63,38 @@ export class CancelLeavePage {
         console.log(body);
 
     this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+            this.appGlobalsProvider.leave_update_param.param1=response;
+            this.appGlobalsProvider.leave_update_param.param2="cancelLeave";
             if(response.status == 'success'){
               console.log(this.userData.data);
               console.log(this.userData.data.leaves.length);
               if(this.userData.data.leaves.length !=0){
                 console.log("leaves");
-
                  this.userData.data.leaves = this.userData.data.leaves.filter((data: any) => {
                     return response.data.parent_id !== data.parent_id;
                   })
-                // for(var i=0;i<this.userleavedata.length;i++){
-
-                // }
                 console.log(this.userData.data.leaves);
               }
+             
               this.close(); 
+              this.leaveUpdateModal();
             }
             else{ 
-                this.close(); 
-                this.appServiceProvider.presentToast(response.message, 'error'); 
+                this.close();
+                this.leaveUpdateModal();
+                // this.appServiceProvider.presentToast(response.message, 'error'); 
               }
           })
   }
-    close() {
+
+  close() {
     this.viewCtrl.dismiss();
   }
+    
+ leaveUpdateModal(){
+      console.log("inside leaveUpdateModal");
+      let popover = this.popoverCtrl.create( 'UpdateLeavePopUpPage');
+      popover.present();
+  }
 
-}
+} 

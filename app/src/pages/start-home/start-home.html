@@ -190,7 +190,6 @@
 
                                             </div>
                                         </ng-container>
-                                       
                                         <!-- <ng-container > -->
                                         <ng-container  *ngIf="userLeaveData.data.leaves.length !=0">
                                             <ng-container  *ngIf="userLeaveData.data.leaves.length > 2">
@@ -348,7 +347,7 @@
                                                       <span style="margin-left: 10px;"> 
                                                         <input type="text" (keydown)="commentEnter($event)" name="" placeholder="Reply" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
                                                         <!-- <button style="border:none;background-color: transparent; width: 0;" disabled > -->
-                                                        <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="Comment()"></ion-icon>
+                                                        <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="comment()"></ion-icon>
                                                         <hr style="margin-top: 2px;margin-left:20px;"><!-- </button>  -->
                                                       </span>
                                                   </span>

@@ -21,6 +21,7 @@ export class UpdateLeavePopUpPage {
   private nativeElement: any;
   private $: any;
   responseStatusParam:any;
+  type:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
   	 public element: ElementRef,
@@ -37,6 +38,7 @@ export class UpdateLeavePopUpPage {
    ngOnInit(){
     this.$(this.nativeElement).parents().find('.popover-content').addClass("leave-update-pop-up-popover2");
     this.responseStatusParam=this.appGlobalsProvider.leave_update_param.param1;
+    this.type=this.appGlobalsProvider.leave_update_param.param2;
   }
 
   ionViewDidLoad() {

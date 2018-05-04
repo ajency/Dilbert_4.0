@@ -546,65 +546,34 @@ leaveModal(){
       let popover = this.popoverCtrl.create( 'LeaveModalPage',{users:this.autocompleteItemsAsObjects});
       popover.present();
 }
-
 checkleavesTeam(){
   console.log("Team leaves");
-  console.log(this.autocompleteItemsAsObjects);
-  // console.log(this.autocompleteItemsAsObjects);
-  // this.todayDate=moment().format("YYYY-MM-DD");
-  console.log(this.todayDate);
-      // this.leave_param1=this.appGlobalsProvider.leave_param.param1;
-      console.log(this.leave_param1);
-      // let url=`http://www.mocky.io/v2/5ad477072e00005600583b16`;cloudLeave
-       let url = `https://us-central1-dilbert-34d6c.cloudfunctions.net/viewLeave`;
-     
-        console.log(this.leave_param1.user_id);
-        // if(this.leave_param1.user_id == undefined){
-        //   this.user_id1= this.authguard.user_id;
-        // }
-        // else{
-        //    this.user_id1= this.authguard.user_id;
-        // }
-
-        //  for( let i =0 ;i<=this.autocompleteItemsAsObjects.length-1;i++){
-        //     if(this.autocompleteItemsAsObjects[i].user_id !=this.user_id1){
-        //        this.allUser_ids.push(this.autocompleteItemsAsObjects[i].user_id);
-        //     }else{
-        //       console.log("dont add");
-        //     }
-        //     // this.allUser_ids
-        //   }
-          console.log(this.allUser_ids);
-        // this.leave_param1=this.appGlobalsProvider.leave_param.param1;
-        // console.log(this.leave_param1);
-         let leave_date ={
-                    start:this.todayDate,
-                     end:''
-               }
-
-        let  filters ={
-          users:this.allUser_ids,
-          leave_date:leave_date
-        };
-       let filter1={
-            filters:filters
-        }
-        
-        console.warn(filter1);
-        let optionalHeaders={
-           'X-API-KEY' : this.key,
-           'From' : this.authguard.userData.user_id
-        };
-
-         this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
-            console.log(response);
-            this.teamLeaveData=response;
-            this.teamLeaveCount=this.teamLeaveData.data.leaves.length;
-        });
+    let url = `https://us-central1-dilbert-34d6c.cloudfunctions.net/viewLeave`;
+    console.log(this.leave_param1.user_id);
+    console.log(this.allUser_ids);
+    let leave_date ={
+                start:this.todayDate,
+                 end:''
+           }
+    let  filters ={
+      users:this.allUser_ids,
+      leave_date:leave_date
+    };
+    let filter1={
+        filters:filters
+    }
+    console.warn(filter1);
+    let optionalHeaders={
+       'X-API-KEY' : this.key,
+       'From' : this.authguard.userData.user_id
+    };
+     this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+        console.log(response);
+        this.teamLeaveData=response;
+        this.teamLeaveCount=this.teamLeaveData.data.leaves.length;
+    });
 
 }
-
-
 
 checkleaves(){
   console.log("My leaves");
@@ -619,7 +588,6 @@ checkleaves(){
             end:''
        }
         this.newparam1 = this.appGlobalsProvider.dashboard_params.param1;
-
         console.log(this.newparam1.user_id,"from appGlobalsProvider");
         console.log(this.authguard.user_id,"from authguard");
 
@@ -648,7 +616,6 @@ checkleaves(){
         };
 
          this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
-
           if(response.status == 'success'){
             console.log(response);
              this.userLeaveData=response;
@@ -670,14 +637,7 @@ checkleaves(){
             this.appServiceProvider.presentToast(response.message, 'error');
           }
         });
-
-
 }
-
-
-
-
-
 
   showAllTags(data){
 
@@ -698,25 +658,11 @@ checkleaves(){
          $(this).parent().addClass("hide");
          $(this).parent().prev().removeClass("hide");
     });
-
-
-   console.log(data);
-   // this.show=data.length;
   }
 
   testLeave(leaveShow){
     console.log(leaveShow);
-
   }
-
-
-  testing(){
-    this.checkleaves();
-    this.checkleavesTeam();
-    // this.checkleaves12();
-
-  }
-
   LeaveType(val){
     console.log("----- selected Team value---");
     console.log(val.target.value);
@@ -746,18 +692,12 @@ editLeave(item1){
   console.log(item1);
   this.dataToBeEdited=item1;
   this.events.publish("update:leave_data", item1);
-  // let popover = this.popoverCtrl.create( 'EditleavemodalPage');
   let popover = this.popoverCtrl.create( 'LeaveModalPage',{users:this.autocompleteItemsAsObjects,data:item1,type:"editLeave"});
-  // let popover = this.popoverCtrl.create( 'LeaveModalPage',{type:"editLeave"});
   popover.present();
-
-
 }
 
 readUserData(){
-
 console.log("users loading");
-
 console.log(this.apiURL);
 
     let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
@@ -821,12 +761,9 @@ console.log(this.apiURL);
                 }
                 else{
                 this.appServiceProvider.presentToast(response.message, 'error');
-              }
-              
+              }  
           })
-
 }
-
   addComment(item){
       this.commentNote="";
       this.commentNote1 ="";
@@ -948,15 +885,10 @@ console.log(this.apiURL);
               }
               
           })
-
-
-
-
-
     }
   }
    teamComment(){
-    console.log("comment Added Api Call");
+    console.log("comment team Added Api Call");
     // console.log(item);
     if(this.commentNote1 ==""||this.commentNote1 ==undefined||this.commentNote ==""||this.commentNote ==undefined){
       console.log("enter comment")

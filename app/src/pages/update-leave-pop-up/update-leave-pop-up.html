@@ -17,44 +17,89 @@
 
 </ion-content>
  -->
- <ng-container *ngIf=" responseStatusParam.status =='success' "> 
-	 <ion-content class="leave-update-pop-up-popup">
+ <ng-container *ngIf=" type =='updateLeave' "> 
+	 <ng-container *ngIf=" responseStatusParam.status =='success' "> 
+		 <ion-content class="leave-update-pop-up-popup">
+				<div class="my-leave-popup">
+					<div align="center" class="leave-update-pop-up-popup__title">
+						 <ion-icon name="checkmark-circle-outline" class="title_icon_success"></ion-icon>
+					</div>
+					<div padding>
+						<div class="mainContent">
+							<h4>Leave Updated Successfully</h4>
+						</div>
+						<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
+						<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
+					</div>
+				</div>
+			</ion-content>
+	</ng-container>
+	<ng-container *ngIf=" responseStatusParam.status =='error' "> 
+		<ion-content class="leave-added-popup">
 			<div class="my-leave-popup">
-				<div align="center" class="leave-update-pop-up-popup__title">
-					 <ion-icon name="checkmark-circle-outline" class="title_icon_success"></ion-icon>
+				<div align="center" class="leave-added-popup__title">
+					 <!-- <ion-icon name="checkmark-circle-outline" class="title_icon"></ion-icon> -->
+					 <ion-icon name="warning" class="title_icon_error"></ion-icon>
 				</div>
 				<div padding>
 					<div class="mainContent">
-						<h4>Leave Updated Successfully</h4>
+							<h4>Leave could not be Updated</h4>
+							<div class="msg_container">
+								<div class="warning_message">{{responseStatusParam.message}}</div>
+							</div>
+					<!-- 		<ng-container *ngIf=" responseStatusParam.data.length !=0 ">
+								<div *ngFor="let item of responseStatusParam.data">
+									<span style="color:red;">{{item}}</span>
+								</div>
+							</ng-container> -->
 					</div>
 					<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
 					<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
 				</div>
 			</div>
 		</ion-content>
+	</ng-container>
 </ng-container>
-<ng-container *ngIf=" responseStatusParam.status =='error' "> 
-	<ion-content class="leave-added-popup">
-		<div class="my-leave-popup">
-			<div align="center" class="leave-added-popup__title">
-				 <!-- <ion-icon name="checkmark-circle-outline" class="title_icon"></ion-icon> -->
-				 <ion-icon name="warning" class="title_icon_error"></ion-icon>
-			</div>
-			<div padding>
-				<div class="mainContent">
-						<h4>Leave could not be Updated</h4>
-						<div class="msg_container">
-							<div class="warning_message">{{responseStatusParam.message}}</div>
+ <ng-container *ngIf=" type =='cancelLeave' "> 
+	 <ng-container *ngIf=" responseStatusParam.status =='success' "> 
+		 <ion-content class="leave-update-pop-up-popup">
+				<div class="my-leave-popup">
+					<div align="center" class="leave-update-pop-up-popup__title">
+						 <ion-icon name="checkmark-circle-outline" class="title_icon_success"></ion-icon>
+					</div>
+					<div padding>
+						<div class="mainContent">
+							<h4>Leave Canceled Successfully</h4>
 						</div>
-				<!-- 		<ng-container *ngIf=" responseStatusParam.data.length !=0 ">
-							<div *ngFor="let item of responseStatusParam.data">
-								<span style="color:red;">{{item}}</span>
-							</div>
-						</ng-container> -->
+						<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
+						<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
+					</div>
 				</div>
-				<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
-				<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
+			</ion-content>
+	</ng-container>
+	<ng-container *ngIf=" responseStatusParam.status =='error' "> 
+		<ion-content class="leave-added-popup">
+			<div class="my-leave-popup">
+				<div align="center" class="leave-added-popup__title">
+					 <!-- <ion-icon name="checkmark-circle-outline" class="title_icon"></ion-icon> -->
+					 <ion-icon name="warning" class="title_icon_error"></ion-icon>
+				</div>
+				<div padding>
+					<div class="mainContent">
+							<h4>Leave could not be Canceled</h4>
+							<div class="msg_container">
+								<div class="warning_message">{{responseStatusParam.message}}</div>
+							</div>
+					<!-- 		<ng-container *ngIf=" responseStatusParam.data.length !=0 ">
+								<div *ngFor="let item of responseStatusParam.data">
+									<span style="color:red;">{{item}}</span>
+								</div>
+							</ng-container> -->
+					</div>
+					<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
+					<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
+				</div>
 			</div>
-		</div>
-	</ion-content>
+		</ion-content>
+	</ng-container>
 </ng-container>
