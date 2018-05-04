@@ -42,12 +42,9 @@ export class CancelLeavePage {
     ngOnInit(){
     this.$(this.nativeElement).parents().find('.popover-content').addClass("cancel-leave-popover2");
   }
-
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad CancelLeavePage');
   }
-
   cancelLeaveApiCall(){
     console.log("are you sure??");
     console.log(this.leaveData);
@@ -76,19 +73,14 @@ export class CancelLeavePage {
 
                 // }
                 console.log(this.userData.data.leaves);
-
               }
               this.close(); 
-             
             }
             else{ 
                 this.close(); 
                 this.appServiceProvider.presentToast(response.message, 'error'); 
               }
-
           })
-
-
   }
     close() {
     this.viewCtrl.dismiss();

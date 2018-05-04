@@ -66,6 +66,7 @@ export class LeaveModalPage {
     editSelectedUsers:Array<any> = [];
     editLeaveNote:any;
     editLeaveNote2:any;
+    leaveUpdateStatus:any;
 
     tempUsers:Array<any> = [];
 
@@ -213,15 +214,13 @@ export class LeaveModalPage {
       console.log(this.userInfo);
       console.log("yes");
   }
-
-
-    close() {
-    this.viewCtrl.dismiss();
+  close() {
+  this.viewCtrl.dismiss();
   }
 
-    close1() {
-      console.log(this.editLeaveData);
-  this.viewCtrl.dismiss();
+  close1() {
+    console.log(this.editLeaveData);
+    this.viewCtrl.dismiss();
   }
 
    onDateChanged(event) {
@@ -390,7 +389,6 @@ editDateChanged(event){
   }
    console.log(this.editSelectedDates);
    console.log(this.editLeaveData);
-
 }
 editDeleteSetected(removeDate){
     // console.log(removeDate);
@@ -476,8 +474,6 @@ checkIfEditData(){
     }
 }
 
-
-
 updateData(){
   console.log("update data api call");
   let optionalHeaders = {
@@ -496,10 +492,6 @@ updateData(){
   if(!this.editLeaveData.modified_by){
     this.editLeaveData.modified_by=[];
   }
-  // this.editLeaveData.modified_by=modified_by;
-  // this.editLeaveData.leave_date=this.editSelectedDates;
-  // this.editLeaveData.tagged_users=this.editSelectedUsers;
-  // this.editLeaveData.leave_note=this.editLeaveNote;
   console.log("after update data");
   console.log(this.editLeaveData);
   let user ={
@@ -526,7 +518,7 @@ updateData(){
 
 //this.editLeaveData.user.user_id
   let body ={
-   user_id:this.editLeaveData.user.user_id,
+   user_id:"",
    parent_id:this.editLeaveData.parent_id,
    leave_data:data_leave
 
@@ -534,22 +526,20 @@ updateData(){
   console.log(body);
 
   this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+    this.appGlobalsProvider.leave_update_param.param1=response;
     if(response.status == 'success'){
-
-      console.log(response.data);
+     console.log(response.data);
      this.editLeaveData.modified_by=modified_by;
      this.editLeaveData.leave_date=this.editSelectedDates;
      this.editLeaveData.tagged_users=this.editSelectedUsers;
      this.editLeaveData.leave_note=this.editLeaveNote;
-         // this.leaveAddedModal();
-         this.close(); 
+     // this.leaveAddedModal();
+     this.close(); 
+     this.leaveUpdateModal();
     }
-
     else{ 
       this.close(); 
-      this.appServiceProvider.presentToast(response.message, 'error');
-      // this.leaveAddedModal();
-    
+      this.leaveUpdateModal();
     }
 
     })
@@ -557,7 +547,11 @@ updateData(){
 
 }
 
-
+  leaveUpdateModal(){
+      console.log("inside leaveUpdateModal");
+      let popover = this.popoverCtrl.create( 'UpdateLeavePopUpPage');
+      popover.present();
+  }
 
   funclose(){
     // this.editLeaveData = oldData1;

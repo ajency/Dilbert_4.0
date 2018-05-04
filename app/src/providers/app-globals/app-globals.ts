@@ -28,6 +28,9 @@ export class AppGlobalsProvider {
   leave_request_param :any ={
    param1:''
   }
+  leave_update_param :any ={
+   param1:''
+  }
 
   dashboard_params : any = {
     param1 : '',
