@@ -1031,4 +1031,33 @@ console.log(this.apiURL);
     popover.present();
 
   }
+  // getTimeDiff(data){
+  // //   console.log(data)   switch (option) {
+  //     case 1:
+  //       text = moment(date.split(" ")[0], "YYYY-MM-DD").format("DD MMM YYYY");
+  //       break;
+  //     case 2:
+  //       text = moment(date.split(" ")[1], "kk:mm:ss").format("hh:mm a");
+  //       break;
+  //     case 3:
+  //       text = moment(date, "kk:mm:ss").format("hh:mm a");
+  //       break;
+  //     case 4:
+  //       text = moment(date, "kk:mm:ss").format("HH:mm");
+  //       break;
+  //     case 5:
+  //       text = moment(date.split(" ")[0], "YYYY-MM-DD").format("DD MMM");
+  //       break;
+
+  //   }
+  // }
+
+   getTimeDiff(date: string): string {
+    var tempDate=moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    // console.log(tempDate);
+    var text: string = '';
+    text =moment(tempDate, "MMMM Do YYYY, h:mm:ss a").fromNow();
+    console.log(text);
+    return text;
+  }
 }

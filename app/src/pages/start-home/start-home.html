@@ -100,7 +100,13 @@
                                                 <div class="">
                                                      <div class="leaveNote">
                                                       <ng-container *ngIf="item.leave_date">
-                                                       {{item.leave_note}} for {{item.leave_date.length}} Days on
+                                                       {{item.leave_note}} <!-- for {{item.leave_date.length}}  -->
+                                                       <ng-container *ngIf="item.leave_date.length==1">
+                                                        <span style="font-weight: bold;">for {{item.leave_date.length}}  Day on</span>
+                                                       </ng-container>
+                                                       <ng-container *ngIf="item.leave_date.length!=1">
+                                                        <span  style="font-weight: bold;">for {{item.leave_date.length}}  Days on</span>
+                                                       </ng-container>
                                                         <ng-container *ngFor="let dates of item.leave_date ; let i=index ">
                                                             <ng-container *ngIf="i == item.leave_date.length- 1 && item.leave_date.length !=1 ">and</ng-container>
                                                             <span font-weight-5> {{getDayDate(dates,5)}} </span>
@@ -142,17 +148,48 @@
                                                     <ng-container *ngIf="item.comments">
                                                       <div class="userComment">
                                                       <ng-container *ngIf="item.comments.length !=0">
-                                                         <ng-container *ngFor="let comment of item.comments| slice:0:teamCommentShow ; let i=index ">
-                                                             <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
-                                                              <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}</span>
-                                                             </div>
+                                                         <ng-container *ngIf="item.comments.length ==1">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:1 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
                                                          </ng-container>
-                                                          <ng-container *ngIf="item.comments.length !=1">
+                                                          <ng-container *ngIf="item.comments.length ==2">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:2 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+                                                         <ng-container *ngIf="item.comments.length >2">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:1 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+
+                                                          <ng-container *ngIf="item.comments.length >2">
                                                               <div class="avatarContainer">
-                                                                  <ng-container *ngFor="let comment of item.comments| slice:1:item.comments.length "> 
+                                                                  <ng-container *ngFor="let comment of item.comments| slice:1:2"> 
                                                                       <img src="{{comment.user.avatar}}" class="avatarList"> 
-                                                                  </ng-container> 
-                                                                  <span class="moreComments" (mouseup)=" showAllTags(item)" >+ {{item.comments.length-1}} more</span>
+                                                                  </ng-container>
+                                                                  <ng-container *ngIf="item.comments.length > 2">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" >+ {{item.comments.length-2}} more</span>
+                                                                  </ng-container>
+                                                                  <!--  <ng-container *ngIf="item.comments.length < 4">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" > more</span>
+                                                                  </ng-container> -->
                                                               </div>
                                                         </ng-container> 
                                                       </ng-container>     
@@ -161,8 +198,12 @@
                                                           <ng-container *ngIf="item.comments.length !=0">
                                                              <ng-container *ngFor="let comment of item.comments; let i=index ">
                                                                  <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
-                                                                  <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}</span>
-                                                                 </div>
+                                                                  <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                  <span class="commentMessage">{{comment.message}} 
+                                                                    <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}</small>
+                                                                  </span>
+
+                                                                 </div>  
                                                              </ng-container>
                                                                <div class="lessComments viewLessButton" (mouseup)=" showAllTags(item)" style="text-align: center;"> 
                                                                 <ion-icon  name="ios-arrow-up-outline"></ion-icon> <br>
@@ -260,7 +301,13 @@
                                                             <td class="noBorder datablock">
                                                              <span font-weight-5>{{item.user.name}} :</span>
                                                             
-                                                              <span class="noteCon">{{item.leave_note}} for <span font-weight-5> {{item.leave_date.length}} Days </span> on
+                                                              <span class="noteCon">{{item.leave_note}} <!-- for <span font-weight-5> {{item.leave_date.length}} Days </span> on -->
+                                                               <ng-container *ngIf="item.leave_date.length==1">
+                                                                <span style="font-weight: bold;">for {{item.leave_date.length}}  Day on</span>
+                                                               </ng-container>
+                                                               <ng-container *ngIf="item.leave_date.length!=1">
+                                                                <span  style="font-weight: bold;">for {{item.leave_date.length}}  Days on</span>
+                                                               </ng-container>
                                                                   <ng-container *ngFor="let dates of item.leave_date ; let i=index ">
                                                                       <ng-container *ngIf="i == item.leave_date.length- 1 && item.leave_date.length !=1 ">and</ng-container>
                                                                       <span font-weight-5> {{getDayDate(dates,5)}} </span>
@@ -304,9 +351,11 @@
                                                     <ng-container *ngIf="item.comments">
                                                       <div class="userComment">
                                                           <ng-container *ngIf="item.comments.length !=0">
-                                                             <ng-container *ngFor="let comment of item.comments| slice:0:teamCommentShow ; let i=index ">
+                                                           <!--   <ng-container *ngFor="let comment of item.comments| slice:0:teamCommentShow ; let i=index ">
                                                                  <div class="commentBox"> <img src="{{comment.user.avatar}} " class="avatarList">
-                                                                  <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}</span>
+                                                                  <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}
+                                                                     <small class="timeContainer">{{getTimeDiff(comment.timestamp)}} </small>
+                                                                  </span>
                                                                  </div>
                                                              </ng-container>
                                                               <ng-container *ngIf="item.comments.length !=1">
@@ -317,6 +366,63 @@
                                                                       <span class="moreComments" (mouseup)=" showAllTags(item)" >+ {{item.comments.length-1}} more</span>
                                                                   </div>
                                                             </ng-container> 
+                                                         <ng-container *ngIf="item.comments.length !=1">
+                                                              <div class="avatarContainer">
+                                                                  <ng-container *ngFor="let comment of item.comments| slice:1:4"> 
+                                                                      <img src="{{comment.user.avatar}}" class="avatarList"> 
+                                                                  </ng-container>
+                                                                  <ng-container *ngIf="item.comments.length > 4">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" >+ {{item.comments.length-4}} more</span>
+                                                                  </ng-container>
+                                                                   <ng-container *ngIf="item.comments.length < 4">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" > more</span>
+                                                                  </ng-container>
+                                                              </div>
+                                                        </ng-container>  -->
+                                                           <ng-container *ngIf="item.comments.length ==1">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:1 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+                                                          <ng-container *ngIf="item.comments.length ==2">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:2 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+                                                         <ng-container *ngIf="item.comments.length >2">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:1 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+
+                                                          <ng-container *ngIf="item.comments.length >2">
+                                                              <div class="avatarContainer">
+                                                                  <ng-container *ngFor="let comment of item.comments| slice:1:2"> 
+                                                                      <img src="{{comment.user.avatar}}" class="avatarList"> 
+                                                                  </ng-container>
+                                                                  <ng-container *ngIf="item.comments.length > 2">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" >+ {{item.comments.length-2}} more</span>
+                                                                  </ng-container>
+                                                                  <!--  <ng-container *ngIf="item.comments.length < 4">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" > more</span>
+                                                                  </ng-container> -->
+                                                              </div>
+                                                        </ng-container> 
                                                           </ng-container>     
 
                                                       </div>
@@ -324,7 +430,9 @@
                                                           <ng-container *ngIf="item.comments.length !=0">
                                                              <ng-container *ngFor="let comment of item.comments; let i=index ">
                                                                  <div class="commentBox"> <img src="{{comment.user.avatar}} " class="avatarList">
-                                                                  <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}</span>
+                                                                  <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}
+                                                                    <small class="timeContainer">{{getTimeDiff(comment.timestamp)}} </small>
+                                                                  </span>
                                                                  </div>
                                                              </ng-container>
                                                                <div class="lessComments viewLessButton" (mouseup)=" showAllTags(item)" style="text-align: center;"> 
