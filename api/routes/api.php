@@ -52,6 +52,8 @@ Route::group(['prefix' => 'cron'], function() {
     Route::post('/weekly','CronController@weekly');
     // monthly cron for total_hours_per_month violation
     Route::post('/monthly','CronController@monthly');
+    //weekly test
+     Route::post('/weekly_summary_mail','CronController@weekly_summary_mail');
 });
 
 // Desktop App

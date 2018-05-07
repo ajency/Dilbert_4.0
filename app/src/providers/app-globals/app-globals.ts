@@ -31,13 +31,15 @@ export class AppGlobalsProvider {
   summary_params : any = {
     param1 : ''
   }
-
+  newsummary_params : any = {
+    param1 : ''
+  }
+  
   private semVersion: any = {
-    major: 1,
+    major: 2,
     minor: 2,
     patch: 6
   };
-
   appVersion : string = '' ;
 
 private activeTabsList: any = {
@@ -64,6 +66,12 @@ private activeTabsList: any = {
       component: 'OrganizationSummaryPage',
       deeplink: 'summary',
       placeholder: 'Summary',
+      active: true
+    },
+     usersummary:{
+      component: 'NewSummaryPage',
+      deeplink: 'user-summary',
+      placeholder: 'user-summary',
       active: true
     },
   };

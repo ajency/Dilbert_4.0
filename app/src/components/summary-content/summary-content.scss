@@ -388,8 +388,39 @@ summary-content {
     background-repeat: no-repeat;
     outline: 0;
 }
+.floatright{
+    text-align: right;
+}
+.viewLessData{
+    color: #6943bf;
+    background-color: white;
+    border : 1px solid #6943bf; 
+}
 
+.viewLessData:hover{
+    background-color: white !important;
+}
+  
+  @media screen and (max-width: 600px) {
+          .hideBlockMobile{
+              display: none;
+       }
+    }
+@media screen and (min-width: 600px) {
+        .mobileWeekDays{
+           display: none;
+       } 
+    
+}
 
-
-
-
+.mobileWeekDays{
+            position: fixed;
+            background-color: white;
+            bottom: 55px;
+            width: 100%;
+            left:0;
+            padding-top: 10px;
+            padding-left: 20px;
+            padding-bottom: 10px;
+            box-shadow: $shadow-1;
+}
