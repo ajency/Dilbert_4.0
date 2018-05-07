@@ -76,6 +76,11 @@ import { Storage } from '@ionic/storage';
  loggedInUser:any;
  dummmy:any;
  currentTime:any;
+ originalObject:any;
+ myLeaveOptions:any;
+ teamLeaveOptions:any;
+ selectedOption:any;
+ teamSelectedOption:any;
 
  private chageLogCB: Function;
 
@@ -114,6 +119,10 @@ import { Storage } from '@ionic/storage';
 }
 
 ngOnInit(){
+    this.selectedOption="Upcoming";
+    this.teamSelectedOption="Upcoming";
+    this.myLeaveOptions=['Upcoming','All'];
+    this.teamLeaveOptions=['Upcoming','All'];
     this.currentTime =moment().format('MMMM Do YYYY, h:mm:ss a');
     this.userDetails=this.authguard.userData;
     console.log(this.userDetails);
@@ -570,9 +579,50 @@ checkleavesTeam(){
        'From' : this.authguard.userData.user_id
     };
      this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
-        console.log(response);
+         if(response.status == 'success'){
         this.teamLeaveData=response;
         this.teamLeaveCount=this.teamLeaveData.data.leaves.length;
+        // if(response.data.leaves.length ==0){
+        //     this.allTeamLeave();
+
+        // }
+      }
+      else{
+         this.appServiceProvider.presentToast(response.message, 'error');
+      }
+    });
+
+}
+allTeamLeave(){
+    console.log("Team leaves");
+    this.teamSelectedOption="All";
+    let url = `https://us-central1-dilbert-34d6c.cloudfunctions.net/viewLeave`;
+    console.log(this.leave_param1.user_id);
+    console.log(this.allUser_ids);
+    let leave_date ={
+                start:'',
+                 end:''
+           }
+    let  filters ={
+      users:this.allUser_ids,
+      leave_date:leave_date
+    };
+    let filter1={
+        filters:filters
+    }
+    console.warn(filter1);
+    let optionalHeaders={
+       'X-API-KEY' : this.key,
+       'From' : this.authguard.userData.user_id
+    };
+     this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+         if(response.status == 'success'){
+        this.teamLeaveData=response;
+        this.teamLeaveCount=this.teamLeaveData.data.leaves.length;
+      }
+      else{
+         this.appServiceProvider.presentToast(response.message, 'error');
+      }
     });
 
 }
@@ -592,13 +642,6 @@ checkleaves(){
         this.newparam1 = this.appGlobalsProvider.dashboard_params.param1;
         console.log(this.newparam1.user_id,"from appGlobalsProvider");
         console.log(this.authguard.user_id,"from authguard");
-
-      // if(this.newparam1.user_id != undefined){
-      //     this.user_id1= this.newparam1.user_id;
-      //   }
-      //   else{
-      //      this.user_id1= this.authguard.user_id;
-      //   }
         console.log(this.user_id1);
 
         let  filters ={
@@ -613,14 +656,16 @@ checkleaves(){
         let optionalHeaders={
            'X-API-KEY' : this.key,
            'From' : this.authguard.userData.user_id
-
-
         };
 
          this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
           if(response.status == 'success'){
             console.log(response);
              this.userLeaveData=response;
+             // if(response.data.leaves.length == 0){
+             //  //if no upcoming leave request all leaves
+             //    this.allLeaves();
+             // }
               
              //  console.log("dummy dadta");
               console.log(this.userLeaveData);
@@ -640,7 +685,56 @@ checkleaves(){
           }
         });
 }
+  allLeaves(){
+     console.log("----------------all leaves-----------");
+     this.selectedOption="All";
+     console.log(this.selectedOption);
+      this.leave_param1=this.appGlobalsProvider.leave_param.param1;
+      console.log(this.leave_param1);
+      
+       let  url  = `https://us-central1-dilbert-34d6c.cloudfunctions.net/viewLeave`;
+       let leave_date ={
+            start:'',
+            end:''
+       }
+        this.newparam1 = this.appGlobalsProvider.dashboard_params.param1;
+        console.log(this.user_id1);
+        let  filters ={
+          users:this.my_user_id,
+          leave_date:leave_date
 
+        };
+       let filter1={
+            filters:filters
+        }
+        
+        let optionalHeaders={
+           'X-API-KEY' : this.key,
+           'From' : this.authguard.userData.user_id
+        };
+         this.appServiceProvider.request(url, 'post', filter1, optionalHeaders, false, 'observable', 'disable', {}, false).subscribe( (response) => {
+          if(response.status == 'success'){
+            console.log(response);
+             this.userLeaveData=response;
+             //  console.log("dummy dadta");
+              console.log(this.userLeaveData);
+             //  console.log(this.userLeaveData.data);
+              console.log(this.userLeaveData.data.leaves.length);
+              this.myLeaveCount=this.userLeaveData.data.leaves.length;
+              if(this.userLeaveData.comments){
+                console.log("yes");
+              }
+              else
+              {
+                console.log("no");
+              }
+          }
+          else{
+            this.appServiceProvider.presentToast(response.message, 'error');
+          }
+        });
+
+  }
   showAllTags(data){
 
  // $(".morebtn").click(function(){
@@ -665,6 +759,9 @@ checkleaves(){
   testLeave(leaveShow){
     console.log(leaveShow);
   }
+
+
+
   LeaveType(val){
     console.log("----- selected Team value---");
     console.log(val.target.value);
@@ -675,8 +772,10 @@ checkleaves(){
        this.todayDate=moment().format("YYYY-MM-DD");;
     }
        this.checkleavesTeam();
-
   }
+
+
+
   MyLeaveType(val){
     console.log("----- selected My value---");
       console.log(val.target.value);
@@ -687,20 +786,19 @@ checkleaves(){
        this.myTodayDate=moment().format("YYYY-MM-DD");;
     }
        this.checkleaves();
- 
-
   }
-editLeave(item1){
-  console.log(item1);
-  this.dataToBeEdited=item1;
-  this.events.publish("update:leave_data", item1);
-  let popover = this.popoverCtrl.create( 'LeaveModalPage',{users:this.autocompleteItemsAsObjects,data:item1,type:"editLeave"});
-  popover.present();
-}
 
-readUserData(){
-console.log("users loading");
-console.log(this.apiURL);
+  editLeave(item1){
+    console.log(item1);
+    this.dataToBeEdited=item1;
+    this.events.publish("update:leave_data", item1);
+    let popover = this.popoverCtrl.create( 'LeaveModalPage',{users:this.autocompleteItemsAsObjects,data:item1,type:"editLeave"});
+    popover.present();
+  }
+
+  readUserData(){
+    console.log("users loading");
+    console.log(this.apiURL);
 
     let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
 
@@ -726,9 +824,7 @@ console.log(this.apiURL);
           'From' : this.authguard.userData.user_id
         };
             this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
-
             console.log(response);
-
                 if(response.status == 'success'){
                      // this.users = response.data;
                      this.autocompleteItemsAsObjects = response.data;
@@ -765,7 +861,7 @@ console.log(this.apiURL);
                 this.appServiceProvider.presentToast(response.message, 'error');
               }  
           })
-}
+  }
   addComment(item){
       this.commentNote="";
       this.commentNote1 ="";
@@ -791,7 +887,6 @@ console.log(this.apiURL);
       this.commentNote1 ="";
       $(".cancelComment").click(function(){
          // $(this).addClass("hide");
-
 
          $(this).parent().parent().addClass("hide");
          $(this).parent().parent().prev().removeClass("hide");
@@ -853,9 +948,7 @@ console.log(this.apiURL);
           'From' : this.authguard.userData.user_id
         };
             this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
-
             console.log(response);
-
                 if(response.status == 'success'){
                    console.log("Comment Added");
                     console.log("comment data",response.data);
@@ -911,8 +1004,6 @@ console.log(this.apiURL);
           console.log("no user found");
         }
       }
-
-
 
     let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/addComment`;
     console.log(url);
@@ -1033,26 +1124,6 @@ console.log(this.apiURL);
     popover.present();
 
   }
-  // getTimeDiff(data){
-  // //   console.log(data)   switch (option) {
-  //     case 1:
-  //       text = moment(date.split(" ")[0], "YYYY-MM-DD").format("DD MMM YYYY");
-  //       break;
-  //     case 2:
-  //       text = moment(date.split(" ")[1], "kk:mm:ss").format("hh:mm a");
-  //       break;
-  //     case 3:
-  //       text = moment(date, "kk:mm:ss").format("hh:mm a");
-  //       break;
-  //     case 4:
-  //       text = moment(date, "kk:mm:ss").format("HH:mm");
-  //       break;
-  //     case 5:
-  //       text = moment(date.split(" ")[0], "YYYY-MM-DD").format("DD MMM");
-  //       break;
-
-  //   }
-  // }
 
    getTimeDiff(date: string): string {
     var tempDate=moment(date).format('MMMM Do YYYY, h:mm:ss a');

@@ -23,6 +23,8 @@ export class CancelLeavePage {
   leaveData:any;
   userData:any;
   userleavedata:any;
+  selectedValue:any;
+  cancelled_by_user_data:any;
 
   constructor(
      public popoverCtrl: PopoverController,
@@ -43,6 +45,8 @@ export class CancelLeavePage {
 
     ngOnInit(){
     this.$(this.nativeElement).parents().find('.popover-content').addClass("cancel-leave-popover2");
+    this.selectedValue="ignored";
+    this.cancelled_by_user_data=this.authguard.userData;
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad CancelLeavePage');
@@ -56,9 +60,16 @@ export class CancelLeavePage {
         };
      let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cancelLeave`;
      //this.leaveData.parent_id
+     let cancelled_by ={
+            user_id :this.cancelled_by_user_data.user_id ,
+            email : this.cancelled_by_user_data.userEmail,
+            name :this.cancelled_by_user_data.name
+        }
      let body ={
+        status:this.selectedValue,
         user:this.leaveData.user,
-        parent_id:this.leaveData.parent_id
+        parent_id:this.leaveData.parent_id,
+        cancelled_by:cancelled_by
         }
         console.log(body);
 
@@ -95,6 +106,10 @@ export class CancelLeavePage {
       console.log("inside leaveUpdateModal");
       let popover = this.popoverCtrl.create( 'UpdateLeavePopUpPage');
       popover.present();
+  }
+  ChangeValue(event){
+    console.log(event.target.value);
+    this.selectedValue=event.target.value;
   }
 
 } 
