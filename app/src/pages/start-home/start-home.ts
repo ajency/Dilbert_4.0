@@ -75,6 +75,7 @@ import { Storage } from '@ionic/storage';
  all_users:any;
  loggedInUser:any;
  dummmy:any;
+ currentTime:any;
 
  private chageLogCB: Function;
 
@@ -113,6 +114,7 @@ import { Storage } from '@ionic/storage';
 }
 
 ngOnInit(){
+    this.currentTime =moment().format('MMMM Do YYYY, h:mm:ss a');
     this.userDetails=this.authguard.userData;
     console.log(this.userDetails);
     this.readUserData();
@@ -1054,10 +1056,10 @@ console.log(this.apiURL);
 
    getTimeDiff(date: string): string {
     var tempDate=moment(date).format('MMMM Do YYYY, h:mm:ss a');
-    // console.log(tempDate);
+    // console.log(this.currentTime);
     var text: string = '';
     text =moment(tempDate, "MMMM Do YYYY, h:mm:ss a").fromNow();
-    console.log(text);
+    // console.log(text);
     return text;
   }
 }
