@@ -152,10 +152,11 @@ class AppController extends Controller
                 }
                 else {
                     // if the ping is of the same ip type and not a certain
-                    // amount of timethen update the activity log
-                    if($lastUserActivity->type == $ipType && Carbon::now()->diffInMinutes(new Carbon($lastUserActivity->to)) < 5) {
+                    // amount of time then update the activity log
+                    if($lastUserActivity->type == $ipType && Carbon::now()->diffInMinutes(new Carbon($lastUserActivity->updated_at)) < 5) {
                         // update the the end_time of the last user activity
                         $lastUserActivity->to = Carbon::now()->format('H:i:s');
+                        $lastUserActivity->save();
                     }
                     else {
                         // create a new entry
