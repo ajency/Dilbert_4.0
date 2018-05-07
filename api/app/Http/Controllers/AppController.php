@@ -167,6 +167,13 @@ class AppController extends Controller
                         $userActivity->from = Carbon::now()->format('H:i:s');
                         $userActivity->to = Carbon::now()->format('H:i:s');
                         $userActivity->save();
+
+                        // check if this ping was a continuous one
+                        // so that you dont miss out a time equal to the idle time
+                        if((new Carbon($lastUserActivity->to))->diffInMinutes(new Carbon($userActivity->from)) <= $orgDetails['ping_freq']) {
+                            $lastUserActivity->to = $userActivity->from;
+                            $lastUserActivity->save();
+                        }
                     }
                 }
 
