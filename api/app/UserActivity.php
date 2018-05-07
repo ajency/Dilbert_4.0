@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class UserActivity extends Model
 {
@@ -15,7 +16,7 @@ class UserActivity extends Model
      * @param  [type]  $userActivity array of prefetched user activity | optional
      * @return string                in the "hh:mm" format ex: "12:00"
      */
-    public function totalTimeForUser($userId, $workDate, $workFromHome = false, $userActivity = null) {
+    public function computeUserTotalTime($userId, $workDate, $workFromHome = false, $userActivity = null) {
         $totalMins = 0;
         /**
          * check if the user activity is already passed
