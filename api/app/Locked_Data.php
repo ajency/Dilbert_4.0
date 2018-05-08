@@ -140,7 +140,7 @@ class Locked_Data extends Model
                 $dayData['end_time'] = $endTime->format('H:i');
                 // if current day get status from logs
                 if($ld->work_date == date('Y-m-d'))
-                    $dayData['status'] = $this->getCurrentStatus($user_id,$udet['user_details'][0]['org_id'],date('Y-m-d'));
+                    $dayData['status'] = $this->getCurrentStatus($user_id,$udet['user_details'][0]['org_id'],date('Y-m-d'),$ld->work_from_home);
                 else
                     $dayData['status'] = '';
                 $dayData['total_time'] = $ld->total_time;
@@ -152,7 +152,7 @@ class Locked_Data extends Model
                 $endTime = new \DateTime();
                 //set as the current time
                 $dayData['end_time'] = ''/*$endTime->modify('+5 hour +30 minutes')->format('H:i')*/;
-                $dayData['status'] = ''/*$this->getCurrentStatus($user_id,$udet['user_details'][0]['org_id'],date('Y-m-d'))*/;
+                $dayData['status'] = ''/*$this->getCurrentStatus($user_id,$udet['user_details'][0]['org_id'],date('Y-m-d'),$ld->work_from_home)*/;
                 $dayData['total_time'] = "00:00";
             }
             // $dayData['total_time'] = date_diff($startTime,$endTime)->format('%h:%i');
@@ -215,11 +215,15 @@ class Locked_Data extends Model
      * @param  $workDate
      * @return active/idle/offline/''
      */
-    public function getCurrentStatus($userId,$orgId,$workDate) {
+    public function getCurrentStatus($userId,$orgId,$workDate, $workFromHome = false) {
         // get org ip addresses
         $orgDetails = Organisation::where('id',$orgId)->first();
         $ipList = unserialize($orgDetails->ip_lists);
-        $usersLogs = Log::where(['user_id' => $userId, 'work_date' => $workDate])->whereIn('ip_addr',$ipList)->orderBy('id','desc');
+        $usersLogs = Log::where(['user_id' => $userId, 'work_date' => $workDate])->orderBy('id','desc');
+        // if work from home is not true
+        // fetch only the whitelisted ips
+        if(!$workFromHome)
+            $userLogs->whereIn('ip_addr',$ipList);
         if($usersLogs->exists()) {
             $usersLogs = $usersLogs->first();
             if($usersLogs->to_state == 'New Session')
