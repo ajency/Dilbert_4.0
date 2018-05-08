@@ -58,9 +58,9 @@ export class CancelLeavePage {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id
         };
-     let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cancelLeave`;
+     let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/updateLeaveStatus`;
      //this.leaveData.parent_id
-     let cancelled_by ={
+     let invalidated_by ={
             user_id :this.cancelled_by_user_data.user_id ,
             email : this.cancelled_by_user_data.userEmail,
             name :this.cancelled_by_user_data.name
@@ -69,7 +69,7 @@ export class CancelLeavePage {
         status:this.selectedValue,
         user:this.leaveData.user,
         parent_id:this.leaveData.parent_id,
-        cancelled_by:cancelled_by
+        invalidated_by:invalidated_by
         }
         console.log(body);
 

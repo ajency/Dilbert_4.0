@@ -801,7 +801,7 @@ checkleaves(){
     console.log(this.apiURL);
 
     let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
-
+    // let url =`http://www.mocky.io/v2/5af1287d310000580096c809`;
     console.log(url);
     let filter1 = {
         // org_id : this.org_id,
@@ -1133,4 +1133,9 @@ checkleaves(){
     // console.log(text);
     return text;
   }
+  // popUpOptions(){
+  //   let popover = this.popoverCtrl.create( 'EditleavemodalPage');
+  //   popover.present();
+
+  // }
 }
