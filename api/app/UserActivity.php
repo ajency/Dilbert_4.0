@@ -30,9 +30,10 @@ class UserActivity extends Model
                 'work_date' => $workDate,
             ])->get();
 
-            // if user activity is still null, return the existing total time
+            // if user activity is empty, return the existing total time
             // as is. This case arises for days before the user_activity table introduction.
-            return Locked_Data::where(['user_id' => $userId, 'work_date' => $workDate])->first()->total_time;
+            if(count($userActivity) == 0)
+                return Locked_Data::where(['user_id' => $userId, 'work_date' => $workDate])->first()->total_time;
         }
 
         /**
