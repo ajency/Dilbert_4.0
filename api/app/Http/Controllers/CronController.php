@@ -289,8 +289,8 @@ class CronController extends Controller
             $user = (new UserAuth)->getUserData($pUser['user_id'],true);
             // get the users last log from a valid organisation ip
             $orgDetails = Organisation::find($user['user_details'][0]['org_id']);
-            $ipList = unserialize($orgDetails['ip_lists']);
-            $lastLog = Log::where(['user_id' => $pUser['user_id'], 'work_date' => date('Y-m-d')])->whereIn('ip_addr',$ipList)->orderBy('id','desc')->first();
+            // $ipList = unserialize($orgDetails['ip_lists']);
+            $lastLog = Log::where(['user_id' => $pUser['user_id'], 'work_date' => date('Y-m-d')])/*->whereIn('ip_addr',$ipList)*/->orderBy('id','desc')->first();
 
             //if last log is offline continue else check the update_time
             if($lastLog->to_state == 'offline' || $lastLog->to_state == 'Offline' || $lastLog->to_state == 'OFFLINE')
@@ -360,7 +360,7 @@ class CronController extends Controller
             // total time in minutes
             $totalHours = 0;
             $time_count=0;
-            foreach($userHours as $uh) 
+            foreach($userHours as $uh)
             {
                 //getting total hours of week
                 if($uh['total_time'] != null && $uh['total_time'] != '') {
@@ -387,7 +387,7 @@ class CronController extends Controller
             }
 
             // calculate the time difference between rhs and rule_key_fields if key < rhs
-            if((int)$totalHours < ((int)$minHours * 60)) 
+            if((int)$totalHours < ((int)$minHours * 60))
             {
                 $tdHours = ($totalHours%60 == 0) ? ($minHours - (int)($totalHours/60)) : ($minHours - (int)($totalHours/60) - 1);
                 $tdMinutes = 60 - ($totalHours%60);
@@ -449,7 +449,7 @@ class CronController extends Controller
             echo "comm ".$comm['value'];
             $cc_list = ['hr'];
              $bcc_list = ['owner1','owner2'];
-            foreach ($cc_list as $cc_l) 
+            foreach ($cc_list as $cc_l)
             {
                 $cc_mail = (new OrganisationMeta)->getParamValue($cc_l,$org,0);
             }
@@ -478,8 +478,8 @@ class CronController extends Controller
             send_mails($data,$subject,$to_list,$cc_mail,$bcc_mail);
         } catch (\Exception $e) {
             LogForErrors::error('Error Type: Weekly summary mails, error:'.$e->getMessage()." other data : user-".$user['ID']." ".$user['name']);
-            return response()->json(['status' => 400, 'message' => $e->getMessage()]);          
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
         }
-        
+
     }
 }
