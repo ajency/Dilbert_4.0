@@ -91,8 +91,49 @@ class AppController extends Controller
                 // check the ip from the request
                 $orgDetails = Organisation::where(['id' => $user['user_details']['org_id']])->first();
                 $ipList = unserialize($orgDetails['ip_lists']);
+
+                // update the user activity table
+                $userActivities = UserActivity::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->get();
+                $lastUserActivity = $userActivities->last();
+                $ipType = in_array($request->ip(), $ipList) ? 'office' : 'other';
+                if($lastUserActivity == null) {
+                    // create the first entry in the user activity table for this day
+                    $userActivity = new UserActivity;
+                    $userActivity->user_id =  $request->header('from');
+                    $userActivity->type = $ipType;
+                    $userActivity->work_date = Carbon::now()->format('Y-m-d');
+                    $userActivity->from = Carbon::now()->format('H:i:s');
+                    $userActivity->to = Carbon::now()->format('H:i:s');
+                    $userActivity->save();
+                }
+                else {
+                    // if the ping is of the same ip type and not a certain
+                    // amount of time then update the activity log
+                    if($lastUserActivity->type == $ipType && Carbon::now()->diffInMinutes(new Carbon($lastUserActivity->updated_at)) < 5) {
+                        // update the the end_time of the last user activity
+                        $lastUserActivity->to = Carbon::now()->format('H:i:s');
+                        $lastUserActivity->save();
+                    }
+                    else {
+                        // create a new entry
+                        $userActivity = new UserActivity;
+                        $userActivity->user_id =  $request->header('from');
+                        $userActivity->type = $ipType;
+                        $userActivity->work_date = Carbon::now()->format('Y-m-d');
+                        // check if this ping was a continuous one
+                        // so that you dont miss out a time equal to the idle time
+                        if((new Carbon($lastUserActivity->to))->diffInMinutes(new Carbon($userActivity->from)) <= $orgDetails['ping_freq']) {
+                            $userActivity->from = $lastUserActivity->to;
+                        }
+                        else {
+                            $userActivity->from = Carbon::now()->format('H:i:s');
+                        }
+                        $userActivity->to = Carbon::now()->format('H:i:s');
+                        $userActivity->save();
+                    }
+                }
+
                 $lockedEntry = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')]);
-                // if(in_array($request->ip(), $ipList)) {
                 // add entry to locked_data table
                 // check if it is the first entry for the day
                 if ($lockedEntry->count() == 0) {
@@ -125,47 +166,14 @@ class AppController extends Controller
                     if((new DateTime($this->getCurrentTimeZoneTime($timeZone))) >= (new DateTime("09:30"))) {
                         $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
                         // [TODO] use the total time calculation function
-                        $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
+                        // $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
+                        $lockedEntry->total_time = (new UserActivity)->computeUserTotalTime($lockedEntry->user_id, $lockedEntry->work_date, (bool)$lockedEntry->work_from_home);
                         $lockedEntry->save();
                     }
                     else {
                         // needs to be done because the cron uses the updated_at to determine offline state
                         $lockedEntry->updated_at = (new DateTime)->format('Y-m-d H:i:s');
                         $lockedEntry->save();
-                    }
-                }
-                // }
-
-                // update the user activity table
-                $userActivities = UserActivity::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')])->get();
-                $lastUserActivity = $userActivities->last();
-                $ipType = in_array($request->ip(), $ipList) ? 'office' : 'other';
-                if($lastUserActivity == null) {
-                    // create the first entry in the user activity table for this day
-                    $userActivity = new UserActivity;
-                    $userActivity->user_id =  $request->header('from');
-                    $userActivity->type = $ipType;
-                    $userActivity->work_date = Carbon::now()->format('Y-m-d');
-                    $userActivity->from = Carbon::now()->format('H:i:s');
-                    $userActivity->to = Carbon::now()->format('H:i:s');
-                    $userActivity->save();
-                }
-                else {
-                    // if the ping is of the same ip type and not a certain
-                    // amount of timethen update the activity log
-                    if($lastUserActivity->type == $ipType && Carbon::now()->diffInMinutes(new Carbon($lastUserActivity->to)) < 5) {
-                        // update the the end_time of the last user activity
-                        $lastUserActivity->to = Carbon::now()->format('H:i:s');
-                    }
-                    else {
-                        // create a new entry
-                        $userActivity = new UserActivity;
-                        $userActivity->user_id =  $request->header('from');
-                        $userActivity->type = $ipType;
-                        $userActivity->work_date = Carbon::now()->format('Y-m-d');
-                        $userActivity->from = Carbon::now()->format('H:i:s');
-                        $userActivity->to = Carbon::now()->format('H:i:s');
-                        $userActivity->save();
                     }
                 }
 
