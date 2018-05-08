@@ -223,7 +223,7 @@ class Locked_Data extends Model
         // if work from home is not true
         // fetch only the whitelisted ips
         if(!$workFromHome)
-            $userLogs->whereIn('ip_addr',$ipList);
+            $usersLogs->whereIn('ip_addr',$ipList);
         if($usersLogs->exists()) {
             $usersLogs = $usersLogs->first();
             if($usersLogs->to_state == 'New Session')
