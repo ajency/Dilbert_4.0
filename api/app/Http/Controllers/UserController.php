@@ -164,7 +164,7 @@ class UserController extends Controller
 
                 // work from home can be marked by an 'admin' or 'hr' for all users
                 // and a 'member' for themselves
-                if($callingUser->hasRole(['admin', 'hr']) || (count($request->users) == 1 && $request->users[0] == $request->header('from'))) {
+                if($callingUser->hasRole(['admin', 'hr']) || (count($request->users) == 1 && $request->users[0]['user_id'] == 1 && $request->users[0]['user_id'][0] == $request->header('from'))) {
                     foreach($request->users as $user) {
                         foreach($user['user_id'] as $userId) {
                             $pastDays = [];
@@ -186,7 +186,6 @@ class UserController extends Controller
 
                             // make entry for the future days
                             // currently entry will be made only for current day
-                            // [TODO] function in user activity model to make an entry in the locked__datas table for current day
 
                             // update the global setting for the users
                             if(isset($user['work_from_home'])) {
