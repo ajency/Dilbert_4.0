@@ -119,6 +119,7 @@ import { Storage } from '@ionic/storage';
 }
 
 ngOnInit(){
+    console.log("-------------------------------testing----------------------------------");
     this.selectedOption="Upcoming";
     this.teamSelectedOption="Upcoming";
     this.myLeaveOptions=['Upcoming','All'];
@@ -251,6 +252,7 @@ ngOnInit(){
 
 ionViewDidLoad() {
   console.log("################## entering start home page ###################", this.firstPageLoad);
+   console.log("-------------------------------testing----------------------------------");
   this.zone.run(() => {});
     // console.log('ionViewDidLoad dashboard')
   }
