@@ -12,6 +12,7 @@ use App\Role;
 use App\Permission;
 use App\UserCommunication;
 use App\Locked_Data;
+use App\UserActivity;
 use Ajency\User\Ajency\userauth\UserAuth;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -210,10 +211,10 @@ class UserController extends Controller
                             foreach($lockedDataEntries as $lockedEntry) {
                                 array_push($pastDays,$lockedEntry->work_date);
                                 $lockedEntry->work_from_home = $days[$lockedEntry->work_date];
+
+                                // re-calculate the total hours
+                                $lockedEntry->total_time = (new UserActivity)->computeUserTotalTime($lockedEntry->user_id, $lockedEntry->work_date, $days[$lockedEntry->work_date]);
                                 $lockedEntry->save();
-
-                                // [TODO] recalculate the total hours
-
                             }
 
                             // handle future days
