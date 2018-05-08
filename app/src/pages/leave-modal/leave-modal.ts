@@ -508,7 +508,8 @@ updateData(){
     leave_note:leave_note,
     tagged_users:tagged_users,
     type:type,
-    date_of_application:this.editLeaveData.date_of_application
+    date_of_application:this.editLeaveData.date_of_application,
+    valid:this.editLeaveData.valid
   }
 
 //this.editLeaveData.user.user_id

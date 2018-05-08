@@ -81,6 +81,8 @@ import { Storage } from '@ionic/storage';
  teamLeaveOptions:any;
  selectedOption:any;
  teamSelectedOption:any;
+ top:any;
+ leave_feature_enable : boolean =true;
 
  private chageLogCB: Function;
 
@@ -120,6 +122,7 @@ import { Storage } from '@ionic/storage';
 
 ngOnInit(){
     console.log("-------------------------------testing----------------------------------");
+    this.checkPermissionsLeave();
     this.selectedOption="Upcoming";
     this.teamSelectedOption="Upcoming";
     this.myLeaveOptions=['Upcoming','All'];
@@ -140,6 +143,7 @@ ngOnInit(){
     this.param2 = this.appGlobalsProvider.dashboard_params.param2;
 
     console.log(this.param1, this.param2);
+    console.log(this.leave_feature_enable);
 
     this.userId = this.authguard.user_id;
     this.key = this.authguard.userData.x_api_key;
@@ -1135,9 +1139,37 @@ checkleaves(){
     // console.log(text);
     return text;
   }
-  // popUpOptions(){
-  //   let popover = this.popoverCtrl.create( 'EditleavemodalPage');
-  //   popover.present();
+  popUpOptions(item,ev){
+   this.top= ev.currentTarget.offsetTop;
+   console.log("offset:",ev.currentTarget.offsetTop);
+   console.log("this is the top :---",this.top);
+    console.log(item);
+    let popover = this.popoverCtrl.create( 'EditleavemodalPage',{data:item,users:this.autocompleteItemsAsObjects,userData:this.userLeaveData,top:this.top});
+    popover.present({
+      ev: ev
+    });
 
-  // }
+  }
+
+
+   checkPermissionsLeave(){
+            console.log('inside checkPermissions');
+
+            let result = this.authguard.userData;
+            // console.log('result',result);
+            let perm_class =result.permissions.leave_feature_enable;
+            console.log(result);
+            for(var i=0; i< result.permissions.length;i++){
+              if(result.permissions[i]=="leave_feature_enable"){
+              this.leave_feature_enable =true;
+              console.log("user has permissions to add leave");
+            }
+            else{
+              this.leave_feature_enable = false;
+              console.log("user does not have permissions to add leave");
+
+            }
+            }
+            
+  }
 }
