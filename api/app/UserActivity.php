@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+use App\Locked_Data;
+
 class UserActivity extends Model
 {
     /**
@@ -27,10 +29,14 @@ class UserActivity extends Model
                 'user_id' => $userId,
                 'work_date' => $workDate,
             ])->get();
+
+            // if user activity is still null, return the existing total time
+            // as is. This case arises for days before the user_activity table introduction.
+            return Locked_Data::where(['user_id' => $userId, 'work_date' => $workDate])->first()->total_time;
         }
 
         /**
-         * Calculate the total office
+         * Calculate the total office time
          */
         $firstOfficeEntry = $userActivity->where('type','office')->first();
         $lastOfficeEntry = $userActivity->where('type','office')->last();
