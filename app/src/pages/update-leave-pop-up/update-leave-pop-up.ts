@@ -39,6 +39,9 @@ export class UpdateLeavePopUpPage {
     this.$(this.nativeElement).parents().find('.popover-content').addClass("leave-update-pop-up-popover2");
     this.responseStatusParam=this.appGlobalsProvider.leave_update_param.param1;
     this.type=this.appGlobalsProvider.leave_update_param.param2;
+    console.log("response Param");
+    console.log(this.responseStatusParam);
+
   }
 
   ionViewDidLoad() {

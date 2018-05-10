@@ -1,45 +1,10 @@
-<!-- <ion-list m-v-0 class="profile-dropdown">
- <div class="cancelLeave" (click)="cancelLeavecheck(item)">
-   Cancel <ion-icon ios="ios-close" md="md-close" class="icon-size small" style="cursor: pointer;" ></ion-icon></div>
- <div class="updateLeave" (click)="editLeavecheck(item)">
-   Update Leave <ion-icon ios="ios-create" md="md-create" class="icon-size small" style="cursor: pointer;"></ion-icon></div>
-</ion-list> -->
-<!--  <ion-list radio-group class="popover-page">
-      <ion-row>
-        <ion-col>
-          <button ion-item detail-none class="text-button text-smaller">A</button>
-        </ion-col>
-        <ion-col>
-          <button  ion-item detail-none class="text-button text-larger">A</button>
-        </ion-col>
-      </ion-row>
-</ion-list> -->
-<!-- 	<ion-content class="page-editleavemodal-popup">
-	  <div class="my-leave-popup 2">
-	  	<div class="mainContainer">
-			<span class="cancelLeave" (click)="cancelLeavecheck(item)">
-				Cancel <ion-icon ios="ios-close" md="md-close" class="icon-size small" style="cursor: pointer;" ></ion-icon>
-			</span><br>
-		 	<span class="updateLeave" (click)="editLeavecheck(item)">
-		   		Update Leave <ion-icon ios="ios-create" md="md-create" class="icon-size small" style="cursor: pointer;"></ion-icon>
-			</span>
-		</div>
-	  </div>
-	</ion-content>
- -->
- <!-- 	  	<div class="mainContainer">
-			<span class="cancelLeave" (click)="cancelLeavecheck(item)">
-				Cancel <ion-icon ios="ios-close" md="md-close" class="icon-size small" style="cursor: pointer;" ></ion-icon>
-			</span><br>
-		 	<span class="updateLeave" (click)="editLeavecheck(item)">
-		   		Update Leave <ion-icon ios="ios-create" md="md-create" class="icon-size small" style="cursor: pointer;"></ion-icon>
-			</span>
-		</div> -->
 <ion-list m-v-0 class="profile-dropdown">
-	<button ion-item (click)="cancelLeavecheck(item)">
-		<ion-icon ios="ios-close" md="md-close" class="icon-size small"> </ion-icon>
-		Cancel Leave
+	<!-- <ng-container ngIf*="sideBarData.data.user.self=='true' " > -->
+		<button ion-item (click)="cancelLeavecheck(item)">
+			<ion-icon ios="ios-close" md="md-close" class="icon-size small"> </ion-icon>
+			Cancel Leave
 		</button>
+	<!-- </ng-container> -->
 	<button ion-item (click)="editLeavecheck(item)">
 		<ion-icon ios="ios-create" md="md-create" class="icon-size small" ></ion-icon>
 		Update Leave

@@ -25,6 +25,7 @@ export class CancelLeavePage {
   userleavedata:any;
   selectedValue:any;
   cancelled_by_user_data:any;
+  teamleaveData:any;
 
   constructor(
      public popoverCtrl: PopoverController,
@@ -40,6 +41,7 @@ export class CancelLeavePage {
   	 this.$ = this.appServiceProvider.jQuery;
      this.leaveData = this.navParams.get('data');
      this.userData = this.navParams.get('userData');
+     this.teamleaveData=this.navParams.get('teamLeaves');
      this.userleavedata=this.userData.data.leaves;
   }
 
@@ -85,6 +87,14 @@ export class CancelLeavePage {
                     return response.data.parent_id !== data.parent_id;
                   })
                 console.log(this.userData.data.leaves);
+              }
+              // if(this.teamleaveData.data.leaves =)
+              if(this.teamleaveData.data.leaves.length !=0){
+                console.log("leaves");
+                 this.teamleaveData.data.leaves = this.teamleaveData.data.leaves.filter((data: any) => {
+                    return response.data.parent_id !== data.parent_id;
+                  })
+                console.log(this.teamleaveData.data.leaves);
               }
              
               this.close(); 

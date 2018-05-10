@@ -26,10 +26,9 @@
 					</div>
 					<div padding>
 						<div class="mainContent">
-							<h4>Leave Updated Successfully</h4>
+							<h4>{{responseStatusParam.message}}</h4>
 						</div>
 						<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
-						<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
 					</div>
 				</div>
 			</ion-content>
@@ -43,15 +42,10 @@
 				</div>
 				<div padding>
 					<div class="mainContent">
-							<h4>Leave could not be Updated</h4>
-							<div class="msg_container">
-								<div class="warning_message">{{responseStatusParam.message}}</div>
-							</div>
-					<!-- 		<ng-container *ngIf=" responseStatusParam.data.length !=0 ">
-								<div *ngFor="let item of responseStatusParam.data">
-									<span style="color:red;">{{item}}</span>
-								</div>
-							</ng-container> -->
+						<h4>Leave could not be Updated</h4>
+						<div class="msg_container">
+							<div class="warning_message">{{responseStatusParam.message}}</div>
+						</div>
 					</div>
 					<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
 					<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
@@ -69,7 +63,7 @@
 					</div>
 					<div padding>
 						<div class="mainContent">
-							<h4>Leave Canceled Successfully</h4>
+							<h4>{{responseStatusParam.message}}</h4>
 						</div>
 						<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
 						<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
@@ -86,18 +80,12 @@
 				</div>
 				<div padding>
 					<div class="mainContent">
-							<h4>Leave could not be Canceled</h4>
-							<div class="msg_container">
-								<div class="warning_message">{{responseStatusParam.message}}</div>
-							</div>
-					<!-- 		<ng-container *ngIf=" responseStatusParam.data.length !=0 ">
-								<div *ngFor="let item of responseStatusParam.data">
-									<span style="color:red;">{{item}}</span>
-								</div>
-							</ng-container> -->
+						<h4>Leave could not be Canceled</h4>
+						<div class="msg_container">
+							<div class="warning_message">{{responseStatusParam.message}}</div>
+						</div>
 					</div>
 					<div style="text-align: center;"><button ion-button class="sameSize" (click)="close()">Okay</button></div>
-					<!-- <div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div> -->
 				</div>
 			</div>
 		</ion-content>
