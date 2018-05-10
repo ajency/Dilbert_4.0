@@ -31,7 +31,10 @@
             "Ajency\\User\\": "packages/ajency/user/src",
             "Ajency\\Violations\\": "packages/ajency/violations/src"
         },
-        "files": ["app/Http/Helper/Mail/helpers.php"]
+        "files": [
+            "app/Http/Helper/Mail/helpers.php",
+            "app/Http/Helper/Leave/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

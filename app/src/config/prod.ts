@@ -1,5 +1,5 @@
 export const prodVariables = {
-  dilbertApi: 'http://dilberttest.ajency.in/api/api',
+  dilbertApi: 'https://dilbert4.ajency.in/api/api',
   // fileStackKey: 'xxxxxxxxxQQz',
   environmentName: 'Production Environment',
   ionicEnvName: 'prod'

@@ -82,6 +82,14 @@ class CronController extends Controller
                 if($vioResponse['status'] == 'violation') {
                     $userLockedData->status = "Leave due to violation";
                     $userLockedData->save();
+                    try
+                    {
+                        addLeaveRequest($data);                        
+                    }
+                    catch (\Exception $e) {
+                        LogForErrors::error('Error Type: Leaves tagged users, error:'.$e->getMessage());
+                        return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+                    }
                 }
                 else {
                     $userLockedData->status = $this->getUserStatus('present',$org->org_id,$user->violation_grp_id);
