@@ -39,6 +39,7 @@ import { Storage } from '@ionic/storage';
 export class LeaveModalPage {
     leave_data:any;
     items:any;
+    editedItems:Array<any> = [];
     editLeaveData : any;
     modalType:any;
     buttonRequestApi: boolean = false;
@@ -52,10 +53,10 @@ export class LeaveModalPage {
     apiURL : any;
     userData:any;
     autocompleteItemsAsObjects:any;
+    autocompleteItemsAsObjects2:any;
     userInfo:any;
     leave_param1:any;
     createdByUserData:any;
-    // requestAutocompleteItems:any;
     data:any;
     private $: any;
     model: any = null;
@@ -63,8 +64,12 @@ export class LeaveModalPage {
     selectedDates: Array<Date> = [];
     editSelectedDates: Array<Date> = [];
     editSelectedUsers:Array<any> = [];
-    dataurl: string = `http://www.mocky.io/v2/5ac6ffa84a00004f007e0898`;  // URL to web API
-    jsonData: any;
+    editLeaveNote:any;
+    editLeaveNote2:any;
+    leaveUpdateStatus:any;
+
+    tempUsers:Array<any> = [];
+
     private myDatePickerOptions: IMyDpOptions = {
       dateFormat: 'yyyy-mm-dd',
       inline:false,
@@ -74,7 +79,6 @@ export class LeaveModalPage {
     // disableDays:[this.disableDaysSelected]
     
   };
-  // public model: any = { date: { year: 2018, month: 10, day: 9 } };
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -90,37 +94,72 @@ export class LeaveModalPage {
                 this.apiURL = this.appGlobalsProvider.getApiUrl();
                 this.nativeElement = this.element.nativeElement;
                 this.$ = this.appServiceProvider.jQuery;
+                 // const oldData1=this.navParams.get('data');
+                this.editLeaveData = this.navParams.get('data');
+                this.modalType = this.navParams.get('type');
+                this.autocompleteItemsAsObjects=this.navParams.get('users');
+                this.autocompleteItemsAsObjects2=this.navParams.get('users');
+                console.log(this.autocompleteItemsAsObjects);
+                console.log(this.modalType);
+                
+                if(this.editLeaveData  != undefined)
+                {
+                  console.log("its here");
+
+                   this.editSelectedDates=this.editLeaveData.leave_date;
+                   this.editSelectedUsers=this.editLeaveData.tagged_users;
+                   this.editLeaveNote=this.editLeaveData.leave_note;
+                   this.editLeaveNote2=this.editLeaveData.leave_note;
+
+                   for(var i=0; i<this.editSelectedUsers.length;i++){
+
+                    var temp_tag=this.editSelectedUsers[i].name;
+                    var tagUser=temp_tag.split(' ');
+                    var temUserTag= "@"+tagUser[0];
+                    this.editedItems.push(this.editSelectedUsers[i]);
+                    console.log(this.editedItems);
+                    console.log(this.editedItems.length);
+                     }
+                    for (var j = 0; j < this.editedItems.length; j++) {
+                      if(!this.editedItems[j].display){
+                      this.editedItems[j].display='';
+                      }
+                      if(this.editedItems[j].display==''){
+                        var temp_tag=this.editSelectedUsers[j].name;
+                        var tagUser=temp_tag.split(' ');
+                        var temUserTag= "@"+tagUser[0];
+                        this.editedItems[j].display=temUserTag;
+                      }
+                      //user_tag
+                       if(!this.editedItems[j].user_tag){
+                      this.editedItems[j].user_tag='';
+                      }
+                      if(this.editedItems[j].user_tag==''){
+                        var temp_tag=this.editSelectedUsers[j].name;
+                        var tagUser=temp_tag.split(' ');
+                        var temUserTag= "@"+tagUser[0];
+                        this.editedItems[j].user_tag=temUserTag;
+                      }
+                    }
+                      console.log(this.editedItems);
+                      console.log(this.autocompleteItemsAsObjects2);
+
+                      for(var i=0;i<this.editedItems.length;i++){
+                        this.upadtetaguser(this.editedItems[i]);
+                      }
+                      console.log(this.autocompleteItemsAsObjects2);
 
 
-
-    // this.editLeaveData = this.navParams.get('data');
-    // this.modalType = this.navParams.get('type');
-    this.autocompleteItemsAsObjects=this.navParams.get('users');
-
-    console.log(this.autocompleteItemsAsObjects);
-    console.log(this.modalType);
-    // console.log(this.selectedUsers);
-    // console.log(this.selectedDates);
-    // console.log(this.leaveNote);
-    
-    // if(this.editLeaveData  != undefined){
-    //    this.editSelectedDates=this.editLeaveData.leave_date;
-    //    this.editSelectedUsers=this.editLeaveData.tagged_users;
-    //    // this.items=this.editLeaveData.tagged_users;
-    //    this.leaveNote=this.editLeaveData.leave_note;
-    //    this.leave_note1=this.leaveNote;
-    //     console.log(this.editLeaveData.leave_note);
-    //     console.log(this.selectedDates);
-    //     console.log(this.leaveNote);
-    //     console.log(this.items);
-    //     console.log(this.selectedUsers);
-    // }
-
-
-   
-
+                  
+                }
   }
-
+     upadtetaguser(item){
+       this.autocompleteItemsAsObjects2 = this.autocompleteItemsAsObjects2.filter((data: any) => {
+        return item.user_id !== data.user_id;
+      })
+       console.log("after remove");
+       console.log(this.autocompleteItemsAsObjects2);
+     }
     public onItemAdded(item) {
 
         console.log('tag added: value is ' + item.name);
@@ -146,55 +185,6 @@ export class LeaveModalPage {
  this.checkIfData();
     }
 
-
-//Api call to get all users
-readData(){
-
-// console.log(this.autocompleteItemsAsObjects);
-// console.log(this.apiURL);
-
-//     let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
-
-//     console.log(url);
-//     let filter1 = {
-//         // org_id : this.org_id,
-//         // date:date.start,
-//         // period_unit:this.period_unit
-//       };
-
-//      let filters = {
-//       // date_range : date_range,
-//       // period_unit : this.period_unit
-
-//       };
-
-//       let body = {
-//         // filters : filters
-//       }
-
-//     let optionalHeaders = {
-//           'X-API-KEY' : this.authguard.userData.x_api_key,
-//           'From' : this.authguard.userData.user_id
-//         };
-//             this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
-
-//             console.log(response);
-
-//                 if(response.status == 'success'){
-//                      this.users = response.data;
-//                      this.autocompleteItemsAsObjects = this.users;
-//                      console.log(this.autocompleteItemsAsObjects);
-//                 }
-//                 else{
-//                 this.appServiceProvider.presentToast(response.message, 'error');
-//               }
-              
-//           })
-
-}
-
-
-// 
   ngOnInit(){
         if(this.editLeaveData  != undefined){
        this.editSelectedDates=this.editLeaveData.leave_date;
@@ -202,42 +192,16 @@ readData(){
        // this.items=this.editLeaveData.tagged_users;
        this.leaveNote=this.editLeaveData.leave_note;
        this.leave_note1=this.leaveNote;
-        console.log(this.editLeaveData.leave_note);
-        console.log(this.selectedDates);
-        console.log(this.leaveNote);
-        console.log(this.items);
-        console.log(this.selectedUsers);
+       // this.editLeaveNote2 = this.leaveNote;
+
     }
     this.$(this.nativeElement).parents().find('.popover-content').addClass("leave-popover2");
     this.$(this.nativeElement).parents().find('.ng2-dropdown').addClass("customdrop");
      $("ng2-dropdown-menu").addClass("customdrop");
-
-    // this.events.subscribe("update:leave_data",(leave_data) => {
-    // this.leave_data=leave_data;
-    // this.modalType="editLeave";
-
-    //   console.log(this.leave_data);
-    //   this.selectedUsers=this.leave_data.tagged_users;
-    //   this.selectedDates=this.leave_data.leave_date;
-    //    console.log(this.selectedUsers);
-    //    console.log(this.selectedDates);
-
-    //  });
     console.log(this.selectedUsers);
     console.log(this.selectedDates);
-
-     
-    this.readData();
     this.leave_param1=this.appGlobalsProvider.leave_param.param1;
     this.createdByUserData=this.authguard.userData;
-    console.log(this.createdByUserData);
-    console.log(this.leave_param1);
-
-
-
-
-
-
   }
 
   ionViewDidLoad() {
@@ -245,15 +209,13 @@ readData(){
       console.log(this.userInfo);
       console.log("yes");
   }
-
-
-    close() {
-    this.viewCtrl.dismiss();
+  close() {
+  this.viewCtrl.dismiss();
   }
 
-    close1() {
-      console.log(this.editLeaveData);
-  this.viewCtrl.dismiss();
+  close1() {
+    console.log(this.editLeaveData);
+    this.viewCtrl.dismiss();
   }
 
    onDateChanged(event) {
@@ -274,13 +236,10 @@ readData(){
                    this.selectedDates.push(event.formatted);
                 }
              }
-            
               console.log(this.selectedDates);
                this.checkIfData();
            }
     }
-
-
 
     deleteSetected(removeDate){
       // console.log(removeDate);
@@ -293,7 +252,6 @@ readData(){
     }
 
     leaveNoteData(test){
-
         this.leaveNote=test;
         var newstr = this.leaveNote.replace(/[\r\n|\n|\r]/gm,'');
         this.leave_note1 = newstr.split(' ').join(''); 
@@ -302,84 +260,51 @@ readData(){
 
     checkIfData(){
         if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0 ||this.leave_note1=="" ){
-     // console.log("error");
       this.buttonRequestApi=false;
     }else{
         this.buttonRequestApi=true;
     }
-         console.log(this.selectedDates);
-         console.log(this.selectedUsers);
-         console.log( this.leaveNote);
-
     }
-  sendData(){
+    sendData(){
     console.log("Data to be sent in api request");
     if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0){
       console.log("error");
     }
-    else{
-
-         console.log(this.selectedDates);
-         console.log(this.selectedUsers);
-         console.log( this.leaveNote);
-         console.log(this.apiURL);
-
-
+     else{
         let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id
         };
-
-
-        let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/cloudAddLeave`;
-
+        let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/addLeave`;
         let user ={
             user_id :this.leave_param1.user_id ,
             email : this.leave_param1.email,
-            name :this.leave_param1.name
+            name :this.leave_param1.name,
+            avatar:this.leave_param1.avatar
         }
         let leave_date =this.selectedDates;
-
         let leave_note=this.leaveNote;
-   
-
         let date_of_application='';
-
-        
-
-        // let tagged_users_filter ={
-        //   tagged_users:this.selectedUsers
-        // }
-
         let  tagged_users=this.selectedUsers;
-
         let createdByUser ={
             user_id :this.createdByUserData.user_id ,
             email : this.createdByUserData.userEmail,
             name :this.createdByUserData.name
         }
-
         let modified_by ={
             user_id :'',
             email : '',
             name :''
         }
         let leave_status='';
-        
-
-        let leave_type ='leave_taken';
-        
-
-
-
+        let type ='leave_taken';
         let body ={
           user:user,
           created_by:createdByUser,
           leave_date:leave_date,
           leave_note:leave_note,
-          leave_type:leave_type,
+          type:type,
           tagged_users:tagged_users
-
         }
         console.log(body);
 
@@ -391,66 +316,54 @@ readData(){
 
                 if(response.status == 'success'){
                      this.summaryData = response.data;
-                     // console.log(this.summaryData);
+                     console.log(this.summaryData);
+                     this.events.publish("update:leave_info", this.summaryData);
                      this.leaveAddedModal();
                      this.close(); 
                 }
-
                    else{
             // this.appServiceProvider.presentToast(response.message, 'error');
             this.leaveAddedModal();
             this.close(); 
           }
-
           })
-      
     }
   }
   leaveAddedModal(){
       console.log("inside leaveAddedModal");
       let popover = this.popoverCtrl.create( 'LeaveAddedPage');
       popover.present();
-}
+  }
   
-
-updateData(){
-  console.log("data to be edited");
-  if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0){
-      console.log("error");
-    }
-    console.log(this.leaveNote);
-    console.log(this.selectedDates);
-    console.log(this.selectedUsers);
-    // console.log(this.leaveNote);
-
-}
+//edit leave
 
 editDateChanged(event){
+  this.editDeleteSetected("s");
   console.log(event.formatted);
   console.log(this.editSelectedDates);
-   if(event.formatted !=""){
-              if(this.editSelectedDates.length==0){
-                   this.editSelectedDates.push(event.formatted);
-              }
-              if(this.editSelectedDates.length!=0){
-                var x=1;
-                for(var i=0; i<this.editSelectedDates.length;i++){
-                   if(this.editSelectedDates[i] == event.formatted){
-                           x=0;
-                   }
-                }
-                console.log(x);
-                if(x==1){
-                   this.editSelectedDates.push(event.formatted);
-                }
-             }
-            
-              console.log(this.editSelectedDates);
-               // this.checkIfData();
+   if(event.formatted !="")
+   {
+      if(this.editSelectedDates.length==0){
+           this.editSelectedDates.push(event.formatted);
+      }
+      if(this.editSelectedDates.length!=0){
+        var x=1;
+        for(var i=0; i<this.editSelectedDates.length;i++){
+           if(this.editSelectedDates[i] == event.formatted){
+                   x=0;
            }
+        }
+        console.log(x);
+        if(x==1){
+           this.editSelectedDates.push(event.formatted);
+        }
+     }
+    
+      console.log(this.editSelectedDates);
+       this.checkIfEditData();
+  }
    console.log(this.editSelectedDates);
    console.log(this.editLeaveData);
-
 }
 editDeleteSetected(removeDate){
     // console.log(removeDate);
@@ -458,38 +371,189 @@ editDeleteSetected(removeDate){
           return removeDate !== date;
       })
       console.log(this.editSelectedDates);
-       // this.checkIfData();
+        this.checkIfEditData();
        this.model=null;
-        console.log(this.editLeaveData);
+        // console.log(this.editLeaveData);
+        console.log(this.editSelectedUsers);
 
 }
 editOnItemAdded(item){
+     this.editOnItemRemoved("oh");
      console.log('tag added: value is ' + item.name);
-     console.log(item);
-       let data1={
+      let data1={
             user_id:item.user_id,
             name :item.name,
             email:item.email
         }
-         console.log(data1);
-         this.editSelectedUsers.push(data1);
+
+      if(this.editSelectedUsers.length==0){
+                   this.editSelectedUsers.push(data1);
+       }
+      if(this.editSelectedUsers.length!=0){
+        var x=1;
+        for(var i=0; i<this.editSelectedUsers.length;i++){
+           if(this.editSelectedUsers[i].user_id == data1.user_id){
+                   x=0;
+           }
+        }
+        console.log(x);
+        if(x==1){
+           this.editSelectedUsers.push(data1);
+        }
+     }
+
+     console.log(item);
+      
+        console.log(data1);
+        // this.editSelectedUsers.push(data1);
         console.log(this.editSelectedUsers);
-         console.log(this.editLeaveData);
+        console.log(this.editLeaveData);
+         this.checkIfEditData();
 
 }
 editOnItemRemoved(item){
     console.log(item);
     console.log('tag removed: value is ' + item.name);
       this.editSelectedUsers = this.editSelectedUsers.filter((data: any) => {
-          return item.name !== data.name;
+          return item.user_id !== data.user_id;
+    })
+  console.log(this.editSelectedUsers);
+  this.checkIfEditData();
+  console.log(item);
+  if(item.user_id){
+    if(this.autocompleteItemsAsObjects2.length==0){
+                   this.autocompleteItemsAsObjects2.push(item);
+       }
+      if(this.autocompleteItemsAsObjects2.length!=0){
+        var x=1;
+        for(var i=0; i<this.autocompleteItemsAsObjects2.length;i++){
+           if(this.autocompleteItemsAsObjects2[i].user_id == item.user_id){
+                   x=0;
+           }
+        }
+        console.log(x);
+        if(x==1){
+           this.autocompleteItemsAsObjects2.push(item);
+        }
+     }
+
+    // this.autocompleteItemsAsObjects2.push(item);
+  }
+  
+  console.log(this.autocompleteItemsAsObjects2);
+}
+
+editLeaveNoteData(test){
+
+    this.editLeaveNote=test;
+    var newstr = this.editLeaveNote.replace(/[\r\n|\n|\r]/gm,'');
+    this.editLeaveNote2 = newstr.split(' ').join(''); 
+    this.checkIfEditData();
+}
+checkIfEditData(){
+    console.log("data to be edited");
+  if(this.editLeaveNote ==""|| this.editLeaveNote==null || this.editLeaveNote2 ==""|| this.editLeaveNote==undefined || this.editSelectedUsers.length ==0 || this.editSelectedDates.length==0){
+      console.log("error");
+      console.log(this.editLeaveNote);
+      console.log(this.editSelectedDates);
+      console.log(this.editSelectedUsers);
+      this.buttonRequestApi=false;
+
+    }
+    else{
+    console.log(this.editLeaveNote);
+    console.log(this.editSelectedDates);
+    console.log(this.editSelectedUsers);
+    // console.log(this.leaveNote);
+    this.buttonRequestApi=true;
+    }
+}
+
+updateData(){
+  console.log("update data api call");
+  let optionalHeaders = {
+          'X-API-KEY' : this.authguard.userData.x_api_key,
+          'From' : this.authguard.userData.user_id
+        };
+
+  let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/updateLeave`;
+
+  console.log(this.editLeaveData);
+  let modified_by ={
+            user_id :this.createdByUserData.user_id ,
+            email : this.createdByUserData.userEmail,
+            name :this.createdByUserData.name
+        }
+  if(!this.editLeaveData.modified_by){
+    this.editLeaveData.modified_by=[];
+  }
+  console.log("after update data");
+  console.log(this.editLeaveData);
+  let user ={
+      user_id :this.leave_param1.user_id ,
+      email : this.leave_param1.email,
+      name :this.leave_param1.name,
+      avatar:this.leave_param1.avatar
+  }
+  let leave_date =this.editSelectedDates;
+  let leave_note=this.editLeaveNote;
+  let tagged_users=this.editSelectedUsers;
+
+  let type ='leave_taken';
+
+  var data_leave={
+    user:this.editLeaveData.user,
+    modified_by:modified_by,
+    leave_date:leave_date,
+    leave_note:leave_note,
+    tagged_users:tagged_users,
+    type:type,
+    date_of_application:this.editLeaveData.date_of_application,
+    valid:this.editLeaveData.valid
+  }
+
+//this.editLeaveData.user.user_id
+  let body ={
+   user_id:this.editLeaveData.user.user_id,
+   parent_id:this.editLeaveData.parent_id,
+   leave_data:data_leave
+
+  }
+  console.log(body);
+
+  this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
+    this.appGlobalsProvider.leave_update_param.param1=response;
+    this.appGlobalsProvider.leave_update_param.param2="updateLeave";
+      if(response.status == 'success'){
+       console.log(response.data);
+       this.editLeaveData.modified_by=modified_by;
+       this.editLeaveData.leave_date=this.editSelectedDates;
+       this.editLeaveData.tagged_users=this.editSelectedUsers;
+       this.editLeaveData.leave_note=this.editLeaveNote;
+       // this.leaveAddedModal();
+       this.close(); 
+       this.leaveUpdateModal();
+      }
+      else{ 
+        this.close(); 
+        this.leaveUpdateModal();
+      }
+
     })
 
- console.log(this.editSelectedUsers);
-}
-
 
 }
 
-//   editOnItemAdded
-// editOnItemRemoved
+  leaveUpdateModal(){
+      console.log("inside leaveUpdateModal");
+      let popover = this.popoverCtrl.create( 'UpdateLeavePopUpPage');
+      popover.present();
+  }
 
+  funclose(){
+    // this.editLeaveData = oldData1;
+    this.viewCtrl.dismiss();
+  }
+
+
+}

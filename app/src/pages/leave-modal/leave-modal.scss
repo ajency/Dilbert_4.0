@@ -61,10 +61,12 @@ page-leave-modal {
 }
 
 .popover-md {
+
 	.popover-content.leave-popover2 {
-		 max-height: 600px;
-		 overflow-y:scroll;  
-	     top: 200px !important;
+		 box-shadow: -3px -35px 63px -2px rgba(0, 0, 0, 0.12) !important;
+		 /*max-height: 520px;*/
+		 /*overflow-y:scroll;  */
+	     /*top: 100px !important;*/
 	     width: 400px;
 
         @media (min-width: 567px) {
@@ -73,28 +75,45 @@ page-leave-modal {
         @media (max-width: 567px) {
             width: 50%;
         }
+        /*remove this if not needed*/
+        &:after{
+        	content: '';
+            position: absolute;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    transform: scale(10);
+		    background-color: #ffffffb3;
+        }
+        /**/
 	}
+	/*popover-content.leave-popover2*/
 	.popover-content.leave-popover2::-webkit-scrollbar {
     width: 3px;
-}
+	}
 
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888; 
-}
+	/* Track */
+	::-webkit-scrollbar-track {
+	    background: #f1f1f1; 
+	}
+	 
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+	    background: #888; 
+	}
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+	    background: #555; 
+	}
 }
+.mainContainer{
+max-height: 500px;
+overflow-y: scroll;
 }
-
 .leave-popup{
+
 	.scroll-content{
 		overflow: auto;
 	}
@@ -121,8 +140,13 @@ page-leave-modal {
 }
 .LeaveTagUsers svg{
 	max-height: 34px;
-	max-width: 20px;
+	max-width: 18px;
+	padding-right: 4px;
 	/*margin-top: 8px;*/
 
 
+}
+.LeaveTagUsers delete-icon[_nghost-c7]:hover {
+     transform: scale(1) translateY(0); 
+     
 }

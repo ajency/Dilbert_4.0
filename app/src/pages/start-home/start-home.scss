@@ -108,8 +108,8 @@ page-start-home {
 }
 .avatar {
     vertical-align: middle;
-    width: 40px;
-    height:40px;
+    width: 30px;
+    height:30px;
     border-radius: 50%;
 }
 .avatarList {
@@ -201,7 +201,36 @@ page-start-home {
 .innerLeaveContainer{
   font-size: 14px;
 }
+.countLeaves{
+  border-radius: 50%;
+  width: 50px;
+  font-size: 12px;
+  padding-left: 7px;
+  padding-right: 7px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  background-color: #fa5777;
+  color:white;
+}
+.toggletxt{
+  /*border: 1px solid white;*/
+  padding: 5px;
+  color: white;
+  background-color: #613eb0;
+  border-radius: 15px;
+  font-size: 12px;
+}
+.toggletxt1{
+  border: 1px solid #613eb0;
+  padding: 5px;
+  color: #613eb0;
+  border-radius: 15px;
+  font-size: 12px;
 
+}
+.teamTogglecontainer{
+
+}
 
 }
 
@@ -408,7 +437,20 @@ page-start-home {
         font-size: 1.6em;
     }
 }
-
-
+.timeContainer{
+  /*background-color: blue;*/
+  color: #828282;
+  float: right;
+  margin-top: 10px;
+  /*text-align:right;*/
+}
+.icon-no-leave{
+  width: 50px;
+}
+.noLeaveContainer{
+ /*border: 1px solid black;*/
+ padding: 10px;
+ box-shadow: $shadow-3;
+}
 
 

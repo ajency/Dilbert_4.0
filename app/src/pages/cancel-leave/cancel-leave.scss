@@ -1,12 +1,13 @@
-page-leave-added {
+
+page-cancel-leave {
 .sameSize{
 	width:150px;
 	text-transform: uppercase;
 }
-.title_icon_success{
+.title_icon_danger{
 	height: 30px;
 	font-size: 60px;
-	color: #0080bf;
+	color: #fa5777;
 	padding: 0;
 	padding-top:20px;
 }
@@ -39,12 +40,19 @@ page-leave-added {
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
-
+.subLeaveContent{
+}
+.cancelIcon{
+	padding-top: 10px;
+	font-size: 50px;
+	color: red;
+}
 }
 
 .popover-md {
-	.popover-content.leave-added-popover2 {
-		 box-shadow: -3px -35px 63px -2px rgba(0, 0, 0, 0.12) !important;
+	
+	.popover-content.cancel-leave-popover2 {
+		box-shadow: -3px -35px 63px -2px rgba(0, 0, 0, 0.12) !important;
 	     top: 200px !important;
 	     width: 400px;
 	     min-height:300px;
@@ -58,7 +66,7 @@ page-leave-added {
 	}
 }
 
-.leave-added-popup{
+.cancel-leave-popup{
 	.scroll-content{
 		overflow: auto;
 	}

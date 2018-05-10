@@ -192,7 +192,7 @@ export class MyApp {
   ngOnInit(){
     console.log(this.location.path(true));
     this.url =this.location.path(true);
-
+    console.log("################ check ##################");
     // this.nav.viewDidEnter
     //         .subscribe((res) => {
     //           console.log('view did enter =>' + this.currentPage + " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");

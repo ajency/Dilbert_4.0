@@ -1,4 +1,4 @@
-page-leave-added {
+page-update-leave-pop-up {
 .sameSize{
 	width:150px;
 	text-transform: uppercase;
@@ -43,8 +43,9 @@ page-leave-added {
 }
 
 .popover-md {
-	.popover-content.leave-added-popover2 {
-		 box-shadow: -3px -35px 63px -2px rgba(0, 0, 0, 0.12) !important;
+
+	.popover-content.leave-update-pop-up-popover2 {
+		box-shadow: -3px -35px 63px -2px rgba(0, 0, 0, 0.12) !important;
 	     top: 200px !important;
 	     width: 400px;
 	     min-height:300px;
@@ -58,7 +59,7 @@ page-leave-added {
 	}
 }
 
-.leave-added-popup{
+.leave-update-pop-up-popup{
 	.scroll-content{
 		overflow: auto;
 	}
