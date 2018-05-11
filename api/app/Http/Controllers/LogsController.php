@@ -75,6 +75,10 @@ class LogsController extends Controller
                         'no_slot' => 'No slot',
                         'lunch' => 'Lunch',
                     ];
+
+                    // config file call for holidays
+                    $data['holidays'] = config('holidays');
+
                     return response()->json(['status' => 200, 'message' => __('api_messages.day_summary'), 'data' => $data]);
                 // }
                 // else {
