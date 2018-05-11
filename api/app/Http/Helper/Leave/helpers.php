@@ -1,6 +1,14 @@
 <?php
 use App\User;
 use App\UserCommunication;
+
+function leave_due_to_violation($data)
+{
+     addLeaveRequest($data);        //function to add leave due to violation in firestore
+     //todo : update status in locked table (laravel) [function]
+     // re-calculate violations [function]
+}
+
 function addLeaveRequest($data)
 {
     $current_timestamp = \Carbon\Carbon::now();
