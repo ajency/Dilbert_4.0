@@ -22,7 +22,8 @@ export class AppGlobalsProvider {
   view_log_history_btn : boolean = true;
 
   leave_param :any ={
-   param1:''
+   param1:'',
+   param2:''
   }
 
   leave_request_param :any ={

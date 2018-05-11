@@ -211,6 +211,13 @@ export class SummaryContentComponent {
       email:this.summaryContentData.data.user.email,
       avatar:this.summaryContentData.data.user.avatar
      }
+     if(this.summaryContentData.data.holidays){
+       this.appGlobalsProvider.leave_param.param2={
+          holidayWeekDay:this.summaryContentData.data.holidays.weekend_holiday,
+          holidays:this.summaryContentData.data.holidays.holiday
+       }
+     }
+
      console.log(this.appGlobalsProvider.leave_param.param1);
 
     // this.events.publish("update:userDataForLeave", this.summaryContentData);

@@ -67,6 +67,9 @@ export class LeaveModalPage {
     editLeaveNote:any;
     editLeaveNote2:any;
     leaveUpdateStatus:any;
+    holidays:Array<any> = [];
+    holidayWeekDay:Array<any> = [];
+
 
     tempUsers:Array<any> = [];
 
@@ -76,11 +79,9 @@ export class LeaveModalPage {
       editableDateField:true,
       showClearDateBtn:true,
       disableUntil: {year: 2017, month: 1, day: 1},
-      disableWeekdays:['su'],
-    // disableDays:[{year: 2018, month: 5, day: 14},{year: 2018, month: 5, day: 15}]
-    // disableDays:[this.disableDaysSelected]
-    
-  };
+      disableWeekdays:this.holidayWeekDay,
+      disableDays:this.holidays
+   }
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -185,6 +186,7 @@ export class LeaveModalPage {
     }
 
   ngOnInit(){
+    this.publicholidays();
     if(this.editLeaveData  != undefined){
        this.editSelectedDates=this.editLeaveData.leave_date;
        this.editSelectedUsers=this.editLeaveData.tagged_users;
@@ -556,5 +558,34 @@ updateData(){
     this.viewCtrl.dismiss();
   }
 
+  publicholidays(){
+    console.log(this.appGlobalsProvider.leave_param.param2.holidayWeekDay);
+    console.log(this.appGlobalsProvider.leave_param.param2.holidays);
+    var day=this.appGlobalsProvider.leave_param.param2.holidayWeekDay;
+    for( var i =0 ; i<day.length;i++){
+      this.holidayWeekDay.push(day[i]);
+    }
+    var holidayDates=this.appGlobalsProvider.leave_param.param2.holidays;
+    for(var i=0; i<holidayDates.length;i++){
+      this.holidays.push(holidayDates[i]);
+    }
+    console.log(this.holidays);
+    console.log(this.holidayWeekDay);
+    console.log("------------holidays----------");
+    // for( var i=0 ; i< 10;i++){
+    // var temp={year: new Date().getFullYear()+i, month:  5, day:  1} ;
+    // var temp2={year: new Date().getFullYear()+i, month:  4, day:  14} ;
+    // var temp3={year: new Date().getFullYear()+i, month:  1, day:  26} ;
+    // var temp3={year: new Date().getFullYear()+i, month:  12, day:  25} ;
+    // var temp4={year: new Date().getFullYear()+i, month:  12, day:  19} ;
+    // console.log(temp);
+    //  this.holidays.push(temp);
+    //  this.holidays.push(temp2);
+    //  this.holidays.push(temp3);
+    //  this.holidays.push(temp4);
+    // }
+    // console.log(this.holidays);
+    // console.log(this.holidayWeekDay);
+  }
 
 }
