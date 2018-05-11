@@ -84,10 +84,10 @@ class CronController extends Controller
                     $userLockedData->save();
                     try
                     {
-                        addLeaveRequest($data);                        
+                       leave_due_to_violation($data);                        
                     }
                     catch (\Exception $e) {
-                        LogForErrors::error('Error Type: Leaves tagged users, error:'.$e->getMessage());
+                        LogForErrors::error('Error Type: Leave due to violation, error:'.$e->getMessage());
                         return response()->json(['status' => 400, 'message' => $e->getMessage()]);
                     }
                 }

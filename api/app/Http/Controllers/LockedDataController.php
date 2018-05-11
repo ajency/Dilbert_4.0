@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App;
+use App\ViolationApp;
 use App\User;
 use App\UserDetail;
 use App\Locked_Data;
@@ -17,7 +18,9 @@ use App\OrganisationMeta;
 use App\UserCommunication;
 use App\Slots;
 use DateTime;
+use Illuminate\Support\Facades\Mail;
 use Ajency\User\Ajency\userauth\UserAuth;
+use Ajency\Violations\Ajency\ViolationRules;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -280,7 +283,46 @@ class LockedDataController extends Controller
                         // get the total time
                         $totalTimeEntry = explode(':',$lockedEntry->total_time);
                         if((int)$totalTimeEntry[0] <= (int)(new OrganisationMeta)->getParamValue('minimum_hrs_in_day',$uDets['user_details'][0]['org_id'],$uDets['user']['violation_grp_id']) && $request->work_date != date('Y-m-d'))
-                            $lockedEntry->status = 'Leave due to violation';
+                        {
+                            // $lockedEntry->status = 'Leave due to violation';
+                            $total_time=$lockedEntry->total_time;
+                            $total_time = explode(":", $total_time);
+                            $total_time=$total_time[0] + ($total_time[1]/60);
+                            echo "TOTAL TIME : ".$total_time;
+                            $keyFields = ['total_hrs_in_day' => $total_time];        // this type casting returns you the only the hours
+                            $rhsFields = ['minimum_hrs_in_day'];
+                            $mailList = ['hr','owner1','owner2'];
+                            $data = (new ViolationApp)->createFormattedViolationData($uDets,$keyFields,$rhsFields,$mailList);
+                            echo "\n TOTAL TIME : ";
+                            print_r($data['rule_key_fields']);
+                            $data['logo']= public_path().'/img/ajency-logo.png';
+                            $data['dilbert']=public_path().'/img/dilbert.png';
+                            $data['documentation']=public_path().'/img/ajency-email.png';
+                            $data['worked_hours']=$lockedEntry['total_time'];
+                            $minimum_hrs_in_day=$data['rule_rhs']['minimum_hrs_in_day'];
+                            $minimum_hrs_in_day=explode(".",$minimum_hrs_in_day);
+                            print_r($minimum_hrs_in_day);
+                            $minimum_hrs=$minimum_hrs_in_day[1]*60;
+                            $data['minimum_hrs_in_day']=$minimum_hrs_in_day[0].":".$minimum_hrs/10;
+                            $vioResponse = (new ViolationRules)->checkForViolation('minimum_hrs_of_day',$data,false,false);
+                            if($vioResponse['status'] == 'violation') {
+                                $data["work_date"] = $request->work_date;
+                                $lockedEntry->status = "Leave due to violation";
+                                $lockedEntry->save();
+                                try
+                                {
+                                   leave_due_to_violation($data);                        
+                                }
+                                catch (\Exception $e) {
+                                    LogForErrors::error('Error Type: Leave due to violation, error:'.$e->getMessage());
+                                    return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+                                }
+                            }
+                            else {
+                                $lockedEntry->status = $this->getUserStatus('present',$org->org_id,$user->violation_grp_id);
+                                $lockedEntry->save();
+                            }
+                        }
 
                         $lockedEntry->save();
                         $status=$lockedEntry->status;

@@ -1,8 +1,25 @@
 <?php
 use App\User;
 use App\UserCommunication;
+
+function leave_due_to_violation($data)
+{
+     addLeaveRequest($data);
+}
+
+// adds leaves which are caused due to violation in firestore
+// data: data of violation and users data 
 function addLeaveRequest($data)
 {
+    if(!isset($data["work_date"]))
+    {
+        $current_timestamp = \Carbon\Carbon::now();
+        $work_date = [$current_timestamp->toDateString()];
+    }
+    else
+    {
+        $work_date =[$data["work_date"]];
+    }
     $current_timestamp = \Carbon\Carbon::now();
     $taggedUsers = leavesTaggedUsers($data['violation_data']['mailing_list']);
     print_r($data['violation_data']['mailing_list']);
@@ -13,8 +30,8 @@ function addLeaveRequest($data)
                     "name" => $data['violation_data']['who_meta']['name']
                 ],       
                 "date_of_application" => $current_timestamp,             
-                "leave_date" => [$current_timestamp->toDateString()],             
-                "leave_note" => "Leave due to violation - Minimum hours of ".str_replace(":", " hr ", $data['minimum_hrs_in_day'])."m not met for the day. Total hours worked: ".str_replace(":"," hr ",$data['worked_hours'])."m",
+                "leave_date" => $work_date,             
+                "leave_note" => "<b>Leave due to violation</b> - Minimum hours of ".str_replace(":", " hr ", $data['minimum_hrs_in_day'])."m not met for the day. Total hours worked: ".str_replace(":"," hr ",$data['worked_hours'])."m",
                 "leave_status"=> "",    
                 "leave_type"=>"leave_due_to_violation",            
                 "tagged_users"=>$taggedUsers
