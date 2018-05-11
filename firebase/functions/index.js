@@ -1,4 +1,5 @@
 const functions = require('firebase-functions');
+const cors = require('cors')({origin: true});
 
 firebase = require('firebase-admin');
 
@@ -545,6 +546,8 @@ function getSortType(sortValue)
 // https://us-central1-dilbert-34d6c.cloudfunctions.net/viewLeave
 exports.viewLeave = functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
+	response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");	
+	response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, From, X-API-KEY");
 	if (request.method === "POST") 
 	{
 		//define variable
@@ -648,12 +651,19 @@ exports.viewLeave = functions.https.onRequest((request,response) => {
 	}
 	else
 	{
-		var return_value=[
-		{
-			"status" : "error",
+		/*var return_value={
+			"status" : "success",
 			"message" : "wrong method",
-		}]
-		response.status(200).send(return_value); 
+		};
+		response.status(200).send(return_value); */
+		response.setHeader("Access-Control-Max-Age", "1728000");
+		response.setHeader("Content-Length", "0");
+
+		status_code = 200;
+		result = {	"status": "error", 
+		"message": 'Method not supported' 
+		};
+		response.status(status_code).send(result);
 	}
 });
 
@@ -661,6 +671,8 @@ exports.viewLeave = functions.https.onRequest((request,response) => {
 // https://us-central1-dilbert-34d6c.cloudfunctions.net/updateLeave
 exports.updateLeave= functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
+	response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");	
+	response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, From, X-API-KEY");
 	if (request.method === "POST") 
 	{
 		console.log("Request : ",request.body);
@@ -735,7 +747,7 @@ exports.updateLeave= functions.https.onRequest((request,response) => {
 
 			var return_value_post={
 				"status" : "success",
-				"message" : "200 OK",
+				"message" : "Leave Updated Successfully",
 				"data" : objdata
 			}
 			console.log(leave_details);
@@ -828,12 +840,19 @@ exports.updateLeave= functions.https.onRequest((request,response) => {
 	}
 	else
 	{
-		return_value=[
-		{
-			"status" : "error",
+		/*var return_value={
+			"status" : "success",
 			"message" : "wrong method",
-		}]
-		response.status(200).send(return_value); 
+		};
+		response.status(200).send(return_value); */
+		response.setHeader("Access-Control-Max-Age", "1728000");
+		response.setHeader("Content-Length", "0");
+
+		status_code = 200;
+		result = {	"status": "error", 
+		"message": 'Method not supported' 
+		};
+		response.status(status_code).send(result);
 	}
 	
 	});
@@ -842,6 +861,8 @@ exports.updateLeave= functions.https.onRequest((request,response) => {
 // https://us-central1-dilbert-34d6c.cloudfunctions.net/addLeave
 exports.addLeave = functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
+	response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");	
+	response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, From, X-API-KEY");
 	if (request.method === "POST") 
 	{
 		mandatoryRequest=validateRequest(request);
@@ -920,7 +941,7 @@ exports.addLeave = functions.https.onRequest((request,response) => {
 			}
 			var return_value_post={
 					"status" : "success",
-					"message" : "200 OK",
+					"message" : "Added leave request",
 					"data" : objdata
 				}
 
@@ -1018,13 +1039,21 @@ exports.addLeave = functions.https.onRequest((request,response) => {
 		}
 
 	}
-	else{
-		return_value=[
-		{
-			"status" : "error",
+	else
+	{
+		/*var return_value={
+			"status" : "success",
 			"message" : "wrong method",
-		}]
-		response.status(200).send(return_value); 
+		};
+		response.status(200).send(return_value); */
+		response.setHeader("Access-Control-Max-Age", "1728000");
+		response.setHeader("Content-Length", "0");
+
+		status_code = 200;
+		result = {	"status": "error", 
+		"message": 'Method not supported' 
+		};
+		response.status(status_code).send(result);
 	}
 });
 
@@ -1032,6 +1061,8 @@ exports.addLeave = functions.https.onRequest((request,response) => {
 // https://us-central1-dilbert-34d6c.cloudfunctions.net/addComment
 exports.addComment = functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
+	response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");	
+	response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, From, X-API-KEY");
 	console.log("request method ",request.method);
 	if(request.method === "POST") 
 		{
@@ -1091,14 +1122,22 @@ exports.addComment = functions.https.onRequest((request,response) => {
 				response.status(200).send(return_value); 
 			}
 		}	
-		else{
-			return_value=[
-			{
-				"status" : "error",
-				"message" : "wrong method",
-			}]
-			response.status(200).send(return_value); 
-		}
+		else
+	{
+		/*var return_value={
+			"status" : "success",
+			"message" : "wrong method",
+		};
+		response.status(200).send(return_value); */
+		response.setHeader("Access-Control-Max-Age", "1728000");
+		response.setHeader("Content-Length", "0");
+
+		status_code = 200;
+		result = {	"status": "error", 
+		"message": 'Method not supported' 
+		};
+		response.status(status_code).send(result);
+	}
 	
 	});
 
@@ -1106,6 +1145,8 @@ exports.addComment = functions.https.onRequest((request,response) => {
 // https://us-central1-dilbert-34d6c.cloudfunctions.net/updateLeaveStatus
 exports.updateLeaveStatus = functions.https.onRequest((request,response) => {
 	response.setHeader("Access-Control-Allow-Origin", "*");
+	response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");	
+	response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, From, X-API-KEY");
 	console.log("request method ",request.method);
 	if(request.method === "POST") 
 		{
@@ -1135,7 +1176,7 @@ exports.updateLeaveStatus = functions.https.onRequest((request,response) => {
 
 					var return_value_post={
 						"status" : "success",
-						"message" : "200 OK",
+						"message" : "Leave cancelled",
 						"data" : returnData
 					}
 
@@ -1177,13 +1218,21 @@ exports.updateLeaveStatus = functions.https.onRequest((request,response) => {
 				}
 			}
 		}	
-		else{
-			return_value=[
-			{
-				"status" : "error",
-				"message" : "wrong method",
-			}]
-			response.status(200).send(return_value); 
-		}
+		else
+	{
+		/*var return_value={
+			"status" : "success",
+			"message" : "wrong method",
+		};
+		response.status(200).send(return_value); */
+		response.setHeader("Access-Control-Max-Age", "1728000");
+		response.setHeader("Content-Length", "0");
+
+		status_code = 200;
+		result = {	"status": "error", 
+		"message": 'Method not supported' 
+		};
+		response.status(status_code).send(result);
+	}
 	
 	});
