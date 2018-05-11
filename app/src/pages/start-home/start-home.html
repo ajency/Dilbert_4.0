@@ -40,7 +40,7 @@
                 </ion-col> -->
                 <ion-col class="col dashboard__leaves mobile-hide" col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
                    <!--  <ion-col col-12 col-md-12 col-lg-4 p-h-0 p-v-0 *ngIf = " summaryContentData && sideBarData" class="p-l-10" style="border :1px solid black"> -->
-                        <div class="p-b-20" *ngIf ="summaryContentData && sideBarData">
+                        <div class="p-b-20" *ngIf ="summaryContentData && sideBarData && leave_feature_enable">
                             <div class="leaveContainer">
                                 <ion-grid>
                                     <ion-row >
@@ -119,9 +119,12 @@
                                                 <div class="TeamUserName"> 
                                                 </div>
                                                 <div class="">
-                                                    <div class="leaveNote"> <span style="float: right;"> <!-- <ion-icon ios="ios-more" md="md-more" (click)="popUpOptions()"></ion-icon> --></span>
+                                                    <div class="leaveNote"> 
+                                                      <span style="float: right;cursor: pointer;"> <ion-icon ios="ios-more" md="md-more" class="moreOptions" (click)="popUpOptions(item,$event)"></ion-icon>
+                                                      </span>
+
                                                       <ng-container *ngIf="item.leave_date">
-                                                       {{item.leave_note}}
+                                                      <span [innerHTML]="item.leave_note"></span> <!-- {{item.leave_note}} -->
                                                        <ng-container *ngIf="item.leave_date.length==1">
                                                         <span style="font-weight: bold;">for</span> 
                                                         <span style="font-weight: bold;color: #6943bf">{{item.leave_date.length}}  Day</span> <span style="font-weight: bold;">on</span>
@@ -235,8 +238,8 @@
                                                 </div> 
                                                 <div class="replyBlock">
                                                   <span class="innerLeaveContainer">
-                                                     <ion-icon *ngIf="sideBarData && sideBarData.data.user.self" ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;" (click)="cancelLeave(item)"></ion-icon>
-                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;"(click)="editLeave(item)" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
+                                                     <ion-icon *ngIf="sideBarData && sideBarData.data.user.self" ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;display: none;" (click)="cancelLeave(item)"></ion-icon>
+                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;display: none;"(click)="editLeave(item)" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
                                                     <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
                                                   </span>
                                                 </div>
@@ -244,7 +247,7 @@
                                                   <span>
                                                       <ion-icon ios="ios-close" md="md-close" class="icon-size full cancelComment" style="float: left; cursor: pointer;"  (mouseup)="cancelComment()"></ion-icon>
                                                       <span style="margin-left: 10px;"> 
-                                                        <input id="cmtBtn" (keydown)="commentEnter($event)" type="text" name="" placeholder="Reply" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
+                                                        <input id="cmtBtn" (keydown)="commentEnter($event)" type="text" name="" placeholder="Reply" maxlength="150" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
                                                         <!-- <button style="border:none;background-color: transparent; width: 0;" disabled > -->
                                                         <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="comment()"></ion-icon>
                                                         <hr style="margin-top: 2px;margin-left:20px;"><!-- </button>  -->
@@ -289,7 +292,7 @@
                                     <ion-row>
                                         <ion-col col-12  col-md-12 col-lg-12 >
                                             <h5 font-weight-5 class="teamTogglecontainer">Team leaves 
-                                              <span *ngIf="teamLeaveData != undefined && teamLeaveData.data.leaves.length != 0" class="countLeaves">{{teamLeaveCount}}</span>
+                                              <span *ngIf="teamLeaveData != undefined && teamLeaveData.data.leaves.length != 0" class="countLeaves">{{teamLeaveData.data.leaves.length}}</span>
                                                <span style="float: right;cursor: pointer;display:none;" id="teamLeaveToggle" (mouseup)="teamtoggle()"> 
                                                 <ion-icon  name="ios-arrow-up-outline" class="icon-size "></ion-icon> 
                                              </span>  
@@ -324,15 +327,20 @@
                                           <ng-container *ngFor="let item of teamLeaveData.data.leaves | slice:0:teamLeaveShow;let leaveIndex =index ">
                                             <div class="leaveViewBlock">
                                                 <div class="TeamUserName"> 
-                                                    <table class="noBorder">
+                                                    <table class="noBorder" style="width: 100%;">
                                                         <tr class="noBorder">
                                                             <td class="noBorder" style="min-width:40px;">
                                                                 <img src="{{item.user.avatar}}" class="avatar">
                                                             </td>
                                                             <td class="noBorder datablock">
+
                                                              <span font-weight-5>{{item.user.name}} :</span>
                                                             
-                                                              <span class="noteCon">{{item.leave_note}} <!-- for <span font-weight-5> {{item.leave_date.length}} Days </span> on -->
+                                                              <span class="noteCon">
+                                                                <!-- {{item.leave_note}}  -->
+                                                                <span [innerHTML]="item.leave_note"></span>
+                                                            
+                                                                <!-- for <span font-weight-5> {{item.leave_date.length}} Days </span> on -->
                                                                <ng-container *ngIf="item.leave_date.length==1">
                                                                 <span style="font-weight: bold;">for </span>
                                                                <span style="font-weight: bold;color:#6943bf;">{{item.leave_date.length}}  Day</span>  <span style="font-weight: bold;"> on</span>
@@ -347,6 +355,10 @@
                                                                       <ng-container *ngIf="i < item.leave_date.length- 2">,</ng-container>
                                                                   </ng-container>
                                                               </span>
+                                                            </td><!-- *ngIf="sideBarData && sideBarData.data.user.self" -->
+                                                            <td style="border:none;text-align:right;" *ngIf="edit_others_leaves" >
+                                                               <div style="float: right;cursor: pointer;" align="right"> <ion-icon ios="ios-more" md="md-more" class="moreOptions" (click)="popUpOptions(item,$event)"></ion-icon>
+                                                               </div>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -452,7 +464,7 @@
                                                 <div class="replyBlock">
                                                   <span class="innerLeaveContainer">
                                                      <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;display: none;"></ion-icon>
-                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;" (click)="editLeave(item)" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
+                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;display: none;" (click)="editLeave(item)" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
                                                     <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
                                                   </span>
                                                 </div>
@@ -460,7 +472,7 @@
                                                   <span>
                                                       <ion-icon ios="ios-close" md="md-close" class="icon-size full cancelComment" style="float: left; cursor: pointer;"  (mouseup)="cancelComment()"></ion-icon>
                                                       <span style="margin-left: 10px;"> 
-                                                        <input type="text" (keydown)="commentEnter($event)" name="" placeholder="Reply" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
+                                                        <input type="text" (keydown)="commentEnter($event)" maxlength="150" placeholder="Reply" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
                                                         <!-- <button style="border:none;background-color: transparent; width: 0;" disabled > -->
                                                         <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="comment()"></ion-icon>
                                                         <hr style="margin-top: 2px;margin-left:20px;"><!-- </button>  -->

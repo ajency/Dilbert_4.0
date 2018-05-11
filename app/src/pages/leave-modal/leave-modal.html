@@ -15,7 +15,7 @@
 				<h6> Add A Leave</h6>
 			</ng-container>
 		</div>
-		<div padding>
+		<div class="mainContainer" padding>
 			<ion-grid>
 			  <ion-row>
 			    <ion-col col-12>
@@ -91,13 +91,13 @@
 			    	<ng-container *ngIf="modalType!='editLeave'">
 				    	<div class="leaveNote">
 				    		<div class="leaveNoteHeader"> Leave a Note</div>
-				    		<textarea  [ngModel]="leaveNote" id="leaveNoteData" required (keyup)="leaveNoteData($event.target.value)" style="min-width: 100%;min-height: 100px; "></textarea>	
+				    		<textarea  [ngModel]="leaveNote" id="leaveNoteData" required (keyup)="leaveNoteData($event.target.value)" style="min-width: 100%;min-height: 100px;" maxlength="150"></textarea>	
 				    	</div>
 			   	 	</ng-container>
 			    	<ng-container *ngIf="modalType=='editLeave'">
 				    	<div class="leaveNote">
 				    		<div class="leaveNoteHeader"> Leave a Note</div>
-				    		<textarea  [ngModel]="leaveNote" id="leaveNoteData" required (keyup)="editLeaveNoteData($event.target.value)" style="min-width: 100%;min-height: 100px; "></textarea>	
+				    		<textarea  [ngModel]="leaveNote" id="leaveNoteData" required (keyup)="editLeaveNoteData($event.target.value)" style="min-width: 100%;min-height: 100px;" maxlength="150"></textarea>	
 				    	</div>
 			    	</ng-container>
 			    </ion-col>
