@@ -82,7 +82,8 @@ import { Storage } from '@ionic/storage';
  selectedOption:any;
  teamSelectedOption:any;
  top:any;
- leave_feature_enable : boolean =true;
+ leave_feature_enable : boolean =false;
+ edit_others_leaves : boolean =false;
 
  private chageLogCB: Function;
 
@@ -770,7 +771,7 @@ checkleaves(){
 
   LeaveType(val){
     console.log("----- selected Team value---");
-    console.log(val.target.value);
+    // console.log(val.target.value);
     if(val.target.value=="All"){
       this.todayDate='';
     }
@@ -784,7 +785,7 @@ checkleaves(){
 
   MyLeaveType(val){
     console.log("----- selected My value---");
-      console.log(val.target.value);
+      // console.log(val.target.value);
     if(val.target.value=="All"){
       this.myTodayDate='';
     }
@@ -795,7 +796,7 @@ checkleaves(){
   }
 
   editLeave(item1){
-    console.log(item1);
+    // console.log(item1);
     this.dataToBeEdited=item1;
     this.events.publish("update:leave_data", item1);
     let popover = this.popoverCtrl.create( 'LeaveModalPage',{users:this.autocompleteItemsAsObjects,data:item1,type:"editLeave"});
@@ -804,11 +805,11 @@ checkleaves(){
 
   readUserData(){
     console.log("users loading");
-    console.log(this.apiURL);
+    // console.log(this.apiURL);
 
     let url =  `${this.apiURL}/organisation-users/${this.authguard.userData.org_id}/`;
     // let url =`http://www.mocky.io/v2/5af1287d310000580096c809`;
-    console.log(url);
+    // console.log(url);
     let filter1 = {
         // org_id : this.org_id,
         // date:date.start,
@@ -830,7 +831,7 @@ checkleaves(){
           'From' : this.authguard.userData.user_id
         };
             this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
-            console.log(response);
+            // console.log(response);
                 if(response.status == 'success'){
                      // this.users = response.data;
                      this.autocompleteItemsAsObjects = response.data;
@@ -914,10 +915,10 @@ checkleaves(){
         if(this.all_users[x].user_id==this.userDetails.user_id){
          
           this.loggedInUser=this.all_users[x]; 
-          console.warn(this.loggedInUser);
+          // console.warn(this.loggedInUser);
         }
         else{
-          console.log("no user found");
+          // console.log("no user found");
         }
       }
 
@@ -926,7 +927,7 @@ checkleaves(){
     let url =  `https://us-central1-dilbert-34d6c.cloudfunctions.net/addComment`;
       //user id , parent id, key,comment Note and commented user
 
-    console.log(url);
+    // console.log(url);
     let parent_id=this.commentDetails.parent_id;
     let user_id1=this.commentDetails.user.user_id;
     let user={
@@ -947,14 +948,14 @@ checkleaves(){
       message: this.commentNote
 
       };
-      console.log(body);
+      // console.log(body);
 
     let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id
         };
             this.appServiceProvider.request(url, 'post', body, optionalHeaders, false, 'observable','disable', {}, false).subscribe( (response) => {
-            console.log(response);
+            // console.log(response);
                 if(response.status == 'success'){
                    console.log("Comment Added");
                     console.log("comment data",response.data);
@@ -995,11 +996,11 @@ checkleaves(){
       console.log("enter comment")
     }
     else{
-      console.log(this.all_users);
-      console.log(this.commentNote);
-      console.log(this.commentDetails);
-      console.warn(this.userDetails.user_id);
-      console.warn(this.all_users);
+      // console.log(this.all_users);
+      // console.log(this.commentNote);
+      // console.log(this.commentDetails);
+      // console.warn(this.userDetails.user_id);
+      // console.warn(this.all_users);
       for(var x=0; x < this.all_users.length;x++){
         if(this.all_users[x].user_id==this.userDetails.user_id){
          
@@ -1032,6 +1033,8 @@ checkleaves(){
       message: this.commentNote
 
       };
+      console.log("body add comment");
+      console.log(body);
     let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,
           'From' : this.authguard.userData.user_id
@@ -1055,7 +1058,7 @@ checkleaves(){
   }
 
   commentnote(val){
-    console.log(val);
+    // console.log(val);
     this.commentNote=val;
     var newstr = this.commentNote.replace(/[\r\n|\n|\r]/gm,'');
     this.commentNote1 = newstr.split(' ').join(''); 
@@ -1123,14 +1126,13 @@ checkleaves(){
   }
   cancelLeave(item){
     console.log("cancel leave");
-    console.log(item);
-    console.log(this.userLeaveData);
+    // console.log(item);
+    // console.log(this.userLeaveData);
 
     let popover = this.popoverCtrl.create( 'CancelLeavePage',{data:item,userData:this.userLeaveData});
     popover.present();
 
   }
-
    getTimeDiff(date: string): string {
     var tempDate=moment(date).format('MMMM Do YYYY, h:mm:ss a');
     // console.log(this.currentTime);
@@ -1140,11 +1142,8 @@ checkleaves(){
     return text;
   }
   popUpOptions(item,ev){
-   this.top= ev.currentTarget.offsetTop;
-   console.log("offset:",ev.currentTarget.offsetTop);
-   console.log("this is the top :---",this.top);
     console.log(item);
-    let popover = this.popoverCtrl.create( 'EditleavemodalPage',{data:item,users:this.autocompleteItemsAsObjects,userData:this.userLeaveData,top:this.top});
+    let popover = this.popoverCtrl.create( 'EditleavemodalPage',{data:item,users:this.autocompleteItemsAsObjects,userData:this.userLeaveData,sideBarData:this.sideBarData,teamLeaves:this.teamLeaveData});
     popover.present({
       ev: ev
     });
@@ -1152,24 +1151,23 @@ checkleaves(){
   }
 
 
-   checkPermissionsLeave(){
-            console.log('inside checkPermissions');
-
-            let result = this.authguard.userData;
-            // console.log('result',result);
-            let perm_class =result.permissions.leave_feature_enable;
-            console.log(result);
-            for(var i=0; i< result.permissions.length;i++){
-              if(result.permissions[i]=="leave_feature_enable"){
-              this.leave_feature_enable =true;
-              console.log("user has permissions to add leave");
-            }
-            else{
-              this.leave_feature_enable = false;
-              console.log("user does not have permissions to add leave");
-
-            }
-            }
+  checkPermissionsLeave(){
+    console.log('inside check Leave Permissions');
+    let result = this.authguard.userData;
+    console.log('result',result);
+    let perm_class =result.permissions.leave_feature_enable;
+    console.log(result);
+    for(var i=0; i< result.permissions.length;i++){
+      if(result.permissions[i]=="leave_feature_enable"){
+      this.leave_feature_enable =true;
+      console.log("user has permissions to add leave");
+      }
+      if(result.permissions[i]=="edit_others_leaves"){
+      this.edit_others_leaves =true;
+      console.log("user has permissions to edit_others_leaves");
+      }
+    }
             
   }
+
 }

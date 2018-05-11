@@ -38,6 +38,8 @@ export class EditleavemodalPage {
     userLeaveData:any;
     allusers:any;
     top:any;
+    sideBarData:any;
+    teamLeaveData:any;
 
 
   constructor(public navCtrl: NavController, 
@@ -57,15 +59,18 @@ export class EditleavemodalPage {
                 this.data = this.navParams.get('data');
                 this.data2 = this.navParams.get('userData');
                 this.allusers=this.navParams.get('users');
-                this.top=this.navParams.get('top');
+                this.sideBarData=this.navParams.get('sideBarData');
+                this.teamLeaveData=this.navParams.get('teamLeaves');
+                console.log(this.teamLeaveData);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditleavemodalPage');
   }
      ngOnInit(){
-      console.log(this.data);
-    this.$(this.nativeElement).parents().find('.popover-content').addClass("editleave-popover2");
+      console.log("sideBarData");
+      console.log(this.sideBarData);
+      this.$(this.nativeElement).parents().find('.popover-content').addClass("editleave-popover2");
 }
 
 cancelLeavecheck(){
@@ -73,16 +78,16 @@ cancelLeavecheck(){
   console.log("cancel leave");
   console.log(this.userLeaveData);
   this.userLeaveData=this.data2;
-  let popover = this.popoverCtrl.create( 'CancelLeavePage',{data:this.data,userData:this.userLeaveData});
+  let popover = this.popoverCtrl.create( 'CancelLeavePage',{data:this.data,userData:this.userLeaveData,teamLeaves:this.teamLeaveData});
   popover.present();
 }
 
 editLeavecheck(){
-    this.close();
+  this.close();
   console.log("update leave");
-   console.log(this.data);
-   let popover = this.popoverCtrl.create( 'LeaveModalPage',{users:this.allusers,data:this.data,type:"editLeave"});
-    popover.present();
+  console.log(this.data);
+  let popover = this.popoverCtrl.create( 'LeaveModalPage',{users:this.allusers,data:this.data,type:"editLeave"});
+  popover.present();
 }
   close() {
     this.viewCtrl.dismiss();

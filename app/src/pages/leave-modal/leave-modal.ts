@@ -76,6 +76,8 @@ export class LeaveModalPage {
       editableDateField:true,
       showClearDateBtn:true,
       disableUntil: {year: 2017, month: 1, day: 1},
+      disableWeekdays:['su'],
+    // disableDays:[{year: 2018, month: 5, day: 14},{year: 2018, month: 5, day: 15}]
     // disableDays:[this.disableDaysSelected]
     
   };
@@ -148,9 +150,6 @@ export class LeaveModalPage {
                         this.upadtetaguser(this.editedItems[i]);
                       }
                       console.log(this.autocompleteItemsAsObjects2);
-
-
-                  
                 }
   }
      upadtetaguser(item){
@@ -186,7 +185,7 @@ export class LeaveModalPage {
     }
 
   ngOnInit(){
-        if(this.editLeaveData  != undefined){
+    if(this.editLeaveData  != undefined){
        this.editSelectedDates=this.editLeaveData.leave_date;
        this.editSelectedUsers=this.editLeaveData.tagged_users;
        // this.items=this.editLeaveData.tagged_users;
@@ -251,25 +250,27 @@ export class LeaveModalPage {
        this.model=null;
     }
 
-    leaveNoteData(test){
-        this.leaveNote=test;
+    leaveNoteData(data){
+        this.leaveNote=data;
         var newstr = this.leaveNote.replace(/[\r\n|\n|\r]/gm,'');
         this.leave_note1 = newstr.split(' ').join(''); 
         this.checkIfData();
+        console.log(this.leaveNote);
+        console.log(this.leaveNote.length);
     }
 
     checkIfData(){
         if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0 ||this.leave_note1=="" ){
-      this.buttonRequestApi=false;
-    }else{
-        this.buttonRequestApi=true;
-    }
+          this.buttonRequestApi=false;
+        }else{
+          this.buttonRequestApi=true;
+        }
     }
     sendData(){
-    console.log("Data to be sent in api request");
-    if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0){
-      console.log("error");
-    }
+      console.log("Data to be sent in api request");
+      if(this.leaveNote ==""|| this.leaveNote==null || this.leaveNote==undefined || this.selectedDates.length ==0 || this.selectedUsers.length==0){
+        console.log("error");
+      }
      else{
         let optionalHeaders = {
           'X-API-KEY' : this.authguard.userData.x_api_key,

@@ -16,18 +16,19 @@
 <ion-content padding>
 
 </ion-content> -->
-	<ion-content class="cancel-leave-popup">
-		<div class="my-leave-popup">
-			<div align="center" class="cancel-leave-popup__title">
-				 <ion-icon name="close-circle" class="title_icon_danger"></ion-icon>
-			</div>
-			<div padding>
-				<div class="mainContent">
-					<h4 p-b-10>Cancel My Leave</h4>
-					<span class="subLeaveContent">Are you sure you want to undo the Leave?</span>
-				</div>
-				<div style="text-align: center;"><button ion-button class="sameSize" (click)="cancelLeaveApiCall()">Yes, Continue</button></div>
-				<div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div>			
-			</div>
+<ion-content class="cancel-leave-popup">
+	<div class="my-leave-popup">
+		<div align="center" class="cancel-leave-popup__title">
+			 <ion-icon name="close-circle" class="title_icon_danger"></ion-icon>
+			  <!-- <ion-icon ios="ios-alert" md="md-alert" class="title_icon_danger"></ion-icon> -->
 		</div>
-	</ion-content>
+		<div padding>
+			<div class="mainContent">
+				<h4 p-b-10>Cancel leave request</h4>
+				<span class="subLeaveContent">Are you sure?</span>
+			</div>
+			<div style="text-align: center;"><button ion-button class="sameSize" (click)="cancelLeaveApiCall()">Confirm </button></div>
+			<div style="text-align: center;padding-bottom: 20px;"><button  class="sameSize button1"(click)="close()">Cancel</button></div>			
+		</div>
+	</div>
+</ion-content>
