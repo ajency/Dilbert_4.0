@@ -1,0 +1,12 @@
+<ion-list m-v-0 class="profile-dropdown">
+	<!-- <ng-container ngIf*="sideBarData.data.user.self=='true' " > -->
+		<button ion-item (click)="cancelLeavecheck(item)">
+			<ion-icon ios="ios-close" md="md-close" class="icon-size small"> </ion-icon>
+			Cancel Leave
+		</button>
+	<!-- </ng-container> -->
+	<button ion-item (click)="editLeavecheck(item)">
+		<ion-icon ios="ios-create" md="md-create" class="icon-size small" ></ion-icon>
+		Update Leave
+	</button>
+</ion-list>		

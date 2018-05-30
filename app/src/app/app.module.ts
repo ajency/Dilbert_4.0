@@ -1,5 +1,6 @@
 // import { SummarySidebarService } from './../components/summary-sidebar/summary-sidebar.service';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorHandler, NgModule } from '@angular/core';
 // import { HttpModule, Http, BrowserXhr } from '@angular/http';
 import { HttpModule, Http } from '@angular/http';
@@ -21,6 +22,10 @@ import { TitleCasePipe } from '../pipes/title-case/title-case';
 import { AppGlobalsProvider } from '../providers/app-globals/app-globals';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SummarydataProvider } from '../providers/summarydata/summarydata';
+// import {RlTagInputModule} from 'angular2-tag-input';
+// import { UserSummarySidebarComponent } from '../components/user-summary-sidebar/user-summary-sidebar';
+// import { UserSummaryContentComponent } from '../components/user-summary-content/user-summary-content';
 // import { TimePickerComponent } from '../components/time-picker/time-picker';
 // import { NgProgressModule, NgProgressCustomBrowserXhr } from 'ng2-progressbar';
 import { NgProgressModule } from 'ng2-progressbar';
@@ -55,6 +60,8 @@ export function createTranslateLoader(http: Http) {
   ],
   imports: [
     BrowserModule,
+     // RlTagInputModule,
+    BrowserAnimationsModule,
     HttpModule,
     EnvironmentsModule,
     HttpModule,
@@ -93,6 +100,7 @@ export function createTranslateLoader(http: Http) {
     UserDataProvider,
     AuthguardProvider,
     AppGlobalsProvider,
+    SummarydataProvider,
     
   ]
 })

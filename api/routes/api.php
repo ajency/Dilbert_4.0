@@ -52,6 +52,8 @@ Route::group(['prefix' => 'cron'], function() {
     Route::post('/weekly','CronController@weekly');
     // monthly cron for total_hours_per_month violation
     Route::post('/monthly','CronController@monthly');
+    //weekly test
+     Route::post('/weekly_summary_mail','CronController@weekly_summary_mail');
 });
 
 // Desktop App
@@ -60,3 +62,7 @@ Route::get('/state-update','CronController@stateUpdate');  // cron runs every 5 
 
 // slots api
 Route::post('/edit-slots', 'SlotsController@editSlots');
+
+
+// organisation user details for leave management
+Route::post('/organisation-users/{org_id}','UserController@displayOrganisationUsers');
