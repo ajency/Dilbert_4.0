@@ -35,7 +35,486 @@
                         <div *ngIf = "failed" align="center"> {{message}} </div>
                     </div>
                 </ion-col>
+<!--                 <ion-col col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
+                    <span>My Leave Balance</span>
+                </ion-col> -->
                 <ion-col class="col dashboard__leaves mobile-hide" col-12 col-md-12 col-lg-4 p-h-0 p-v-0>
+                   <!--  <ion-col col-12 col-md-12 col-lg-4 p-h-0 p-v-0 *ngIf = " summaryContentData && sideBarData" class="p-l-10" style="border :1px solid black"> -->
+                        <div class="p-b-20" *ngIf ="summaryContentData && sideBarData && leave_feature_enable">
+                            <div class="leaveContainer">
+                                <ion-grid>
+                                    <ion-row >
+                                        <ion-col col-6  col-md-6 col-lg-6 >
+                                          <div style="display: none;">
+                                            <!-- <span>  -->
+                                            <span *ngIf="sideBarData && sideBarData.data.user.self" >My Leave Balance</span>
+                                            <span *ngIf="sideBarData && !sideBarData.data.user.self" > {{sideBarData.data.user.name}}'s Leave Balance </span>
+                                             <!-- Leave Balance</span> -->
+                                            <!-- <span (click)="testing()">click</span> -->
+                                            <div>
+                                                <h3 font-weight-5 >
+                                                    06
+                                                </h3>
+                                            </div>
+                                          </div>
+                                        </ion-col>
+                                        <ion-col col-6  col-md-6 col-lg-6 >
+                                            <button ion-button class="leaveButton" (click) = "leaveModal()">Take a leave</button>
+                                            <!-- <button (click)="test()">ok</button> -->
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>  
+                                <hr>
+                                <ion-grid>
+                                    <ion-row>
+                                        <ion-col col-12  col-md-12 col-lg-12 >
+                                            <h5 *ngIf="sideBarData && sideBarData.data.user.self" font-weight-5>My leaves 
+                                              <span class="countLeaves" *ngIf="userLeaveData != undefined && userLeaveData.data.leaves.length != 0 " >{{userLeaveData.data.leaves.length}}
+                                              </span> 
+                                              <span style="float: right;cursor: pointer;display:none;" id="myLeaveToggle" (mouseup)="mytoggle()">
+                                                <ion-icon  name="ios-arrow-up-outline" class="icon-size "></ion-icon> 
+                                              </span>  
+                                              <span style="float: right;cursor: pointer;" id="myLeaveToggle1" (mouseup)="mytoggle()"> 
+                                                  <ion-icon  name="ios-arrow-down-outline" class="icon-size"></ion-icon> 
+                                              </span>
+                                            </h5>
+
+                                            <h5 *ngIf="sideBarData && !sideBarData.data.user.self" font-weight-5> 
+                                              {{sideBarData.data.user.name}}'s  leaves 
+                                                <span class="countLeaves"  *ngIf="userLeaveData != undefined && userLeaveData.data.leaves.length != 0 ">{{userLeaveData.data.leaves.length}}
+                                                </span>
+                                                 <span style="float: right;cursor: pointer;display:none;" id="myLeaveToggle" (mouseup)="mytoggle()">
+                                                  <ion-icon  name="ios-arrow-up-outline" class="icon-size "></ion-icon> 
+                                                 </span>  
+                                                 <span style="float: right;cursor: pointer;" id="myLeaveToggle1" (mouseup)="mytoggle()"> 
+                                                  <ion-icon  name="ios-arrow-down-outline" class="icon-size"></ion-icon> 
+                                                </span>
+                                             </h5>
+                                        </ion-col>
+                                    </ion-row>
+                                    <div class="myLeaveToggleBox" style="display:none;">
+                                    <ion-row>
+                                        <ion-col col-12  col-md-12 col-lg-12 >
+                                            <div class="select">
+                                                <span class="arr"></span>
+                                                <select (change)="MyLeaveType($event)" [(ngModel)]="selectedOption">
+                                                  <option *ngFor="let option of myLeaveOptions">{{option}}</option>
+                                                </select>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                         <ion-col col-12  col-md-12 col-lg-12>
+                                          <ng-container *ngIf="userLeaveData != undefined">
+                                            <ng-container  *ngIf="userLeaveData.data.leaves.length == 0">
+                                              <div font-weight-5 style="text-align: center;" class="noLeaveContainer"> 
+                                                <div>
+                                                  <img class="icon-no-leave" src="../assets/img/calender.png">
+                                                </div>
+                                                No Leaves yet
+                                              </div>
+                                            </ng-container>
+                                            <ng-container *ngFor="let item of userLeaveData.data.leaves| slice:0:leaveShow; let leaveIndex =index ">
+                                            <div class="leaveViewBlock">
+                                                <div class="TeamUserName"> 
+                                                </div>
+                                                <div class="">
+                                                    <div class="leaveNote"> 
+                                                      <span style="float: right;cursor: pointer;"> <ion-icon ios="ios-more" md="md-more" class="moreOptions" (click)="popUpOptions(item,$event)"></ion-icon>
+                                                      </span>
+
+                                                      <ng-container *ngIf="item.leave_date">
+                                                      <span [innerHTML]="item.leave_note"></span> <!-- {{item.leave_note}} -->
+                                                       <ng-container *ngIf="item.leave_date.length==1">
+                                                        <span style="font-weight: bold;">for</span> 
+                                                        <span style="font-weight: bold;color: #6943bf">{{item.leave_date.length}}  Day</span> <span style="font-weight: bold;">on</span>
+                                                       </ng-container>
+                                                       <ng-container *ngIf="item.leave_date.length!=1">
+                                                        <span  style="font-weight: bold;">for </span><span style="font-weight: bold;color: #6943bf">{{item.leave_date.length}}  Days </span>  <span  style="font-weight: bold;">on</span>
+                                                       </ng-container>
+                                                        <ng-container *ngFor="let dates of item.leave_date ; let i=index ">
+                                                            <ng-container *ngIf="i == item.leave_date.length- 1 && item.leave_date.length !=1 ">and</ng-container>
+                                                            <span font-weight-5> {{getDayDate(dates,5)}} </span>
+                                                            <ng-container *ngIf="i < item.leave_date.length- 2">,</ng-container>
+                                                        </ng-container>
+                                                       </ng-container>
+                                                    </div>
+                                                    <span class="taggedUsers">
+                                                        <ng-container *ngIf="item.tagged_users.length ==1">
+                                                            <sub><ion-icon name="pricetag" style="color:orange;font-size: 16px;"></ion-icon></sub>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="item.tagged_users.length !=1">
+                                                            <sub><ion-icon name="pricetags" style="color:orange;font-size: 16px;"></ion-icon></sub>
+                                                        </ng-container>
+                                                         <ng-container *ngIf="item.tagged_users.length ==1">
+                                                             <ng-container *ngFor="let tag of item.tagged_users ; let i=index ">
+                                                                  @{{tag.name}}  
+                                                             </ng-container>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="item.tagged_users.length !=1">
+                                                            <span class="morebtn">
+                                                                 <ng-container *ngFor="let tag of item.tagged_users | slice:0:show; let i=index ">
+                                                                      @{{tag.name}}  <ng-container *ngIf="i != show- 1 && i != item.tagged_users.length- 1" >,</ng-container>
+                                                                 </ng-container>
+                                                            </span>
+                                                             <span class="morebtn"  *ngIf=" show < item.tagged_users.length " (mouseup)="showAllTags(item.tagged_users)" > 
+
+                                                                 <div class="dropdownTags">
+                                                                  <span class="dropbtn">+ {{item.tagged_users.length-show}} Others</span>
+                                                                  <div class="dropdownTags-content" >
+                                                                    <a *ngFor="let option of item.tagged_users| slice:show:item.tagged_users.length">{{option.name}}</a>
+
+                                                                  </div>
+                                                                </div>
+                                                             </span>
+                                                        </ng-container>
+                                                    </span>
+                                                    <ng-container *ngIf="item.comments">
+                                                      <div class="userComment">
+                                                      <ng-container *ngIf="item.comments.length !=0">
+                                                         <ng-container *ngIf="item.comments.length ==1">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:1 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+                                                          <ng-container *ngIf="item.comments.length ==2">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:2 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+                                                         <ng-container *ngIf="item.comments.length >2">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:1 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+
+                                                          <ng-container *ngIf="item.comments.length >2">
+                                                              <div class="avatarContainer">
+                                                                  <ng-container *ngFor="let comment of item.comments| slice:1:2"> 
+                                                                      <img src="{{comment.user.avatar}}" class="avatarList"> 
+                                                                  </ng-container>
+                                                                  <ng-container *ngIf="item.comments.length > 2">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" >+ {{item.comments.length-2}} more</span>
+                                                                  </ng-container>
+                                                                  <!--  <ng-container *ngIf="item.comments.length < 4">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" > more</span>
+                                                                  </ng-container> -->
+                                                              </div>
+                                                        </ng-container> 
+                                                      </ng-container>     
+                                                      </div>
+                                                       <div class="userComment displayAllComments hide">
+                                                          <ng-container *ngIf="item.comments.length !=0">
+                                                             <ng-container *ngFor="let comment of item.comments; let i=index ">
+                                                                 <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                  <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                  <span class="commentMessage">{{comment.message}} 
+                                                                    <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}</small>
+                                                                  </span>
+
+                                                                 </div>  
+                                                             </ng-container>
+                                                               <div class="lessComments viewLessButton" (mouseup)=" showAllTags(item)" style="text-align: center;"> 
+                                                                <ion-icon  name="ios-arrow-up-outline"></ion-icon> <br>
+                                                               view less</div>
+                                                          </ng-container> 
+                                                      </div>
+                                                    </ng-container>
+                                                </div> 
+                                                <div class="replyBlock">
+                                                  <span class="innerLeaveContainer">
+                                                     <ion-icon *ngIf="sideBarData && sideBarData.data.user.self" ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;display: none;" (click)="cancelLeave(item)"></ion-icon>
+                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;display: none;"(click)="editLeave(item)" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
+                                                    <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
+                                                  </span>
+                                                </div>
+                                                <div p-t-20 class="addComment hide">
+                                                  <span>
+                                                      <ion-icon ios="ios-close" md="md-close" class="icon-size full cancelComment" style="float: left; cursor: pointer;"  (mouseup)="cancelComment()"></ion-icon>
+                                                      <span style="margin-left: 10px;"> 
+                                                        <input id="cmtBtn" (keydown)="commentEnter($event)" type="text" name="" placeholder="Reply" maxlength="150" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
+                                                        <!-- <button style="border:none;background-color: transparent; width: 0;" disabled > -->
+                                                        <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="comment()"></ion-icon>
+                                                        <hr style="margin-top: 2px;margin-left:20px;"><!-- </button>  -->
+                                                      </span>
+                                                  </span>
+                                                </div>
+
+                                            </div>
+                                        </ng-container>
+                                        <!-- <ng-container > -->
+                                        <ng-container  *ngIf="userLeaveData.data.leaves.length !=0">
+                                            <ng-container  *ngIf="userLeaveData.data.leaves.length > 2">
+                                                <div *ngIf=" leaveShow >= userLeaveData.data.leaves.length " (click)=" leaveShow = 2" (click)="testLeave(leaveShow)" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
+                                                <p id="text-change">
+                                                    <span id="arrow"> 
+                                                        <ion-icon  name="ios-arrow-up-outline" class="icon-size full"></ion-icon> 
+                                                    </span>
+                                                    <br>
+                                                    <span id="innertxt">
+                                                        View Less
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div *ngIf=" leaveShow < userLeaveData.data.leaves.length " (click)=" leaveShow = leaveShow + 2 " (click)="testLeave(leaveShow)" align="center" class="text-center" id="showMore" style="cursor: pointer;" >
+                                                    <p id="text-change">
+                                                        <span id="innertxt">
+                                                            View More</span><br>
+                                                        <span id="arrow">
+                                                            <ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> 
+                                                        </span>
+                                                    </p>
+                                            </div>
+                                             </ng-container>
+                                        </ng-container>
+                                         </ng-container>
+                                    </ion-col>
+                                         <!-- </ng-container> -->
+                                    </ion-row>
+                                  </div>
+                                </ion-grid>
+                                <ion-grid>
+                                    <ion-row>
+                                        <ion-col col-12  col-md-12 col-lg-12 >
+                                            <h5 font-weight-5 class="teamTogglecontainer">Team leaves 
+                                              <span *ngIf="teamLeaveData != undefined && teamLeaveData.data.leaves.length != 0" class="countLeaves">{{teamLeaveData.data.leaves.length}}</span>
+                                               <span style="float: right;cursor: pointer;display:none;" id="teamLeaveToggle" (mouseup)="teamtoggle()"> 
+                                                <ion-icon  name="ios-arrow-up-outline" class="icon-size "></ion-icon> 
+                                             </span>  
+                                             <span style="float: right;cursor: pointer;" id="teamLeaveToggle1" (mouseup)="teamtoggle()">
+                                              <ion-icon  name="ios-arrow-down-outline" class="icon-size "></ion-icon> 
+                                            </span> 
+                                            </h5>
+                                        </ion-col>
+                                    </ion-row>
+                                    <div class="teamLeaveToggleBox" style="display:none;">
+                                    <ion-row>
+                                        <ion-col col-12  col-md-12 col-lg-12 >
+                                            <div class="select">
+                                                <span class="arr"></span>
+                                                <select (change)="LeaveType($event)" [(ngModel)]="teamSelectedOption">
+                                                   <option *ngFor="let option of teamLeaveOptions">{{option}}</option>
+                                                </select>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                      <ion-col col-12  col-md-12 col-lg-12 >
+                                        <ng-container  *ngIf="teamLeaveData != undefined">
+                                          <ng-container  *ngIf="teamLeaveData.data.leaves.length == 0">
+                                            <div font-weight-5 style="text-align: center;" class="noLeaveContainer"> 
+                                              <div>
+                                                <img class="icon-no-leave" src="../assets/img/calender.png">
+                                              </div>
+                                                No Leaves yet
+                                            </div>
+                                          </ng-container>
+                                          <ng-container *ngFor="let item of teamLeaveData.data.leaves | slice:0:teamLeaveShow;let leaveIndex =index ">
+                                            <div class="leaveViewBlock">
+                                                <div class="TeamUserName"> 
+                                                    <table class="noBorder" style="width: 100%;">
+                                                        <tr class="noBorder">
+                                                            <td class="noBorder" style="min-width:40px;">
+                                                                <img src="{{item.user.avatar}}" class="avatar">
+                                                            </td>
+                                                            <td class="noBorder datablock">
+
+                                                             <span font-weight-5>{{item.user.name}} :</span>
+                                                            
+                                                              <span class="noteCon">
+                                                                <!-- {{item.leave_note}}  -->
+                                                                <span [innerHTML]="item.leave_note"></span>
+                                                            
+                                                                <!-- for <span font-weight-5> {{item.leave_date.length}} Days </span> on -->
+                                                               <ng-container *ngIf="item.leave_date.length==1">
+                                                                <span style="font-weight: bold;">for </span>
+                                                               <span style="font-weight: bold;color:#6943bf;">{{item.leave_date.length}}  Day</span>  <span style="font-weight: bold;"> on</span>
+                                                               </ng-container>
+                                                               <ng-container *ngIf="item.leave_date.length!=1">
+                                                                <span  style="font-weight: bold;">for </span>
+                                                                <span style="font-weight: bold;color:#6943bf;">{{item.leave_date.length}}  Days </span>   <span style="font-weight: bold;"> on</span>
+                                                               </ng-container>
+                                                                  <ng-container *ngFor="let dates of item.leave_date ; let i=index ">
+                                                                      <ng-container *ngIf="i == item.leave_date.length- 1 && item.leave_date.length !=1 ">and</ng-container>
+                                                                      <span font-weight-5> {{getDayDate(dates,5)}} </span>
+                                                                      <ng-container *ngIf="i < item.leave_date.length- 2">,</ng-container>
+                                                                  </ng-container>
+                                                              </span>
+                                                            </td><!-- *ngIf="sideBarData && sideBarData.data.user.self" -->
+                                                            <td style="border:none;text-align:right;" *ngIf="edit_others_leaves" >
+                                                               <div style="float: right;cursor: pointer;" align="right"> <ion-icon ios="ios-more" md="md-more" class="moreOptions" (click)="popUpOptions(item,$event)"></ion-icon>
+                                                               </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="innerContainer">
+                                                    <span class="taggedUsers">
+                                                        <ng-container *ngIf="item.tagged_users.length ==1">
+                                                            <sub><ion-icon name="pricetag" style="color:orange;font-size: 16px;"></ion-icon></sub>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="item.tagged_users.length !=1">
+                                                            <sub><ion-icon name="pricetags" style="color:orange;font-size: 16px;"></ion-icon></sub>
+                                                        </ng-container>
+                                                         <ng-container *ngIf="item.tagged_users.length ==1">
+                                                             <ng-container *ngFor="let tag of item.tagged_users ; let i=index ">
+                                                                  @{{tag.name}}  
+                                                             </ng-container>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="item.tagged_users.length !=1">
+                                                            <span class="">
+                                                                 <ng-container *ngFor="let tag of item.tagged_users | slice:0:show; let i=index ">
+                                                                      @{{tag.name}}  <ng-container *ngIf="i != show- 1 && i != item.tagged_users.length- 1" >,</ng-container>
+                                                                 </ng-container>
+                                                            </span>
+                                                             <span class=""  *ngIf=" show < item.tagged_users.length " (mouseup)="showAllTags(item.tagged_users)" > 
+                                                                <div class="dropdownTags">
+                                                                  <span class="dropbtn">+ {{item.tagged_users.length-show}} Others</span>
+                                                                  <div class="dropdownTags-content" >
+                                                                    <a *ngFor="let option of item.tagged_users| slice:show:item.tagged_users.length">{{option.name}}</a>
+
+                                                                  </div>
+                                                                </div>
+                                                             </span>
+                                                        </ng-container>
+                                                    </span>
+                                                    <ng-container *ngIf="item.comments">
+                                                      <div class="userComment">
+                                                          <ng-container *ngIf="item.comments.length !=0">
+                                                           <ng-container *ngIf="item.comments.length ==1">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:1 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+                                                          <ng-container *ngIf="item.comments.length ==2">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:2 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+                                                         <ng-container *ngIf="item.comments.length >2">
+                                                           <ng-container *ngFor="let comment of item.comments| slice:0:1 ; let i=index ">
+                                                               <div class="commentBox"> <img src="{{comment.user.avatar}}" class="avatarList">
+                                                                <span font-weight-5>{{comment.user.name}}</span>: 
+                                                                <span class="commentMessage">{{comment.message}}
+                                                                  <small class="timeContainer">{{getTimeDiff(comment.timestamp)}}  </small>
+                                                                </span>
+                                                               </div>
+                                                           </ng-container>
+                                                         </ng-container>
+
+                                                          <ng-container *ngIf="item.comments.length >2">
+                                                              <div class="avatarContainer">
+                                                                  <ng-container *ngFor="let comment of item.comments| slice:1:2"> 
+                                                                      <img src="{{comment.user.avatar}}" class="avatarList"> 
+                                                                  </ng-container>
+                                                                  <ng-container *ngIf="item.comments.length > 2">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" >+ {{item.comments.length-2}} more</span>
+                                                                  </ng-container>
+                                                                  <!--  <ng-container *ngIf="item.comments.length < 4">
+                                                                    <span class="moreComments" (mouseup)=" showAllTags(item)" > more</span>
+                                                                  </ng-container> -->
+                                                              </div>
+                                                        </ng-container> 
+                                                          </ng-container>     
+
+                                                      </div>
+                                                       <div class="userComment displayAllComments hide">
+                                                          <ng-container *ngIf="item.comments.length !=0">
+                                                             <ng-container *ngFor="let comment of item.comments; let i=index ">
+                                                                 <div class="commentBox"> <img src="{{comment.user.avatar}} " class="avatarList">
+                                                                  <span font-weight-5>{{comment.user.name}}</span>: <span class="commentMessage">{{comment.message}}
+                                                                    <small class="timeContainer">{{getTimeDiff(comment.timestamp)}} </small>
+                                                                  </span>
+                                                                 </div>
+                                                             </ng-container>
+                                                               <div class="lessComments viewLessButton" (mouseup)=" showAllTags(item)" style="text-align: center;"> 
+                                                                <ion-icon  name="ios-arrow-up-outline"></ion-icon> <br>
+
+                                                               view less</div>
+
+                                                          </ng-container> 
+                                                      </div>
+                                                  </ng-container>
+                                                </div>
+                                                <div class="replyBlock">
+                                                  <span class="innerLeaveContainer">
+                                                     <ion-icon ios="ios-close" md="md-close" class="icon-size full" style="float: right; cursor: pointer;display: none;"></ion-icon>
+                                                     <ion-icon ios="ios-create" md="md-create" class="icon-size full" style="float: right; cursor: pointer;display: none;" (click)="editLeave(item)" p-r-10 p-l-10 ></ion-icon><!-- (click)="editLeave(item)" -->
+                                                    <ion-icon ios="ios-undo" md="ios-undo-outline"  class="icon-size full commentAdded" style="float: right; cursor: pointer;" (mouseup)="addComment(item)"></ion-icon> 
+                                                  </span>
+                                                </div>
+                                                <div p-t-20 class="addComment hide">
+                                                  <span>
+                                                      <ion-icon ios="ios-close" md="md-close" class="icon-size full cancelComment" style="float: left; cursor: pointer;"  (mouseup)="cancelComment()"></ion-icon>
+                                                      <span style="margin-left: 10px;"> 
+                                                        <input type="text" (keydown)="commentEnter($event)" maxlength="150" placeholder="Reply" style="min-width: 80%;border: none;" [ngModel]="commentNote" (keyup)="commentnote($event.target.value)">
+                                                        <!-- <button style="border:none;background-color: transparent; width: 0;" disabled > -->
+                                                        <ion-icon ios="ios-paper-plane" md="ios-paper-plane-outline" class="icon-size full" style="float: right;" (click)="comment()"></ion-icon>
+                                                        <hr style="margin-top: 2px;margin-left:20px;"><!-- </button>  -->
+                                                      </span>
+                                                  </span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+                                        <ng-container  *ngIf="teamLeaveData.data.leaves.length !=0">
+                                          <ng-container  *ngIf="teamLeaveData.data.leaves.length > 2">
+                                                <div *ngIf=" teamLeaveShow >= teamLeaveData.data.leaves.length " (click)=" teamLeaveShow = 2" (click)="testLeave(teamLeaveShow)" align="center" class="text-center" id="showMore1" style="cursor: pointer;" >
+                                                  <p id="text-change1">
+                                                      <span id="arrow1"> 
+                                                          <ion-icon  name="ios-arrow-up-outline" class="icon-size full"></ion-icon> 
+                                                      </span>
+                                                      <br>
+                                                      <span id="innertxt">
+                                                          View Less
+                                                      </span>
+                                                  </p>
+                                                </div>
+                                                <div *ngIf=" teamLeaveShow < teamLeaveData.data.leaves.length " (click)=" teamLeaveShow = teamLeaveShow + 2 " (click)="testLeave(teamLeaveShow)" align="center" class="text-center" id="showMore1" style="cursor: pointer;" >
+                                                  <p id="text-change1">
+                                                      <span id="innertxt1">
+                                                          View More</span><br>
+                                                      <span id="arrow1">
+                                                          <ion-icon  name="ios-arrow-down-outline" class="icon-size full"></ion-icon> 
+                                                      </span>
+                                                  </p>
+                                                </div>
+                                          </ng-container>
+                                        </ng-container>
+                                      </ng-container>
+                                    </ion-col>
+                                  </ion-row>
+                                </div>
+
+                              </ion-grid>   
+                            </div>
+                        </div>
+                    <!-- </ion-col> -->
                   
                     <!-- <div text-center m-t-20><button ion-button >Style Guide</button></div> -->
 

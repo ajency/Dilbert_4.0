@@ -1,7 +1,238 @@
 // ---------------------------
 // CUSTOM CSS FOR THIS PAGE -----------
 // ---------------------------
-page-start-home {}
+page-start-home {
+
+    .leaveContainer{
+        padding-left: 20px;
+        padding-bottom: 20px;
+        padding-right: 20px;
+    }
+    .leaveButton{
+        float: right;
+    }
+    .dropdownLeaves{
+        width: 100%;
+    }
+    .leaveViewBlock{
+        padding-bottom: 20px;
+        padding-top: 10px; 
+        padding-left: 10px;
+        width: 100%;
+        border-bottom: 1px dashed #828282;
+        /*height: 200px;*/
+        /*border: 1px solid black;*/
+        /*overflow-y: scroll;*/
+    }
+    .leaveNote{
+        /*padding-top: 10px;*/
+        padding-bottom: 10px;
+
+    }
+    .taggedUsers{
+        padding-top: 10px;
+        color: rgb(130, 130, 130);
+    }
+    .userComment{
+        padding-top: 10px;
+    }
+
+
+    .select {
+        width: 100%;
+  font-size: 16px;
+  position: relative;
+  display: inline-block;
+}
+.select select {
+  outline: none;
+  width: 100%;
+  -webkit-appearance: none;
+  display: block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  /*padding: 1.2em 3em 1.3em 1.5em;*/
+  margin: 0;
+
+  transition: border-color 0.2s;
+  /*border: 5px solid #EB5168;*/
+  /*border-radius: 5px;*/
+
+  background: #fff;
+  color: #555;
+  line-height: normal;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.select .arr {
+  background: #fff;
+  bottom: 5px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 50px;
+  pointer-events: none;
+}
+.select .arr:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  margin-top: -5px;
+  pointer-events: none;
+  border-top: 10px solid rgb(130, 130, 130);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+
+.select .arr:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 28px;
+  margin-top: -5px;
+  pointer-events: none;
+  border-top: 6px solid #fff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+.hide{
+    display: none;
+}
+.innerContainer{
+    padding-left: 40px;
+    padding-top: 10px;
+}
+.avatar {
+    vertical-align: middle;
+    width: 30px;
+    height:30px;
+    border-radius: 50%;
+}
+.avatarList {
+    vertical-align: middle;
+    width: 30px;
+    height:30px;
+    border-radius: 50%;
+    margin-left:-15px;
+    border :2px solid white;
+}
+.avatarList:first-child {
+    margin-left:0px;
+} 
+.commentBox{
+  padding-bottom: 5px;
+}
+.replyBlock{
+  padding-bottom: 10px;
+
+}
+.noBorder{
+  border: none;
+}
+.datablock{
+  padding-left: 5px;
+}
+.tagselect{
+  border:none;
+}
+.selectTag select{
+   -webkit-appearance: none;
+}
+.selectTag option{
+ border: none !important;
+
+}
+/*dropdown tags*/
+.dropdownTags {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdownTags-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.dropdownTags-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdownTags-content a:hover {background-color: #ddd}
+
+.dropdownTags:hover .dropdownTags-content {
+    display: block;
+}
+.viewLessButton{
+  
+}
+
+.dropdownTags-content::-webkit-scrollbar {
+    width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+.innerLeaveContainer{
+  font-size: 14px;
+}
+.countLeaves{
+  border-radius: 50%;
+  width: 50px;
+  font-size: 12px;
+  padding-left: 7px;
+  padding-right: 7px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  background-color: #fa5777;
+  color:white;
+}
+.toggletxt{
+  /*border: 1px solid white;*/
+  padding: 5px;
+  color: white;
+  background-color: #613eb0;
+  border-radius: 15px;
+  font-size: 12px;
+}
+.toggletxt1{
+  border: 1px solid #613eb0;
+  padding: 5px;
+  color: #613eb0;
+  border-radius: 15px;
+  font-size: 12px;
+
+}
+.teamTogglecontainer{
+
+}
+
+}
 
 // ---------------------------
 // GLOBAL ONE'S -----------
@@ -45,6 +276,7 @@ page-start-home {}
 // Summary section
 .summary {
     display: flex;
+    height: 100%;
     &__sidebar {
         flex: 1;
         box-shadow: $shadow-2;
@@ -205,7 +437,20 @@ page-start-home {}
         font-size: 1.6em;
     }
 }
-
-
+.timeContainer{
+  /*background-color: blue;*/
+  color: #828282;
+  float: right;
+  margin-top: 10px;
+  /*text-align:right;*/
+}
+.icon-no-leave{
+  width: 50px;
+}
+.noLeaveContainer{
+ /*border: 1px solid black;*/
+ padding: 10px;
+ box-shadow: $shadow-3;
+}
 
 

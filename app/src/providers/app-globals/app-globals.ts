@@ -21,7 +21,18 @@ export class AppGlobalsProvider {
   cos_offset : string = '0';
   view_log_history_btn : boolean = true;
 
-  
+  leave_param :any ={
+   param1:'',
+   param2:''
+  }
+
+  leave_request_param :any ={
+   param1:''
+  }
+  leave_update_param :any ={
+   param1:'',
+   param2:''
+  }
 
   dashboard_params : any = {
     param1 : '',
@@ -37,7 +48,7 @@ export class AppGlobalsProvider {
   
   private semVersion: any = {
     major: 2,
-    minor: 2,
+    minor: 3,
     patch: 6
   };
   appVersion : string = '' ;

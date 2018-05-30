@@ -248,7 +248,8 @@ export class AppServiceProvider {
         }
 
       }
-
+      console.log(body);
+      console.log("Headers==", headers);
     // let objToSearchParams = (obj) => {
     //     let params: URLSearchParams = new URLSearchParams();
     //     for (var key in obj) {
@@ -277,7 +278,9 @@ export class AppServiceProvider {
       httpEvent = this.http.get(url,{headers: headers});
     }
     else if(type == 'post'){
+      console.log(body);
       httpEvent = this.http.post(url,body,{headers: headers})
+      console.log(httpEvent);
     }
 
     // setTimeout(() => {
