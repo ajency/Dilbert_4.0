@@ -1,6 +1,13 @@
 // ---------------------------
 // CUSTOM CSS FOR THIS PAGE -----------
 // ---------------------------
+hr {
+    margin: .5em 0;
+}
+.moreComments{
+  display: block;
+  padding-top: 7px;
+}
 page-start-home {
 
     .leaveContainer{
@@ -15,14 +22,44 @@ page-start-home {
         width: 100%;
     }
     .leaveViewBlock{
-        padding-bottom: 20px;
-        padding-top: 10px; 
-        padding-left: 10px;
+        padding-bottom: 0px;
+        padding-top: 0px; 
+        padding-left: 3px;
         width: 100%;
-        border-bottom: 1px dashed #828282;
+        cursor: pointer;
         /*height: 200px;*/
         /*border: 1px solid black;*/
         /*overflow-y: scroll;*/
+        .noBorder{
+          line-height: 19px;
+          font-size: 14px;
+          font-weight: 100 !important;
+          color: #292929;
+         
+        }
+      .replyBlock{
+        border: 1px solid #ccc;
+        padding: 4px 8px;
+        width: 32px;
+        visibility: hidden;
+        height: 30px;
+        transition: all 0.5s ease;
+        position: absolute;
+        z-index: -11;
+        margin-top: -32px;
+        right: 10px;
+        cursor: pointer;
+        opacity: .0;
+
+      }
+       &:hover{
+          .replyBlock{
+           right: -27px;
+           visibility: visible;
+           z-index: 999;
+           opacity: 0.9;
+           }
+        }
     }
     .leaveNote{
         /*padding-top: 10px;*/
@@ -30,7 +67,10 @@ page-start-home {
 
     }
     .taggedUsers{
-        padding-top: 10px;
+        font-size: 12px;
+        padding-left: 46px;
+        display: block;
+        margin: 5px 0px;
         color: rgb(130, 130, 130);
     }
     .userComment{
@@ -45,38 +85,39 @@ page-start-home {
   display: inline-block;
 }
 .select select {
-  outline: none;
-  width: 100%;
-  -webkit-appearance: none;
-  display: block;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  /*padding: 1.2em 3em 1.3em 1.5em;*/
-  margin: 0;
-
-  transition: border-color 0.2s;
-  /*border: 5px solid #EB5168;*/
-  /*border-radius: 5px;*/
-
-  background: #fff;
-  color: #555;
-  line-height: normal;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
+    outline: none;
+    width: 100%;
+    -webkit-appearance: none;
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* padding: 1.2em 3em 1.3em 1.5em; */
+    margin: 0;
+    transition: border-color 0.2s;
+    /* border: 5px solid #EB5168; */
+    /* border-radius: 5px; */
+    background: #fff;
+    color: #555;
+    line-height: normal;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-size: 14px;
+    padding: 9px 10px;
+    border: 1px solid #868686;
+    box-shadow: 1px 1px 4px #ccc;
+    border-radius: 0px;
 }
 .select .arr {
-  background: #fff;
-  bottom: 5px;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  width: 50px;
-  pointer-events: none;
+    top: 9px;
+    width: 10px;
+    pointer-events: none;
+    position: absolute;
+    right: 15px;
 }
-.select .arr:before {
+/*.select .arr:before {
   content: '';
   position: absolute;
   top: 50%;
@@ -86,9 +127,9 @@ page-start-home {
   border-top: 10px solid rgb(130, 130, 130);
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-}
+}*/
 
-.select .arr:after {
+/*.select .arr:after {
   content: '';
   position: absolute;
   top: 50%;
@@ -98,19 +139,27 @@ page-start-home {
   border-top: 6px solid #fff;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-}
+}*/
 .hide{
     display: none;
 }
 .innerContainer{
-    padding-left: 40px;
+    padding-left: 0px;
     padding-top: 10px;
 }
 .avatar {
     vertical-align: middle;
     width: 30px;
+    margin-top: 12px;
     height:30px;
     border-radius: 50%;
+    margin-left: 5px;
+}
+.commentBox{
+  padding-bottom: 14px;
+  span{
+    font-size: 13px;
+  }
 }
 .avatarList {
     vertical-align: middle;
@@ -119,15 +168,24 @@ page-start-home {
     border-radius: 50%;
     margin-left:-15px;
     border :2px solid white;
+    float: left;
+        margin-right: 5px;
+}
+.leave_ticket{
+  box-shadow: 0px 0px 2px #ccc;
+  background: #fbfaff;
+  td{
+    border:0px;
+  }
+
 }
 .avatarList:first-child {
     margin-left:0px;
 } 
-.commentBox{
-  padding-bottom: 5px;
-}
+
 .replyBlock{
   padding-bottom: 10px;
+  margin-top: -10px;
 
 }
 .noBorder{
@@ -202,15 +260,15 @@ page-start-home {
   font-size: 14px;
 }
 .countLeaves{
-  border-radius: 50%;
-  width: 50px;
-  font-size: 12px;
-  padding-left: 7px;
-  padding-right: 7px;
-  padding-bottom: 2px;
-  padding-top: 2px;
-  background-color: #fa5777;
-  color:white;
+     border-radius: 20px;
+    width: 28px;
+    height: 20px;
+    padding: 3px 6px;
+    display: inline-block;
+    font-size: 12px;
+    background-color: #fa5777;
+    color: white;
+    text-align: center;
 }
 .toggletxt{
   /*border: 1px solid white;*/
@@ -440,9 +498,7 @@ page-start-home {
 .timeContainer{
   /*background-color: blue;*/
   color: #828282;
-  float: right;
-  margin-top: 10px;
-  /*text-align:right;*/
+  display: inline-block;
 }
 .icon-no-leave{
   width: 50px;
@@ -453,4 +509,17 @@ page-start-home {
  box-shadow: $shadow-3;
 }
 
+.sidebar-label{
+  font-size:15px;
+}
+.noLeaveContainer {
+      text-align: center;
+    font-weight: 400;
+    color: #ccc;
+  i{
+    font-size: 30px;
+    color: #ccc;
+    margin-bottom: 7px;
+  }
 
+}
