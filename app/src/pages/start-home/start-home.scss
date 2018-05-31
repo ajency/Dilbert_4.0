@@ -8,6 +8,14 @@ hr {
   display: block;
   padding-top: 7px;
 }
+#teamLeaveToggle1 {
+  width: 30px;
+  text-align: right;
+}
+#teamLeaveToggle{
+  width: 30px;
+  text-align: right;  
+}
 page-start-home {
 
     .leaveContainer{
@@ -46,7 +54,7 @@ page-start-home {
         transition: all 0.5s ease;
         position: absolute;
         z-index: -11;
-        margin-top: -32px;
+        margin-top: -29px;
         right: 10px;
         cursor: pointer;
         opacity: .0;
