@@ -33,10 +33,10 @@ class Kernel extends ConsoleKernel
         // weekly cron for total week hours violation - every sunday at 10:30 pm ist
         $schedule->call('\App\Http\Controllers\CronController@weekly')->sundays()->at('17:30');
 
-        // monthly cron for monthly total hours violation - last day of every month at 10:30 pm ist
-        $schedule->call('\App\Http\Controllers\CronController@monthly')->when(function () {
-            return \Carbon\Carbon::now()->endOfMonth()->isToday();
-        })->at('17:00');
+        // // monthly cron for monthly total hours violation - last day of every month at 10:30 pm ist
+        // $schedule->call('\App\Http\Controllers\CronController@monthly')->when(function () {
+        //     return \Carbon\Carbon::now()->endOfMonth()->isToday();
+        // })->at('17:00');
     }
 
     /**
