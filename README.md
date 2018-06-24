@@ -1,6 +1,6 @@
 Dilbert 4.0
 
-Laravel 5.4 + Ionic 3
+Laravel 5.5 + Ionic 3
 
 
 Ionic 3 Installation
