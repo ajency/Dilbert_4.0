@@ -22,13 +22,23 @@
 
             <tr>
                 <td bgcolor="#ffffff" style="padding-top: 10px;padding-bottom: 40px; text-align: center;">
-                    <h3 style="margin: 0; font-family: sans-serif;  line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;">On </span><span style="font-weight: bold;">{{date('F jS, Y', strtotime($violation_data['modified_on']))}} </span><span style="color:#282828a3;"> Your 
+                    <h3 style="margin: 0; font-family: sans-serif;  line-height: 125%; color: #333333; font-weight: normal;"><span style="color:#282828a3;"> Your 
                         <span style="font-weight: bold;">
-                    @foreach($violation_data['values'] as $values)
-                    {{str_replace("_"," ",$values['column_modified'])}}, 
-                    @endforeach
+                            @php
+                                $count = 0;
+                                foreach($violation_data['values'] as $values) {
+                                    $count++;
+                                    echo str_replace("_"," ",$values['column_modified']);
+                                    if($count == sizeof($violation_data['values']) - 1) {
+                                        echo " <span style='font-weight: normal;'>and</span> ";
+                                    }
+                                    elseif($count != sizeof($violation_data['values'])) {
+                                        echo "<span style='font-weight: normal;'>,</span> ";
+                                    }
+                                }
+                            @endphp
                     </span>
-                was changed </span></h3>
+                was changed </span><span style="color:#282828a3;">for </span><span style="font-weight: bold;">{{date('F jS, Y', strtotime($violation_data['work_date']))}} </span></h3>
                 </td>
             </tr>
             <tr>
@@ -92,7 +102,7 @@
             @endforeach
             <tr>
                 <td style="font-family: sans-serif;color: #282828a3; padding-top: 30px;">
-                    <sub><span><sup>__</sup> Was modified on <span>{{date('F jS, Y', strtotime($violation_data['work_date']))}}</span> by <span> {{$violation_data['modified_by']}} </span></span></sub>
+                    <sub><span><sup>__</sup> Was modified on <span>{{date('F jS, Y', strtotime($violation_data['modified_on']))}}</span> by <span> {{$violation_data['modified_by']}} </span></span></sub>
                 </td>
             </tr>
 
