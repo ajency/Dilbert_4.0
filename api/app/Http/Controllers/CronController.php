@@ -412,7 +412,13 @@ class CronController extends Controller
             }
 
             // getting the total hours
-            $totalHours = (int)($totalHours/60).':'.($totalHours%60);
+            // $totalHours = (int)($totalHours/60).':'.($totalHours%60);
+            /* Format the total hours into 00:00 */
+            $thh = (int)($totalHours/60);
+            $thh = ($thh > 10) ? $thh : '0'.$thh;
+            $thm = $totalHours%60;
+            $thm = ($thm > 10) ? $thm : '0'.$thm;
+            $totalHours =  $thh.':'.$thm;
             echo " total hours : ".$totalHours;
 
             // check for violation
