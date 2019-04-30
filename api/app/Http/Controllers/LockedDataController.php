@@ -374,7 +374,7 @@ class LockedDataController extends Controller
                     // summary
                     // user's data for the particular period
                     // $output->writeln($startDate->format('Y-m-d')." ".$endDate->format('Y-m-d'));
-                    $summaryData = Locked_Data::where('user_id',$oUser->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->get();
+                    $summaryData = Locked_Data::where('user_id',$oUser->user_id)->whereBetween('work_date',[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->orderBy('work_date', 'asc')->get();
                     $periodData = (new Locked_Data)->formattedLockedData($oUser->user_id,$summaryData,$startDate->format('Y-m-d'),$endDate->format('Y-m-d'),'asc',true);
                     $userObj['summary'] = $periodData['data'];
 
