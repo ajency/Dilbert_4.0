@@ -65,7 +65,8 @@ class LogsController extends Controller
                     $userLogs = Log::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get(); // all logs
                     // Organisation's ip list
                     $ip_list = unserialize(Organisation::find(UserDetail::where(['user_id' => $request->user_id])->first()->org_id)->ip_lists);
-                    $logs = (new Log)->getDaySummary($ip_list, $userLogs, $cosOffset);
+                    /* For now filter by ip list is false to include work from home logs for everyone */
+                    $logs = (new Log)->getDaySummary($ip_list, $userLogs, $cosOffset, false);
                     // add slots to the logs
                     $slots = Slots::where(['user_id' => $request->user_id, 'work_date' => $request->date])->get();
                     $slottedLogs = (new Slots)->addSlotsToLogs($logs, $slots);

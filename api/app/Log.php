@@ -25,13 +25,14 @@ class Log extends Model
 
     /**
      * iterates through the users logs and gives a properly formatted day summary
-     * @param  [type] $ip_list   array of valid ips
-     * @param  [type] $userLogs  users logs
-     * @param  [type] $cosOffset change of state offset - any state_time less
-     *                           than this is ignored
-     * @return [type]            formatted day summary
+     * @param  [type]  $ip_list         array of valid ips
+     * @param  [type]  $userLogs        users logs
+     * @param  [type]  $cosOffset       change of state offset - any state_time less
+     *                                  than this is ignored
+     * @param  boolean $filterByIpList  If logs have to filtered by ip list
+     * @return [type]                   formatted day summary
      */
-    public function getDaySummary($ip_list, $userLogs, $cosOffset) {
+    public function getDaySummary($ip_list, $userLogs, $cosOffset, $filterByIpList) {
         $logs = [];
         $state = null;
         $start = null;
@@ -39,7 +40,7 @@ class Log extends Model
         foreach($userLogs as $log) {
             // check if the logs ip belongs to organisation's ip_lists
             // if not skip the log
-            if(!in_array($log->ip_addr,$ip_list))
+            if($filterByIpList && !in_array($log->ip_addr,$ip_list))
                 continue;
             // if this is the start of the startDate
             if($start == null && $log->to_state == 'New Session') {   // New Session = active
@@ -115,7 +116,7 @@ class Log extends Model
             foreach($userLogs as $log) {
                 // check if the logs ip belongs to organisation's ip_lists
                 // if not skip the log
-                if(!in_array($log->ip_addr,$ip_list))
+                if($filterByIpList && !in_array($log->ip_addr,$ip_list))
                     continue;
                 // if this is the start of the startDate
                 if($start == null && $log->to_state == 'New Session') {   // New Session = active
