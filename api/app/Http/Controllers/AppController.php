@@ -28,8 +28,8 @@ class AppController extends Controller
             $user['user_details'] = $user['user_details']->first();
             if ($user['user_details']['api_token'] == $request->header('X-API-KEY')) {
 
-                // testing purpose
-                if(env('APP_ENV') == 'dev') {
+                // testing purpose - remove dev env check for now
+                if(env('LOG_PINGS') == 'true') {
                     $testUsers = config('testing.ping_users');
                     if(in_array($request->header('from'), $testUsers)) {
                         $pingLogs = new PingLogs;
