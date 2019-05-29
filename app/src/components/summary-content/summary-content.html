@@ -144,7 +144,7 @@
         <li class="detail-view__cols completed" >
             <h6 ion-text font-weight-3 color="dark">{{ "u started day at" | translate }} 
                 <h6 ion-text font-weight-4 color="primary" class="dis-inline started-time">
-                    {{getDayDate(day_data[0].start_time, 3)}}
+                    {{day_data[0].start_time ? getDayDate(day_data[0].start_time, 3) : '--:--'}}
                 </h6>
             </h6>
             <!-- <button title="Add lunch" ion-button outline small m-t-0 style="position:absolute; right: 0;"> {{ 'Mark lunch time' | translate}} </button>  -->
@@ -198,7 +198,7 @@
         <li *ngIf = "day_data[0].status == '' " class="detail-view__cols completed total direction-col">
             <h6 ion-text font-weight-3 color="dark">{{ "u ended day at" | translate }} 
                 <h6 *ngIf = "day_data[0].end_time != '' && day_data[0].end_time != undefined " ion-text font-weight-4 color="primary" class="dis-inline started-time">{{getDayDate(day_data[0].end_time,3)}}</h6>
-                 <h6 *ngIf = "day_data[0].end_time == '' || day_data[0].end_time == undefined " ion-text font-weight-4 color="primary" class="dis-inline started-time">n/a</h6>
+                 <h6 *ngIf = "day_data[0].end_time == '' || day_data[0].end_time == undefined " ion-text font-weight-4 color="primary" class="dis-inline started-time">--:--</h6>
             </h6>
             <p class="x-small message" m-v-0 ion-text color="text-lighter"><ion-icon name="time"></ion-icon> {{ "you_completed" | translate }} {{getDayDate(day_data[0].total_time,5)}} {{ "hours_today" | translate }}</p>
         </li>
@@ -213,7 +213,7 @@
         </div>        
     </ng-container> -->
 
-    <div *ngIf = "logs.length == 0 || day_data[0].leave_status == 'Leave'" align="center"> {{ "no logs found" | translate }}</div>
+    <div *ngIf = "logs.length == 0" align="center"> {{ "no logs found" | translate }}</div>
 
 
     <!-- <ion-card [hidden]="hideMarkerUpdate" class="selected-marker-edit" [ngStyle]="{'top': markerOffsetTop + 'px', 'left': contentLeftOffset + 'px' }" p-t-0> -->
