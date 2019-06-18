@@ -214,7 +214,7 @@ class LockedDataController extends Controller
                     // $output->writeln(json_encode($roleMeta));
                     $st=0;
                     $et=0;
-                    $userTableDetails = User::where('id',$userCode);
+                    $userTableDetails = User::find($userCode);
                     $organisation_allowed_start_time = (new OrganisationMeta)->getParamValue("organisation_allowed_start_time", $user['org_id'], $userTableDetails['violation_grp_id']);              
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // do the time check
