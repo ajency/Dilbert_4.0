@@ -15,10 +15,22 @@ class OrganisationMeta extends Model
      */
     public function getParamValue($key,$orgId,$grpId) {
         $metaData =  OrganisationMeta::where(['organisation_id' => $orgId, 'group_id' => $grpId, 'key' => $key])->first();
-        if($metaData)	//return if single value
+        if($metaData) {	//return if single value
             return $metaData->value;
-        else
-            return null;
+        }
+        else {
+            /* Check with the default group id (0) */
+            if($grpId != 0) {
+                $metaData =  OrganisationMeta::where(['organisation_id' => $orgId, 'group_id' => 0, 'key' => $key])->first();
+                if($metaData) {
+                    return $metaData->value;
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
     }
 
     /**

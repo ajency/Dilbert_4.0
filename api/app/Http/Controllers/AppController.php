@@ -91,6 +91,7 @@ class AppController extends Controller
                 $ipList = unserialize($orgDetails['ip_lists']);
                 $lockedEntry = Locked_Data::where(['user_id' => $request->header('from'), 'work_date' => date('Y-m-d')]);
                 if(in_array($request->ip(), $ipList)) {
+                    $organisation_allowed_start_time = (new OrganisationMeta)->getParamValue("organisation_allowed_start_time", $user['user_details']['org_id'], $user['user']['violation_grp_id']);
                     // add entry to locked_data table
                     // check if it is the first entry for the day
                     if ($lockedEntry->count() == 0) {
@@ -110,16 +111,16 @@ class AppController extends Controller
                         $locked = new Locked_Data;
                         $locked->user_id = $request->header('from');
                         $locked->work_date = date('Y-m-d');
-                        // clip the start time to 9:30 am
-                        $locked->start_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
-                        $locked->end_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime("09:30")) ? "09:30:00" : $this->getCurrentTimeZoneTime($timeZone))));
+                        // clip the start time to organisation_allowed_start_time
+                        $locked->start_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime($organisation_allowed_start_time)) ? $organisation_allowed_start_time.":00" : $this->getCurrentTimeZoneTime($timeZone))));
+                        $locked->end_time = date('Y-m-d')." ".(((new DateTime($this->getCurrentTimeZoneTime($timeZone)) < (new DateTime($organisation_allowed_start_time)) ? $organisation_allowed_start_time.":00" : $this->getCurrentTimeZoneTime($timeZone))));
                         $locked->total_time = "00:00";
                         // $locked->status = "Present";
                         $locked->save();
                     } else {
                         // just update the end time and total time
                         $lockedEntry = $lockedEntry->first();
-                        if((new DateTime($this->getCurrentTimeZoneTime($timeZone))) >= (new DateTime("09:30"))) {
+                        if((new DateTime($this->getCurrentTimeZoneTime($timeZone))) >= (new DateTime($organisation_allowed_start_time))) {
                             $lockedEntry->end_time = date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone);
                             $lockedEntry->total_time = $this->getTimeDifference($lockedEntry->start_time, date('Y-m-d')." ".$this->getCurrentTimeZoneTime($timeZone));
                             $lockedEntry->save();

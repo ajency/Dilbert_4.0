@@ -213,7 +213,9 @@ class LockedDataController extends Controller
                     $roleMeta = (new OrganisationMeta)->getAllRoleMeta(UserDetail::where('user_id',$userCode)->first()->org_id,$userRole);
                     // $output->writeln(json_encode($roleMeta));
                     $st=0;
-                    $et=0;                    
+                    $et=0;
+                    $userTableDetails = User::where('id',$userCode);
+                    $organisation_allowed_start_time = (new OrganisationMeta)->getParamValue("organisation_allowed_start_time", $user['org_id'], $userTableDetails['violation_grp_id']);              
                     foreach($request->input('changes') as $ckey => $cvalue) {
                         // do the time check
                         $now = new DateTime();
@@ -226,6 +228,13 @@ class LockedDataController extends Controller
                         // if the field is start time or end time get it in the right format
                         if($ckey == 'start_time' || $ckey == 'end_time') {
                             $cvalue = new \DateTime($request->work_date.' '.$cvalue);
+                            /* Check if the start or end time is before organisaton allowed start time */
+                            if($cvalue < (new \DateTime($request->work_date.' '.$organisation_allowed_start_time))) {
+                                return response()->json([
+                                    'status' => 400,
+                                    'message' => ($ckey == "start_time" ? "Start time" : "End time")." cannot be before ".$organisation_allowed_start_time."."
+                                ]);
+                            }
                             $cvalue = $cvalue->format('Y-m-d H:i:s');
                         }
                         if($lockedEntry->$ckey != $cvalue) {
