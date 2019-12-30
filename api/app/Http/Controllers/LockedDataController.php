@@ -62,10 +62,11 @@ class LockedDataController extends Controller
                         //startDate and endDate will be the first and the last day of the org_period
                         $date = explode('-',$request->input('filters.date_range.start'));
                         if($periodUnit == 'week') {
-                            $sdWeekNo = new \DateTime($request->input('filters.date_range.start'));
-                            $sdWeekNo = $sdWeekNo->format('W');
-                            $startDate = new \DateTime();
-                            $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
+                            // $sdWeekNo = new \DateTime($request->input('filters.date_range.start'));
+                            // $sdWeekNo = $sdWeekNo->format('W');
+                            // $startDate = new \DateTime();
+                            // $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
+                            $startDate = new \DateTime($request->input('filters.date_range.start'));
                             $endDate = clone $startDate;
                             $endDate->modify('+6 days');
                         }
@@ -336,10 +337,11 @@ class LockedDataController extends Controller
                     //startDate and endDate will be the first and the last day of the org_period
                     $date = explode('-',$request->input('filters.date_range.start'));
                     if($periodUnit == 'week') {
-                        $sdWeekNo = new \DateTime($request->input('filters.date_range.start'));
-                        $sdWeekNo = $sdWeekNo->format('W');
-                        $startDate = new \DateTime();
-                        $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
+                        // $sdWeekNo = new \DateTime($request->input('filters.date_range.start'));
+                        // $sdWeekNo = $sdWeekNo->format('W');
+                        // $startDate = new \DateTime();
+                        // $startDate = $startDate->setISODate($date[0],$sdWeekNo)->setTime(0,0);
+                        $startDate = new \DateTime($request->input('filters.date_range.start'));
                         $endDate = clone $startDate;
                         $endDate->modify('+6 days');
                     }
