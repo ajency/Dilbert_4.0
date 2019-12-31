@@ -67,7 +67,6 @@ class LockedDataController extends Controller
                             $startDateYear = ($sdWeekNo == 1 && $date[1] == 12) ? ($date[0] + 1) : $date[0];
                             $startDate = new \DateTime();
                             $startDate = $startDate->setISODate($startDateYear,$sdWeekNo)->setTime(0,0);
-                            $startDate = new \DateTime($request->input('filters.date_range.start'));
                             $endDate = clone $startDate;
                             $endDate->modify('+6 days');
                         }
@@ -343,7 +342,6 @@ class LockedDataController extends Controller
                         $startDateYear = ($sdWeekNo == 1 && $date[1] == 12) ? ($date[0] + 1) : $date[0];
                         $startDate = new \DateTime();
                         $startDate = $startDate->setISODate($startDateYear,$sdWeekNo)->setTime(0,0);
-                        $startDate = new \DateTime($request->input('filters.date_range.start'));
                         $endDate = clone $startDate;
                         $endDate->modify('+6 days');
                     }
