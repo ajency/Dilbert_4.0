@@ -90,7 +90,7 @@ private activeTabsList: any = {
 
   constructor( @Inject(EnvVariables) private environment) {
     console.log('Hello AppGlobalsProvider Provider');
-    console.log(this.environment);
+    // console.log(this.environment);
 
      for(let vpfix in this.semVersion){
       this.appVersion = this.appVersion + this.semVersion[vpfix] + '.';

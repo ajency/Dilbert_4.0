@@ -141,8 +141,6 @@ export class AppServiceProvider {
           reject(false);
          }
          
-            // console.log(gapi.auth2.getAuthInstance().currentUser.get());
-
 
           });
       });
@@ -156,31 +154,9 @@ export class AppServiceProvider {
 
      if (isSignedIn) {
 
-      console.log("Already signed in");
-      this.image = gapi.auth2.getAuthInstance().currentUser.get().w3.Paa;
+      this.image = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getImageUrl();
               // console.log(this.image);
 
-		          // if(this.cookieservice.get("keepLoggedIn")== 'yes')
-		          // {
-            //       let path = this.location.path(true)
-            //       let pathparts = path.split('/');
-            //       pathparts.map((val) => {
-            //         if(val === 'dashboard'){
-            //           this.flag = true;
-            //         }
-            //       });
-            //       if(!this.flag){
-
-  		        //   	this.events.publish('app:navroot', 'dashboard');
-            //     }
-            //      // console.log(gapi.auth2.getAuthInstance().currentUser.get().w3.Paa);
-
-
-
-		          // }
-		          // else {
-		          // 	this.events.publish('app:navroot', 'login');
-		          // }
               this.events.publish('user:signedIn', 'navigateTo');
               console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
 
@@ -201,7 +177,7 @@ export class AppServiceProvider {
               this.events.publish('app:navroot', 'login');
             }
           }
-        }
+  }
 
   
 
@@ -212,10 +188,9 @@ export class AppServiceProvider {
 
         gapi.auth2.getAuthInstance().signIn().then( () => {
           console.log("signed in");
-    	        	// console.log(gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token);
     	        	
-               resolve(gapi.auth2.getAuthInstance().currentUser.get().Zi.access_token);
-               this.image = gapi.auth2.getAuthInstance().currentUser.get().w3.Paa;
+               resolve(gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token);
+               this.image = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getImageUrl();
                this.cookieservice.put("profileImage" , this.image);
 
              }, (error) => {

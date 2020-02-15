@@ -64,10 +64,6 @@ export class PopoverPage {
 
         });
         });
-
-        // this.user =  gapi.auth2.getAuthInstance().currentUser.get().w3.ig;
-        // console.log(this.user);
-
       }
 
 
